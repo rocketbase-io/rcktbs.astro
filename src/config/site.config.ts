@@ -1,5 +1,3 @@
-import { SITE_URL, GOOGLE_SITE_VERIFICATION, BING_SITE_VERIFICATION } from 'astro:env/server';
-
 export interface SiteConfig {
   name: string;
   description: string;
@@ -48,45 +46,35 @@ export interface SiteConfig {
   };
 }
 
+const env = import.meta.env;
+
 const siteConfig: SiteConfig = {
-  name: 'Velocity',
-  description: 'A modern website built with Astro and Tailwind CSS',
-  url: SITE_URL || 'https://example.com',
+  name: 'Rocketbase',
+  description:
+    'Digitalpartner für individuelle Software, Prozessoptimierung und nachhaltige Plattformen mit direkter Begleitung durch Marten Prieß.',
+  url: env.SITE_URL || env.PUBLIC_SITE_URL || 'https://www.rocketbase.io',
   ogImage: '/og-default.png',
-  author: 'Southwell Media',
-  // Demo contact info - replace with your actual business details
-  email: 'hello@example.com',
-  phone: '+1 (555) 123-4567',
-  address: {
-    street: '123 Main St',
-    city: 'Dallas',
-    state: 'TX',
-    zip: '75001',
-    country: 'US',
-  },
+  author: 'Marten Prieß',
+  email: 'marten@rocketbase.com',
   socialLinks: [
-    'https://github.com/southwellmedia',
+    'https://github.com/rocketbase-io',
+    'https://www.linkedin.com/company/rocketbase-io/',
   ],
-  // Twitter metadata - update with your actual handles or remove
-  // twitter: {
-  //   site: '@yourhandle',
-  //   creator: '@yourhandle',
-  // },
   verification: {
-    google: GOOGLE_SITE_VERIFICATION,
-    bing: BING_SITE_VERIFICATION,
+    google: env.GOOGLE_SITE_VERIFICATION,
+    bing: env.BING_SITE_VERIFICATION,
   },
   // Branding: Logo files live in src/assets/branding/
   // Replace the SVG files there with your own branding
   branding: {
     logo: {
-      alt: 'Velocity',
+      alt: 'Rocketbase Logo',
     },
     favicon: {
       svg: '/favicon.svg',
     },
     colors: {
-      themeColor: '#F94C10',
+      themeColor: '#6372A5',
       backgroundColor: '#ffffff',
     },
   },

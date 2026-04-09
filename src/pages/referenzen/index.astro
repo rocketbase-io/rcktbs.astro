@@ -1,0 +1,124 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import bonprixCaseImage from '@/assets/rocketbase/case-bonprix.png';
+import statistaCaseImage from '@/assets/rocketbase/case-statista.png';
+import { defaultLocale } from '@/i18n/config';
+import { contactLinks, cases } from '@/data/rocketbase';
+
+const locale = defaultLocale;
+
+const caseImages = {
+  bonprix: bonprixCaseImage,
+  statista: statistaCaseImage,
+} as const;
+---
+
+<PageLayout
+  title="Referenzen"
+  description="Ausgewählte Referenzen von Rocketbase mit mehr Hintergrund zu Ausgangslage, Vorgehen und Projektrahmen."
+  lang={locale}
+>
+  <section class="border-b border-border bg-background-secondary py-24">
+    <div class="container max-w-4xl">
+      <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Referenzen</p>
+      <h1 class="mt-4 font-display text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
+        Ausgewählte Projekte mit mehr Hintergrund.
+      </h1>
+      <p class="mt-6 text-lg leading-8 text-foreground-secondary">
+        Die Referenzen zeigen nicht nur, was Rocketbase gebaut hat, sondern auch in welchem
+        Kontext die Zusammenarbeit stattgefunden hat: Konzernumfeld, Modernisierung gewachsener
+        Systeme oder der Schritt von Standardsoftware zu einer individuellen Lösung.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-28">
+    <div class="container space-y-16">
+      {cases.map((item) => (
+        <article class="grid gap-8 border-t border-border pt-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+          <a href={`/referenzen/${item.slug}`} class="group block">
+            {item.slug in caseImages ? (
+              <div class="overflow-hidden rounded-[2rem]">
+                <img
+                  src={caseImages[item.slug as keyof typeof caseImages].src}
+                  alt={item.title}
+                  class="h-72 w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                />
+              </div>
+            ) : (
+              <div class="flex h-72 flex-col justify-between rounded-[2rem] bg-[linear-gradient(160deg,rgba(243,245,249,0.96),rgba(229,234,242,0.92))] p-8 dark:bg-[linear-gradient(160deg,rgba(36,43,57,0.92),rgba(26,31,42,0.9))]">
+                <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brand-600">{item.client}</p>
+                <div>
+                  <p class="font-display text-4xl font-bold tracking-tight text-foreground">FKC</p>
+                  <p class="mt-4 text-base leading-7 text-foreground-secondary">
+                    Von Standardsoftware zur individuellen Wachstumsplattform.
+                  </p>
+                </div>
+              </div>
+            )}
+          </a>
+
+          <div class="max-w-2xl">
+            <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brand-600">{item.client}</p>
+            <h2 class="mt-3 font-display text-3xl font-bold tracking-tight text-foreground">
+              <a href={`/referenzen/${item.slug}`}>{item.title}</a>
+            </h2>
+            <p class="mt-5 text-base leading-8 text-foreground-secondary">{item.kicker}</p>
+            <p class="mt-4 text-sm leading-7 text-foreground-muted">
+              Prozess im Fokus: {item.processFocus}
+            </p>
+            <p class="mt-5 text-base leading-8 text-foreground-secondary">{item.description}</p>
+
+            <ul class="mt-8 space-y-4 border-l border-border pl-5 text-sm leading-7 text-foreground-secondary">
+              {item.highlights.map((highlight) => (
+                <li>{highlight}</li>
+              ))}
+            </ul>
+
+            <div class="mt-8 border-l border-brand-200 pl-5">
+              <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brand-600">Wirkung</p>
+              <ul class="mt-4 space-y-3 text-sm leading-7 text-foreground-secondary">
+                {item.outcomes.slice(0, 2).map((outcome) => (
+                  <li>{outcome}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div class="mt-8">
+              <a href={`/referenzen/${item.slug}`} class="text-sm font-semibold text-brand-600 transition-colors hover:text-brand-500">
+                Mehr Hintergründe ansehen
+              </a>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="border-t border-border bg-background-secondary py-24">
+    <div class="container grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Nächster Schritt</p>
+        <h2 class="mt-4 font-display text-4xl font-bold tracking-tight text-foreground">
+          Wenn Ihr Vorhaben ähnlich gelagert ist, lohnt ein Gespräch.
+        </h2>
+        <p class="mt-6 text-lg leading-8 text-foreground-secondary">
+          Viele Projekte starten nicht mit einer klaren Spezifikation, sondern mit Reibung im
+          Prozess, Grenzen in Standardsoftware oder gewachsenen Systemen. Genau dort setzt
+          Rocketbase an.
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-4">
+        <Button href={contactLinks.cal} target="_blank">
+          Erstgespräch buchen
+          <Icon name="arrow-up-right" size="sm" />
+        </Button>
+        <Button variant="outline" href="/contact">
+          Kontakt
+        </Button>
+      </div>
+    </div>
+  </section>
+</PageLayout>

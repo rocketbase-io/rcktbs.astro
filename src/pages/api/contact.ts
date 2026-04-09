@@ -2,10 +2,10 @@ import type { APIRoute } from 'astro';
 import { z } from 'astro/zod';
 
 const contactSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters').max(100),
-  email: z.email('Please enter a valid email address'),
+  name: z.string().min(2, 'Bitte mindestens 2 Zeichen eingeben.').max(100),
+  email: z.email('Bitte eine gueltige E-Mail-Adresse eingeben.'),
   subject: z.string().max(200).optional(),
-  message: z.string().min(10, 'Message must be at least 10 characters').max(5000),
+  message: z.string().min(10, 'Bitte mindestens 10 Zeichen eingeben.').max(5000),
   honeypot: z.string().max(0), // Anti-spam: must be empty
 });
 
@@ -83,7 +83,7 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(
       JSON.stringify({
         success: false,
-        errors: { form: ['An unexpected error occurred'] },
+        errors: { form: ['Ein unerwarteter Fehler ist aufgetreten.'] },
       }),
       {
         status: 500,

@@ -4,15 +4,11 @@
  */
 
 import { type Locale, defaultLocale, locales } from './config';
-import { en } from './translations/en';
-import { es } from './translations/es';
-import { fr } from './translations/fr';
+import { de } from './translations/de';
 
 // Translation map
 const translations = {
-  en,
-  es,
-  fr,
+  de,
 } as const;
 
 type NestedKeyOf<T> = T extends object
@@ -25,7 +21,7 @@ type NestedKeyOf<T> = T extends object
     }[keyof T]
   : never;
 
-export type TranslationKey = NestedKeyOf<typeof en>;
+export type TranslationKey = NestedKeyOf<typeof de>;
 
 /**
  * Get a nested value from an object using dot notation

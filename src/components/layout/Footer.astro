@@ -18,8 +18,8 @@
  */
 import type { HTMLAttributes } from 'astro/types';
 import { cn } from '@/lib/cn';
-import Logo from '@/components/ui/marketing/Logo/Logo.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import rocketbaseLogo from '@/assets/rocketbase/logo.svg';
 import siteConfig from '@/config/site.config';
 import { type Locale, defaultLocale, getLocaleFromPath } from '@/i18n/config';
 import { useTranslations, getLocalizedPath, getNavRoutes } from '@/i18n/index';
@@ -105,12 +105,18 @@ const navItems: NavItem[] = nav || defaultNav.map(route => ({
 }));
 
 // Default external links if none provided via nav
-const defaultExternalLinks: NavItem[] = [
-  { label: t('footer.links.github'), href: 'https://github.com/southwellmedia/velocity', external: true },
-];
+const defaultExternalLinks: NavItem[] = [];
 
 // Add external links to nav if using default nav
 const allNavItems: NavItem[] = nav ? navItems : [...navItems, ...defaultExternalLinks];
+
+const resolvedSocialLinks: SocialLink[] =
+  socialLinks.length > 0
+    ? socialLinks
+    : siteConfig.socialLinks.map((href) => ({
+        platform: href.includes('linkedin') ? 'linkedin' : href.includes('github') ? 'github' : 'external-link',
+        href,
+      }));
 
 // Process copyright text
 const currentYear = new Date().getFullYear();
@@ -174,12 +180,9 @@ const displayTagline = tagline || t('site.description');
               <slot name="logo" />
             ) : (
               <a href={getLocalizedPath('home', locale)} class="flex items-center gap-2">
-                <Logo size="sm" />
-                <span class="font-display text-lg font-bold text-brand-500">
-                  {siteConfig.name}
-                </span>
-              </a>
-            )}
+                  <img src={rocketbaseLogo.src} alt={siteConfig.branding.logo.alt} class="h-8 w-auto dark:invert" />
+                </a>
+              )}
             {(hasTaglineSlot || displayTagline) && (
               <p class={cn(
                 'text-sm',
@@ -212,12 +215,12 @@ const displayTagline = tagline || t('site.description');
         </nav>
 
         {/* Social Links */}
-        {showSocial && socialLinks.length > 0 && (
+        {showSocial && resolvedSocialLinks.length > 0 && (
           hasSocialSlot ? (
             <slot name="social" />
           ) : (
             <div class="flex items-center gap-4">
-              {socialLinks.map((social) => (
+              {resolvedSocialLinks.map((social) => (
                 <a
                   href={social.href}
                   class={cn(
@@ -248,11 +251,8 @@ const displayTagline = tagline || t('site.description');
               {hasLogoSlot ? (
                 <slot name="logo" />
               ) : (
-                <a href={getLocalizedPath('home', locale)} class="flex items-center gap-2">
-                  <Logo size="sm" />
-                  <span class="font-display text-lg font-bold text-brand-500">
-                    {siteConfig.name}
-                  </span>
+                <a href={getLocalizedPath('home', locale)} class="flex items-center">
+                  <img src={rocketbaseLogo.src} alt={siteConfig.branding.logo.alt} class="h-8 w-auto dark:invert" />
                 </a>
               )}
               {(hasTaglineSlot || displayTagline) && (
@@ -264,9 +264,9 @@ const displayTagline = tagline || t('site.description');
                 </p>
               )}
               {/* Social Links in columns layout */}
-              {showSocial && socialLinks.length > 0 && (
+              {showSocial && resolvedSocialLinks.length > 0 && (
                 <div class="flex items-center gap-4 pt-2">
-                  {socialLinks.map((social) => (
+                  {resolvedSocialLinks.map((social) => (
                     <a
                       href={social.href}
                       class={cn(
@@ -385,11 +385,8 @@ const displayTagline = tagline || t('site.description');
           hasLogoSlot ? (
             <slot name="logo" />
           ) : (
-            <a href={getLocalizedPath('home', locale)} class="flex items-center gap-2">
-              <Logo size="md" />
-              <span class="font-display text-xl font-bold text-brand-500">
-                {siteConfig.name}
-              </span>
+            <a href={getLocalizedPath('home', locale)} class="flex items-center">
+              <img src={rocketbaseLogo.src} alt={siteConfig.branding.logo.alt} class="h-9 w-auto dark:invert" />
             </a>
           )
         )}

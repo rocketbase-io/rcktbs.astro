@@ -1,25 +1,195 @@
 ---
-import LandingLayout from '@/layouts/LandingLayout.astro';
+import PageLayout from '@/layouts/PageLayout.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import servicesHero from '@/assets/rocketbase/services-hero.png';
+import { defaultLocale } from '@/i18n/config';
+import { getLocalizedPath } from '@/i18n/index';
+import {
+  contactLinks,
+  discoveryOffer,
+  processSteps,
+  serviceAreas,
+} from '@/data/rocketbase';
+
+const locale = defaultLocale;
+const contactUrl = getLocalizedPath('contact', locale);
+
+const useCases = [
+  'Interne Plattformen für Produktdaten, Content oder operative Kernprozesse',
+  'Ablösung oder Entlastung von Standardsoftware, wenn sie Wachstum bremst',
+  'CRM-, CMS-, PIM-, PLM- und Reporting-Lösungen mit individuellem Zuschnitt',
+  'Migration aus gewachsenen Altanwendungen oder proprietären Bestandssystemen',
+  'Self-Service-Portale, Admin-Oberflächen und Prozesswerkzeuge für B2B-Teams',
+  'Integrationsprojekte zwischen bestehenden Systemen und neuer Business-Logik',
+];
 ---
 
-<LandingLayout
-  title="Services"
-  description="Add your description here"
+<PageLayout
+  title="Leistungen"
+  description="Rocketbase begleitet Projekte von Discovery und Konzeption bis zu Individualsoftware, Integration und Betrieb."
+  lang={locale}
+  routeId="services"
 >
-  <!-- Hero Section -->
-  <section class="py-20 bg-secondary">
-    <div class="container">
-      <h1 class="text-4xl font-bold text-foreground">Services</h1>
-      <p class="mt-4 text-foreground-muted max-w-2xl">
-        Add your content here.
-      </p>
+  <section class="border-b border-border bg-background-secondary py-24">
+    <div class="container grid gap-14 lg:grid-cols-[1fr_0.95fr] lg:items-center">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Leistungen</p>
+        <h1 class="mt-4 font-display text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
+          Von Prozessanalyse bis Betrieb. <span class="text-brand-500">Ohne künstliche Trennung.</span>
+        </h1>
+        <p class="mt-6 text-lg leading-8 text-foreground-secondary">
+          Rocketbase begleitet anspruchsvolle Vorhaben dort, wo Standardsoftware nicht mehr sauber
+          trägt oder wo Geschäftslogik, Teamabläufe und Datenstrukturen individueller werden
+          müssen.
+        </p>
+        <p class="mt-6 text-lg leading-8 text-foreground-secondary">
+          Beratung, Produktdenken und technische Umsetzung greifen ineinander. Dadurch entstehen
+          weniger Übergaben und ein Projektsetup, das fachlich wie technisch konsistent bleibt.
+        </p>
+        <div class="mt-8 rounded-[1.75rem] border border-brand-200 bg-brand-50 p-6 shadow-sm dark:border-brand-800 dark:bg-brand-900/20">
+          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700 dark:text-brand-200">Direkte Begleitung</p>
+          <p class="mt-3 text-base leading-7 text-foreground-secondary">
+            Bei Rocketbase bleiben Analyse, Lösungsrichtung und technische Leitentscheidungen eng
+            an Marten Prieß, statt in mehreren Übergaben zu verschwimmen.
+          </p>
+        </div>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <Button href={contactLinks.cal} target="_blank">
+            Erstgespräch buchen
+            <Icon name="arrow-up-right" size="sm" />
+          </Button>
+          <Button variant="outline" href={contactUrl}>
+            Kontaktseite
+          </Button>
+        </div>
+      </div>
+
+      <div class="overflow-hidden rounded-[2rem] border border-border bg-card shadow-lg">
+        <img src={servicesHero.src} alt="Rocketbase Leistungen" class="w-full object-cover" />
+      </div>
     </div>
   </section>
 
-  <!-- Content Section -->
-  <section class="py-16">
-    <div class="container">
-      <!-- Your content -->
+  <section class="py-28">
+    <div class="container grid gap-12 lg:grid-cols-[0.84fr_1.16fr] lg:items-start">
+      <div class="lg:sticky lg:top-28">
+        <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Leistungsbausteine</p>
+        <h2 class="mt-4 font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+          Vier Bausteine, die sich an realen Projektverläufen orientieren.
+        </h2>
+        <p class="mt-6 text-lg leading-8 text-foreground-secondary">
+          Statt austauschbarer Agenturmodule folgt die Struktur dem echten Verlauf anspruchsvoller
+          Projekte: verstehen, priorisieren, bauen und sinnvoll betreiben.
+        </p>
+      </div>
+
+      <div class="grid gap-5">
+        {serviceAreas.map((service, index) => (
+          <article class="grid gap-5 rounded-[1.9rem] border border-border bg-card p-7 shadow-sm md:grid-cols-[74px_1fr] md:items-start">
+            <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-lg font-semibold text-brand-700 dark:bg-brand-900/30 dark:text-brand-100">
+              0{index + 1}
+            </div>
+            <div>
+              <h3 class="text-2xl font-semibold text-foreground">{service.title}</h3>
+              <p class="mt-4 text-base leading-7 text-foreground-secondary">{service.description}</p>
+              <ul class="mt-6 grid gap-3 sm:grid-cols-2 text-sm text-foreground-secondary">
+                {service.bullets.map((bullet) => (
+                  <li class="flex gap-3 rounded-2xl bg-background-secondary p-4">
+                    <Icon name="check-circle" size="sm" class="mt-0.5 shrink-0 text-brand-500" />
+                    <span>{bullet}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </article>
+        ))}
+      </div>
     </div>
   </section>
-</LandingLayout>
+
+  <section class="border-y border-border bg-background-secondary py-28">
+    <div class="container grid gap-12 lg:grid-cols-[0.95fr_1.05fr]">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Typische Vorhaben</p>
+        <h2 class="mt-4 font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+          Lösungen für Prozesse, nicht für Buzzwords.
+        </h2>
+        <p class="mt-6 text-lg leading-8 text-foreground-secondary">
+          Rocketbase arbeitet branchenübergreifend. Entscheidender als die Branche sind meist
+          Durchlaufzeiten, Informationsqualität, Medienbrüche und die Frage, wie Teams effizienter
+          zusammenarbeiten können.
+        </p>
+      </div>
+
+      <div class="grid gap-4">
+        {useCases.map((item, index) => (
+          <div class="grid gap-4 rounded-[1.5rem] border border-border bg-card p-6 shadow-sm md:grid-cols-[40px_1fr] md:items-start">
+            <div class="text-sm font-semibold text-brand-600">{String(index + 1).padStart(2, '0')}</div>
+            <p class="text-base leading-7 text-foreground-secondary">{item}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-28">
+    <div class="container">
+      <div class="max-w-3xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Vorgehen</p>
+        <h2 class="mt-4 font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+          So entsteht aus Prozesswissen eine belastbare Softwarelösung.
+        </h2>
+      </div>
+
+      <div class="mt-14 grid gap-6 lg:grid-cols-4">
+        {processSteps.map((step, index) => (
+          <article class="relative rounded-[1.6rem] border border-border bg-card p-6 shadow-sm">
+            {index < processSteps.length - 1 && (
+              <div class="absolute left-full top-10 hidden h-px w-6 bg-border lg:block"></div>
+            )}
+            <p class="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">Schritt {index + 1}</p>
+            <h3 class="mt-4 text-2xl font-semibold text-foreground">{step.title}</h3>
+            <p class="mt-4 text-base leading-7 text-foreground-secondary">{step.description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-border bg-surface-invert py-28 text-on-invert">
+    <div class="container grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-300">Produktisierte Vorleistung</p>
+        <h2 class="mt-4 font-display text-4xl font-bold tracking-tight text-on-invert sm:text-5xl">
+          {discoveryOffer.title}
+        </h2>
+        <p class="mt-4 text-xl text-on-invert-secondary">{discoveryOffer.subtitle}</p>
+        <p class="mt-6 text-lg leading-8 text-on-invert-secondary">
+          Statt kostenlos tiefe Vorarbeit zu leisten, schafft Rocketbase mit dem Workshop eine
+          belastbare Entscheidungsgrundlage für beide Seiten.
+        </p>
+      </div>
+
+      <div class="rounded-[2rem] border border-white/10 bg-white/5 p-8 backdrop-blur">
+        <ul class="grid gap-4 sm:grid-cols-2">
+          {discoveryOffer.deliverables.map((item) => (
+            <li class="flex gap-3 rounded-2xl border border-white/10 bg-white/5 p-4 text-base text-on-invert-secondary">
+              <Icon name="check-circle" size="sm" class="mt-1 shrink-0 text-brand-300" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <Button href={contactLinks.cal} target="_blank">
+            Workshop anfragen
+            <Icon name="arrow-up-right" size="sm" />
+          </Button>
+          <Button variant="outline" href={contactUrl}>
+            Kontakt
+          </Button>
+        </div>
+      </div>
+    </div>
+  </section>
+</PageLayout>

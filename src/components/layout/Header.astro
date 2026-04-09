@@ -22,9 +22,9 @@ import type { HTMLAttributes } from 'astro/types';
 import { cn } from '@/lib/cn';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
-import Logo from '@/components/ui/marketing/Logo/Logo.astro';
 import ThemeToggle from '@/components/layout/ThemeToggle.astro';
 import LanguageSwitcher from '@/components/i18n/LanguageSwitcher.astro';
+import rocketbaseLogo from '@/assets/rocketbase/logo.svg';
 import siteConfig from '@/config/site.config';
 import { type Locale, defaultLocale, getLocaleFromPath } from '@/i18n/config';
 import { useTranslations, getLocalizedPath, getNavRoutes } from '@/i18n/index';
@@ -194,14 +194,12 @@ const buttonId = `${menuId}-button`;
       hasLogoSlot ? (
         <slot name="logo" />
       ) : (
-        <a href={getLocalizedPath('home', locale)} class="flex items-center gap-2">
-          <Logo size={size === 'lg' ? 'md' : 'sm'} forceDark={isInvert} />
-          <span class={cn(
-            'font-display text-xl font-bold tracking-tight',
-            isInvert ? 'text-on-invert' : 'text-brand-500'
-          )}>
-            {logoText || siteConfig.name}
-          </span>
+        <a href={getLocalizedPath('home', locale)} class="flex items-center">
+          <img
+            src={rocketbaseLogo.src}
+            alt={siteConfig.branding.logo.alt}
+            class={cn('h-7 w-auto', isInvert && 'invert')}
+          />
         </a>
       )
     )}

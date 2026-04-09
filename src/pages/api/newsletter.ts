@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { z } from 'astro/zod';
 
 const newsletterSchema = z.object({
-  email: z.email('Please enter a valid email address'),
+  email: z.email('Bitte eine gueltige E-Mail-Adresse eingeben.'),
   honeypot: z.string().max(0).optional(), // Honeypot field for spam protection
 });
 
@@ -27,7 +27,7 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(
         JSON.stringify({
           success: false,
-          error: result.error.issues[0]?.message || 'Please enter a valid email address',
+          error: result.error.issues[0]?.message || 'Bitte eine gueltige E-Mail-Adresse eingeben.',
         }),
         {
           status: 400,
@@ -60,7 +60,7 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(
       JSON.stringify({
         success: false,
-        error: 'Subscription failed. Please try again.',
+        error: 'Anmeldung fehlgeschlagen. Bitte erneut versuchen.',
       }),
       {
         status: 500,
