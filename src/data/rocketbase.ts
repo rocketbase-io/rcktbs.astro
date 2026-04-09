@@ -76,7 +76,8 @@ export const cases = [
     title: 'PLM/PIM-Neubau mit internationaler Teamintegration',
     description:
       'Rocketbase wirkte an der Neuentwicklung einer komplexen Produktdaten-Plattform mit, übernahm technische Führung und verband Hamburger Delivery mit einem indischen Entwicklungsteam.',
-    kicker: 'Komplexe Produktlogik, internationale Zusammenarbeit und technische Führung in einem zentralen Konzernprojekt.',
+    kicker:
+      'Komplexe Produktlogik, internationale Zusammenarbeit und technische Führung in einem zentralen Konzernprojekt.',
     highlights: [
       'Technische Führung und Teamaufbau über mehrere Jahre',
       'Integration eines verteilten, internationalen Setups',
@@ -88,8 +89,7 @@ export const cases = [
       'Rocketbase übernahm nicht nur Entwicklungsarbeit, sondern half dabei, Zusammenarbeit, Workshops und operative Abläufe so zu strukturieren, dass das Projekt in der Delivery tragfähig blieb.',
     impact:
       'Der Fall zeigt, dass Rocketbase nicht nur Software umsetzt, sondern Teams, Kommunikation und technische Verantwortung in komplexen Setups zusammenbringen kann.',
-    processFocus:
-      'Pflege und Abstimmung von Produktdaten über mehrere Teams und Standorte hinweg.',
+    processFocus: 'Pflege und Abstimmung von Produktdaten über mehrere Teams und Standorte hinweg.',
     outcomes: [
       'Weniger Reibung zwischen beteiligten Teams und Zuständigkeiten',
       'Mehr Klarheit in Übergaben, Zusammenarbeit und Entscheidungswegen',
@@ -107,7 +107,8 @@ export const cases = [
     title: 'Neue Content-Plattform statt gewachsener Altsysteme',
     description:
       'Gemeinsam mit Statista entstand eine moderne Plattform zur Pflege von Statistiken und Inhalten, inklusive Migration, Parallelbetrieb und neuer Redaktionsoberflächen.',
-    kicker: 'Modernisierung einer zentralen Plattform mit Fokus auf redaktionelle Prozesse, Datenpflege und schrittweise Ablösung gewachsener Strukturen.',
+    kicker:
+      'Modernisierung einer zentralen Plattform mit Fokus auf redaktionelle Prozesse, Datenpflege und schrittweise Ablösung gewachsener Strukturen.',
     highlights: [
       'Modernisierung einer kritischen Kernanwendung',
       'Spring-Boot-Backend und React-Oberflächen',
@@ -138,7 +139,8 @@ export const cases = [
     title: 'Von Standardsoftware zur belastbaren Wachstumsplattform',
     description:
       'Rocketbase begleitete die Ablösung einer Standardsoftware, strukturierte Datenübernahme und den Aufbau einer individuellen Lösung, die besser zu den realen Arbeitsweisen passte.',
-    kicker: 'Ablösung einer Standardsoftware, die operative Realität und Wachstum nicht mehr sauber abbildete.',
+    kicker:
+      'Ablösung einer Standardsoftware, die operative Realität und Wachstum nicht mehr sauber abbildete.',
     highlights: [
       'Migration aus proprietären Bestandsstrukturen',
       'Neuer Zuschnitt an echten Geschäftsprozessen',
@@ -161,6 +163,38 @@ export const cases = [
       'Ablösung von Standardsoftware',
       'Datenmigration aus Bestandssystemen',
       'Aufbau einer individuellen Wachstumsplattform',
+    ],
+  },
+  {
+    slug: 'metall-pro',
+    client: 'Schlosserei Diezinger',
+    title: 'Einsatzplanung, die den Betrieb wirklich kennt',
+    description:
+      'Wer wann an was arbeitet, wer ausfällt, welche Aufträge laufen – das alles lief bei Schlosserei Diezinger über Excel. Jetzt gibt es dafür ein System, das den handwerklichen Alltag versteht.',
+    kicker:
+      'Ablösung aufwändiger manueller Planung durch eine flexible, rollenbasierte Lösung für Einsatz- und Auftragssteuerung.',
+    highlights: [
+      'Dynamischer Kalender- und Aufgabenflow für Mitarbeiter und Abteilungen',
+      'Automatische Anzeige von Abwesenheiten wie Krankheit oder Urlaub',
+      'Rollenbasierte Dashboards, Barcode-Integration und NFC-Login',
+    ],
+    challenge:
+      'Die Planung lief bisher über manuelle Excel-Tabellen. Es fehlte ein zentraler Überblick, wer wann an welchem Auftrag arbeitet, und Abwesenheiten mussten gesondert gepflegt werden. Mit wachsendem Betrieb wurde das System zunehmend unhandlich.',
+    approach:
+      'Rocketbase entwickelte eine flexible Individuallösung mit einem dynamischen Kalender- und Aufgabenflow. Mitarbeiter, Abteilungen, Kunden und Arbeitsaufträge sind vollständig konfigurierbar. Abwesenheiten durch Krankheit, Urlaub oder ähnliche Gründe werden automatisch im System berücksichtigt. Personalisierte Dashboards sorgen dafür, dass jede Person nur das Relevante sieht. Die Arbeitsaufträge sind mit Barcodes verknüpft und lassen sich einfach ausdrucken. Der Zugang zum System erfolgt über ein eigens entwickeltes NFC-Login, das einfache Bedienung mit hoher Sicherheit verbindet.',
+    impact:
+      'Der Case zeigt, wie Rocketbase operative Planungsprozesse mit modernen Mitteln neu denken kann, ohne dabei die Alltagsrealität eines handwerklichen Betriebs aus dem Blick zu verlieren.',
+    processFocus:
+      'Mitarbeiter- und Auftragsplanung, Ressourcenzuweisung und tägliche Betriebssteuerung im handwerklichen Umfeld.',
+    outcomes: [
+      'Deutlich weniger manueller Aufwand durch Wegfall der Excel-Planung',
+      'Transparenz über Auslastung, Verfügbarkeit und Auftragsstand in Echtzeit',
+      'Einfachere Bedienung im Alltag durch Barcodes, Druckfunktion und NFC-Login',
+    ],
+    services: [
+      'Individualentwicklung einer Planungs- und Steuerungslösung',
+      'Rollenbasierte Dashboards und Konfigurationsmanagement',
+      'NFC-Login und Barcode-Integration',
     ],
   },
 ];
