@@ -2,17 +2,30 @@
 /**
  * Analytics Component
  *
- * Conditionally loads analytics scripts based on environment variables.
- * Supports Google Analytics (GA4) and Google Tag Manager.
+ * Loads analytics scripts based on environment variables.
  *
  * Environment variables:
+ * - PUBLIC_PLAUSIBLE_DOMAIN: Plausible domain (e.g., rocketbase.io) — cookieless, no consent needed
+ * - PUBLIC_LINKEDIN_PARTNER_ID: LinkedIn Insight Tag partner ID — gated behind marketing consent
  * - PUBLIC_GA_MEASUREMENT_ID: Google Analytics 4 Measurement ID (e.g., G-XXXXXXXXXX)
  * - PUBLIC_GTM_ID: Google Tag Manager Container ID (e.g., GTM-XXXXXXX)
  */
 
+const plausibleDomain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
+const linkedinPartnerId = import.meta.env.PUBLIC_LINKEDIN_PARTNER_ID;
 const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 const gtmId = import.meta.env.PUBLIC_GTM_ID;
 ---
+
+{/* Plausible Analytics — cookieless, no consent required */}
+{plausibleDomain && (
+  <script
+    is:inline
+    defer
+    data-domain={plausibleDomain}
+    src="https://plausible.io/js/script.file-downloads.outbound-links.js"
+  ></script>
+)}
 
 {/* Google Tag Manager - loads first if configured */}
 {
@@ -48,3 +61,44 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID;
     </>
   )
 }
+
+{/* LinkedIn Insight Tag — loaded only after marketing consent is granted */}
+{linkedinPartnerId && (
+  <script is:inline define:vars={{ linkedinPartnerId }}>
+    function loadLinkedIn() {
+      if (window.__linkedinLoaded) return;
+      window.__linkedinLoaded = true;
+      window._linkedin_partner_id = linkedinPartnerId;
+      window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+      window._linkedin_data_partner_ids.push(linkedinPartnerId);
+      (function(l) {
+        if (!l) {
+          window.lintrk = function(a, b) { window.lintrk.q.push([a, b]); };
+          window.lintrk.q = [];
+        }
+        var s = document.getElementsByTagName('script')[0];
+        var b = document.createElement('script');
+        b.type = 'text/javascript';
+        b.async = true;
+        b.src = 'https://snap.licdn.com/li.lms-analytics/insight.min.js';
+        s.parentNode.insertBefore(b, s);
+      })(window.lintrk);
+    }
+
+    function checkAndLoadLinkedIn(categories) {
+      if (categories && categories.marketing) {
+        loadLinkedIn();
+      }
+    }
+
+    // Check existing consent state (returning visitor who already consented)
+    if (window.__consentState && window.__consentState.decided) {
+      checkAndLoadLinkedIn(window.__consentState.categories);
+    }
+
+    // Listen for consent updates
+    window.addEventListener('consent-updated', function(e) {
+      checkAndLoadLinkedIn(e.detail && e.detail.categories);
+    });
+  </script>
+)}

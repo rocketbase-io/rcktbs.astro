@@ -18,35 +18,78 @@ const { locale: localeProp } = Astro.props;
 const locale = localeProp || getLocaleFromPath(Astro.url.pathname);
 const t = useTranslations(locale);
 
-const links = [
+const navLinks = [
   { label: t('nav.services'), href: getLocalizedPath('services', locale) },
   { label: t('nav.about'), href: getLocalizedPath('about', locale) },
   { label: t('nav.contact'), href: getLocalizedPath('contact', locale) },
+];
+
+const socialLinks = [
   { label: 'GitHub', href: 'https://github.com/rocketbase-io' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/company/rocketbase-io/' },
 ];
+
+const legalLinks = [
+  { label: 'Impressum', href: '/impressum' },
+  { label: 'Datenschutz', href: '/datenschutz' },
+];
+
+const year = new Date().getFullYear();
 ---
 
-<footer class="border-t border-border bg-background-secondary py-12">
-  <div class="mx-auto flex max-w-6xl flex-col gap-6 px-6 md:flex-row md:items-center md:justify-between">
-    <div class="flex flex-col gap-3">
-      <a href={getLocalizedPath('home', locale)} class="flex items-center">
-        <img src={rocketbaseLogo.src} alt="Rocketbase" class="h-8 w-auto dark:invert" />
-      </a>
-      <p class="max-w-md text-sm text-foreground-muted">{t('site.description')}</p>
+<footer class="border-t border-border bg-background-secondary">
+  <div class="mx-auto max-w-6xl px-6">
+    <!-- Main row -->
+    <div class="flex flex-col gap-8 py-12 md:flex-row md:items-start md:justify-between">
+      <!-- Brand -->
+      <div class="flex flex-col gap-4">
+        <a href={getLocalizedPath('home', locale)} class="flex items-center">
+          <img src={rocketbaseLogo.src} alt="Rocketbase" class="h-8 w-auto dark:invert" />
+        </a>
+        <p class="max-w-xs text-sm leading-6 text-foreground-muted">{t('site.description')}</p>
+      </div>
+
+      <!-- Nav + Social -->
+      <div class="flex flex-wrap gap-12">
+        <div class="flex flex-col gap-3">
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-foreground-subtle">Navigation</p>
+          <nav class="flex flex-col gap-2">
+            {navLinks.map((link) => (
+              <a href={link.href} class="text-sm text-foreground-muted hover:text-foreground transition-colors">
+                {link.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-foreground-subtle">Kontakt</p>
+          <nav class="flex flex-col gap-2">
+            {socialLinks.map((link) => (
+              <a
+                href={link.href}
+                class="text-sm text-foreground-muted hover:text-foreground transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      </div>
     </div>
 
-    <nav class="flex flex-wrap gap-6 text-sm font-medium text-foreground-muted">
-      {links.map((link) => (
-        <a
-          href={link.href}
-          class="hover:text-foreground transition-colors"
-          target={link.href.startsWith('http') ? '_blank' : undefined}
-          rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-        >
-          {link.label}
-        </a>
-      ))}
-    </nav>
+    <!-- Bottom bar -->
+    <div class="flex flex-col gap-3 border-t border-border py-6 sm:flex-row sm:items-center sm:justify-between">
+      <p class="text-xs text-foreground-subtle">© {year} rocketbase.io software productions GmbH</p>
+      <nav class="flex gap-5">
+        {legalLinks.map((link) => (
+          <a href={link.href} class="text-xs text-foreground-subtle hover:text-foreground-muted transition-colors">
+            {link.label}
+          </a>
+        ))}
+      </nav>
+    </div>
   </div>
 </footer>

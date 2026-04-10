@@ -10,8 +10,8 @@
  * - Is intended for content pages like About, Contact, etc.
  */
 import BaseLayout from './BaseLayout.astro';
-import Header from '@/components/layout/Header.astro';
-import Footer from '@/components/layout/Footer.astro';
+import Navbar from '@/components/landing/Navbar.astro';
+import LandingFooter from '@/components/landing/LandingFooter.astro';
 import { type Locale, defaultLocale } from '@/i18n/config';
 import type { RouteId } from '@/i18n/routes';
 
@@ -54,11 +54,11 @@ const {
   lang={lang}
   routeId={routeId}
 >
-  <Header slot="header" locale={lang} />
+  <Navbar slot="header" locale={lang} />
 
   <main class="min-h-screen pt-16">
     <slot />
   </main>
 
-  <Footer slot="footer" locale={lang} />
+  <LandingFooter slot="footer" locale={lang} />
 </BaseLayout>

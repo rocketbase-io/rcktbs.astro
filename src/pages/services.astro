@@ -149,7 +149,7 @@ const useCases = [
               <div class="absolute left-full top-10 hidden h-px w-6 bg-border lg:block"></div>
             )}
             <p class="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">Schritt {index + 1}</p>
-            <h3 class="mt-4 text-2xl font-semibold text-foreground">{step.title}</h3>
+            <h3 class="mt-4 text-xl font-semibold text-foreground">{step.title}</h3>
             <p class="mt-4 text-base leading-7 text-foreground-secondary">{step.description}</p>
           </article>
         ))}
@@ -185,7 +185,7 @@ const useCases = [
             Workshop anfragen
             <Icon name="arrow-up-right" size="sm" />
           </Button>
-          <Button variant="outline" href={contactUrl}>
+          <Button variant="outline" href={contactUrl} class="border-white/20 text-on-invert hover:border-white/40 hover:bg-white/10">
             Kontakt
           </Button>
         </div>

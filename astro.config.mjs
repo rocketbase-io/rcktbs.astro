@@ -9,8 +9,8 @@ export default defineConfig({
 
   // i18n configuration
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'es', 'fr'],
+    defaultLocale: 'de',
+    locales: ['de'],
     routing: {
       prefixDefaultLocale: false,
     },
@@ -21,11 +21,9 @@ export default defineConfig({
     mdx(),
     sitemap({
       i18n: {
-        defaultLocale: 'en',
+        defaultLocale: 'de',
         locales: {
-          en: 'en',
-          es: 'es',
-          fr: 'fr',
+          de: 'de',
         },
       },
     }),
