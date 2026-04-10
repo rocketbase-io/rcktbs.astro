@@ -1,6 +1,8 @@
 import type { APIRoute } from 'astro';
 import { z } from 'astro/zod';
 
+export const prerender = false;
+
 const newsletterSchema = z.object({
   email: z.email('Bitte eine gueltige E-Mail-Adresse eingeben.'),
   honeypot: z.string().max(0).optional(), // Honeypot field for spam protection
