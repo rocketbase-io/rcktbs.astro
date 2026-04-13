@@ -18,7 +18,8 @@ export const en = {
     components: 'Components',
     docs: 'Docs',
     getStarted: 'Get Started',
-      services: 'Services',
+    services: 'Services',
+    work: 'How we work',
   },
 
   // Common

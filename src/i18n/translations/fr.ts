@@ -20,7 +20,8 @@ export const fr: TranslationKeys = {
     components: 'Composants',
     docs: 'Documentation',
     getStarted: 'Commencer',
-      services: 'Services',
+    services: 'Services',
+    work: 'Comment nous travaillons'
   },
 
   // Common

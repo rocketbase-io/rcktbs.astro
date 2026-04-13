@@ -54,11 +54,11 @@ export const routes = {
   // Static pages
   about: {
     de: 'about',
-    nav: { show: true, order: 2, label: 'nav.about' },
+    nav: { show: true, order: 3, label: 'nav.about' },
   },
   contact: {
     de: 'contact',
-    nav: { show: true, order: 3, label: 'nav.contact' },
+    nav: { show: true, order: 4, label: 'nav.contact' },
   },
 
   // Blog section
@@ -76,7 +76,14 @@ export const routes = {
   // Custom page: services
   services: {
     de: 'services',
-    nav: { show: true, order: 1, label: 'nav.services' },
+    nav
+      : { show: true, order: 1, label: 'nav.services' },
+  },
+
+  // How we work
+  work: {
+    de: 'work',
+    nav: { show: true, order: 2, label: 'nav.work' },
   },
 } as const satisfies Record<string, RouteDefinition>;
 

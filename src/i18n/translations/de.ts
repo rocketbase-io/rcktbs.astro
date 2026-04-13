@@ -15,6 +15,7 @@ export const de = {
     docs: 'Dokumentation',
     getStarted: 'Projekt besprechen',
     services: 'Leistungen',
+    work: 'Wie wir arbeiten',
   },
 
   common: {

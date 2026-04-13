@@ -1,0 +1,175 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import { defaultLocale } from '@/i18n/config';
+import { getLocalizedPath } from '@/i18n/index';
+import { contactLinks, strengths, teamPrinciples } from '@/data/rocketbase';
+
+const locale = defaultLocale;
+const contactUrl = getLocalizedPath('contact', locale);
+const servicesUrl = getLocalizedPath('services', locale);
+
+import teamBefore from '@/assets/work/team-before.png';
+import teamAfter from '@/assets/work/team-after.png';
+import serverBefore from '@/assets/work/server-before.png';
+import serverAfter from '@/assets/work/server-after.png';
+import toolsBefore from '@/assets/work/tools-before.png';
+import toolsAfter from '@/assets/work/tools-after.png';
+import kiBefore from '@/assets/work/ki-before.png';
+import kiAfter from '@/assets/work/ki-after.png';
+
+
+const sections = [
+  {
+    title: "Vom großen Standardteam zum schlanken Expertenteam",
+    before: {
+      title: "Großes Standardteam",
+      text: "9+ Köpfe mit komplexen Abstimmungen, Rework-Schleifen und hohem Overhead.",
+      image: teamBefore,
+    },
+    after: {
+      title: "Schlankes Expertenteam",
+      text: "3 Experten, direkter Prozess, schnelle Umsetzung ohne Reibungsverluste.",
+      image: teamAfter,
+    },
+  },
+  {
+    title: "Vom eigenen Server zur Cloud",
+    before: {
+      title: "Server im Büro",
+      text: "Kabelsalat, hohe Kosten, Wartung, Zugriff nur per VPN.",
+      image: serverBefore,
+    },
+    after: {
+      title: "Cloud aus Deutschland",
+      text: "Automatische Updates, Backups, Zugriff von überall.",
+      image: serverAfter,
+    },
+  },
+  {
+    title: "Von Tool-Chaos zur integrierten Lösung",
+    before: {
+      title: "Viele Einzeltools",
+      text: "CSV-Exporte, Datenverlust, manuelle Prozesse.",
+      image: toolsBefore,
+    },
+    after: {
+      title: "Eine integrierte Lösung",
+      text: "Alles verbunden, Live-Daten, zentrale Steuerung.",
+      image: toolsAfter,
+    },
+  },
+  {
+    title: "Von klassischer Entwicklung zu KI-gestützter Umsetzung",
+    before: {
+      title: "Alles selbst coden",
+      text: "Langsam, repetitiv, viel manuelle Arbeit.",
+      image: kiBefore,
+    },
+    after: {
+      title: "KI + Open Source",
+      text: "10x schneller durch moderne Tools und smarte Automatisierung.",
+      image: kiAfter,
+    },
+  },
+];
+
+---
+
+<PageLayout
+  title="Wie wir arbeiten"
+  description="Weniger Overhead, mehr Fokus. Wir ersetzen komplexe Prozesse durch klare, effiziente Lösungen."
+  lang={locale}
+  routeId="work"
+>
+  <section class="border-b border-border bg-background-secondary py-24 text-center">
+    <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Wie wir arbeiten</p>
+    <h1 class="mt-4 font-display text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
+      So entwickeln wir Software heute
+    </h1>
+
+    <p class="mt-6 text-lg leading-8 text-foreground-secondary max-w-2xl mx-auto">
+      Weniger Overhead, mehr Fokus. Wir ersetzen komplexe Prozesse durch klare, effiziente Lösungen.
+    </p>
+  </section>
+
+  <div class="space-y-32 py-28">
+
+    {sections.map((section) => (
+      <section class="max-w-6xl mx-auto px-6 rounded-[1.9rem] border border-border bg-card p-7 shadow-sm">
+
+        <h3 class="text-2xl font-semibold text-foreground text-center mb-16">
+          {section.title}
+        </h3>
+
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+
+          <!-- BEFORE -->
+          <div class="scale-75">
+
+            <img
+              src={section.before.image.src}
+              alt={section.before.title}
+              class="rounded-2xl mb-6 opacity-60 grayscale"
+            />
+
+            <h3 class="text-lg font-semibold">
+              {section.before.title}
+            </h3>
+
+            <p class=" mt-2">
+              {section.before.text}
+            </p>
+
+          </div>
+
+          <!-- AFTER -->
+          <div class="bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-100 p-6 rounded-3xl shadow-lg">
+
+            <img
+              src={section.after.image.src}
+              alt={section.after.title}
+              class="rounded-2xl mb-6"
+            />
+
+            <h3 class="text-xl font-semibold">
+              {section.after.title}
+            </h3>
+
+            <p class=" mt-2">
+              {section.after.text}
+            </p>
+
+          </div>
+
+        </div>
+
+      </section>
+    ))}
+
+  </div>
+
+  <section class="border-t border-border bg-background-secondary py-24">
+    <div class="container rounded-[2.25rem] border border-border bg-card p-10 shadow-sm">
+      <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Zusammenarbeit</p>
+          <h2 class="mt-4 font-display text-4xl font-bold tracking-tight text-foreground">
+            Bereit für eine effizientere Softwareentwicklung?
+          </h2>
+          <p class="mt-6 text-lg leading-8 text-foreground-secondary">
+            Lassen Sie uns gemeinsam herausfinden, wie wir Ihre Prozesse vereinfachen können.
+          </p>
+        </div>
+        <div class="space-y-4 rounded-[1.5rem] bg-background-secondary p-6">
+          <Button href={contactLinks.cal} target="_blank">
+            Erstgespräch buchen
+            <Icon name="arrow-up-right" size="sm" />
+          </Button>
+          <p class="text-sm text-foreground-muted">Oder direkt per Mail an {contactLinks.email}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</PageLayout>
