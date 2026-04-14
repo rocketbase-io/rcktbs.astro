@@ -53,7 +53,7 @@ const directCollaborationDefinition =
     <div
       class="relative container grid gap-16 pt-28 pb-24 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)] lg:items-center"
     >
-      <div class="max-w-3xl">
+      <div data-aos="fade-right" class="max-w-3xl">
         <div class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
           Marten Prieß direkt im Projekt
         </div>
@@ -81,7 +81,7 @@ const directCollaborationDefinition =
           </p>
         </div>
 
-        <div class="mt-8 flex flex-wrap gap-4">
+        <div data-aos="fade-up" class="mt-8 flex flex-wrap gap-4">
           <Button size="lg" href={contactLinks.cal} target="_blank">
             Erstgespräch buchen
             <Icon name="arrow-up-right" size="sm" />
@@ -95,17 +95,17 @@ const directCollaborationDefinition =
         <div
           class="border-border/70 text-foreground-muted mt-10 grid gap-4 border-t pt-6 text-sm sm:grid-cols-3"
         >
-          <div>
+          <div data-aos="zoom-in">
             <p class="text-foreground font-semibold">Seit 2016</p>
             <p class="mt-2 leading-6">Aufbau von Digitalprodukten und internen Plattformen.</p>
           </div>
-          <div>
+          <div data-aos="zoom-in">
             <p class="text-foreground font-semibold">bonprix &amp; Statista</p>
             <p class="mt-2 leading-6">
               Konzern-Erfahrung, übertragen auf mittelständische Realitäten.
             </p>
           </div>
-          <div>
+          <div data-aos="zoom-in">
             <p class="text-foreground font-semibold">Discovery bis Betrieb</p>
             <p class="mt-2 leading-6">
               Konzeption, Delivery, Integration und Weiterentwicklung aus einer Hand.
@@ -114,13 +114,14 @@ const directCollaborationDefinition =
         </div>
       </div>
 
-      <div class="relative lg:pl-6">
+      <div data-aos="fade-left" class="relative lg:pl-6">
         <div
           class="bg-brand-300/15 dark:bg-brand-600/10 absolute inset-x-12 top-12 -z-10 h-72 rounded-full blur-3xl"
         >
         </div>
         <div class="space-y-5">
           <article
+            data-aos="zoom-in"
             class="bg-card overflow-hidden rounded-[2.25rem] border border-white/50 shadow-[0_22px_60px_rgba(34,43,74,0.1)] dark:border-white/10"
           >
             <img src={heroBg.src} alt="Rocketbase Projektumfeld" class="h-72 w-full object-cover" />
@@ -140,6 +141,7 @@ const directCollaborationDefinition =
           </article>
 
           <article
+            data-aos="zoom-in"
             class="border-border/80 rounded-[1.75rem] border bg-white/70 p-6 backdrop-blur dark:bg-white/5"
           >
             <div class="grid gap-4 sm:grid-cols-2">
@@ -168,10 +170,10 @@ const directCollaborationDefinition =
 
   <section class="border-border bg-background-secondary border-b py-8">
     <div class="container flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-      <span class="text-foreground-muted text-sm font-semibold tracking-[0.2em] uppercase"
+      <span data-aos="fade-right" class="text-foreground-muted text-sm font-semibold tracking-[0.2em] uppercase"
         >Erfahrung aus Projekten mit</span
       >
-      <p class="text-foreground-secondary text-sm leading-7">{leadClients.join(' · ')}</p>
+      <p data-aos="fade-left" class="text-foreground-secondary text-sm leading-7">{leadClients.join(' · ')}</p>
     </div>
   </section>
 
@@ -181,7 +183,7 @@ const directCollaborationDefinition =
     >
     </div>
     <div class="relative container grid gap-16 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
-      <div class="lg:sticky lg:top-28">
+      <div data-aos="fade-right" class="lg:sticky lg:top-28">
         <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
           Warum Rocketbase
         </p>
@@ -210,7 +212,7 @@ const directCollaborationDefinition =
       <div class="relative max-w-4xl">
         <div class="bg-border absolute top-4 bottom-4 left-4 hidden w-px lg:block"></div>
 
-        <div class="space-y-6">
+        <div data-aos="fade-left" class="space-y-6">
           {
             strengths.map((strength, index) => (
               <article
@@ -223,11 +225,11 @@ const directCollaborationDefinition =
                   index > 0 && index % 2 === 1 ? 'lg:mr-10' : '',
                 ]}
               >
-                <div class="border-border bg-background text-brand-700 dark:text-brand-100 relative z-10 flex h-12 w-12 items-center justify-center rounded-2xl border text-sm font-semibold">
+                <div data-aos="zoom-in" class="border-border bg-background text-brand-700 dark:text-brand-100 relative z-10 flex h-12 w-12 items-center justify-center rounded-2xl border text-sm font-semibold">
                   0{index + 1}
                 </div>
 
-                <div class:list={[index > 0 ? 'border-border/70 border-b pb-6 lg:pb-8' : '']}>
+                <div data-aos="zoom-in" class:list={[index > 0 ? 'border-border/70 border-b pb-6 lg:pb-8' : '']}>
                   <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                     <h3 class="text-foreground max-w-2xl text-2xl font-semibold">
                       {strength.title}
@@ -251,7 +253,7 @@ const directCollaborationDefinition =
   </section>
 
   <section class="border-border relative overflow-hidden border-b">
-    <a href={workUrl} class="group mx-auto block max-w-6xl px-6 py-20">
+    <a data-aos="zoom-in" href={workUrl} class="group mx-auto block max-w-6xl px-6 py-20">
       <div
         class="relative overflow-hidden rounded-3xl border bg-background-secondary/70 p-10 transition-all group-hover:scale-[1.01] group-hover:shadow-xl"
       >
@@ -298,8 +300,8 @@ const directCollaborationDefinition =
   </section>
 
   <section class="border-border border-y py-28">
-    <div class="container">
-      <div class="max-w-3xl">
+    <div  class="container">
+      <div data-aos="fade-up" class="max-w-3xl">
         <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Referenzen</p>
         <h2 class="font-display text-foreground mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
           Konzern-Erfahrung, umgesetzt für den Mittelstand.
@@ -314,7 +316,7 @@ const directCollaborationDefinition =
       <div class="border-border mt-16 grid gap-10 border-t pt-8 lg:grid-cols-3">
         {
           featuredCases.map((item) => (
-            <article class="flex flex-col">
+            <article data-aos="zoom-in" class="flex flex-col">
               <a href={getReferenceUrl(item.slug)} class="group block">
                 {item.slug === 'fkc-consulting' ? (
                   <div class="flex h-64 flex-col justify-between overflow-hidden rounded-[2rem] bg-[linear-gradient(160deg,rgba(243,245,249,0.96),rgba(229,234,242,0.92))] p-7 dark:bg-[linear-gradient(160deg,rgba(36,43,57,0.92),rgba(26,31,42,0.9))]">
@@ -380,7 +382,7 @@ const directCollaborationDefinition =
 
   <section class="py-32">
     <div class="container grid gap-14 lg:grid-cols-[0.86fr_1.14fr] lg:items-start">
-      <div class="lg:sticky lg:top-28">
+      <div data-aos="fade-right" class="lg:sticky lg:top-28">
         <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Leistungen</p>
         <h2 class="font-display text-foreground mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
           Beratung, Konzeption und Umsetzung <span class="text-brand-500"
@@ -396,19 +398,19 @@ const directCollaborationDefinition =
         </div>
       </div>
 
-      <div class="space-y-8">
+      <div data-aos="fade-left" class="space-y-8">
         {
           serviceAreas.map((service, index) => (
             <article class="border-border grid gap-5 border-t pt-8 md:grid-cols-[72px_1fr] md:items-start">
-              <div class="text-brand-600 text-sm font-semibold">0{index + 1}</div>
-              <div>
+              <div data-aos="zoom-in" class="text-brand-600 text-sm font-semibold">0{index + 1}</div>
+              <div data-aos="zoom-in">
                 <h3 class="text-foreground text-2xl font-semibold">{service.title}</h3>
                 <p class="text-foreground-secondary mt-3 max-w-2xl text-base leading-7">
                   {service.description}
                 </p>
                 <ul class="text-foreground-secondary mt-6 grid gap-x-8 gap-y-3 text-sm sm:grid-cols-2">
                   {service.bullets.map((bullet) => (
-                    <li class="flex gap-3">
+                    <li data-aos="zoom-in" class="flex gap-3">
                       <Icon name="arrow-right" size="sm" class="text-brand-400 mt-0.5 shrink-0" />
                       <span>{bullet}</span>
                     </li>
@@ -424,7 +426,7 @@ const directCollaborationDefinition =
 
   <section class="border-border bg-surface-invert text-on-invert border-y py-28">
     <div class="container grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
-      <div>
+      <div data-aos="fade-right">
         <p class="text-brand-300 text-sm font-semibold tracking-[0.22em] uppercase">
           Presales mit Substanz
         </p>
@@ -437,14 +439,14 @@ const directCollaborationDefinition =
         </p>
       </div>
 
-      <div class="border-l border-white/10 pl-6">
+      <div data-aos="fade-left" class="border-l border-white/10 pl-6">
         <p class="text-brand-200 text-xs font-semibold tracking-[0.22em] uppercase">
           Typische Ergebnisse
         </p>
         <ul class="text-on-invert-secondary mt-6 space-y-4 text-base leading-7">
           {
             discoveryOffer.deliverables.map((item) => (
-              <li class="flex gap-3">
+              <li data-aos="zoom-in" class="flex gap-3">
                 <Icon name="check-circle" size="sm" class="text-brand-300 mt-1 shrink-0" />
                 <span>{item}</span>
               </li>
@@ -463,7 +465,7 @@ const directCollaborationDefinition =
 
   <section class="py-32">
     <div class="container grid gap-14 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
-      <div class="overflow-hidden rounded-[2rem]">
+      <div data-aos="fade-right" class="overflow-hidden rounded-[2rem]">
         <img
           src={founderImage.src}
           alt="Marten Prieß, Gründer von Rocketbase"
@@ -471,7 +473,7 @@ const directCollaborationDefinition =
         />
       </div>
 
-      <div>
+      <div data-aos="fade-left">
         <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Gründerstory</p>
         <h2 class="font-display text-foreground mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
           Marten Prieß verbindet Fachbereich, Architektur und Delivery.
@@ -508,7 +510,7 @@ const directCollaborationDefinition =
             </div>
           </div>
         </div>
-        <div class="mt-8 flex flex-wrap gap-4">
+        <div data-aos="fade-up" class="mt-8 flex flex-wrap gap-4">
           <Button href={aboutUrl}>
             Mehr über Rocketbase
             <Icon name="arrow-right" size="sm" />
@@ -522,7 +524,7 @@ const directCollaborationDefinition =
   <section id="cta" class="border-border bg-background-secondary border-t py-28">
     <div class="container">
       <div class="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
-        <div>
+        <div data-aos="fade-right">
           <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
             Nächster Schritt
           </p>
@@ -537,7 +539,7 @@ const directCollaborationDefinition =
             tragfähige Lösungen mit um.
           </p>
         </div>
-        <div class="border-border border-l pl-0 lg:pl-8">
+        <div data-aos="fade-left" class="border-border border-l pl-0 lg:pl-8">
           <div class="text-foreground-muted space-y-4 text-sm">
             <div class="flex items-center gap-3">
               <Icon name="clock" size="sm" class="text-brand-500" />

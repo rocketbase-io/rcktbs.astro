@@ -11,6 +11,7 @@ import siteConfig from '@/config/site.config';
 import { type Locale, defaultLocale, getLocaleFromPath } from '@/i18n/config';
 import { useTranslations } from '@/i18n/index';
 import type { RouteId } from '@/i18n/routes';
+import "aos/dist/aos.css";
 
 interface Props {
   title?: string;
@@ -149,7 +150,14 @@ if (includeOrgSchema) {
     </a>
 
     <slot name="header" />
+    <script>
+      import AOS from "aos";
 
+      AOS.init({
+        duration: 800,
+        once: true,
+      });
+    </script>
     <main id="main-content" class="flex-1">
       <slot />
     </main>

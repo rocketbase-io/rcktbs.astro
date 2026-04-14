@@ -33,7 +33,7 @@ const useCases = [
 >
   <section class="border-b border-border bg-background-secondary py-24">
     <div class="container grid gap-14 lg:grid-cols-[1fr_0.95fr] lg:items-center">
-      <div>
+      <div data-aos="fade-right">
         <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Leistungen</p>
         <h1 class="mt-4 font-display text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
           Von Prozessanalyse bis Betrieb. <span class="text-brand-500">Ohne künstliche Trennung.</span>
@@ -47,14 +47,14 @@ const useCases = [
           Beratung, Produktdenken und technische Umsetzung greifen ineinander. Dadurch entstehen
           weniger Übergaben und ein Projektsetup, das fachlich wie technisch konsistent bleibt.
         </p>
-        <div class="mt-8 rounded-[1.75rem] border border-brand-200 bg-brand-50 p-6 shadow-sm dark:border-brand-800 dark:bg-brand-900/20">
+        <div data-aos="zoom-in" class="mt-8 rounded-[1.75rem] border border-brand-200 bg-brand-50 p-6 shadow-sm dark:border-brand-800 dark:bg-brand-900/20">
           <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700 dark:text-brand-200">Direkte Begleitung</p>
           <p class="mt-3 text-base leading-7 text-foreground-secondary">
             Bei Rocketbase bleiben Analyse, Lösungsrichtung und technische Leitentscheidungen eng
             an Marten Prieß, statt in mehreren Übergaben zu verschwimmen.
           </p>
         </div>
-        <div class="mt-8 flex flex-wrap gap-4">
+        <div data-aos="fade-up" class="mt-8 flex flex-wrap gap-4">
           <Button href={contactLinks.cal} target="_blank">
             Erstgespräch buchen
             <Icon name="arrow-up-right" size="sm" />
@@ -65,7 +65,7 @@ const useCases = [
         </div>
       </div>
 
-      <div class="overflow-hidden rounded-[2rem] border border-border bg-card shadow-lg">
+      <div data-aos="fade-left" class="overflow-hidden rounded-[2rem] border border-border bg-card shadow-lg">
         <img src={servicesHero.src} alt="Rocketbase Leistungen" class="w-full object-cover" />
       </div>
     </div>
@@ -73,7 +73,7 @@ const useCases = [
 
   <section class="py-28">
     <div class="container grid gap-12 lg:grid-cols-[0.84fr_1.16fr] lg:items-start">
-      <div class="lg:sticky lg:top-28">
+      <div data-aos="fade-right" class="lg:sticky lg:top-28">
         <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Leistungsbausteine</p>
         <h2 class="mt-4 font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
           Vier Bausteine, die sich an realen Projektverläufen orientieren.
@@ -84,10 +84,10 @@ const useCases = [
         </p>
       </div>
 
-      <div class="grid gap-5">
+      <div data-aos="fade-left" class="grid gap-5">
         {serviceAreas.map((service, index) => (
           <article class="grid gap-5 rounded-[1.9rem] border border-border bg-card p-7 shadow-sm md:grid-cols-[74px_1fr] md:items-start">
-            <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-lg font-semibold text-brand-700 dark:bg-brand-900/30 dark:text-brand-100">
+            <div data-aos="zoom-in" class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-lg font-semibold text-brand-700 dark:bg-brand-900/30 dark:text-brand-100">
               0{index + 1}
             </div>
             <div>
@@ -95,7 +95,7 @@ const useCases = [
               <p class="mt-4 text-base leading-7 text-foreground-secondary">{service.description}</p>
               <ul class="mt-6 grid gap-3 sm:grid-cols-2 text-sm text-foreground-secondary">
                 {service.bullets.map((bullet) => (
-                  <li class="flex gap-3 rounded-2xl bg-background-secondary p-4">
+                  <li data-aos="zoom-in" class="flex gap-3 rounded-2xl bg-background-secondary p-4">
                     <Icon name="check-circle" size="sm" class="mt-0.5 shrink-0 text-brand-500" />
                     <span>{bullet}</span>
                   </li>
@@ -110,7 +110,7 @@ const useCases = [
 
   <section class="border-y border-border bg-background-secondary py-28">
     <div class="container grid gap-12 lg:grid-cols-[0.95fr_1.05fr]">
-      <div>
+      <div data-aos="fade-right">
         <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Typische Vorhaben</p>
         <h2 class="mt-4 font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
           Lösungen für Prozesse, nicht für Buzzwords.
@@ -122,11 +122,11 @@ const useCases = [
         </p>
       </div>
 
-      <div class="grid gap-4">
+      <div data-aos="fade-left" class="grid gap-4">
         {useCases.map((item, index) => (
           <div class="grid gap-4 rounded-[1.5rem] border border-border bg-card p-6 shadow-sm md:grid-cols-[40px_1fr] md:items-start">
-            <div class="text-sm font-semibold text-brand-600">{String(index + 1).padStart(2, '0')}</div>
-            <p class="text-base leading-7 text-foreground-secondary">{item}</p>
+            <div data-aos="zoom-in" class="text-sm font-semibold text-brand-600">{String(index + 1).padStart(2, '0')}</div>
+            <p data-aos="zoom-in" class="text-base leading-7 text-foreground-secondary">{item}</p>
           </div>
         ))}
       </div>
@@ -135,7 +135,7 @@ const useCases = [
 
   <section class="py-28">
     <div class="container">
-      <div class="max-w-3xl">
+      <div data-aos="fade-up" class="max-w-3xl">
         <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Vorgehen</p>
         <h2 class="mt-4 font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
           So entsteht aus Prozesswissen eine belastbare Softwarelösung.
@@ -144,7 +144,7 @@ const useCases = [
 
       <div class="mt-14 grid gap-6 lg:grid-cols-4">
         {processSteps.map((step, index) => (
-          <article class="relative rounded-[1.6rem] border border-border bg-card p-6 shadow-sm">
+          <article data-aos="zoom-in" class="relative rounded-[1.6rem] border border-border bg-card p-6 shadow-sm">
             {index < processSteps.length - 1 && (
               <div class="absolute left-full top-10 hidden h-px w-6 bg-border lg:block"></div>
             )}
@@ -159,7 +159,7 @@ const useCases = [
 
   <section class="border-t border-border bg-surface-invert py-28 text-on-invert">
     <div class="container grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
-      <div>
+      <div data-aos="fade-right">
         <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-300">Produktisierte Vorleistung</p>
         <h2 class="mt-4 font-display text-4xl font-bold tracking-tight text-on-invert sm:text-5xl">
           {discoveryOffer.title}
@@ -171,16 +171,16 @@ const useCases = [
         </p>
       </div>
 
-      <div class="rounded-[2rem] border border-white/10 bg-white/5 p-8 backdrop-blur">
+      <div data-aos="fade-left" class="rounded-[2rem] border border-white/10 bg-white/5 p-8 backdrop-blur">
         <ul class="grid gap-4 sm:grid-cols-2">
           {discoveryOffer.deliverables.map((item) => (
-            <li class="flex gap-3 rounded-2xl border border-white/10 bg-white/5 p-4 text-base text-on-invert-secondary">
+            <li data-aos="zoom-in" class="flex gap-3 rounded-2xl border border-white/10 bg-white/5 p-4 text-base text-on-invert-secondary">
               <Icon name="check-circle" size="sm" class="mt-1 shrink-0 text-brand-300" />
               <span>{item}</span>
             </li>
           ))}
         </ul>
-        <div class="mt-8 flex flex-wrap gap-4">
+        <div data-aos="fade-up" class="mt-8 flex flex-wrap gap-4">
           <Button href={contactLinks.cal} target="_blank">
             Workshop anfragen
             <Icon name="arrow-up-right" size="sm" />

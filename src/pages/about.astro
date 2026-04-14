@@ -48,11 +48,11 @@ const directCollaborationDefinition =
 >
   <section class="border-b border-border bg-background-secondary py-24">
     <div class="container grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-      <div class="overflow-hidden rounded-[2.25rem] border border-border shadow-lg">
+      <div data-aos="fade-right" class="overflow-hidden rounded-[2.25rem] border border-border shadow-lg">
         <img src={founderImage.src} alt="Marten Prieß, Gründer von Rocketbase" class="h-full w-full object-cover" />
       </div>
 
-      <div>
+      <div data-aos="fade-left">
         <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Über Rocketbase</p>
         <h1 class="mt-4 font-display text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
           Direkt begleitet, prozessnah und gebaut für nachhaltige Entscheidungen.
@@ -67,11 +67,11 @@ const directCollaborationDefinition =
           Delivery. Weniger Reibung, klarere Entscheidungen und Lösungen, die im Alltag wirklich
           tragfähig sind.
         </p>
-        <div class="mt-8 rounded-[1.75rem] border border-brand-200 bg-brand-50 p-6 shadow-sm dark:border-brand-800 dark:bg-brand-900/20">
+        <div data-aos="zoom-in" class="mt-8 rounded-[1.75rem] border border-brand-200 bg-brand-50 p-6 shadow-sm dark:border-brand-800 dark:bg-brand-900/20">
           <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700 dark:text-brand-200">So arbeiten wir</p>
           <p class="mt-3 text-base leading-7 text-foreground-secondary">{directCollaborationDefinition}</p>
         </div>
-        <div class="mt-8 flex flex-wrap gap-4">
+        <div data-aos="fade-up" class="mt-8 flex flex-wrap gap-4">
           <Button href={servicesUrl}>
             Leistungen ansehen
             <Icon name="arrow-right" size="sm" />
@@ -86,7 +86,7 @@ const directCollaborationDefinition =
 
   <section class="py-28">
     <div class="container">
-      <div class="max-w-3xl">
+      <div data-aos="fade-up" class="max-w-3xl">
         <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Werdegang</p>
         <h2 class="mt-4 font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
           Die Gründerstory erklärt den Blick auf Fachlichkeit und Technik.
@@ -97,7 +97,7 @@ const directCollaborationDefinition =
         <div class="absolute bottom-0 left-6 top-0 hidden w-px bg-border md:block"></div>
         <div class="grid gap-6">
           {timeline.map((item, index) => (
-            <article class="grid gap-5 rounded-[1.75rem] border border-border bg-card p-7 shadow-sm md:grid-cols-[64px_1fr] md:items-start">
+            <article data-aos="zoom-in" class="grid gap-5 rounded-[1.75rem] border border-border bg-card p-7 shadow-sm md:grid-cols-[64px_1fr] md:items-start">
               <div class="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-50 text-sm font-semibold text-brand-700 dark:bg-brand-900/30 dark:text-brand-100">
                 0{index + 1}
               </div>
@@ -114,7 +114,7 @@ const directCollaborationDefinition =
 
   <section class="border-y border-border bg-background-secondary py-28">
     <div class="container grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-      <div class="lg:sticky lg:top-28">
+      <div data-aos="fade-right" class="lg:sticky lg:top-28">
         <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Wofür Rocketbase steht</p>
         <h2 class="mt-4 font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
           Technologie ist Mittel zum Zweck. <span class="text-brand-500">Der Prozess bleibt der Maßstab.</span>
@@ -124,15 +124,16 @@ const directCollaborationDefinition =
           Prozesse strukturiert zu verstehen, unnötige Tätigkeiten zu reduzieren und digitale
           Lösungen so auszuwählen, dass sie echten Fortschritt erzeugen.
         </p>
-        <div class="mt-8 rounded-[1.75rem] bg-surface-invert p-7 text-on-invert shadow-xl">
+        <div data-aos="zoom-in" class="mt-8 rounded-[1.75rem] bg-surface-invert p-7 text-on-invert shadow-xl">
           <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brand-300">Positionierung</p>
           <p class="mt-4 text-2xl font-semibold">Keine Branchen-Schablone. Stärke in Prozess- und Umsetzungsintelligenz.</p>
         </div>
       </div>
 
-      <div class="grid gap-5">
+      <div data-aos="fade-left" class="grid gap-5">
         {strengths.map((strength, index) => (
           <article
+            data-aos="zoom-in"
             class:list={[
               'rounded-[1.75rem] border p-6 shadow-sm',
               index === 1 ? 'border-brand-200 bg-brand-50 dark:border-brand-800 dark:bg-brand-900/20' : 'border-border bg-card',
@@ -151,7 +152,7 @@ const directCollaborationDefinition =
 
   <section class="py-28">
     <div class="container grid gap-12 lg:grid-cols-[1.05fr_0.95fr]">
-      <div class="rounded-[2rem] border border-border bg-card p-8 shadow-sm">
+      <div data-aos="fade-right" class="rounded-[2rem] border border-border bg-card p-8 shadow-sm">
         <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Arbeitsmodell</p>
         <h2 class="mt-4 font-display text-3xl font-bold tracking-tight text-foreground">
           Eingespieltes Remote-Team statt Agenturkulisse.
@@ -166,7 +167,7 @@ const directCollaborationDefinition =
         </ul>
       </div>
 
-      <div class="rounded-[2rem] border border-brand-200 bg-gradient-to-br from-brand-50 to-white p-8 shadow-sm dark:border-brand-800 dark:from-brand-900/20 dark:to-background">
+      <div data-aos="fade-left" class="rounded-[2rem] border border-brand-200 bg-gradient-to-br from-brand-50 to-white p-8 shadow-sm dark:border-brand-800 dark:from-brand-900/20 dark:to-background">
         <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-700 dark:text-brand-200">Verlässlichkeit</p>
         <h2 class="mt-4 font-display text-3xl font-bold tracking-tight text-foreground">
           Lösungen sollen auch im Worst Case noch übergebbar sein.
@@ -189,7 +190,7 @@ const directCollaborationDefinition =
   </section>
 
   <section class="border-t border-border bg-background-secondary py-24">
-    <div class="container rounded-[2.25rem] border border-border bg-card p-10 shadow-sm">
+    <div data-aos="zoom-in" class="container rounded-[2.25rem] border border-border bg-card p-10 shadow-sm">
       <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
         <div>
           <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Zusammenarbeit</p>
