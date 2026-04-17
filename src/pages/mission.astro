@@ -1,0 +1,519 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import { defaultLocale } from '@/i18n/config';
+import { getLocalizedPath } from '@/i18n/index';
+import { cn } from '@/lib/cn';
+import { contactLinks, missionClaim, missionSections } from '@/data/rocketbase';
+
+const locale = defaultLocale;
+const contactUrl = getLocalizedPath('contact', locale);
+const workUrl = getLocalizedPath('work', locale);
+---
+
+<PageLayout
+  title="Mission · Wie und warum wir bei Rocketbase arbeiten"
+  description={missionClaim.highlight}
+  lang={locale}
+  routeId="mission"
+>
+  <!-- HERO -->
+  <section class="border-border bg-background-secondary relative flex min-h-[88vh] items-center overflow-hidden border-b py-32 sm:py-40">
+    {/* Grid pattern */}
+    <div
+      class="bg-grid-pattern pointer-events-none absolute inset-0 opacity-50 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
+      aria-hidden="true"
+    />
+    {/* Soft brand glows */}
+    <div
+      class="bg-brand-300/30 pointer-events-none absolute -top-24 -left-24 h-96 w-96 rounded-full blur-3xl"
+      aria-hidden="true"
+    />
+    <div
+      class="bg-brand-200/30 pointer-events-none absolute -right-24 -bottom-24 h-96 w-96 rounded-full blur-3xl"
+      aria-hidden="true"
+    />
+
+    <div class="container relative z-10 max-w-5xl text-center">
+      <p data-aos="fade-down" class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
+        {missionClaim.eyebrow}
+      </p>
+      <h1
+        data-aos="fade-down"
+        class="font-display text-foreground mt-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl"
+      >
+        {missionClaim.headline}
+        <span class="from-brand-500 to-brand-400 mt-3 block bg-gradient-to-r bg-clip-text text-transparent">
+          {missionClaim.highlight}
+        </span>
+      </h1>
+      <p data-aos="fade-up" class="text-foreground-secondary mx-auto mt-10 max-w-2xl text-lg leading-8 sm:text-xl">
+        {missionClaim.lead}
+      </p>
+    </div>
+
+    {/* Scroll indicator */}
+    <a
+      href="#fundament"
+      aria-label="Zum ersten Kapitel scrollen"
+      class="group text-foreground-muted hover:text-brand-500 absolute bottom-8 left-1/2 z-10 -translate-x-1/2 transition-colors duration-300"
+    >
+      <span class="block text-[10px] font-semibold tracking-[0.3em] uppercase">Scrollen</span>
+      <span class="border-foreground-muted/40 group-hover:border-brand-500 mx-auto mt-3 flex h-10 w-6 justify-center rounded-full border-2 transition-colors duration-300">
+        <span class="bg-foreground-muted/60 group-hover:bg-brand-500 mt-2 h-2 w-1 animate-bounce rounded-full transition-colors duration-300" />
+      </span>
+    </a>
+  </section>
+
+  <!-- TWO-COLUMN: STICKY CHAPTER NAV + SECTIONS -->
+  <section class="container relative grid gap-16 py-24 lg:grid-cols-[260px_1fr] lg:gap-20">
+    <!-- LEFT NAV -->
+    <aside class="hidden lg:block">
+      <nav
+        id="mission-nav"
+        aria-label="Kapitel"
+        class="sticky top-28 max-h-[calc(100vh-8rem)] overflow-y-auto pr-2"
+      >
+        <p class="text-foreground-muted mb-5 text-xs font-semibold tracking-[0.22em] uppercase">
+          Kapitel
+        </p>
+        <ol class="space-y-1 text-sm">
+          {
+            missionSections.map((section) => (
+              <li>
+                <a
+                  href={`#${section.id}`}
+                  data-mission-link={section.id}
+                  class="group text-foreground-muted hover:text-foreground hover:bg-secondary/60 hover:translate-x-1 flex items-start gap-3 rounded-lg px-3 py-2 transition-all duration-200"
+                >
+                  <span class="text-brand-500 mt-px font-mono text-[11px] tracking-wider opacity-70">
+                    {section.number}
+                  </span>
+                  <span class="leading-snug">{section.title}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+        <div class="border-border mt-8 border-t pt-6">
+          <Button size="sm" variant="outline" href={contactUrl}>
+            Gespräch anfragen
+            <Icon name="arrow-right" size="sm" />
+          </Button>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- RIGHT: SECTIONS -->
+    <div class="space-y-40 lg:space-y-56">
+      {
+        missionSections.map((section) => (
+          <article
+            id={section.id}
+            data-mission-section={section.id}
+            class="scroll-mt-28"
+            data-aos="fade-up"
+          >
+            <header>
+              <div class="flex items-center gap-4">
+                <span class="text-brand-500 font-mono text-sm tracking-[0.22em]">
+                  {section.number}
+                </span>
+                <span class="bg-border h-px flex-1" />
+                <span class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">
+                  {section.eyebrow}
+                </span>
+              </div>
+              <h2 class="font-display text-foreground mt-5 text-3xl font-bold tracking-tight sm:text-4xl">
+                {section.title}
+              </h2>
+            </header>
+
+            {/* KEY FACTS */}
+            <ul class="mt-8 grid gap-4 sm:grid-cols-3">
+              {section.keyFacts.map((fact: any) => (
+                <li class="group border-border bg-card hover:border-brand-300 hover:shadow-md hover:-translate-y-1 rounded-2xl border p-5 shadow-sm transition-all duration-300 ease-out">
+                  {fact.value !== undefined ? (
+                    <>
+                      <p class="text-foreground font-display text-3xl font-bold tracking-tight">
+                        <span
+                          class="counter group-hover:text-brand-600 inline-block tabular-nums transition-colors duration-300"
+                          data-target={fact.value}
+                          data-suffix={fact.suffix ?? ''}
+                        >
+                          0{fact.suffix ?? ''}
+                        </span>
+                      </p>
+                      <p class="text-foreground-secondary mt-2 text-sm leading-6">{fact.label}</p>
+                    </>
+                  ) : (
+                    <div class="flex items-start gap-3">
+                      <Icon name="check-circle" size="sm" class="text-brand-500 group-hover:scale-110 mt-0.5 shrink-0 transition-transform duration-300" />
+                      <p class="text-foreground text-sm leading-6 font-medium">{fact.label}</p>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+
+            {/* VISUAL */}
+            <div class="mt-10">
+              {section.visual === 'timeline' && (
+                <div class="border-border bg-card rounded-3xl border p-8 transition-all duration-300 hover:shadow-lg">
+                  <div class="relative">
+                    <div class="from-brand-300 via-border to-border absolute top-3 right-2 left-2 h-px bg-gradient-to-r" />
+                    <ol class={cn(
+                      'relative grid gap-6',
+                      section.timeline?.length === 4 ? 'sm:grid-cols-4' : 'sm:grid-cols-5'
+                    )}>
+                      {section.timeline?.map((point: any, i: number) => (
+                        <li class="group text-center">
+                          <span
+                            class={cn(
+                              'mx-auto flex h-6 w-6 items-center justify-center rounded-full border-2 transition-all duration-300 group-hover:scale-125 relative',
+                              i === (section.timeline?.length ?? 0) - 1
+                                ? 'border-brand-500 bg-brand-500'
+                                : 'border-brand-300 bg-card group-hover:border-brand-500 group-hover:bg-brand-100'
+                            )}
+                          >
+                            {i === (section.timeline?.length ?? 0) - 1 && (
+                              <span class="bg-brand-500 absolute inset-0 rounded-full opacity-40 animate-ping" />
+                            )}
+                          </span>
+                          <p class="text-foreground mt-3 text-xs font-semibold tracking-wider uppercase transition-colors duration-300 group-hover:text-brand-600">
+                            {point.year}
+                          </p>
+                          <p class="text-foreground-secondary mt-1 text-xs leading-5">
+                            {point.label}
+                          </p>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                </div>
+              )}
+
+              {section.visual === 'flow' && (
+                <div class="grid gap-4 md:grid-cols-3">
+                  {section.flow?.map((step: any, i: number) => (
+                    <div class="group border-border bg-card hover:border-brand-300 hover:bg-background-secondary hover:-translate-y-1 hover:shadow-md relative flex flex-col rounded-2xl border p-6 transition-all duration-300 ease-out">
+                      <span class="text-brand-500 text-xs font-semibold tracking-[0.22em] uppercase">
+                        {step.kicker}
+                      </span>
+                      <p class="text-foreground mt-3 text-lg font-semibold">{step.title}</p>
+                      <p class="text-foreground-secondary mt-2 text-sm leading-6">{step.text}</p>
+                      {i < (section.flow?.length ?? 0) - 1 && (
+                        <Icon
+                          name="arrow-right"
+                          size="md"
+                          class="text-brand-400 group-hover:translate-x-1 group-hover:text-brand-500 absolute top-1/2 -right-3 hidden -translate-y-1/2 transition-all duration-300 md:block"
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {section.visual === 'compare' && (
+                <div class="grid gap-4 md:grid-cols-2">
+                  <div class="group border-border bg-background-secondary hover:border-foreground-muted/30 rounded-2xl border p-6 transition-all duration-300">
+                    <span class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">
+                      {section.compare?.a.kicker}
+                    </span>
+                    <p class="text-foreground mt-3 text-lg font-semibold opacity-80">
+                      {section.compare?.a.title}
+                    </p>
+                    <ul class="mt-5 space-y-3">
+                      {section.compare?.a.points.map((p: string) => (
+                        <li class="text-foreground-secondary flex gap-3 text-sm leading-6">
+                          <Icon name="x-circle" size="sm" class="text-foreground-muted mt-0.5 shrink-0" />
+                          <span>{p}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div class="group border-brand-300 bg-card hover:border-brand-500 hover:-translate-y-1 hover:shadow-lg rounded-2xl border-2 p-6 shadow-sm transition-all duration-300 ease-out">
+                    <span class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
+                      {section.compare?.b.kicker}
+                    </span>
+                    <p class="text-foreground mt-3 text-lg font-semibold">
+                      {section.compare?.b.title}
+                    </p>
+                    <ul class="mt-5 space-y-3">
+                      {section.compare?.b.points.map((p: string) => (
+                        <li class="text-foreground-secondary flex gap-3 text-sm leading-6">
+                          <Icon name="check-circle" size="sm" class="text-brand-500 group-hover:scale-110 mt-0.5 shrink-0 transition-transform duration-300" />
+                          <span>{p}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              )}
+
+              {section.visual === 'loop' && (
+                <div class="border-border bg-card rounded-3xl border p-8 transition-all duration-300 hover:shadow-lg">
+                  <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+                    {section.loop?.map((node: any, i: number) => (
+                      <>
+                        <div class="group border-brand-300 bg-background-secondary text-foreground hover:bg-brand-50 dark:hover:bg-brand-900/20 hover:-translate-y-1 hover:shadow-md flex h-24 w-24 flex-col items-center justify-center rounded-2xl border text-center transition-all duration-300 ease-out sm:h-28 sm:w-28">
+                          <Icon name={node.icon} size="md" class="text-brand-500 group-hover:scale-110 transition-transform duration-300" />
+                          <span class="mt-2 text-xs font-semibold leading-4">{node.label}</span>
+                        </div>
+                        {i < (section.loop?.length ?? 0) - 1 && (
+                          <Icon name="arrow-right" size="md" class="text-brand-400" />
+                        )}
+                        {i === (section.loop?.length ?? 0) - 1 && (
+                          <Icon name="loader" size="md" class="text-brand-400 mission-spin-slow hidden sm:block" />
+                        )}
+                      </>
+                    ))}
+                  </div>
+                  <p class="text-foreground-muted mt-6 text-center text-xs tracking-[0.22em] uppercase">
+                    Growth Loop · wiederholbar, dokumentiert, übergebbar
+                  </p>
+                </div>
+              )}
+
+              {section.visual === 'modules' && (
+                <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  {section.modules?.map((mod: any) => (
+                    <div
+                      class={cn(
+                        'group rounded-2xl border p-5 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-md',
+                        mod.tone === 'brand'
+                          ? 'border-brand-300 bg-brand-50 dark:bg-brand-900/20 hover:border-brand-500'
+                          : 'border-border bg-card hover:border-brand-300'
+                      )}
+                    >
+                      <div class="flex items-center gap-2">
+                        {mod.icon ? (
+                          <Icon
+                            name={mod.icon}
+                            size="sm"
+                            class={cn(
+                              'shrink-0 transition-transform duration-300 group-hover:scale-110',
+                              mod.tone === 'brand' ? 'text-brand-500' : 'text-foreground-muted'
+                            )}
+                          />
+                        ) : (
+                          <span
+                            class={cn(
+                              'h-2 w-2 rounded-full',
+                              mod.tone === 'brand' ? 'bg-brand-500' : 'bg-foreground-muted/40'
+                            )}
+                          />
+                        )}
+                        <p
+                          class={cn(
+                            'text-xs font-semibold tracking-[0.18em] uppercase',
+                            mod.tone === 'brand' ? 'text-brand-700 dark:text-brand-200' : 'text-foreground-muted'
+                          )}
+                        >
+                          {mod.title}
+                        </p>
+                      </div>
+                      <p class="text-foreground mt-3 text-sm font-medium leading-5">{mod.subtitle}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {section.visual === 'layers' && (
+                <div class="grid gap-4 md:grid-cols-3">
+                  {section.layers?.map((layer: any, i: number) => (
+                    <div
+                      class="group border-border bg-card hover:border-brand-300 hover:shadow-lg relative overflow-hidden rounded-2xl border p-6 transition-all duration-300 ease-out hover:!translate-y-0"
+                      style={`transform: translateY(${i * 6}px);`}
+                    >
+                      <div class="bg-brand-100 text-brand-700 dark:bg-brand-900/40 dark:text-brand-200 group-hover:bg-brand-500 group-hover:text-on-invert group-hover:scale-110 inline-flex h-10 w-10 items-center justify-center rounded-xl transition-all duration-300">
+                        <Icon name={layer.icon} size="md" />
+                      </div>
+                      <p class="text-brand-500 mt-5 font-mono text-xs tracking-[0.22em]">
+                        {layer.kicker}
+                      </p>
+                      <p class="text-foreground mt-1 text-lg font-semibold">{layer.title}</p>
+                      <p class="text-foreground-secondary mt-2 text-sm leading-6">{layer.text}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {section.visual === 'duo' && (
+                <div class="border-border bg-card flex flex-col items-stretch gap-4 rounded-3xl border p-8 transition-all duration-300 hover:shadow-lg md:flex-row md:items-center">
+                  <div class="group border-border bg-background-secondary hover:border-brand-300 hover:-translate-y-1 hover:shadow-md flex-1 rounded-2xl border p-6 text-center transition-all duration-300 ease-out">
+                    <Icon name="users" size="lg" class="text-brand-500 group-hover:scale-110 mx-auto transition-transform duration-300" />
+                    <p class="text-foreground mt-3 text-lg font-semibold">{section.duo?.a.label}</p>
+                    <p class="text-foreground-secondary mt-1 text-sm">{section.duo?.a.sub}</p>
+                  </div>
+                  <div class="flex flex-col items-center">
+                    <Icon name="arrow-right" size="md" class="text-brand-400 hidden animate-pulse md:block" />
+                    <Icon name="arrow-left" size="md" class="text-brand-400 hidden animate-pulse md:block" />
+                    <span class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase md:hidden">
+                      gemeinsam
+                    </span>
+                  </div>
+                  <div class="group border-brand-300 bg-brand-50 dark:bg-brand-900/20 hover:border-brand-500 hover:-translate-y-1 hover:shadow-md flex-1 rounded-2xl border p-6 text-center transition-all duration-300 ease-out">
+                    <Icon name="layers" size="lg" class="text-brand-500 group-hover:scale-110 mx-auto transition-transform duration-300" />
+                    <p class="text-foreground mt-3 text-lg font-semibold">{section.duo?.b.label}</p>
+                    <p class="text-foreground-secondary mt-1 text-sm">{section.duo?.b.sub}</p>
+                  </div>
+                </div>
+              )}
+
+              {section.visual === 'safety' && (
+                <div class="border-border bg-card relative overflow-hidden rounded-3xl border p-8 transition-all duration-300 hover:shadow-lg">
+                  <div class="border-border bg-background-secondary mb-8 grid gap-3 rounded-2xl border p-6 sm:grid-cols-3">
+                    <div class="group flex items-center gap-2">
+                      <Icon name="box" size="sm" class="text-brand-500 group-hover:scale-110 transition-transform duration-300" />
+                      <span class="text-foreground text-sm font-medium">Frontend</span>
+                    </div>
+                    <div class="group flex items-center gap-2">
+                      <Icon name="layers" size="sm" class="text-brand-500 group-hover:scale-110 transition-transform duration-300" />
+                      <span class="text-foreground text-sm font-medium">Backend</span>
+                    </div>
+                    <div class="group flex items-center gap-2">
+                      <Icon name="globe" size="sm" class="text-brand-500 group-hover:scale-110 transition-transform duration-300" />
+                      <span class="text-foreground text-sm font-medium">Integrationen</span>
+                    </div>
+                  </div>
+                  <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                    {section.safety?.map((item: any) => (
+                      <div class="group border-brand-300 bg-brand-50 dark:bg-brand-900/20 hover:border-brand-500 hover:bg-brand-100 dark:hover:bg-brand-900/40 hover:-translate-y-1 hover:shadow-md flex items-center gap-3 rounded-xl border-2 border-dashed p-4 transition-all duration-300 ease-out">
+                        <Icon name={item.icon} size="sm" class="text-brand-500 group-hover:scale-110 shrink-0 transition-transform duration-300" />
+                        <span class="text-foreground text-sm font-medium leading-5">{item.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <p class="text-foreground-muted mt-6 text-center text-xs tracking-[0.22em] uppercase">
+                    Safety Net · die Kontrolle bleibt bei Ihnen
+                  </p>
+                </div>
+              )}
+
+            </div>
+
+            {/* BODY TEXT */}
+            <p class="text-foreground-secondary mt-10 max-w-3xl text-lg leading-8">{section.body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="border-border bg-background-secondary border-t py-24">
+    <div class="container max-w-4xl">
+      <div
+        data-aos="zoom-in"
+        class="border-border bg-card rounded-[2.25rem] border p-10 shadow-sm"
+      >
+        <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <div>
+            <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
+              Wenn das nach Ihrer Art zu arbeiten klingt
+            </p>
+            <h2 class="font-display text-foreground mt-4 text-4xl font-bold tracking-tight">
+              Sprechen wir darüber, was bei Ihnen wirklich tragen soll.
+            </h2>
+            <p class="text-foreground-secondary mt-6 text-lg leading-8">
+              30 Minuten direkt mit Marten Prieß – ohne Vertriebsschleife, mit ehrlicher
+              Einordnung.
+            </p>
+          </div>
+          <div class="bg-background-secondary space-y-4 rounded-[1.5rem] p-6">
+            <Button href={contactLinks.cal} target="_blank">
+              Erstgespräch buchen
+              <Icon name="arrow-up-right" size="sm" />
+            </Button>
+            <Button variant="outline" href={workUrl}>
+              So arbeiten wir konkret
+              <Icon name="arrow-right" size="sm" />
+            </Button>
+            <p class="text-foreground-muted text-sm">Oder direkt per Mail an {contactLinks.email}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<script>
+  function initMission() {
+    // Scrollspy for left chapter nav
+    const links = document.querySelectorAll<HTMLAnchorElement>('[data-mission-link]');
+    const sections = document.querySelectorAll<HTMLElement>('[data-mission-section]');
+    if (!links.length || !sections.length) return;
+
+    const linkById = new Map<string, HTMLAnchorElement>();
+    links.forEach((link) => {
+      const id = link.dataset.missionLink;
+      if (id) linkById.set(id, link);
+    });
+
+    const setActive = (id: string) => {
+      links.forEach((l) => {
+        const isActive = l.dataset.missionLink === id;
+        l.classList.toggle('text-foreground', isActive);
+        l.classList.toggle('font-semibold', isActive);
+        l.classList.toggle('bg-secondary/60', isActive);
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) {
+          const id = (visible.target as HTMLElement).dataset.missionSection;
+          if (id) setActive(id);
+        }
+      },
+      { rootMargin: '-30% 0px -55% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] }
+    );
+    sections.forEach((s) => observer.observe(s));
+
+    // Animated counters
+    const counters = document.querySelectorAll<HTMLElement>('.counter');
+    const animate = (el: HTMLElement) => {
+      if (el.dataset.animated) return;
+      el.dataset.animated = '1';
+      const target = Number(el.dataset.target ?? '0');
+      const suffix = el.dataset.suffix ?? '';
+      const duration = 1200;
+      const start = performance.now();
+      const tick = (now: number) => {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        el.textContent = Math.round(target * eased) + suffix;
+        if (t < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    const counterObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) animate(e.target as HTMLElement);
+        });
+      },
+      { threshold: 0.5 }
+    );
+    counters.forEach((c) => counterObserver.observe(c));
+  }
+
+  initMission();
+  document.addEventListener('astro:page-load', initMission);
+  document.addEventListener('astro:after-swap', initMission);
+</script>
+
+<style>
+  @keyframes mission-spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  .mission-spin-slow {
+    animation: mission-spin-slow 6s linear infinite;
+  }
+</style>

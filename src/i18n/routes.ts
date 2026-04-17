@@ -85,6 +85,12 @@ export const routes = {
     de: 'work',
     nav: { show: true, order: 2, label: 'nav.work' },
   },
+
+  // Mission / Haltung
+  mission: {
+    de: 'mission',
+    nav: { show: true, order: 5, label: 'nav.mission' },
+  },
 } as const satisfies Record<string, RouteDefinition>;
 
 /**

@@ -242,6 +242,195 @@ export const teamPrinciples = [
   'Optimierte interne Prozesse und KI-gestützte Arbeitsweise für mehr Wirksamkeit',
 ];
 
+/**
+ * Mission page – chapters with eyebrow, headline, key facts,
+ * a visualization hint and a flowing body text.
+ *
+ * `visual` is a discriminator for the rendering layer; the page picks
+ * the matching component pattern (timeline, counter, split, etc.).
+ */
+export const missionClaim = {
+  eyebrow: 'Unsere Mission',
+  headline: 'Wir bauen nicht einfach Software.',
+  highlight: 'Wir verstehen Prozesse, denken sie weiter – und entwickeln Systeme, die Unternehmen wachsen lassen.',
+  lead: 'Acht Haltungen, die beschreiben, wie und warum wir bei Rocketbase arbeiten. Keine Floskeln, sondern die Prinzipien hinter jedem Projekt.',
+};
+
+export const missionSections = [
+  {
+    id: 'fundament',
+    number: '01',
+    eyebrow: 'Fundament',
+    title: 'Erfahrung trifft Verantwortung',
+    keyFacts: [
+      { label: 'Jahre Projekterfahrung', value: 15, suffix: '+' },
+      { label: 'Enterprise-Plattformen mitgestaltet', value: 10, suffix: '+' },
+      { label: 'Konzern- & Mittelstandsprojekte', value: 40, suffix: '+' },
+    ],
+    visual: 'timeline' as const,
+    timeline: [
+      { year: '2009', label: 'Otto Group · Projektmanager' },
+      { year: '2014', label: 'Otto Group · Architect' },
+      { year: '2016', label: 'Rocketbase · bonprix, statista, klingel u.a.' },
+      { year: 'heute', label: 'Plattformen, die in 5+ Jahren noch tragen' },
+    ],
+    body:
+      'Wir bringen Erfahrung aus komplexen Softwareprojekten mit – von Konzernstrukturen bis hin zu individuell gewachsenen Mittelstandsprozessen. Diese Erfahrung nutzen wir nicht, um Standardlösungen zu verkaufen, sondern um fundierte Entscheidungen zu treffen. Verantwortung bedeutet für uns: Architektur, Technologie und Umsetzung so zu wählen, dass sie auch in zwei, fünf oder zehn Jahren noch tragen.',
+  },
+  {
+    id: 'beratung',
+    number: '02',
+    eyebrow: 'Haltung',
+    title: 'Beratung vor Code',
+    keyFacts: [
+      { label: 'Fokus auf Prozesse statt nur Features' },
+      { label: 'Direkter Austausch mit Fachbereichen' },
+      { label: 'Tech Lead ab Tag 1 im Projekt' },
+    ],
+    visual: 'flow' as const,
+    flow: [
+      { kicker: 'Heute', title: 'Ist-Prozess', text: 'Gewachsen, dokumentiert oder in Köpfen verteilt.' },
+      { kicker: 'Reibung', title: 'Engpässe sichtbar machen', text: 'Wo Übergaben, Medienbrüche und Workarounds Tempo kosten.' },
+      { kicker: 'Morgen', title: 'Zielbild', text: 'Ein Prozess, der das Geschäft trägt – nicht umgekehrt.' },
+    ],
+    body:
+      'Unsere Stärke liegt nicht nur in der Entwicklung. Wir verstehen, wie Unternehmen arbeiten – und wo es hakt. Gemeinsam analysieren wir Prozesse, identifizieren Engpässe und denken Lösungen weiter. Erst wenn klar ist, welches Problem wirklich gelöst werden muss, beginnt die technische Umsetzung.',
+  },
+  {
+    id: 'team',
+    number: '03',
+    eyebrow: 'Setup',
+    title: 'Kleines Team statt Übergabeketten',
+    keyFacts: [
+      { label: 'Kein klassischer Vertriebskanal' },
+      { label: 'Direkter Draht zum Tech Lead' },
+      { label: 'Hohe Verbindlichkeit in Aussage und Umsetzung' },
+    ],
+    visual: 'compare' as const,
+    compare: {
+      a: {
+        kicker: 'Klassische Agentur',
+        title: 'Vertrieb → PM → Konzeption → Dev',
+        points: [
+          'Mehrere Übergaben',
+          'Wissen geht zwischen Rollen verloren',
+          'Aussagen relativieren sich von Stufe zu Stufe',
+        ],
+      },
+      b: {
+        kicker: 'Rocketbase',
+        title: 'Ein eingespieltes Team. Eine Verantwortung.',
+        points: [
+          'Beratung, Konzept und Umsetzung sitzen am selben Tisch',
+          'Entscheidungen werden direkt getroffen, nicht weitergereicht',
+          'Was zugesagt wird, wird auch so gebaut',
+        ],
+      },
+    },
+    body:
+      'Bei uns sprechen Sie nicht zuerst mit Vertrieb – und später mit jemand anderem, der es umsetzt. Beratung, Konzeption und Umsetzung liegen eng zusammen. Das reduziert Reibung, verhindert Missverständnisse und sorgt dafür, dass das, was geplant wird, auch genau so gebaut wird.',
+  },
+  {
+    id: 'systeme',
+    number: '04',
+    eyebrow: 'Anspruch',
+    title: 'Prozesse verstehen. Systeme bauen, die wachsen.',
+    keyFacts: [
+      { label: 'Skalierbare Geschäftsprozesse statt Einzellösungen' },
+      { label: 'Standardisierung individueller Abläufe' },
+      { label: 'Schnellere Einarbeitung neuer Mitarbeiter' },
+    ],
+    visual: 'loop' as const,
+    loop: [
+      { label: 'Prozess', icon: 'layout' },
+      { label: 'System', icon: 'box' },
+      { label: 'Skalierung', icon: 'trending-up' },
+      { label: 'Neue Mitarbeiter', icon: 'users' },
+    ],
+    body:
+      'Wir entwickeln Software nicht isoliert, sondern als Teil Ihres Unternehmens. Ziel ist es, Prozesse so abzubilden und zu optimieren, dass Ihr Unternehmen wachsen kann – ohne dass Komplexität explodiert. Gute Systeme sorgen dafür, dass neue Kollegen schneller produktiv werden und Wissen nicht verloren geht.',
+  },
+  {
+    id: 'pragmatismus',
+    number: '05',
+    eyebrow: 'Technologie',
+    title: 'Pragmatismus statt Dogma',
+    keyFacts: [
+      { label: 'Open Source dort, wo es trägt' },
+      { label: 'Integration bestehender Systeme' },
+      { label: 'Kein „Alles neu bauen"-Reflex' },
+    ],
+    visual: 'modules' as const,
+    modules: [
+      { title: 'Bewährter Baustein', subtitle: 'Open Source · ERP · CRM · BI', tone: 'muted' as const, icon: 'database' },
+      { title: 'Bewährter Baustein', subtitle: 'Auth · Storage · Search', tone: 'muted' as const, icon: 'shield' },
+      { title: 'Individuelle Logik', subtitle: 'Genau dort, wo Vorsprung entsteht', tone: 'brand' as const, icon: 'sparkles' },
+      { title: 'Bewährter Baustein', subtitle: 'Monitoring · Logging · CI', tone: 'muted' as const, icon: 'monitor' },
+      { title: 'Individuelle Logik', subtitle: 'Ihre Geschäftsregeln, Ihr Vorteil', tone: 'brand' as const, icon: 'zap' },
+      { title: 'Bewährter Baustein', subtitle: 'PIM · DAM · Mailing', tone: 'muted' as const, icon: 'box' },
+    ],
+    body:
+      'Wir glauben nicht daran, alles neu zu erfinden. Stattdessen kombinieren wir bewährte Lösungen mit individueller Entwicklung. Open Source ist für uns kein Trend, sondern ein Werkzeug – genauso wie proprietäre Systeme. Entscheidend ist, was für Ihr Problem die beste Lösung ist.',
+  },
+  {
+    id: 'qualitaet',
+    number: '06',
+    eyebrow: 'Engineering',
+    title: 'Moderne Entwicklung mit klarem Qualitätsanspruch',
+    keyFacts: [
+      { label: 'KI-gestützte Entwicklung für mehr Tempo' },
+      { label: 'Sauberer Code, klare Architektur, Wartbarkeit' },
+      { label: 'Security, Performance & Auswertbarkeit ab Tag 1' },
+    ],
+    visual: 'layers' as const,
+    layers: [
+      { kicker: '01', title: 'Mockup', text: 'Konzept und Entscheidung im Bild.', icon: 'palette' },
+      { kicker: '02', title: 'Code', text: 'Sauber, getestet, KI-unterstützt.', icon: 'code' },
+      { kicker: '03', title: 'Betrieb', text: 'Monitoring, Security, Performance.', icon: 'monitor' },
+    ],
+    body:
+      'Wir nutzen moderne Werkzeuge, inklusive KI, um effizienter zu arbeiten. Gleichzeitig glauben wir fest daran, dass gute Software mehr ist als schnell geschriebener Code. Themen wie Sicherheit, Performance, Wartbarkeit und Datenanalyse sind keine Nachgedanken, sondern Teil der Architektur von Anfang an.',
+  },
+  {
+    id: 'augenhoehe',
+    number: '07',
+    eyebrow: 'Zusammenarbeit',
+    title: 'Auf Augenhöhe – als Partner, nicht als Lieferant',
+    keyFacts: [
+      { label: 'Enge Zusammenarbeit mit Kunden' },
+      { label: 'Workshops & gemeinsame Konzeptionsphasen' },
+      { label: 'Gemeinsames Wachstum statt Auftrag/Ausführung' },
+    ],
+    visual: 'duo' as const,
+    duo: {
+      a: { label: 'Kunde', sub: 'Domäne, Markt, Realität' },
+      b: { label: 'Rocketbase', sub: 'Prozess, Architektur, Delivery' },
+    },
+    body:
+      'Wir verstehen uns nicht als externer Dienstleister, sondern als Partner. Gute Lösungen entstehen im Dialog – deshalb arbeiten wir bewusst in kleinen, fokussierten Teams direkt mit unseren Kunden zusammen. Weniger Übergaben, schnellere Entscheidungen, eine gemeinsame Verantwortung für das Ergebnis.',
+  },
+  {
+    id: 'zukunft',
+    number: '08',
+    eyebrow: 'Verantwortung',
+    title: 'Zukunftssicherheit mitgedacht',
+    keyFacts: [
+      { label: 'Saubere Dokumentation und nachvollziehbare Architektur' },
+      { label: 'Unabhängigkeit von einzelnen Personen oder Systemen' },
+      { label: 'Optionale Exit- und Fallback-Strategien' },
+    ],
+    visual: 'safety' as const,
+    safety: [
+      { label: 'Architektur-Dokumentation', icon: 'file-text' },
+      { label: 'Übergebbarer Code', icon: 'code' },
+      { label: 'Offene Standards & Daten', icon: 'globe' },
+      { label: 'Fallback-Pfade', icon: 'shield' },
+    ],
+    body:
+      'Software ist eine langfristige Investition. Deshalb achten wir darauf, dass Lösungen nachvollziehbar, wartbar und übergebbar bleiben. Unser Ziel ist es, dass Sie jederzeit die Kontrolle behalten – unabhängig von einzelnen Technologien oder Partnern.',
+  },
+];
+
 export const contactLinks = {
   email: 'marten@rocketbase.com',
   github: 'https://github.com/rocketbase-io',
