@@ -7,8 +7,13 @@ import bonprixCaseImage from '@/assets/references/teaser-bonprix.jpeg';
 import statistaCaseImage from '@/assets/references/teaser-statista.jpeg';
 import fkcCaseImage from '@/assets/references/teaser-fkc.jpeg';
 import schlossereiCaseImage from '@/assets/references/teaser-schlosserei.jpeg';
+import statistaCanvaCaseImage from '@/assets/references/teaser-statista-canva.jpeg';
+import stageCmlCaseImage from '@/assets/references/teaser-stage-cml.jpeg';
+import samVorteilsguruCaseImage from '@/assets/references/teaser-sam-vorteilsguru.jpeg';
+import mavoxCaseImage from '@/assets/references/teaser-mavox-winterdienst.jpeg';
+import bonprixCollectionCaseImage from '@/assets/references/teaser-bonprix-collection-planning.jpeg';
 import { defaultLocale } from '@/i18n/config';
-import { contactLinks, cases } from '@/data/rocketbase';
+import { contactLinks, cases, additionalCases } from '@/data/rocketbase';
 
 const locale = defaultLocale;
 
@@ -17,6 +22,11 @@ const caseImages = {
   statista: statistaCaseImage,
   'fkc-consulting': fkcCaseImage,
   'metall-pro': schlossereiCaseImage,
+  'statista-canva': statistaCanvaCaseImage,
+  'stage-cml': stageCmlCaseImage,
+  'sam-vorteilsguru': samVorteilsguruCaseImage,
+  'mavox-winterdienst': mavoxCaseImage,
+  'bonprix-collection-planning': bonprixCollectionCaseImage,
 } as const;
 
 const teaserCaptions: Record<string, string> = {
@@ -139,6 +149,61 @@ const teaserCaptions: Record<string, string> = {
       ))}
     </div>
   </section>
+
+  {additionalCases.length > 0 && (
+    <section class="border-t border-border py-24">
+      <div class="container max-w-6xl">
+        <header class="max-w-3xl">
+          <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Weitere Projekte</p>
+          <h2 class="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            Ein Ausschnitt weiterer Arbeiten.
+          </h2>
+          <p class="mt-4 text-base leading-7 text-foreground-secondary">
+            Projekte, die nicht im Hauptfokus der Referenzliste stehen, aber einen Blick wert sind –
+            kompakter aufbereitet und mit eigener Detailseite.
+          </p>
+        </header>
+
+        <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {additionalCases.map((item) => (
+            <li>
+              <a
+                href={`/referenzen/${item.slug}`}
+                class="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-sm"
+              >
+                {item.slug in caseImages && (
+                  <div class="overflow-hidden">
+                    <Picture
+                      src={caseImages[item.slug as keyof typeof caseImages]}
+                      alt={item.title}
+                      widths={[320, 480, 640]}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 360px"
+                      formats={['avif', 'webp']}
+                      class="h-40 w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+                <div class="flex flex-1 flex-col p-6">
+                  <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brand-600">{item.client}</p>
+                  <h3 class="mt-3 text-base font-semibold leading-6 text-foreground transition-colors group-hover:text-brand-600">
+                    {item.title}
+                  </h3>
+                  <p class="mt-3 flex-1 text-sm leading-6 text-foreground-secondary">
+                    {item.kicker}
+                  </p>
+                  <span class="mt-5 inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600">
+                    Details ansehen
+                    <Icon name="arrow-right" size="xs" class="transition-transform duration-200 group-hover:translate-x-0.5" />
+                  </span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
 
   <section class="border-t border-border bg-background-secondary py-24">
     <div class="container grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">

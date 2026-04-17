@@ -220,6 +220,194 @@ export const cases = [
   },
 ];
 
+export const additionalCases = [
+  {
+    slug: 'statista-canva',
+    client: 'Statista',
+    title: 'Statista-Daten direkt in Canva nutzbar',
+    description:
+      'Rocketbase entwickelte die Statista-App für das Canva-Ökosystem, über die Nutzerinnen und Nutzer geprüfte Statistiken direkt in ihre Designs und Präsentationen einbinden können – samt neu entwickeltem Image-Service für Preview-Grafiken.',
+    kicker:
+      'Statistische Inhalte erreichen Nutzer dort, wo sie ohnehin gestalten – eingebettet statt nachgelagert.',
+    highlights: [
+      'Pilot-App in der Alpha-Phase einer neuen Canva-Schnittstelle',
+      'Eigenständiger Image-Service für On-the-fly-Previews',
+      'AWS-Deployment über CDK und GitHub-Pipelines',
+    ],
+    challenge:
+      'Statista suchte einen Weg, Inhalte außerhalb der eigenen Plattform dort verfügbar zu machen, wo Anwender sie direkt weiterverarbeiten. Die neue Canva-Datenintegration war noch in der Alpha, inklusive offener technischer Fragen zu Preview-Bildern und Authentifizierung.',
+    approach:
+      'Rocketbase begleitete Konzeption, Organisation und Umsetzung: Integration in das Canva SDK, Abstimmung mit dem Canva-Team und Aufbau eines eigenen Image-Services inklusive Betriebsinfrastruktur auf AWS.',
+    impact:
+      'Der Case zeigt, wie Rocketbase frühzeitig in neue Plattform-Ökosysteme einsteigt und bestehende Inhalte anschlussfähig macht – technisch tragfähig und organisatorisch sauber aufgesetzt.',
+    processFocus:
+      'Bereitstellung und Integration statistischer Daten in fremde Gestaltungsumgebungen über geprüfte Schnittstellen.',
+    outcomes: [
+      'Neuer Distributionskanal für Statista-Inhalte im Canva-Ökosystem',
+      'Robustere Bildgenerierung über einen dedizierten, skalierbaren Service',
+      'Belastbare Grundlage für weitere Integrationen in Dritt-Plattformen',
+    ],
+    services: [
+      'Konzeption und Plattformintegration',
+      'Image-Service und Infrastruktur auf AWS',
+      'CI/CD und Betrieb',
+    ],
+    screenshots: [
+      { key: 'statista-canva-chart-drawing', alt: 'Canva-Chart erstellen mit Statista-Daten' },
+      { key: 'statista-canva-search-results', alt: 'Suche nach Statistiken innerhalb der App' },
+      { key: 'statista-canva-data-load', alt: 'Datenladen und Integration in Canva' },
+    ],
+  },
+  {
+    slug: 'stage-cml',
+    client: 'Stage Entertainment',
+    title: 'Budgetplanung raus aus Excel, rein in einen belastbaren Prozess',
+    description:
+      'Rocketbase überführte die Excel-gestützte Budgetplanung von Stage Entertainment in eine datenbankbasierte Plattform mit Validierung, nächtlichem Abgleich zur Buchhaltung und sauberen Reportings.',
+    kicker:
+      'Planung, die nicht mehr an einzelnen Tabellen hängt – und Zahlen, die sich mit der Buchhaltung decken.',
+    highlights: [
+      'Ablösung gewachsener Excel-Modelle durch eine zentrale Plattform',
+      'Automatisierter nächtlicher Abgleich mit dem Buchhaltungssystem',
+      'Deutliche Entlastung im Monatsabschluss',
+    ],
+    challenge:
+      'Die Budgetplanung lief auf komplexen, gewachsenen Excel-Modellen. Das System skalierte nicht mehr, parallele Arbeit war fehleranfällig und eine saubere Verbindung zur Buchhaltung fehlte.',
+    approach:
+      'Rocketbase transformierte die bestehenden Modelle in eine datenbankgestützte Plattform, ergänzte Validierungs- und Prüfmechanismen und etablierte einen nächtlichen Abgleichslauf zwischen Planung und Buchhaltungssystem.',
+    impact:
+      'Der Case steht für Projekte, in denen über Jahre gewachsene Tabellen-Werkzeuge in belastbare Systeme überführt werden, ohne den Fachanwendern das gewohnte Arbeiten zu nehmen.',
+    processFocus:
+      'Finanzplanung, Reporting und Abgleich mit dem Buchhaltungssystem.',
+    outcomes: [
+      'Spürbar weniger unentdeckte Fehlbuchungen im laufenden Betrieb',
+      'Deutlich kürzere Wege im Monatsabschluss durch automatisiertes Reporting',
+      'Systemlandschaft, die einen Wechsel des Buchhaltungssystems überstanden hat',
+    ],
+    services: [
+      'Prozessanalyse und Beratung',
+      'Individualentwicklung der Planungsplattform',
+      'Integration mit dem Buchhaltungssystem',
+    ],
+    screenshots: [
+      { key: 'stage-cml-planausgaben', alt: 'Erfassung von Planausgaben' },
+      { key: 'stage-cml-buchungsliste', alt: 'Buchungsliste mit Validierungs-Info' },
+      { key: 'stage-cml-reports', alt: 'Reports und Exporte' },
+    ],
+  },
+  {
+    slug: 'sam-vorteilsguru',
+    client: 'Smart Active Media',
+    title: 'Gutscheinportal, das sich in fremde Checkouts einbettet',
+    description:
+      'Für Smart Active Media baute Rocketbase ein Gutscheinportal, das per JavaScript in Partner-Websites und Checkouts eingebunden wird und Leads aus Käufen und Gewinnspielen weiterverwertet.',
+    kicker:
+      'Ein eingebettetes Produkt, das zuverlässig in fremden Umgebungen läuft – und dort Conversions generiert.',
+    highlights: [
+      'Einbettung per JavaScript in Partner-Shops und Landingpages',
+      'Hohe Last stabil betrieben, fünfstellige Impressions pro Tag',
+      'Vom Start bis zur ersten Live-Einbindung in sechs Monaten',
+    ],
+    challenge:
+      'Smart Active Media brauchte eine Lösung, die sich reibungsarm in fremde Checkouts einbauen lässt, dabei performant bleibt und gleichzeitig verschiedene Kooperationspartner sauber bedient.',
+    approach:
+      'Rocketbase begleitete Konzept und Wettbewerbsanalyse, setzte Frontend und Backend um und betrieb den Dienst auf einer Infrastruktur, die für hochfrequentierte Einbindungen ausgelegt ist.',
+    impact:
+      'Der Case zeigt, wie Rocketbase eine Startup-Idee in ein stabil betriebenes Produkt übersetzt – inklusive Partnerintegration und Betrieb auf Infrastruktur, die auch unter Last trägt.',
+    processFocus:
+      'Leadverwertung über eingebettete Gutscheinflächen in Partner-Websites.',
+    outcomes: [
+      'Belastbares Produkt mit hoher Verfügbarkeit ab Go-live',
+      'Skalierbarer Betrieb bei fünfstelligen Impressions pro Tag',
+      'Tragfähige Basis, um weitere Partner und Varianten aufzuschalten',
+    ],
+    services: [
+      'Beratung, Konzept und Wettbewerbsanalyse',
+      'Frontend- und Backend-Entwicklung',
+      'Hosting und Betrieb unter Last',
+    ],
+    screenshots: [
+      { key: 'sam-vorteilsguru-embed', alt: 'Embed-Testumgebung' },
+      { key: 'sam-vorteilsguru-einbindung', alt: 'Flexible Einbindung in Partner-Sites' },
+      { key: 'sam-vorteilsguru-workflows', alt: 'Ausgefeilte Workflows' },
+    ],
+  },
+  {
+    slug: 'mavox-winterdienst',
+    client: 'MAVOX Winterdienst',
+    title: 'Tourenplanung und mobile Einsatzerfassung im Außendienst',
+    description:
+      'Rocketbase löste ein nicht mehr tragfähiges Altsystem ab und entwickelte eine hybride App inklusive neuem Backend für Routen, Fahrzeuge, Objekte und Einsätze – mit Offline-Funktion für den harten Außendienst.',
+    kicker:
+      'Ein System, das auch dann funktioniert, wenn draußen kein Netz ist – und trotzdem sauber synchronisiert.',
+    highlights: [
+      'Ablösung eines undokumentierten Altsystems inklusive Migration',
+      'Hybride Mobile-App mit Offline-Funktion und Push-Nachrichten',
+      'Erweiterung auf Mandantenfähigkeit und weitere Dienstleistungen',
+    ],
+    challenge:
+      'Die bestehende Lösung war ein gewachsenes Altsystem, dessen Datenmodell kaum dokumentiert war. Gleichzeitig wuchs MAVOX und brauchte mobile Erfassung im Einsatz – auch ohne stabiles Netz.',
+    approach:
+      'Rocketbase analysierte und migrierte das Bestandssystem, baute ein neues Backend für Routen, Objekte und Mitarbeiter und entwickelte eine hybride App, die offline arbeitet und später synchronisiert.',
+    impact:
+      'Der Case zeigt, wie Rocketbase operative Prozesse im Außendienst digital abbildet, ohne die reale Einsatzsituation – von Handschuhen bis fehlendem Empfang – aus dem Blick zu verlieren.',
+    processFocus:
+      'Einsatzplanung, Tourenführung und Leistungserfassung im mobilen Außendienst.',
+    outcomes: [
+      'Weniger manuelle Nacharbeit durch direkte Erfassung im Einsatz',
+      'Transparenz über Touren, Einsätze und Objekte in Echtzeit',
+      'Basis, um neue Dienstleistungen und weitere Mandanten aufzunehmen',
+    ],
+    services: [
+      'Analyse und Migration des Altsystems',
+      'Backend und Hybrid-App mit Offline-Funktionalität',
+      'Hosting und Veröffentlichung in App Store und Play Store',
+    ],
+    screenshots: [
+      { key: 'mavox-winterdienst-mobile', alt: 'Mobile App im Einsatz' },
+      { key: 'mavox-winterdienst-tourenplanung', alt: 'Tourenplanung' },
+      { key: 'mavox-winterdienst-planung', alt: 'Umfassende Planung' },
+    ],
+  },
+  {
+    slug: 'bonprix-collection-planning',
+    client: 'bonprix',
+    title: 'VK- und Sortimentsplanung aus Excel in eine kollaborative Plattform überführt',
+    description:
+      'Rocketbase übertrug das in Excel entstandene VK-Planungsmodell und Sortimentsmengenmodell in eine datenbankgestützte Plattform mit Massenbearbeitung, Versionierung und verlässlichen Referenzwerten.',
+    kicker:
+      'Die Flexibilität von Excel erhalten – und gleichzeitig Mehrbenutzerbetrieb, Datenqualität und Versionierung gewinnen.',
+    highlights: [
+      'Portierung komplexer Excel-Modelle mit allen Formeln',
+      'Mehrbenutzerbetrieb ohne Kollisionen und Formel-Verluste',
+      'Versionierung mit Sperr- und Freigabeprozessen',
+    ],
+    challenge:
+      'Die Planungsmodelle waren in Excel über Jahre verfeinert worden. Der Betrieb stieß an Grenzen bei paralleler Arbeit, Schutz vor Formelüberschreibung und der Frage, wie Planwerte sauber festgeschrieben und später als Referenz genutzt werden.',
+    approach:
+      'Rocketbase analysierte die Modelle und Abläufe, portierte sie in eine Plattform mit bekannten Excel-Bedienmustern und ergänzte Prüfmechanismen, Versionierung und Freigabeprozesse.',
+    impact:
+      'Der Case zeigt, wie aus einem stark genutzten Tabellenwerkzeug eine dauerhaft betreibbare Plattform wird, die Controllerinnen und Controller weiter so arbeiten lässt, wie sie es gewohnt sind.',
+    processFocus:
+      'VK- und Sortimentsmengenplanung im Controlling bei bonprix.',
+    outcomes: [
+      'Gemeinsame Arbeit an Plänen ohne Formelverluste und Versionschaos',
+      'Verlässliche Referenzwerte für Folgeplanungen durch klare Versionsstände',
+      'Spürbar weniger Reibung im Alltag des Controllings',
+    ],
+    services: [
+      'Beratung und Prozessanalyse',
+      'Individualentwicklung mit Excel-nahen Bedienmustern',
+      'Versionierung und Freigabeprozesse',
+    ],
+    screenshots: [
+      { key: 'bonprix-collection-plan-report', alt: 'Plan-Report mit Prüfungen' },
+      { key: 'bonprix-collection-versionierung', alt: 'Versionierung und Sperrungen' },
+      { key: 'bonprix-collection-plan-wizard', alt: 'Plan-Wizard' },
+    ],
+  },
+];
+
 export const processSteps = [
   {
     title: 'Verstehen',

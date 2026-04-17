@@ -8,11 +8,16 @@ import bonprixCaseImage from '@/assets/references/teaser-bonprix.jpeg';
 import statistaCaseImage from '@/assets/references/teaser-statista.jpeg';
 import fkcCaseImage from '@/assets/references/teaser-fkc.jpeg';
 import schlossereiCaseImage from '@/assets/references/teaser-schlosserei.jpeg';
+import statistaCanvaCaseImage from '@/assets/references/teaser-statista-canva.jpeg';
+import stageCmlCaseImage from '@/assets/references/teaser-stage-cml.jpeg';
+import samVorteilsguruCaseImage from '@/assets/references/teaser-sam-vorteilsguru.jpeg';
+import mavoxCaseImage from '@/assets/references/teaser-mavox-winterdienst.jpeg';
+import bonprixCollectionCaseImage from '@/assets/references/teaser-bonprix-collection-planning.jpeg';
 import { defaultLocale } from '@/i18n/config';
-import { cases, contactLinks } from '@/data/rocketbase';
+import { cases, additionalCases, contactLinks } from '@/data/rocketbase';
 
 const screenshotModules = import.meta.glob<{ default: ImageMetadata }>(
-  '@/assets/references/*.{png,jpeg,jpg,webp}',
+  '@/assets/references/*.{png,jpeg,webp}',
   { eager: true },
 );
 const screenshotImages: Record<string, ImageMetadata> = Object.fromEntries(
@@ -24,8 +29,11 @@ const screenshotImages: Record<string, ImageMetadata> = Object.fromEntries(
     }),
 );
 
+const allCases = [...cases, ...additionalCases];
+
 export function getStaticPaths() {
-  return cases.map((item) => ({
+  const all = [...cases, ...additionalCases];
+  return all.map((item) => ({
     params: { slug: item.slug },
     props: { item },
   }));
@@ -39,10 +47,15 @@ const caseImages = {
   statista: statistaCaseImage,
   'fkc-consulting': fkcCaseImage,
   'metall-pro': schlossereiCaseImage,
+  'statista-canva': statistaCanvaCaseImage,
+  'stage-cml': stageCmlCaseImage,
+  'sam-vorteilsguru': samVorteilsguruCaseImage,
+  'mavox-winterdienst': mavoxCaseImage,
+  'bonprix-collection-planning': bonprixCollectionCaseImage,
 } as const;
 
 const hasImage = item.slug in caseImages;
-const otherCases = cases.filter((entry) => entry.slug !== item.slug).slice(0, 2);
+const otherCases = allCases.filter((entry) => entry.slug !== item.slug).slice(0, 2);
 
 const contextBlocks = [
   { label: 'Ausgangslage', text: item.challenge },
