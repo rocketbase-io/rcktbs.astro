@@ -1,4 +1,6 @@
 ---
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
 import siteConfig from '@/config/site.config';
 
 interface Props {
@@ -30,14 +32,22 @@ const pageTitle = title ? `${title} — ${siteConfig.name}` : siteConfig.name;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-// Process image - use dynamic OG image if no custom image provided
+// Process image - priority: explicit prop > local screenshot override > generated OG template
+const pathnameSlug = Astro.url.pathname.replace(/^\/|\/$/g, '') || 'index';
 let ogImage: string;
+let ogImageSource: 'custom' | 'screenshot' | 'generated';
 if (image) {
   ogImage = image.startsWith('http') ? image : new URL(image, Astro.site).toString();
+  ogImageSource = 'custom';
 } else {
-  // Generate dynamic OG image path based on current URL
-  const pathname = Astro.url.pathname.replace(/^\/|\/$/g, '') || 'index';
-  ogImage = new URL(`/og/${pathname}.png`, Astro.site).toString();
+  const screenshotFsPath = resolve(process.cwd(), 'public/og-screenshots', `${pathnameSlug}.png`);
+  if (existsSync(screenshotFsPath)) {
+    ogImage = new URL(`/og-screenshots/${pathnameSlug}.png`, Astro.site).toString();
+    ogImageSource = 'screenshot';
+  } else {
+    ogImage = new URL(`/og/${pathnameSlug}.png`, Astro.site).toString();
+    ogImageSource = 'generated';
+  }
 }
 
 const robotsContent = [noindex ? 'noindex' : 'index', nofollow ? 'nofollow' : 'follow'].join(', ');
@@ -53,8 +63,8 @@ const locale = rawLocale.includes('_') || rawLocale.includes('-')
   ? rawLocale.replace('-', '_')
   : (localeMap[rawLocale] || `${rawLocale}_${rawLocale.toUpperCase()}`);
 
-// Determine OG image metadata — only emit width/height/type for the auto-generated fallback
-const isGeneratedOgImage = !image;
+// Determine OG image metadata — emit width/height when we know them (generated template + local screenshots are 1200x630)
+const hasKnownDimensions = ogImageSource === 'generated' || ogImageSource === 'screenshot';
 const extToMime: Record<string, string> = {
   '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
   '.webp': 'image/webp', '.gif': 'image/gif', '.svg': 'image/svg+xml',
@@ -63,7 +73,9 @@ function getImageType(url: string): string | undefined {
   const ext = url.match(/(\.\w+)(?:\?|$)/)?.[1]?.toLowerCase();
   return ext ? extToMime[ext] : undefined;
 }
-const ogImageType = isGeneratedOgImage ? 'image/png' : getImageType(ogImage);
+const ogImageType = ogImageSource === 'generated' || ogImageSource === 'screenshot'
+  ? 'image/png'
+  : getImageType(ogImage);
 ---
 
 <!-- Primary Meta Tags -->
@@ -81,8 +93,8 @@ const ogImageType = isGeneratedOgImage ? 'image/png' : getImageType(ogImage);
 <meta property="og:site_name" content={siteConfig.name} />
 <meta property="og:locale" content={locale} />
 <meta property="og:image:alt" content={imageAlt || pageTitle} />
-{isGeneratedOgImage && <meta property="og:image:width" content="1200" />}
-{isGeneratedOgImage && <meta property="og:image:height" content="630" />}
+{hasKnownDimensions && <meta property="og:image:width" content="1200" />}
+{hasKnownDimensions && <meta property="og:image:height" content="630" />}
 {ogImageType && <meta property="og:image:type" content={ogImageType} />}
 
 <!-- Article Metadata -->

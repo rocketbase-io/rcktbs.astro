@@ -1,5 +1,4 @@
 import type { APIRoute, GetStaticPaths } from 'astro';
-import { getCollection } from 'astro:content';
 import { generateOGImage } from '@/lib/og';
 import siteConfig from '@/config/site.config';
 import { cases } from '@/data/rocketbase';
@@ -10,26 +9,12 @@ const STATIC_PAGES = [
   { slug: 'mission',     title: 'Mission',                 description: 'Wie und warum wir bei Rocketbase arbeiten. Acht Haltungen hinter jedem Projekt.' },
   { slug: 'work',        title: 'Wie wir arbeiten',        description: 'Vier konkrete Wechsel, die unsere Projekte schneller, leichter und tragfähiger machen.' },
   { slug: 'referenzen',  title: 'Referenzen',              description: 'Ausgewählte Referenzen mit Hintergrund zu Ausgangslage, Vorgehen und Projektrahmen.' },
-  { slug: 'blog',        title: 'Blog',                    description: `Artikel und Updates von ${siteConfig.name}.` },
   { slug: 'contact',     title: 'Kontakt',                 description: `Sprechen Sie direkt mit Marten Prieß von ${siteConfig.name}.` },
   { slug: 'impressum',   title: 'Impressum',               description: 'Rechtliche Informationen zu Rocketbase.' },
   { slug: 'datenschutz', title: 'Datenschutz',             description: 'Datenschutzinformationen und Ihre Rechte als Nutzer.' },
 ];
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const blogPosts = await getCollection('blog', ({ data }) => {
-    return import.meta.env.PROD ? data.draft !== true : true;
-  });
-
-  const blogPaths = blogPosts.map((post) => ({
-    params: { slug: `blog/${post.id}` },
-    props: {
-      title: post.data.title,
-      description: post.data.description,
-      type: 'article' as const,
-    },
-  }));
-
   const staticPaths = STATIC_PAGES.map((page) => ({
     params: { slug: page.slug },
     props: {
@@ -48,7 +33,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     },
   }));
 
-  return [...staticPaths, ...blogPaths, ...casePaths];
+  return [...staticPaths, ...casePaths];
 };
 
 export const GET: APIRoute = async ({ props }) => {
