@@ -54,11 +54,11 @@ export const routes = {
   // Static pages
   about: {
     de: 'about',
-    nav: { show: true, order: 3, label: 'nav.about' },
+    nav: { show: false, order: 4, label: 'nav.about' },
   },
   contact: {
     de: 'contact',
-    nav: { show: true, order: 4, label: 'nav.contact' },
+    nav: { show: true, order: 5, label: 'nav.contact' },
   },
 
   // Blog section
@@ -89,7 +89,7 @@ export const routes = {
   // Mission / Haltung
   mission: {
     de: 'mission',
-    nav: { show: true, order: 5, label: 'nav.mission' },
+    nav: { show: true, order: 3, label: 'nav.mission' },
   },
 } as const satisfies Record<string, RouteDefinition>;
 

@@ -224,14 +224,14 @@ export const processSteps = [
 
 export const discoveryOffer = {
   title: 'Discovery-Workshop',
-  subtitle: 'Ein bezahlter Arbeitstag statt kostenloser Vorarbeit ohne Substanz.',
+  subtitle: 'Ein kompakter Beratungstermin mit greifbarem Ergebnis – statt unverbindlicher Sales-Folien.',
   description:
-    'Der Workshop ist kein Sales-Termin, sondern eine echte Beratungsleistung mit konkretem Ergebnisbild für die nächsten Entscheidungen.',
+    'Gemeinsam mit Ihren Keyusern nehmen wir die dringendsten Baustellen auf, identifizieren Quickwins und entwerfen ein Zielbild für die erste Ausbaustufe – inklusive Mockups, mit denen Sie intern sofort weiterarbeiten können.',
   deliverables: [
-    'Verständnis des Zielprozesses und der wichtigsten Schwachstellen',
-    'Priorisierte Problemfelder und Chancen',
-    'Erste Soll-Konzeption und sinnvolle Lösungsrichtung',
-    'Mockups oder visuelle Prozessskizzen für die Kernabläufe',
+    'Bestandsaufnahme der dringendsten Baustellen und Engpässe',
+    'Identifizierte Quickwins, die kurzfristig Wirkung entfalten',
+    'Zielbild für die erste Entwicklungs-Ausbaustufe',
+    'Konkrete Mockups oder Prozessskizzen für die Kernabläufe',
   ],
 };
 
