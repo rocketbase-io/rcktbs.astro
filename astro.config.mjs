@@ -10,7 +10,7 @@ const isProd = process.env.NODE_ENV === 'production';
 export default defineConfig({
   adapter: isProd ? netlify() : undefined,
 
-  site: process.env.SITE_URL || 'https://example.com',
+  site: process.env.SITE_URL || 'https://www.rocketbase.io',
 
   // i18n configuration
   i18n: {

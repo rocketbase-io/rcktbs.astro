@@ -100,6 +100,11 @@ export const cases = [
       'Team- und Schnittstellenintegration',
       'Workshops und Zusammenarbeit im Projektsetup',
     ],
+    screenshots: [
+      { src: '/references/bonprix-wizard.webp', alt: 'Create Wizard' },
+      { src: '/references/bonprix-datasheet.webp', alt: 'Produkt Datenblatt' },
+      { src: '/references/bonprix-search.webp', alt: 'Flexible Suche' },
+    ],
   },
   {
     slug: 'statista',
@@ -131,6 +136,11 @@ export const cases = [
       'Plattformmodernisierung',
       'Enge Abstimmung mit Fachanwendern',
       'Migration und Parallelbetrieb',
+    ],
+    screenshots: [
+      { src: '/references/statista-search.webp', alt: 'Flexible Suche' },
+      { src: '/references/statista-visual-editor.webp', alt: 'Visueller Editor' },
+      { src: '/references/statista-editor.webp', alt: 'Flexibler Editor' },
     ],
   },
   {
@@ -164,6 +174,12 @@ export const cases = [
       'Datenmigration aus Bestandssystemen',
       'Aufbau einer individuellen Wachstumsplattform',
     ],
+    screenshots: [
+      { src: '/references/fkc-quotes.webp', alt: 'Angebote' },
+      { src: '/references/fkc-quote.webp', alt: 'Angebotsdetail' },
+      { src: '/references/fkc-customer.webp', alt: 'Kunde' },
+      { src: '/references/fkc-proposal.webp', alt: 'Fertiges Angebot' },
+    ],
   },
   {
     slug: 'metall-pro',
@@ -181,7 +197,7 @@ export const cases = [
     challenge:
       'Die Planung lief bisher über manuelle Excel-Tabellen. Es fehlte ein zentraler Überblick, wer wann an welchem Auftrag arbeitet, und Abwesenheiten mussten gesondert gepflegt werden. Mit wachsendem Betrieb wurde das System zunehmend unhandlich.',
     approach:
-      'Rocketbase entwickelte eine flexible Individuallösung mit einem dynamischen Kalender- und Aufgabenflow. Mitarbeiter, Abteilungen, Kunden und Arbeitsaufträge sind vollständig konfigurierbar. Abwesenheiten durch Krankheit, Urlaub oder ähnliche Gründe werden automatisch im System berücksichtigt. Personalisierte Dashboards sorgen dafür, dass jede Person nur das Relevante sieht. Die Arbeitsaufträge sind mit Barcodes verknüpft und lassen sich einfach ausdrucken. Der Zugang zum System erfolgt über ein eigens entwickeltes NFC-Login, das einfache Bedienung mit hoher Sicherheit verbindet.',
+      'Rocketbase entwickelte eine flexible Individuallösung mit dynamischem Kalender- und Aufgabenflow, rollenbasierten Dashboards und automatischer Abwesenheitsberücksichtigung – ergänzt um Barcode-Integration und ein eigens entwickeltes NFC-Login für den Alltag im handwerklichen Betrieb.',
     impact:
       'Der Case zeigt, wie Rocketbase operative Planungsprozesse mit modernen Mitteln neu denken kann, ohne dabei die Alltagsrealität eines handwerklichen Betriebs aus dem Blick zu verlieren.',
     processFocus:
@@ -195,6 +211,11 @@ export const cases = [
       'Individualentwicklung einer Planungs- und Steuerungslösung',
       'Rollenbasierte Dashboards und Konfigurationsmanagement',
       'NFC-Login und Barcode-Integration',
+    ],
+    screenshots: [
+      { src: '/references/metall-planning.webp', alt: 'Einsatzplanung' },
+      { src: '/references/metall-days.webp', alt: 'Tagesansicht' },
+      { src: '/references/metall-order.webp', alt: 'Auftragsübersicht' },
     ],
   },
 ];

@@ -5,7 +5,6 @@ import type {
   BreadcrumbList,
   FAQPage,
   WithContext,
-  SearchAction,
 } from 'schema-dts';
 import siteConfig from '@/config/site.config';
 
@@ -19,18 +18,6 @@ export function createWebsiteSchema(): WithContext<WebSite> {
     name: siteConfig.name,
     url: siteConfig.url,
     description: siteConfig.description,
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: `${siteConfig.url}/search?q={search_term_string}`,
-      },
-      'query-input': {
-        '@type': 'PropertyValueSpecification',
-        valueRequired: true,
-        valueName: 'search_term_string',
-      },
-    } as SearchAction,
   };
 }
 
@@ -43,7 +30,7 @@ export function createOrganizationSchema(): WithContext<Organization> {
     '@type': 'Organization',
     name: siteConfig.name,
     url: siteConfig.url,
-    logo: `${siteConfig.url}/logo.png`,
+    logo: `${siteConfig.url}/favicon.svg`,
     sameAs: siteConfig.socialLinks,
     contactPoint: siteConfig.phone
       ? {
@@ -86,7 +73,7 @@ export function createBlogPostSchema(post: {
       name: siteConfig.name,
       logo: {
         '@type': 'ImageObject',
-        url: `${siteConfig.url}/logo.png`,
+        url: `${siteConfig.url}/favicon.svg`,
       },
     },
     mainEntityOfPage: {
