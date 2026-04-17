@@ -3,6 +3,7 @@ import { Picture } from 'astro:assets';
 import PageLayout from '@/layouts/PageLayout.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
 import bonprixCaseImage from '@/assets/references/teaser-bonprix.jpeg';
 import statistaCaseImage from '@/assets/references/teaser-statista.jpeg';
 import fkcCaseImage from '@/assets/references/teaser-fkc.jpeg';
@@ -28,6 +29,18 @@ const caseImages = {
   'mavox-winterdienst': mavoxCaseImage,
   'bonprix-collection-planning': bonprixCollectionCaseImage,
 } as const;
+
+const clientLogos = [
+  { key: 'bonprix_logo', name: 'bonprix' },
+  { key: 'statista-logo', name: 'Statista' },
+  { key: 'stage_logo', name: 'Stage Entertainment' },
+  { key: 'fkc_logo', name: 'FKC Consulting' },
+  { key: 'mavox_logo', name: 'MAVOX Winterdienst' },
+  { key: 'sam', name: 'Smart Active Media' },
+  { key: 'yomei_logo', name: 'YOMEI' },
+  { key: 'venus_logo', name: 'Venus' },
+  { key: 'stueckgut', name: 'Stückgut' },
+];
 
 const teaserCaptions: Record<string, string> = {
   bonprix: 'Konzernumfeld, saubere Datenflüsse, viele beteiligte Systeme.',
@@ -55,6 +68,8 @@ const teaserCaptions: Record<string, string> = {
       </p>
     </div>
   </section>
+
+  <ClientLogoStrip logos={clientLogos} variant="light" />
 
   <section class="py-28">
     <div class="container space-y-16">

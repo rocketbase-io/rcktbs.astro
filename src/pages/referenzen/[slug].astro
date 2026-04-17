@@ -4,6 +4,7 @@ import type { ImageMetadata } from 'astro';
 import PageLayout from '@/layouts/PageLayout.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import { Testimonial } from '@/components/ui/marketing/Testimonial';
 import bonprixCaseImage from '@/assets/references/teaser-bonprix.jpeg';
 import statistaCaseImage from '@/assets/references/teaser-statista.jpeg';
 import fkcCaseImage from '@/assets/references/teaser-fkc.jpeg';
@@ -130,6 +131,20 @@ const resolvedScreenshots = await Promise.all(
       )}
     </div>
   </section>
+
+  {item.testimonial && (
+    <section class="border-b border-border py-16 lg:py-20">
+      <div class="container max-w-2xl" data-aos="fade-up">
+        <Testimonial
+          quote={item.testimonial.quote}
+          author={item.testimonial.author}
+          position={item.testimonial.position}
+          portraitKey={item.testimonial.portraitKey}
+          client={item.client}
+        />
+      </div>
+    </section>
+  )}
 
   <!-- Projektkontext — centered header + 3 cards -->
   <section class="relative overflow-hidden py-24 lg:py-32">

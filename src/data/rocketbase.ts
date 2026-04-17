@@ -105,6 +105,13 @@ export const cases = [
       { key: 'bonprix-datasheet', alt: 'Produkt Datenblatt' },
       { key: 'bonprix-search', alt: 'Flexible Suche' },
     ],
+    testimonial: {
+      quote:
+        'Unsere Zusammenarbeit mit RocketBase war durchweg positiv. Die langjährige Erfahrung in der Individualentwicklung und das umfassende Know-how von Bonrpix haben sich wirklich ausgezahlt. Selbst die Herausforderung, mit indischen Entwicklungsteams zu kooperieren, hat RocketBase hervorragend gemeistert. Letztendlich sind wir äußerst zufrieden, dass wir unseren Monolithen erfolgreich in Microservices aufgeteilt haben, was uns nun eine flexible und effiziente Systemarchitektur ermöglicht.',
+      author: 'Lars Globisch',
+      position: 'Head of Product & Technology',
+      portraitKey: 'globisch',
+    },
   },
   {
     slug: 'statista',
@@ -142,6 +149,13 @@ export const cases = [
       { key: 'statista-visual-editor', alt: 'Visueller Editor' },
       { key: 'statista-editor', alt: 'Flexibler Editor' },
     ],
+    testimonial: {
+      quote:
+        'Die Zusammenarbeit mit Marten und seinem Team war äußerst inspirierend und hat unsere Produktvision maßgeblich bereichert. Dank ihrer tiefgreifenden Expertise in maßgeschneiderten Datenverwaltungssystemen konnten sie ein präzises technisches Konzept entwickeln, das effizient und zielgerichtet umgesetzt wurde. Besonders beeindruckend war der nahtlose Wissenstransfer innerhalb des Teams, bei dem keine Unterscheidung zwischen externen und internen Beteiligten erkennbar war.',
+      author: 'Ingo Schellhammer',
+      position: 'CTO',
+      portraitKey: 'schellhammer',
+    },
   },
   {
     slug: 'fkc-consulting',
@@ -257,6 +271,13 @@ export const additionalCases = [
       { key: 'statista-canva-search-results', alt: 'Suche nach Statistiken innerhalb der App' },
       { key: 'statista-canva-data-load', alt: 'Datenladen und Integration in Canva' },
     ],
+    testimonial: {
+      quote:
+        'Durch die Integration der Statista-Daten in das Canva-Ökosystem ermöglichen wir unseren Nutzern eine neue, direkte Integration in ihre Arbeitsabläufe.',
+      author: 'Lars Leipson',
+      position: 'VP Data Production',
+      portraitKey: 'leipson',
+    },
   },
   {
     slug: 'stage-cml',
@@ -294,6 +315,13 @@ export const additionalCases = [
       { key: 'stage-cml-buchungsliste', alt: 'Buchungsliste mit Validierungs-Info' },
       { key: 'stage-cml-reports', alt: 'Reports und Exporte' },
     ],
+    testimonial: {
+      quote:
+        'Mit RocketBase als Partner haben wir eine signifikante Qualitätssteigerung in unserer Finanzabwicklung erzielt.',
+      author: 'Dirk Schwartzkopff',
+      position: 'Managing Director',
+      portraitKey: 'schwartzkopff',
+    },
   },
   {
     slug: 'sam-vorteilsguru',
@@ -331,6 +359,13 @@ export const additionalCases = [
       { key: 'sam-vorteilsguru-einbindung', alt: 'Flexible Einbindung in Partner-Sites' },
       { key: 'sam-vorteilsguru-workflows', alt: 'Ausgefeilte Workflows' },
     ],
+    testimonial: {
+      quote:
+        'RocketBase hat unsere Startup-Idee erfolgreich zum Leben erweckt und uns eine solide technische Grundlage geschaffen.',
+      author: 'Thorsten Blöcker',
+      position: 'CEO & Founder',
+      portraitKey: 'bloecker',
+    },
   },
   {
     slug: 'mavox-winterdienst',
@@ -368,6 +403,13 @@ export const additionalCases = [
       { key: 'mavox-winterdienst-tourenplanung', alt: 'Tourenplanung' },
       { key: 'mavox-winterdienst-planung', alt: 'Umfassende Planung' },
     ],
+    testimonial: {
+      quote:
+        'Die Software von RocketBase hat unsere Prozesse exakt so abgebildet, wie wir es benötigen, wodurch wir unsere Effizienz und Effektivität weiter steigern konnten.',
+      author: 'Christian Grupp',
+      position: 'Head of IT',
+      portraitKey: 'man-placeholder-1',
+    },
   },
   {
     slug: 'bonprix-collection-planning',
@@ -405,6 +447,13 @@ export const additionalCases = [
       { key: 'bonprix-collection-versionierung', alt: 'Versionierung und Sperrungen' },
       { key: 'bonprix-collection-plan-wizard', alt: 'Plan-Wizard' },
     ],
+    testimonial: {
+      quote:
+        'RocketBase hat uns nicht nur mit einer leistungsfähigen Plattform überzeugt, sondern auch mit hervorragender Beratung und kreativen Lösungen.',
+      author: 'Remin',
+      position: 'Controlling Specialist',
+      portraitKey: 'remin',
+    },
   },
 ];
 
