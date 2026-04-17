@@ -92,11 +92,28 @@ async function main() {
     });
     const page = await context.newPage();
 
+    // Hide Astro's dev toolbar on every page before screenshotting.
+    await page.addStyleTag({
+      content: 'astro-dev-toolbar, astro-dev-overlay { display: none !important; }',
+    });
+    await page.addInitScript(() => {
+      const style = document.createElement('style');
+      style.textContent =
+        'astro-dev-toolbar, astro-dev-overlay { display: none !important; }';
+      document.head.appendChild(style);
+    });
+
     for (const { path, slug } of TARGETS) {
       const url = `${baseUrl}${path}`;
       console.log(`→ ${url}`);
       try {
         await page.goto(url, { waitUntil: 'networkidle', timeout: 30_000 });
+        // Remove the dev toolbar element if Astro injected it after load.
+        await page.evaluate(() => {
+          document
+            .querySelectorAll('astro-dev-toolbar, astro-dev-overlay')
+            .forEach((el) => el.remove());
+        });
         await page.waitForTimeout(800);
         const outPath = resolve(OUT_DIR, `${slug}.png`);
         await page.screenshot({
