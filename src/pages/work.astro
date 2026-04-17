@@ -4,8 +4,7 @@ import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import { defaultLocale } from '@/i18n/config';
 import { contactLinks } from '@/data/rocketbase';
-
-const locale = defaultLocale;
+import { cn } from '@/lib/cn.ts';
 
 import teamBefore from '@/assets/work/team-before.png';
 import teamAfter from '@/assets/work/team-after.png';
@@ -15,192 +14,606 @@ import toolsBefore from '@/assets/work/tools-before.png';
 import toolsAfter from '@/assets/work/tools-after.png';
 import kiBefore from '@/assets/work/ki-before.png';
 import kiAfter from '@/assets/work/ki-after.png';
-import { cn } from '@/lib/cn.ts';
+
+const locale = defaultLocale;
+const captionDefault = 'Visualisierung erstellt mit Midjourney v6.1';
 
 const sections = [
   {
-    title: "Vom großen Standardteam zum schlanken Expertenteam",
+    id: 'discovery',
+    number: '01',
+    eyebrow: 'Discovery',
+    title: 'Erst verstehen. Dann bauen.',
     subline:
-      "Weniger Abstimmung, mehr Fokus. Moderne Softwareentwicklung braucht keine großen Teams, sondern die richtigen Experten.",
+      'Prozesse analysieren, Keyuser interviewen, Datenmodell und Architektur an die echte Arbeitsrealität anpassen – bevor die erste Zeile Code entsteht.',
+    layout: 'notebook' as const,
+    background: 'default' as const,
     before: {
-      title: "Großes Standardteam",
-      text: "Viele Rollen, lange Abstimmungen und häufige Rework-Schleifen führen zu Verzögerungen und unnötigem Overhead.",
+      title: 'Elfenbeinturm-Planung',
+      text: 'Architektur und Datenmodell entstehen am Reißbrett, ohne die Menschen, die später damit arbeiten. Nach dem Rollout merken Keyuser: so passt das nicht in unseren Alltag. Folge: hoher Rework-Aufwand, frustrierte Nutzer, und am Ende wird die Software umgangen statt verwendet.',
+      image: null,
+    },
+    after: {
+      title: 'Unser Discovery-Ansatz',
+      text: 'Wir analysieren reale Prozesse, beobachten den Arbeitsalltag, interviewen Keyuser und mappen die Customer Journey. Daraus leiten wir Datenmodell und Architektur ab – die Software passt sich der Arbeit an, nicht umgekehrt.',
+      image: null,
+    },
+    caption: 'Visualisierung folgt – Bild kommt.',
+  },
+  {
+    id: 'team',
+    number: '02',
+    eyebrow: 'Team',
+    title: 'Vom großen Standardteam zum schlanken Expertenteam',
+    subline:
+      'Ein Slack-Channel. Ein Verantwortlicher. Keine Daily-Kette über drei Abteilungen.',
+    layout: 'split' as const,
+    background: 'secondary' as const,
+    before: {
+      title: 'Branchen-Standard im Konzern',
+      text: 'Typisch sind 8+ Personen, mehrere Ticket-Hops und Daily-Standups bis eine Entscheidung steht. Wissen verteilt sich, Tempo verliert sich in Übergaben – und das kostet messbar Geld.',
       image: teamBefore,
     },
     after: {
-      title: "Schlankes Expertenteam",
-      text: "Ein kleines Team aus erfahrenen Spezialisten arbeitet direkt zusammen und liefert schneller Ergebnisse – ohne Reibungsverluste.",
+      title: 'Unser Setup',
+      text: 'Ein eingespieltes Team aus Tech Lead, Engineering und Architektur. Entscheidungen fallen im Gespräch, nicht im Ticket-Tool. Output vergleichbar mit Teams ab 12 Personen.',
       image: teamAfter,
     },
+    caption: captionDefault,
   },
   {
-    title: "Vom eigenen Server zur Cloud",
+    id: 'cloud',
+    number: '03',
+    eyebrow: 'Infrastruktur',
+    title: 'Vom eigenen Server zur Cloud aus Deutschland',
     subline:
-      "Weg von Infrastrukturproblemen – hin zu skalierbarer, wartungsfreier Software.",
+      'Hetzner statt Hardware-Bestellung. Backup, Monitoring und Skalierung sind dabei – kein eigenes Admin-Team nötig.',
+    layout: 'stacked' as const,
+    background: 'default' as const,
     before: {
-      title: "Server im Büro",
-      text: "Hoher Wartungsaufwand, Sicherheitsrisiken und eingeschränkter Zugriff bremsen Unternehmen aus.",
+      title: 'Mittelstand-Realität',
+      text: 'In vielen Mittelstandsbetrieben steht der Server noch im Büroschrank: manuelle Backups, Updates am Wochenende, eingeschränkter Zugriff von außen. Bei Hardware-Defekten oder Wachstum stößt das schnell an Grenzen.',
       image: serverBefore,
     },
     after: {
-      title: "Cloud aus Deutschland",
-      text: "Automatische Updates, Backups und Zugriff von überall sorgen für maximale Flexibilität und Sicherheit.",
+      title: 'Cloud aus Deutschland',
+      text: 'Hetzner Cloud, automatische Backups, kontinuierliches Monitoring. DSGVO-konform in Deutschland gehostet, jederzeit skalierbar – ohne eigenes Admin-Team.',
       image: serverAfter,
     },
+    caption: captionDefault,
   },
   {
-    title: "Von Tool-Chaos zur integrierten Lösung",
+    id: 'tools',
+    number: '04',
+    eyebrow: 'Werkzeuge',
+    title: 'Von Tool-Chaos zur integrierten Lösung',
     subline:
-      "Ein System statt vieler Einzellösungen – für echte Transparenz und Effizienz.",
+      'Ein zentrales System statt drei Excel-Listen, einem CRM und einem Mailverteiler – Daten an einer Stelle, Auswertungen in Echtzeit.',
+    layout: 'diptych' as const,
+    background: 'secondary' as const,
     before: {
-      title: "Viele Einzeltools",
-      text: "Daten sind verteilt, Prozesse manuell und fehleranfällig – Überblick geht verloren.",
+      title: 'Gewachsener Tool-Zoo',
+      text: 'Typisch sind Bestellungen in Excel, Kunden im CRM, Versand in Trello, Reports per Mail. Daten leben in Silos, Prozesse laufen manuell, Doppelarbeit überall – niemand hat den vollen Überblick.',
       image: toolsBefore,
     },
     after: {
-      title: "Eine integrierte Lösung",
-      text: "Alle Daten und Prozesse in einem System – für fundierte Entscheidungen in Echtzeit.",
+      title: 'Eine integrierte Lösung',
+      text: 'Ein PIM, ein ERP-Backend, ein Dashboard. Bestellungen, Stammdaten und Auswertungen verzahnt – eine Quelle der Wahrheit.',
       image: toolsAfter,
     },
+    caption: captionDefault,
   },
   {
-    title: "Von klassischer Entwicklung zu KI-gestützter Umsetzung",
+    id: 'ki',
+    number: '05',
+    eyebrow: 'Engineering',
+    title: 'Von klassischer Entwicklung zu KI-gestützter Umsetzung',
     subline:
-      "Moderne Entwicklung nutzt Tools und KI, um schneller und effizienter zu liefern.",
+      'Pair-Coding mit Claude und Cursor. Codegen für Boilerplate. KI-Reviews für Pull Requests. Spart pro Feature mehrere Tage.',
+    layout: 'reveal' as const,
+    background: 'default' as const,
     before: {
-      title: "Alles selbst coden",
-      text: "Viel manuelle Arbeit, langsame Entwicklung und unnötige Wiederholung bereits gelöster Probleme.",
+      title: 'Klassischer Entwicklungsprozess',
+      text: 'In klassischen Setups wird Boilerplate manuell getippt, Tests von Hand geschrieben, Doku am Ende der Sprint-Planung erstellt. Viel Wiederholung, wenig Wertschöpfung.',
       image: kiBefore,
     },
     after: {
-      title: "KI + Open Source",
-      text: "Mit KI-Unterstützung und bewährten Open-Source-Lösungen entstehen Features deutlich schneller und effizienter.",
+      title: 'KI + Open Source',
+      text: 'KI generiert Boilerplate und Test-Skelette, übernimmt Doku-Drafts und Code-Reviews. Engineers konzentrieren sich auf Architektur und Geschäftslogik.',
       image: kiAfter,
     },
+    caption: captionDefault,
   },
 ];
-
-
 ---
 
 <PageLayout
   title="Wie wir arbeiten"
-  description="Weniger Overhead, mehr Fokus. Wir ersetzen komplexe Prozesse durch klare, effiziente Lösungen."
+  description="Vier konkrete Wechsel, die unsere Projekte heute schneller, leichter und tragfähiger machen."
   lang={locale}
   routeId="work"
 >
-  <section class="border-b border-border bg-background-secondary py-24 text-center">
-    <p data-aos="fade-down" class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Wie wir arbeiten</p>
-    <h1 data-aos="fade-down" class="mt-4 font-display text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
-      So entwickeln wir Software heute
-    </h1>
+  <!-- HERO -->
+  <section
+    class="border-border bg-background-secondary relative flex min-h-[60vh] items-center overflow-hidden border-b py-24 sm:py-32"
+  >
+    <div
+      class="bg-grid-pattern pointer-events-none absolute inset-0 opacity-50 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
+      aria-hidden="true"
+    />
+    <div
+      class="bg-brand-300/30 pointer-events-none absolute -top-24 -right-24 h-96 w-96 rounded-full blur-3xl"
+      aria-hidden="true"
+    />
 
-    <p data-aos="fade-down" class="mt-6 text-lg leading-8 text-foreground-secondary max-w-2xl mx-auto">
-      Weniger Overhead, mehr Fokus. Wir ersetzen komplexe Prozesse durch klare, effiziente Lösungen.
-    </p>
-  </section>
-
-  <div class="space-y-32 py-28">
-
-    {sections.map((section, index) => (
-      <section class="max-w-4xl mx-auto px-6 rounded-[1.9rem] border border-border bg-card p-7 shadow-sm hover:bg-background-secondary hover:shadow hover:scale-103" data-aos={index % 2 === 0 ? "fade-right" : "fade-left"} >
-
-        <div data-aos={index % 2 === 0 ? "fade-right" : "fade-left"} class="text-foreground max-w-3xl mx-auto text-center mb-16">
-          <h3 class="text-2xl font-semibold">{section.title}</h3>
-          <p class="ext-foreground-secondary mt-6 text-lg leading-8">
-            {section.subline}
-          </p>
-        </div>
-
-        <div
-          data-aos="zoom-in"
-          class={cn(
-            'flex flex-col gap-12 items-center',
-            index % 2 === 0 && 'md:flex-row',
-            index % 2 !== 0 && 'md:flex-row-reverse'
-          )}>
-          <!-- TEXT -->
-          <div class="basis-1 md:basis-1/2">
-            <div class="mb-8">
-              <h3 class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
-                Vorher
-              </h3>
-              <p class="text-foreground-secondary mt-3 text-base leading-7">
-                {section.before.text}
-              </p>
-            </div>
-
-            <div>
-              <h3 class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
-                Nachher
-              </h3>
-              <p class="text-foreground-secondary mt-3 text-base leading-7">
-                {section.after.text}
-              </p>
-            </div>
-          </div>
-
-          <!-- VISUAL -->
-          <div  data-aos="zoom-in" class="relative ml-5 mt-5 flex items-center justify-center h-[300px] basis-1 md:basis-1/2">
-
-            <img
-              src={section.before.image.src}
-              alt={section.before.title}
-              class="absolute -left-25 md:-left-5 top-1/6 md:top-1/4 -translate-y-1/2 w-42 opacity-50 grayscale rounded-xl hover:z-20 hover:opacity-100 hover:scale-150"
-            />
-
-            <img
-              src={section.after.image.src}
-              alt={section.after.title}
-              class="relative z-10 w-64 rounded-2xl shadow-xl float hover:scale-125"
-            />
-
-          </div>
-        </div>
-      </section>
-    ))}
-
-  </div>
-
-  <section class=" bg-background-secondary py-24">
-    <div class="max-w-4xl mx-auto px-6 text-center">
-
-      <h2 data-aos="fade-down"  class="text-3xl font-bold">
-        Warum <span class="text-brand-500">moderne</span> Softwareentwicklung entscheidend ist
-      </h2>
-
-      <p data-aos="flip-left" class="mt-6 text-foreground-secondary text-lg">
-        Unternehmen, die weiterhin auf klassische Prozesse setzen, verlieren wertvolle Zeit und Ressourcen.
-        Durch schlanke Teams, Cloud-Infrastruktur und moderne Entwicklungsmethoden können Projekte schneller umgesetzt und besser skaliert werden.
+    <div class="container relative z-10 max-w-5xl text-center">
+      <p
+        data-aos="fade-down"
+        class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase"
+      >
+        Wie wir arbeiten
       </p>
-
-      <p data-aos="flip-left" class="mt-4 text-foreground-secondary">
-        Unser Ansatz kombiniert technologische Exzellenz mit effizienten Prozessen – für nachhaltigen Erfolg in der digitalen Welt.
+      <h1
+        data-aos="fade-down"
+        class="font-display text-foreground mt-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl"
+      >
+        <span
+          class="from-brand-500 to-brand-400 bg-gradient-to-r bg-clip-text text-transparent"
+        >
+          Schnell. Schlank. KI-gestützt.
+        </span>
+      </h1>
+      <p
+        data-aos="fade-up"
+        class="text-foreground-secondary mx-auto mt-8 max-w-2xl text-lg leading-8 sm:text-xl"
+      >
+        Wie moderne Softwareentwicklung heute aussieht – und was wir damit lösen, das andere
+        noch ausbremst.
       </p>
-
     </div>
   </section>
 
-  <section class="border-t border-border bg-background-secondary py-24">
-    <div data-aos="zoom-in" class="max-w-4xl mx-auto rounded-[2.25rem] border border-border bg-card p-10 shadow-sm">
-      <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-        <div>
-          <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Zusammenarbeit</p>
-          <h2 class="mt-4 font-display text-4xl font-bold tracking-tight text-foreground">
-            Bereit für eine effizientere Softwareentwicklung?
-          </h2>
-          <p class="mt-6 text-lg leading-8 text-foreground-secondary">
-            Lassen Sie uns gemeinsam herausfinden, wie wir Ihre Prozesse vereinfachen können.
-          </p>
-        </div>
-        <div class="space-y-4 rounded-[1.5rem] bg-background-secondary p-6">
-          <Button href={contactLinks.cal} target="_blank">
-            Erstgespräch buchen
-            <Icon name="arrow-up-right" size="sm" />
-          </Button>
-          <p class="text-sm text-foreground-muted">Oder direkt per Mail an {contactLinks.email}</p>
+  <!-- SECTIONS -->
+  <div class="space-y-40 lg:space-y-56">
+    {
+      sections.map((section) => (
+        <section
+          id={section.id}
+          class={cn(
+            'relative overflow-hidden py-24 lg:py-32',
+            section.background === 'secondary'
+              ? 'bg-background-secondary'
+              : 'bg-background'
+          )}
+        >
+          {section.background === 'secondary' && (
+            <>
+              <div
+                class="bg-grid-pattern pointer-events-none absolute inset-0 opacity-30 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]"
+                aria-hidden="true"
+              />
+              <div
+                class={cn(
+                  'bg-brand-300/15 pointer-events-none absolute h-96 w-96 rounded-full blur-3xl',
+                  section.id === 'team' ? '-left-24 top-1/3' : '-right-24 bottom-1/4'
+                )}
+                aria-hidden="true"
+              />
+            </>
+          )}
+
+          <div class="container relative z-10 max-w-6xl">
+            {/* HEADER */}
+            <header data-aos="fade-up" class="mx-auto max-w-3xl text-center">
+              <div class="mx-auto flex max-w-md items-center gap-4">
+                <span class="bg-border h-px flex-1" />
+                <span class="border-brand-300 bg-card text-brand-600 group-hover:bg-brand-500 group-hover:text-on-invert flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold transition-colors duration-300">
+                  {section.number}
+                </span>
+                <span class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">
+                  {section.eyebrow}
+                </span>
+                <span class="bg-border h-px flex-1" />
+              </div>
+              <h2 class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl">
+                {section.title}
+              </h2>
+              <p class="text-foreground-secondary mt-6 text-lg leading-8">
+                {section.subline}
+              </p>
+            </header>
+
+            {/* SPLIT LAYOUT */}
+            {section.layout === 'split' && (
+              <div class="mt-16 grid gap-12 md:grid-cols-2 md:items-center md:gap-16">
+                <div data-aos="fade-right" data-aos-duration="800" class="space-y-6">
+                  <div>
+                    <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
+                      Unser Ansatz · {section.after.title}
+                    </p>
+                    <p class="text-foreground mt-3 text-lg leading-8 font-medium">
+                      {section.after.text}
+                    </p>
+                  </div>
+                  <div class="border-border/60 border-l-2 pl-4">
+                    <p class="text-foreground-muted text-[11px] font-semibold tracking-[0.22em] uppercase">
+                      Status quo · {section.before.title}
+                    </p>
+                    <p class="text-foreground-muted mt-2 text-sm leading-6">
+                      {section.before.text}
+                    </p>
+                  </div>
+                </div>
+
+                <div data-aos="fade-left" data-aos-duration="800" class="relative mx-auto w-full max-w-md">
+                  <div class="group relative">
+                    <img
+                      src={section.after.image.src}
+                      alt={section.after.title}
+                      class="border-border w-full rotate-1 rounded-3xl border shadow-xl transition-all duration-500 ease-out group-hover:rotate-0 group-hover:-translate-y-1 group-hover:shadow-2xl"
+                    />
+                    <img
+                      src={section.before.image.src}
+                      alt={section.before.title}
+                      class="border-border bg-card absolute -top-6 -left-6 w-32 -rotate-6 rounded-2xl border-4 border-white shadow-lg transition-all duration-500 ease-out hover:rotate-0 hover:scale-110 hover:z-20 sm:w-40"
+                    />
+                  </div>
+                  <p class="text-foreground-muted mt-6 flex items-center justify-center gap-2 text-xs">
+                    <Icon name="palette" size="xs" />
+                    {section.caption}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* STACKED LAYOUT */}
+            {section.layout === 'stacked' && (
+              <div class="mt-16 grid gap-12 md:grid-cols-[1fr_1.1fr] md:items-center md:gap-16">
+                <div data-aos="zoom-in" data-aos-duration="800" class="group relative mx-auto h-[360px] w-full max-w-sm">
+                  <img
+                    src={section.before.image.src}
+                    alt={section.before.title}
+                    class="border-border absolute top-12 left-0 w-56 -rotate-3 rounded-2xl border opacity-70 shadow-md grayscale transition-all duration-500 ease-out group-hover:-translate-x-4 group-hover:rotate-[-6deg] group-hover:opacity-90 group-hover:grayscale-0"
+                  />
+                  <img
+                    src={section.after.image.src}
+                    alt={section.after.title}
+                    class="border-border absolute top-0 right-0 w-64 rotate-3 rounded-2xl border shadow-2xl transition-all duration-500 ease-out group-hover:translate-x-4 group-hover:rotate-6 group-hover:-translate-y-2"
+                  />
+                  <div
+                    class="bg-brand-300/20 pointer-events-none absolute inset-0 -z-10 rounded-full blur-3xl"
+                    aria-hidden="true"
+                  />
+                </div>
+
+                <div data-aos="fade-left" data-aos-duration="800" class="space-y-6">
+                  <div>
+                    <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
+                      Unser Ansatz · {section.after.title}
+                    </p>
+                    <p class="text-foreground mt-3 text-lg leading-8 font-medium">
+                      {section.after.text}
+                    </p>
+                  </div>
+                  <div class="border-border/60 border-l-2 pl-4">
+                    <p class="text-foreground-muted text-[11px] font-semibold tracking-[0.22em] uppercase">
+                      Status quo · {section.before.title}
+                    </p>
+                    <p class="text-foreground-muted mt-2 text-sm leading-6">
+                      {section.before.text}
+                    </p>
+                  </div>
+                  <p class="text-foreground-muted flex items-center gap-2 text-xs">
+                    <Icon name="palette" size="xs" />
+                    {section.caption}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* DIPTYCH LAYOUT */}
+            {section.layout === 'diptych' && (
+              <div class="mt-16">
+                <div
+                  data-aos="zoom-in"
+                  data-aos-duration="800"
+                  class="border-border bg-card rounded-3xl border-2 p-4 shadow-xl transition-shadow duration-500 hover:shadow-2xl sm:p-6"
+                >
+                  <div class="grid gap-4 sm:grid-cols-[1.3fr_1fr]">
+                    <div class="group relative">
+                      <span class="font-display text-brand-600 absolute top-3 left-3 z-10 text-xs font-bold tracking-[0.22em]">
+                        SO MACHEN WIR'S
+                      </span>
+                      <img
+                        src={section.after.image.src}
+                        alt={section.after.title}
+                        class="aspect-square w-full rounded-2xl object-cover transition-all duration-500 ease-out group-hover:scale-105"
+                      />
+                    </div>
+                    <div class="group relative opacity-70 transition-opacity duration-500 hover:opacity-100">
+                      <span class="font-display text-foreground-muted absolute top-3 left-3 z-10 text-[10px] font-bold tracking-[0.22em]">
+                        STATUS QUO
+                      </span>
+                      <img
+                        src={section.before.image.src}
+                        alt={section.before.title}
+                        class="aspect-square w-full rounded-2xl object-cover grayscale transition-all duration-500 ease-out group-hover:scale-105 group-hover:grayscale-0"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  data-aos="fade-up"
+                  data-aos-duration="800"
+                  class="mt-10 grid gap-8 sm:grid-cols-[1.3fr_1fr]"
+                >
+                  <div>
+                    <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
+                      Unser Ansatz · {section.after.title}
+                    </p>
+                    <p class="text-foreground mt-3 text-lg leading-8 font-medium">
+                      {section.after.text}
+                    </p>
+                  </div>
+                  <div class="border-border/60 border-l-2 pl-4">
+                    <p class="text-foreground-muted text-[11px] font-semibold tracking-[0.22em] uppercase">
+                      Status quo · {section.before.title}
+                    </p>
+                    <p class="text-foreground-muted mt-2 text-sm leading-6">
+                      {section.before.text}
+                    </p>
+                  </div>
+                </div>
+
+                <p class="text-foreground-muted mt-6 flex items-center justify-center gap-2 text-xs">
+                  <Icon name="palette" size="xs" />
+                  {section.caption}
+                </p>
+              </div>
+            )}
+
+            {/* REVEAL LAYOUT */}
+            {section.layout === 'reveal' && (
+              <div class="mt-16 grid gap-12 md:grid-cols-[1.1fr_1fr] md:items-center md:gap-16">
+                <div data-aos="fade-right" data-aos-duration="800" class="group relative mx-auto h-[400px] w-full max-w-md">
+                  <img
+                    src={section.before.image.src}
+                    alt={section.before.title}
+                    class="border-border absolute bottom-0 left-0 w-44 rounded-2xl border opacity-40 shadow-md grayscale transition-all duration-500 ease-out group-hover:opacity-80 group-hover:grayscale-0 sm:w-52"
+                  />
+                  <img
+                    src={section.after.image.src}
+                    alt={section.after.title}
+                    class="border-brand-300 absolute top-0 right-0 w-72 rotate-2 rounded-3xl border-2 shadow-[0_30px_60px_-15px_rgba(99,102,241,0.4)] transition-all duration-500 ease-out group-hover:rotate-0 group-hover:-translate-y-2 group-hover:shadow-[0_40px_80px_-15px_rgba(99,102,241,0.6)] sm:w-80"
+                  />
+                </div>
+
+                <div data-aos="fade-left" data-aos-duration="800" class="space-y-6">
+                  <div>
+                    <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
+                      Unser Ansatz · {section.after.title}
+                    </p>
+                    <p class="text-foreground mt-3 text-lg leading-8 font-medium">
+                      {section.after.text}
+                    </p>
+                  </div>
+                  <div class="border-border/60 border-l-2 pl-4">
+                    <p class="text-foreground-muted text-[11px] font-semibold tracking-[0.22em] uppercase">
+                      Status quo · {section.before.title}
+                    </p>
+                    <p class="text-foreground-muted mt-2 text-sm leading-6">
+                      {section.before.text}
+                    </p>
+                  </div>
+                  <p class="text-foreground-muted flex items-center gap-2 text-xs">
+                    <Icon name="palette" size="xs" />
+                    {section.caption}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* NOTEBOOK LAYOUT — animated checklist */}
+            {section.layout === 'notebook' && (
+              <div class="mt-16">
+                <div
+                  data-aos="zoom-in"
+                  data-aos-duration="800"
+                  class="relative grid items-stretch gap-8 md:grid-cols-2 md:gap-12"
+                >
+                  {/* Status quo notepad — chaotic, struck-through */}
+                  <div class="group border-border bg-card relative -rotate-1 rounded-2xl border p-7 opacity-80 shadow-md transition-all duration-500 ease-out hover:rotate-0 hover:opacity-100 hover:shadow-lg">
+                    <div class="text-foreground-muted bg-card border-border absolute -top-3 left-5 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold tracking-[0.22em] uppercase">
+                      Status quo · Elfenbeinturm
+                    </div>
+                    <ul class="text-foreground-muted mt-2 space-y-3 font-mono text-sm">
+                      <li class="flex items-start gap-3 line-through opacity-60">
+                        <span class="text-foreground-muted/60 mt-0.5">☐</span>
+                        <span>Anforderungen aus Bauchgefühl ableiten</span>
+                      </li>
+                      <li class="flex items-start gap-3 line-through opacity-60">
+                        <span class="text-foreground-muted/60 mt-0.5">☐</span>
+                        <span>Datenmodell am Whiteboard skizzieren</span>
+                      </li>
+                      <li class="flex items-start gap-3">
+                        <span class="text-red-500 mt-0.5">✕</span>
+                        <span class="text-red-600/80 dark:text-red-400/80">
+                          Keyuser nach 6 Monaten konfrontieren
+                        </span>
+                      </li>
+                      <li class="flex items-start gap-3">
+                        <span class="text-red-500 mt-0.5">✕</span>
+                        <span class="text-red-600/80 dark:text-red-400/80">
+                          Rework, Frust, Workarounds
+                        </span>
+                      </li>
+                      <li class="flex items-start gap-3">
+                        <span class="text-red-500 mt-0.5">✕</span>
+                        <span class="text-red-600/80 dark:text-red-400/80">
+                          Software wird umgangen
+                        </span>
+                      </li>
+                    </ul>
+                    <p class="text-foreground-muted/70 mt-5 text-xs italic">
+                      „Wir hatten doch alles spezifiziert …"
+                    </p>
+                  </div>
+
+                  {/* Unser Ansatz notepad — animated checklist */}
+                  <div class="group border-brand-300 bg-card relative rotate-1 rounded-2xl border-2 p-7 shadow-xl transition-all duration-500 ease-out hover:rotate-0 hover:-translate-y-1 hover:shadow-[0_30px_60px_-15px_rgba(99,102,241,0.35)]">
+                    <div class="text-brand-600 bg-card border-brand-300 absolute -top-3 left-5 rounded-full border-2 px-2.5 py-0.5 text-[10px] font-bold tracking-[0.22em] uppercase">
+                      Unser Ansatz · Discovery
+                    </div>
+                    <ul class="discovery-checklist mt-2 space-y-3 font-mono text-sm" aria-live="polite">
+                      <li class="discovery-item flex items-start gap-3" data-delay="0">
+                        <span class="discovery-checkbox text-foreground-muted/60 mt-0.5 transition-all duration-300">☐</span>
+                        <span class="discovery-text text-foreground-secondary transition-all duration-300">
+                          Prozesse beobachten & Keyuser interviewen
+                        </span>
+                      </li>
+                      <li class="discovery-item flex items-start gap-3" data-delay="700">
+                        <span class="discovery-checkbox text-foreground-muted/60 mt-0.5 transition-all duration-300">☐</span>
+                        <span class="discovery-text text-foreground-secondary transition-all duration-300">
+                          Customer Journey & Engpässe mappen
+                        </span>
+                      </li>
+                      <li class="discovery-item flex items-start gap-3" data-delay="1400">
+                        <span class="discovery-checkbox text-foreground-muted/60 mt-0.5 transition-all duration-300">☐</span>
+                        <span class="discovery-text text-foreground-secondary transition-all duration-300">
+                          Datenmodell aus realer Arbeit ableiten
+                        </span>
+                      </li>
+                      <li class="discovery-item flex items-start gap-3" data-delay="2100">
+                        <span class="discovery-checkbox text-foreground-muted/60 mt-0.5 transition-all duration-300">☐</span>
+                        <span class="discovery-text text-foreground-secondary transition-all duration-300">
+                          Architektur an die Prozesse anpassen
+                        </span>
+                      </li>
+                      <li class="discovery-item flex items-start gap-3" data-delay="2800">
+                        <span class="discovery-checkbox text-foreground-muted/60 mt-0.5 transition-all duration-300">☐</span>
+                        <span class="discovery-text text-foreground transition-all duration-300 font-medium">
+                          Mit der Umsetzung starten
+                        </span>
+                      </li>
+                    </ul>
+                    <p class="text-brand-600 mt-5 flex items-center gap-2 text-xs font-semibold">
+                      <Icon name="zap" size="xs" />
+                      Software passt sich der Arbeit an, nicht umgekehrt.
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  data-aos="fade-up"
+                  data-aos-duration="800"
+                  class="mt-12 grid gap-8 md:grid-cols-[1.3fr_1fr]"
+                >
+                  <div>
+                    <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
+                      Unser Ansatz · {section.after.title}
+                    </p>
+                    <p class="text-foreground mt-3 text-lg leading-8 font-medium">
+                      {section.after.text}
+                    </p>
+                  </div>
+                  <div class="border-border/60 border-l-2 pl-4">
+                    <p class="text-foreground-muted text-[11px] font-semibold tracking-[0.22em] uppercase">
+                      Status quo · {section.before.title}
+                    </p>
+                    <p class="text-foreground-muted mt-2 text-sm leading-6">
+                      {section.before.text}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+      ))
+    }
+  </div>
+
+  <!-- CTA -->
+  <section class="border-border bg-background-secondary border-t py-24">
+    <div class="container max-w-4xl">
+      <div
+        data-aos="zoom-in"
+        class="border-border bg-card rounded-[2.25rem] border p-10 shadow-sm"
+      >
+        <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <div>
+            <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
+              Zusammenarbeit
+            </p>
+            <h2 class="font-display text-foreground mt-4 text-4xl font-bold tracking-tight">
+              Bereit für eine effizientere Softwareentwicklung?
+            </h2>
+            <p class="text-foreground-secondary mt-6 text-lg leading-8">
+              Lassen Sie uns gemeinsam herausfinden, wie wir Ihre Prozesse vereinfachen können.
+            </p>
+          </div>
+          <div class="bg-background-secondary space-y-4 rounded-[1.5rem] p-6">
+            <Button href={contactLinks.cal} target="_blank">
+              Erstgespräch buchen
+              <Icon name="arrow-up-right" size="sm" />
+            </Button>
+            <p class="text-foreground-muted text-sm">
+              Oder direkt per Mail an {contactLinks.email}
+            </p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 </PageLayout>
+
+<style>
+  .discovery-item.is-done .discovery-checkbox {
+    color: var(--brand-500, #6366f1);
+  }
+  .discovery-item.is-done .discovery-text {
+    color: var(--foreground-muted);
+    text-decoration: line-through;
+    text-decoration-color: var(--brand-300, #a5b4fc);
+    text-decoration-thickness: 1.5px;
+  }
+  .discovery-item.is-pulsing .discovery-checkbox {
+    transform: scale(1.4);
+  }
+</style>
+
+<script>
+  function initDiscoveryChecklist() {
+    const lists = document.querySelectorAll<HTMLElement>('.discovery-checklist');
+    if (!lists.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const list = entry.target as HTMLElement;
+          if (list.dataset.animated) return;
+          list.dataset.animated = '1';
+          const items = list.querySelectorAll<HTMLElement>('.discovery-item');
+          items.forEach((item) => {
+            const delay = Number(item.dataset.delay ?? '0');
+            window.setTimeout(() => {
+              item.classList.add('is-done', 'is-pulsing');
+              const box = item.querySelector('.discovery-checkbox');
+              if (box) box.textContent = '☑';
+              window.setTimeout(() => item.classList.remove('is-pulsing'), 250);
+            }, delay);
+          });
+        });
+      },
+      { threshold: 0.4 }
+    );
+
+    lists.forEach((l) => observer.observe(l));
+  }
+
+  initDiscoveryChecklist();
+  document.addEventListener('astro:page-load', initDiscoveryChecklist);
+  document.addEventListener('astro:after-swap', initDiscoveryChecklist);
+</script>
