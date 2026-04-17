@@ -101,9 +101,9 @@ export const cases = [
       'Workshops und Zusammenarbeit im Projektsetup',
     ],
     screenshots: [
-      { src: '/references/bonprix-wizard.webp', alt: 'Create Wizard' },
-      { src: '/references/bonprix-datasheet.webp', alt: 'Produkt Datenblatt' },
-      { src: '/references/bonprix-search.webp', alt: 'Flexible Suche' },
+      { key: 'bonprix-wizard', alt: 'Create Wizard' },
+      { key: 'bonprix-datasheet', alt: 'Produkt Datenblatt' },
+      { key: 'bonprix-search', alt: 'Flexible Suche' },
     ],
   },
   {
@@ -138,9 +138,9 @@ export const cases = [
       'Migration und Parallelbetrieb',
     ],
     screenshots: [
-      { src: '/references/statista-search.webp', alt: 'Flexible Suche' },
-      { src: '/references/statista-visual-editor.webp', alt: 'Visueller Editor' },
-      { src: '/references/statista-editor.webp', alt: 'Flexibler Editor' },
+      { key: 'statista-search', alt: 'Flexible Suche' },
+      { key: 'statista-visual-editor', alt: 'Visueller Editor' },
+      { key: 'statista-editor', alt: 'Flexibler Editor' },
     ],
   },
   {
@@ -175,10 +175,10 @@ export const cases = [
       'Aufbau einer individuellen Wachstumsplattform',
     ],
     screenshots: [
-      { src: '/references/fkc-quotes.webp', alt: 'Angebote' },
-      { src: '/references/fkc-quote.webp', alt: 'Angebotsdetail' },
-      { src: '/references/fkc-customer.webp', alt: 'Kunde' },
-      { src: '/references/fkc-proposal.webp', alt: 'Fertiges Angebot' },
+      { key: 'fkc-quotes', alt: 'Angebote' },
+      { key: 'fkc-quote', alt: 'Angebotsdetail' },
+      { key: 'fkc-customer', alt: 'Kunde' },
+      { key: 'fkc-proposal', alt: 'Fertiges Angebot' },
     ],
   },
   {
@@ -213,9 +213,9 @@ export const cases = [
       'NFC-Login und Barcode-Integration',
     ],
     screenshots: [
-      { src: '/references/metall-planning.webp', alt: 'Einsatzplanung' },
-      { src: '/references/metall-days.webp', alt: 'Tagesansicht' },
-      { src: '/references/metall-order.webp', alt: 'Auftragsübersicht' },
+      { key: 'metall-planning', alt: 'Einsatzplanung' },
+      { key: 'metall-days', alt: 'Tagesansicht' },
+      { key: 'metall-order', alt: 'Auftragsübersicht' },
     ],
   },
 ];

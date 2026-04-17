@@ -17,6 +17,7 @@ export const de = {
     services: 'Leistungen',
     work: 'Wie wir arbeiten',
     mission: 'Mission',
+    references: 'Referenzen',
   },
 
   common: {

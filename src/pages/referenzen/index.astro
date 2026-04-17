@@ -1,9 +1,12 @@
 ---
+import { Picture } from 'astro:assets';
 import PageLayout from '@/layouts/PageLayout.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
-import bonprixCaseImage from '@/assets/rocketbase/case-bonprix.png';
-import statistaCaseImage from '@/assets/rocketbase/case-statista.png';
+import bonprixCaseImage from '@/assets/references/teaser-bonprix.jpeg';
+import statistaCaseImage from '@/assets/references/teaser-statista.jpeg';
+import fkcCaseImage from '@/assets/references/teaser-fkc.jpeg';
+import schlossereiCaseImage from '@/assets/references/teaser-schlosserei.jpeg';
 import { defaultLocale } from '@/i18n/config';
 import { contactLinks, cases } from '@/data/rocketbase';
 
@@ -12,7 +15,16 @@ const locale = defaultLocale;
 const caseImages = {
   bonprix: bonprixCaseImage,
   statista: statistaCaseImage,
+  'fkc-consulting': fkcCaseImage,
+  'metall-pro': schlossereiCaseImage,
 } as const;
+
+const teaserCaptions: Record<string, string> = {
+  bonprix: 'Konzernumfeld, saubere Datenflüsse, viele beteiligte Systeme.',
+  statista: 'Modernisierung eines gewachsenen Kernsystems im laufenden Betrieb.',
+  'fkc-consulting': 'Ablösung einer Standardsoftware durch eine individuelle Plattform.',
+  'metall-pro': 'Handwerk statt Tabelle: Einsatzplanung im echten Werkstatt-Alltag.',
+};
 ---
 
 <PageLayout
@@ -36,15 +48,30 @@ const caseImages = {
 
   <section class="py-28">
     <div class="container space-y-16">
-      {cases.map((item) => (
-        <article class="grid gap-8 border-t border-border pt-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-          <a href={`/referenzen/${item.slug}`} class="group block">
+      {cases.map((item, idx) => (
+        <article
+          class:list={[
+            'grid gap-8 border-t border-border pt-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-14',
+            idx % 2 === 1 && 'lg:[grid-template-columns:1.05fr_0.95fr]',
+          ]}
+        >
+          <a
+            href={`/referenzen/${item.slug}`}
+            class:list={[
+              'group block',
+              idx % 2 === 1 && 'lg:col-start-2 lg:row-start-1',
+            ]}
+          >
             {item.slug in caseImages ? (
               <div class="overflow-hidden rounded-[2rem]">
-                <img
-                  src={caseImages[item.slug as keyof typeof caseImages].src}
+                <Picture
+                  src={caseImages[item.slug as keyof typeof caseImages]}
                   alt={item.title}
+                  widths={[480, 720, 960, 1280]}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 560px"
+                  formats={['avif', 'webp']}
                   class="h-72 w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                  loading="lazy"
                 />
               </div>
             ) : (
@@ -58,9 +85,25 @@ const caseImages = {
                 </div>
               </div>
             )}
+            {teaserCaptions[item.slug] && (
+              <div class="mt-4 space-y-1.5 px-1">
+                <p class="text-sm leading-6 text-foreground-secondary">
+                  {teaserCaptions[item.slug]}
+                </p>
+                <p class="flex items-center gap-1.5 text-xs text-foreground-muted">
+                  <Icon name="palette" size="xs" />
+                  Visualisierung erstellt mit Midjourney v6.1
+                </p>
+              </div>
+            )}
           </a>
 
-          <div class="max-w-2xl">
+          <div
+            class:list={[
+              'max-w-2xl',
+              idx % 2 === 1 && 'lg:col-start-1 lg:row-start-1',
+            ]}
+          >
             <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brand-600">{item.client}</p>
             <h2 class="mt-3 font-display text-3xl font-bold tracking-tight text-foreground">
               <a href={`/referenzen/${item.slug}`}>{item.title}</a>

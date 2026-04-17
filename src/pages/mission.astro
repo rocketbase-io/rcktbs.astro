@@ -157,6 +157,9 @@ const workUrl = getLocalizedPath('work', locale);
               ))}
             </ul>
 
+            {/* BODY TEXT */}
+            <p class="text-foreground-secondary mt-10 max-w-3xl text-lg leading-8">{section.body}</p>
+
             {/* VISUAL */}
             <div class="mt-10">
               {section.visual === 'timeline' && (
@@ -393,9 +396,6 @@ const workUrl = getLocalizedPath('work', locale);
               )}
 
             </div>
-
-            {/* BODY TEXT */}
-            <p class="text-foreground-secondary mt-10 max-w-3xl text-lg leading-8">{section.body}</p>
           </article>
         ))
       }

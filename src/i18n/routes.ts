@@ -91,6 +91,12 @@ export const routes = {
     de: 'mission',
     nav: { show: true, order: 3, label: 'nav.mission' },
   },
+
+  // Referenzen / Case studies
+  references: {
+    de: 'referenzen',
+    nav: { show: false, order: 6, label: 'nav.references' },
+  },
 } as const satisfies Record<string, RouteDefinition>;
 
 /**
