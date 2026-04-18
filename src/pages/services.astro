@@ -2,6 +2,7 @@
 import PageLayout from '@/layouts/PageLayout.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import RectLight from '@/components/hero-backgrounds/RectLight.astro';
 import { defaultLocale } from '@/i18n/config';
 import { getLocalizedPath } from '@/i18n/index';
 import {
@@ -63,14 +64,7 @@ const useCases = [
   <section
     class="border-border bg-background-secondary relative flex min-h-[60vh] items-center overflow-hidden border-b py-24 sm:py-32"
   >
-    <div
-      class="bg-grid-pattern pointer-events-none absolute inset-0 opacity-50 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
-      aria-hidden="true"
-    />
-    <div
-      class="bg-brand-300/30 pointer-events-none absolute -top-24 -right-24 h-96 w-96 rounded-full blur-3xl"
-      aria-hidden="true"
-    />
+    <RectLight />
 
     <div class="container relative z-10 max-w-5xl text-center">
       <p
