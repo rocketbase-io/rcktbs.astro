@@ -233,7 +233,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
               </div>
             </article>
 
-            <article class="hero-landing-meta border-border/80 bg-background/80 mt-4 rounded-[1.7rem] border p-5 backdrop-blur max-[760px]:mt-3 max-[760px]:rounded-[1.45rem] max-[760px]:p-4">
+            <article class="hero-landing-meta border-border/80 bg-background/80 mt-4 hidden rounded-[1.7rem] border p-5 backdrop-blur sm:block max-[760px]:mt-3 max-[760px]:rounded-[1.45rem] max-[760px]:p-4">
               <div class="grid gap-4 sm:grid-cols-2">
                 <div>
                   <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
@@ -336,7 +336,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
           Gründer zusammen und mit einem eingespielten Team fester Entwicklerinnen und Entwickler
           im Rücken.
         </p>
-        <p class="text-foreground-secondary mt-5 text-lg leading-8">
+        <p class="text-foreground-secondary mt-5 hidden text-lg leading-8 sm:block">
           Erfahrung aus Konzernprojekten, Produktentwicklung und Mittelstandsvorhaben fließt so in
           jedes Projekt ein, ohne dass Kommunikation unnötig aufgebläht wird.
         </p>
@@ -371,7 +371,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
           </p>
         </div>
 
-        <div data-aos="fade-left" class="border-brand-300/70 max-w-2xl border-l-2 pl-5 xl:justify-self-end">
+        <div data-aos="fade-left" class="border-brand-300/70 hidden max-w-2xl border-l-2 pl-5 sm:block xl:justify-self-end">
           <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
             Kurz gesagt
           </p>
@@ -469,7 +469,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
               </div>
             </div>
 
-            <div class="grid gap-8 border-t border-border/70 pt-8 lg:grid-cols-2 lg:gap-12">
+            <div class="hidden gap-8 border-t border-border/70 pt-8 sm:grid lg:grid-cols-2 lg:gap-12">
               <div data-aos="fade-up" data-aos-delay="80">
                 <p class="text-foreground text-lg font-semibold">Vorher</p>
                 <p class="text-foreground-secondary mt-3 max-w-2xl text-base leading-7">
@@ -567,7 +567,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
     })();
   </script>
 
-  <section class="border-border border-b py-28 lg:py-36">
+  <section class="border-border hidden border-b py-28 sm:block lg:py-36">
     <div class="container">
       <div data-aos="fade-up" class="max-w-3xl">
         <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Typische Vorhaben</p>
@@ -587,13 +587,15 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
             <article
               data-aos="fade-up"
               data-aos-delay={index * 60}
-              class="group relative overflow-hidden rounded-[1.8rem] border border-border bg-card p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_24px_50px_rgba(34,43,74,0.12)]"
+              class="group relative overflow-hidden rounded-[1.8rem] border border-border bg-card p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_24px_50px_rgba(34,43,74,0.12)] sm:p-7"
             >
-              <div class="bg-brand-50 text-brand-600 dark:bg-brand-900/30 dark:text-brand-100 group-hover:bg-brand-500 group-hover:text-on-invert inline-flex h-12 w-12 items-center justify-center rounded-xl transition-all duration-300 group-hover:scale-110">
-                <Icon name={useCase.icon} size="md" />
+              <div class="flex items-center gap-4 sm:block">
+                <div class="bg-brand-50 text-brand-600 dark:bg-brand-900/30 dark:text-brand-100 group-hover:bg-brand-500 group-hover:text-on-invert inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-all duration-300 group-hover:scale-110 sm:h-12 sm:w-12">
+                  <Icon name={useCase.icon} size="md" />
+                </div>
+                <h3 class="font-display text-foreground text-base font-semibold sm:mt-6 sm:text-xl">{useCase.title}</h3>
               </div>
-              <h3 class="font-display text-foreground mt-6 text-xl font-semibold">{useCase.title}</h3>
-              <p class="text-foreground-secondary mt-3 text-sm leading-7">{useCase.text}</p>
+              <p class="text-foreground-secondary mt-3 hidden text-sm leading-7 sm:block">{useCase.text}</p>
             </article>
           ))
         }
@@ -636,7 +638,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
                   <p class="text-foreground-secondary mt-3 max-w-2xl text-base leading-7">
                     {service.description}
                   </p>
-                  <ul class="text-foreground-secondary mt-6 grid gap-x-8 gap-y-3 text-sm sm:grid-cols-2">
+                  <ul class="text-foreground-secondary mt-6 hidden gap-x-8 gap-y-3 text-sm sm:grid sm:grid-cols-2">
                     {service.bullets.map((bullet) => (
                       <li class="flex gap-3">
                         <Icon name="arrow-right" size="sm" class="text-brand-400 mt-0.5 shrink-0" />
@@ -644,6 +646,10 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
                       </li>
                     ))}
                   </ul>
+                  <a href={servicesUrl} class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 sm:hidden">
+                    Details ansehen
+                    <Icon name="arrow-right" size="xs" />
+                  </a>
                 </div>
               </div>
             </article>
@@ -695,7 +701,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
                 {featuredCases[0].kicker}
               </p>
               <div class="mt-auto pt-6">
-                <p class="text-foreground-muted text-xs leading-6">
+                <p class="text-foreground-muted hidden text-xs leading-6 sm:block">
                   Prozess im Fokus: {featuredCases[0].processFocus}
                 </p>
                 <div class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600">
@@ -742,7 +748,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
                   <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">{item.client}</p>
                   <h3 class="text-foreground mt-3 text-xl font-semibold leading-snug lg:text-2xl">{item.title}</h3>
                   <p class="text-foreground-secondary mt-3 text-sm leading-7">{item.kicker}</p>
-                  <ul class="text-foreground-muted mt-4 space-y-2 text-sm leading-6">
+                  <ul class="text-foreground-muted mt-4 hidden space-y-2 text-sm leading-6 sm:block">
                     {item.highlights.slice(0, 2).map((highlight) => (
                       <li class="flex gap-3">
                         <Icon name="check-circle" size="sm" class="text-brand-400 mt-0.5 shrink-0" />
@@ -804,13 +810,13 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
             <article
               data-aos="fade-left"
               data-aos-delay={index * 70}
-              class="rounded-[2rem] border border-white/10 bg-white/5 p-7 backdrop-blur"
+              class="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur sm:rounded-[2rem] sm:p-7"
             >
-              <div class="grid gap-5 md:grid-cols-[72px_1fr]">
-                <div class="text-brand-300 text-sm font-semibold">0{index + 1}</div>
+              <div class="flex items-center gap-4 sm:grid sm:gap-5 md:grid-cols-[72px_1fr] md:items-start">
+                <div class="text-brand-300 shrink-0 text-sm font-semibold">0{index + 1}</div>
                 <div>
-                  <h3 class="text-on-invert text-2xl font-semibold">{step.title}</h3>
-                  <p class="text-on-invert-secondary mt-3 text-base leading-7">{step.description}</p>
+                  <h3 class="text-on-invert text-lg font-semibold sm:text-2xl">{step.title}</h3>
+                  <p class="text-on-invert-secondary mt-3 hidden text-base leading-7 sm:block">{step.description}</p>
                 </div>
               </div>
             </article>
