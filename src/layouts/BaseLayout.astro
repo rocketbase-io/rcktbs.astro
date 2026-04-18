@@ -132,6 +132,35 @@ if (includeOrgSchema) {
         }
       })();
     </script>
+
+    <style is:inline>
+      [data-aos] {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      html.aos-ready [data-aos] {
+        opacity: 0 !important;
+        transition-property: opacity, transform;
+        transition-duration: 800ms;
+      }
+      html.aos-ready [data-aos].aos-animate {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      html.aos-ready [data-aos="fade-up"]:not(.aos-animate) { transform: translateY(24px) !important; }
+      html.aos-ready [data-aos="fade-down"]:not(.aos-animate) { transform: translateY(-24px) !important; }
+      html.aos-ready [data-aos="fade-left"]:not(.aos-animate) { transform: translateX(24px) !important; }
+      html.aos-ready [data-aos="fade-right"]:not(.aos-animate) { transform: translateX(-24px) !important; }
+      html.aos-ready [data-aos="zoom-in"]:not(.aos-animate) { transform: scale(0.94) !important; }
+      @media (prefers-reduced-motion: reduce) {
+        html.aos-ready [data-aos] {
+          opacity: 1 !important;
+          transform: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
   </head>
 
   <body class="min-h-screen bg-background text-foreground antialiased">
@@ -147,9 +176,21 @@ if (includeOrgSchema) {
     <script>
       import AOS from "aos";
 
-      AOS.init({
-        duration: 800,
-        once: true,
+      const init = () => {
+        document.documentElement.classList.add("aos-ready");
+        AOS.init({
+          duration: 800,
+          once: true,
+          disable: () =>
+            window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+        });
+      };
+
+      init();
+      window.addEventListener("pageshow", (e) => {
+        if ((e as PageTransitionEvent).persisted) {
+          AOS.refreshHard();
+        }
       });
     </script>
     <main id="main-content" class="flex-1">

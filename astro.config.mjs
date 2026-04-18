@@ -8,7 +8,8 @@ import netlify from '@astrojs/netlify';
 const isProd = process.env.NODE_ENV === 'production';
 
 export default defineConfig({
-  adapter: isProd ? netlify() : undefined,
+  output: 'static',
+  adapter: isProd ? netlify({ imageCDN: false }) : undefined,
 
   site: process.env.SITE_URL || 'https://www.rocketbase.io',
 
