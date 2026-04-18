@@ -107,7 +107,7 @@ export const cases = [
     ],
     testimonial: {
       quote:
-        'Unsere Zusammenarbeit mit RocketBase war durchweg positiv. Die langjährige Erfahrung in der Individualentwicklung und das umfassende Know-how von Bonrpix haben sich wirklich ausgezahlt. Selbst die Herausforderung, mit indischen Entwicklungsteams zu kooperieren, hat RocketBase hervorragend gemeistert. Letztendlich sind wir äußerst zufrieden, dass wir unseren Monolithen erfolgreich in Microservices aufgeteilt haben, was uns nun eine flexible und effiziente Systemarchitektur ermöglicht.',
+        'Unsere Zusammenarbeit mit Rocketbase war durchweg positiv. Die langjährige Erfahrung in der Individualentwicklung und das umfassende Know-how von Bonrpix haben sich wirklich ausgezahlt. Selbst die Herausforderung, mit indischen Entwicklungsteams zu kooperieren, hat Rocketbase hervorragend gemeistert. Letztendlich sind wir äußerst zufrieden, dass wir unseren Monolithen erfolgreich in Microservices aufgeteilt haben, was uns nun eine flexible und effiziente Systemarchitektur ermöglicht.',
       author: 'Lars Globisch',
       position: 'Head of Product & Technology',
       portraitKey: 'globisch',
@@ -317,7 +317,7 @@ export const additionalCases = [
     ],
     testimonial: {
       quote:
-        'Mit RocketBase als Partner haben wir eine signifikante Qualitätssteigerung in unserer Finanzabwicklung erzielt.',
+        'Mit Rocketbase als Partner haben wir eine signifikante Qualitätssteigerung in unserer Finanzabwicklung erzielt.',
       author: 'Dirk Schwartzkopff',
       position: 'Managing Director',
       portraitKey: 'schwartzkopff',
@@ -361,7 +361,7 @@ export const additionalCases = [
     ],
     testimonial: {
       quote:
-        'RocketBase hat unsere Startup-Idee erfolgreich zum Leben erweckt und uns eine solide technische Grundlage geschaffen.',
+        'Rocketbase hat unsere Startup-Idee erfolgreich zum Leben erweckt und uns eine solide technische Grundlage geschaffen.',
       author: 'Thorsten Blöcker',
       position: 'CEO & Founder',
       portraitKey: 'bloecker',
@@ -405,7 +405,7 @@ export const additionalCases = [
     ],
     testimonial: {
       quote:
-        'Die Software von RocketBase hat unsere Prozesse exakt so abgebildet, wie wir es benötigen, wodurch wir unsere Effizienz und Effektivität weiter steigern konnten.',
+        'Die Software von Rocketbase hat unsere Prozesse exakt so abgebildet, wie wir es benötigen, wodurch wir unsere Effizienz und Effektivität weiter steigern konnten.',
       author: 'Christian Grupp',
       position: 'Head of IT',
       portraitKey: 'man-placeholder-1',
@@ -449,7 +449,7 @@ export const additionalCases = [
     ],
     testimonial: {
       quote:
-        'RocketBase hat uns nicht nur mit einer leistungsfähigen Plattform überzeugt, sondern auch mit hervorragender Beratung und kreativen Lösungen.',
+        'Rocketbase hat uns nicht nur mit einer leistungsfähigen Plattform überzeugt, sondern auch mit hervorragender Beratung und kreativen Lösungen.',
       author: 'Remin',
       position: 'Controlling Specialist',
       portraitKey: 'remin',
