@@ -3,6 +3,7 @@
  * Navbar Component (i18n-aware)
  * Dynamic navigation with translations and language switcher
  */
+import { Picture } from 'astro:assets';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import ThemeToggle from '@/components/layout/ThemeToggle.astro';
@@ -10,6 +11,11 @@ import LanguageSwitcher from '@/components/i18n/LanguageSwitcher.astro';
 import rocketbaseLogo from '@/assets/rocketbase/logo.svg';
 import { type Locale, getLocaleFromPath } from '@/i18n/config';
 import { useTranslations, getLocalizedPath, getNavRoutes } from '@/i18n/index';
+import { cases } from '@/data/rocketbase';
+import bonprixCaseImage from '@/assets/references/teaser-bonprix.jpeg';
+import statistaCaseImage from '@/assets/references/teaser-statista.jpeg';
+import fkcCaseImage from '@/assets/references/teaser-fkc.jpeg';
+import schlossereiCaseImage from '@/assets/references/teaser-schlosserei.jpeg';
 
 interface Props {
   locale?: Locale;
@@ -26,6 +32,24 @@ const navRoutes = getNavRoutes();
 
 const homePath = getLocalizedPath('home', locale);
 const ctaLink = getLocalizedPath('contact', locale);
+const referencesPath = getLocalizedPath('references', locale);
+
+const referenceTeaserImages = {
+  bonprix: bonprixCaseImage,
+  statista: statistaCaseImage,
+  'fkc-consulting': fkcCaseImage,
+  'metall-pro': schlossereiCaseImage,
+} as const;
+
+const featuredReferences = cases
+  .filter((c) => c.slug in referenceTeaserImages)
+  .slice(0, 3)
+  .map((c) => ({
+    slug: c.slug,
+    client: c.client,
+    kicker: c.kicker,
+    image: referenceTeaserImages[c.slug as keyof typeof referenceTeaserImages],
+  }));
 ---
 
 <nav class="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
@@ -36,12 +60,70 @@ const ctaLink = getLocalizedPath('contact', locale);
 
     <div class="hidden items-center gap-8 md:flex">
       {navRoutes.map(({ routeId, label }) => (
-        <a
-          href={getLocalizedPath(routeId, locale)}
-          class="text-sm font-medium text-foreground-muted hover:text-foreground transition-colors"
-        >
-          {t(label as any)}
-        </a>
+        routeId === 'references' ? (
+          <div class="relative" data-nav-dropdown>
+            <button
+              type="button"
+              class="inline-flex items-center gap-1 text-sm font-medium text-foreground-muted hover:text-foreground transition-colors"
+              aria-expanded="false"
+              aria-haspopup="true"
+              data-nav-dropdown-trigger
+            >
+              {t(label as any)}
+              <svg class="h-3.5 w-3.5 transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-nav-dropdown-chevron>
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </button>
+
+            <div
+              class="absolute right-0 top-full z-50 hidden w-[26rem] pt-3"
+              data-nav-dropdown-panel
+              role="menu"
+            >
+              <div class="rounded-2xl border border-border bg-background p-3 shadow-[0_24px_60px_rgba(22,28,44,0.14)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.6)]">
+                {featuredReferences.map((ref) => (
+                  <a
+                    href={`${referencesPath}/${ref.slug}`}
+                    class="flex gap-3 rounded-xl p-2.5 transition-colors hover:bg-secondary"
+                    role="menuitem"
+                  >
+                    <div class="overflow-hidden rounded-lg shrink-0 h-14 w-14">
+                      <Picture
+                        src={ref.image}
+                        alt={ref.client}
+                        widths={[56, 112, 168]}
+                        sizes="56px"
+                        formats={['avif', 'webp']}
+                        class="h-full w-full object-cover"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div class="min-w-0 flex-1">
+                      <p class="text-sm font-semibold text-foreground">{ref.client}</p>
+                      <p class="mt-1 text-xs leading-5 text-foreground-muted line-clamp-2">{ref.kicker}</p>
+                    </div>
+                  </a>
+                ))}
+
+                <a
+                  href={referencesPath}
+                  class="mt-1 flex items-center justify-between rounded-xl border-t border-border px-3 py-3 text-sm font-semibold text-brand-600 hover:text-brand-500"
+                  role="menuitem"
+                >
+                  Alle Referenzen ansehen
+                  <Icon name="arrow-right" size="xs" />
+                </a>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <a
+            href={getLocalizedPath(routeId, locale)}
+            class="text-sm font-medium text-foreground-muted hover:text-foreground transition-colors"
+          >
+            {t(label as any)}
+          </a>
+        )
       ))}
 
       <div class="flex items-center gap-2">
@@ -69,12 +151,53 @@ const ctaLink = getLocalizedPath('contact', locale);
 
   <div id="mobile-menu" class="hidden absolute top-16 left-0 w-full bg-background border-b border-border p-6 md:hidden flex-col gap-4 shadow-lg">
     {navRoutes.map(({ routeId, label }) => (
-      <a
-        href={getLocalizedPath(routeId, locale)}
-        class="text-base font-medium text-foreground-secondary hover:text-foreground transition-colors"
-      >
-        {t(label as any)}
-      </a>
+      routeId === 'references' ? (
+        <details class="group" data-mobile-accordion>
+          <summary class="flex cursor-pointer items-center justify-between list-none text-base font-medium text-foreground-secondary hover:text-foreground transition-colors [&::-webkit-details-marker]:hidden">
+            <span>{t(label as any)}</span>
+            <svg class="h-4 w-4 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </summary>
+          <div class="mt-3 space-y-2 border-l-2 border-border pl-3">
+            {featuredReferences.map((ref) => (
+              <a
+                href={`${referencesPath}/${ref.slug}`}
+                class="flex gap-3 rounded-lg p-2 transition-colors hover:bg-secondary"
+              >
+                <div class="h-11 w-11 shrink-0 overflow-hidden rounded-md">
+                  <Picture
+                    src={ref.image}
+                    alt={ref.client}
+                    widths={[44, 88]}
+                    sizes="44px"
+                    formats={['avif', 'webp']}
+                    class="h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="min-w-0 flex-1">
+                  <p class="text-sm font-semibold text-foreground">{ref.client}</p>
+                  <p class="mt-0.5 text-xs leading-5 text-foreground-muted line-clamp-1">{ref.kicker}</p>
+                </div>
+              </a>
+            ))}
+            <a
+              href={referencesPath}
+              class="block rounded-lg p-2 text-sm font-semibold text-brand-600 hover:text-brand-500"
+            >
+              Alle Referenzen ansehen →
+            </a>
+          </div>
+        </details>
+      ) : (
+        <a
+          href={getLocalizedPath(routeId, locale)}
+          class="text-base font-medium text-foreground-secondary hover:text-foreground transition-colors"
+        >
+          {t(label as any)}
+        </a>
+      )
     ))}
 
     <div class="flex items-center gap-3 pt-2 border-t border-border">
@@ -124,6 +247,83 @@ const ctaLink = getLocalizedPath('contact', locale);
     });
   }
 
+  function initNavDropdowns() {
+    const dropdowns = document.querySelectorAll<HTMLElement>('[data-nav-dropdown]');
+    if (dropdowns.length === 0) return;
+
+    const closeAll = (except?: HTMLElement) => {
+      dropdowns.forEach((dd) => {
+        if (dd === except) return;
+        const trigger = dd.querySelector<HTMLButtonElement>('[data-nav-dropdown-trigger]');
+        const panel = dd.querySelector<HTMLElement>('[data-nav-dropdown-panel]');
+        const chevron = dd.querySelector<HTMLElement>('[data-nav-dropdown-chevron]');
+        panel?.classList.add('hidden');
+        trigger?.setAttribute('aria-expanded', 'false');
+        if (chevron) chevron.style.transform = '';
+      });
+    };
+
+    dropdowns.forEach((dd) => {
+      if (dd.dataset.bound === 'true') return;
+      dd.dataset.bound = 'true';
+
+      const trigger = dd.querySelector<HTMLButtonElement>('[data-nav-dropdown-trigger]');
+      const panel = dd.querySelector<HTMLElement>('[data-nav-dropdown-panel]');
+      const chevron = dd.querySelector<HTMLElement>('[data-nav-dropdown-chevron]');
+      if (!trigger || !panel) return;
+
+      let closeTimer = 0;
+      const open = () => {
+        if (closeTimer) {
+          window.clearTimeout(closeTimer);
+          closeTimer = 0;
+        }
+        closeAll(dd);
+        panel.classList.remove('hidden');
+        trigger.setAttribute('aria-expanded', 'true');
+        if (chevron) chevron.style.transform = 'rotate(180deg)';
+      };
+      const scheduleClose = () => {
+        if (closeTimer) window.clearTimeout(closeTimer);
+        closeTimer = window.setTimeout(() => {
+          panel.classList.add('hidden');
+          trigger.setAttribute('aria-expanded', 'false');
+          if (chevron) chevron.style.transform = '';
+          closeTimer = 0;
+        }, 180);
+      };
+
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = !panel.classList.contains('hidden');
+        if (isOpen) {
+          scheduleClose();
+        } else {
+          open();
+        }
+      });
+
+      dd.addEventListener('mouseenter', open);
+      dd.addEventListener('mouseleave', scheduleClose);
+      panel.addEventListener('mouseenter', open);
+      panel.addEventListener('mouseleave', scheduleClose);
+    });
+
+    document.addEventListener('click', (e) => {
+      const target = e.target as Node;
+      const inside = Array.from(dropdowns).some((dd) => dd.contains(target));
+      if (!inside) closeAll();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeAll();
+    });
+  }
+
   initMobileMenu();
-  document.addEventListener('astro:page-load', initMobileMenu);
+  initNavDropdowns();
+  document.addEventListener('astro:page-load', () => {
+    initMobileMenu();
+    initNavDropdowns();
+  });
 </script>

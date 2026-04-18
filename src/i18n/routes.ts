@@ -58,7 +58,7 @@ export const routes = {
   },
   contact: {
     de: 'contact',
-    nav: { show: true, order: 5, label: 'nav.contact' },
+    nav: { show: false, order: 5, label: 'nav.contact' },
   },
 
   // Blog section
@@ -86,16 +86,16 @@ export const routes = {
     nav: { show: true, order: 2, label: 'nav.work' },
   },
 
-  // Mission / Haltung
-  mission: {
-    de: 'mission',
-    nav: { show: true, order: 3, label: 'nav.mission' },
-  },
-
   // Referenzen / Case studies
   references: {
     de: 'referenzen',
-    nav: { show: false, order: 6, label: 'nav.references' },
+    nav: { show: true, order: 3, label: 'nav.references' },
+  },
+
+  // Mission / Haltung
+  mission: {
+    de: 'mission',
+    nav: { show: true, order: 4, label: 'nav.mission' },
   },
 } as const satisfies Record<string, RouteDefinition>;
 

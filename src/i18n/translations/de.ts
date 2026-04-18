@@ -13,7 +13,7 @@ export const de = {
     features: 'Leistungen',
     components: 'Komponenten',
     docs: 'Dokumentation',
-    getStarted: 'Projekt besprechen',
+    getStarted: 'Kontakt',
     services: 'Leistungen',
     work: 'Wie wir arbeiten',
     mission: 'Mission',

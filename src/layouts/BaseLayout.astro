@@ -4,6 +4,7 @@ import SEO from '@/components/seo/SEO.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import Hreflang from '@/components/i18n/Hreflang.astro';
 import Analytics from '@/components/layout/Analytics.astro';
+import ScrollProgress from '@/components/layout/ScrollProgress.astro';
 import ConsentBanner from '@/components/ui/overlay/ConsentBanner';
 import { createWebsiteSchema, createOrganizationSchema } from '@/lib/schema';
 import type { WebSite, Organization, WithContext } from 'schema-dts';
@@ -173,6 +174,7 @@ if (includeOrgSchema) {
     </a>
 
     <slot name="header" />
+    <ScrollProgress />
     <script>
       import AOS from "aos";
 

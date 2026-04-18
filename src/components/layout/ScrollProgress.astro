@@ -1,0 +1,47 @@
+---
+/**
+ * ScrollProgress
+ * Thin progress bar pinned directly below the fixed navbar (top-16),
+ * reflecting current scroll depth as a percentage.
+ */
+---
+
+<div
+  class="pointer-events-none fixed left-0 right-0 top-16 z-40 h-0.5"
+  data-scroll-progress-root
+  aria-hidden="true"
+>
+  <div
+    class="bg-brand-500 h-full w-0 origin-left transition-[width] duration-75 ease-out"
+    data-scroll-progress-bar
+  />
+</div>
+
+<script>
+  function initScrollProgress() {
+    const bar = document.querySelector<HTMLElement>('[data-scroll-progress-bar]');
+    if (!bar) return;
+
+    let rafId = 0;
+
+    const update = () => {
+      const doc = document.documentElement;
+      const scrollable = doc.scrollHeight - doc.clientHeight;
+      const ratio = scrollable > 0 ? Math.min(Math.max(doc.scrollTop / scrollable, 0), 1) : 0;
+      bar.style.width = `${(ratio * 100).toFixed(2)}%`;
+      rafId = 0;
+    };
+
+    const onScroll = () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(update);
+    };
+
+    update();
+    document.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+  }
+
+  initScrollProgress();
+  document.addEventListener('astro:page-load', initScrollProgress);
+</script>

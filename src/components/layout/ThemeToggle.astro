@@ -10,7 +10,7 @@ const { class: className } = Astro.props;
 
 <button
   type="button"
-  id="theme-toggle"
+  data-theme-toggle
   class={cn(
     'inline-flex items-center justify-center rounded-md p-2',
     'text-muted-foreground hover:text-foreground hover:bg-accent',
@@ -56,27 +56,23 @@ const { class: className } = Astro.props;
 </button>
 
 <script>
-  function initThemeToggle() {
-    const toggle = document.getElementById('theme-toggle');
+  function initThemeToggles() {
+    const toggles = document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]');
+    if (toggles.length === 0) return;
 
-    if (!toggle) return;
-
-    toggle.addEventListener('click', () => {
+    const handleClick = () => {
       const isDark = document.documentElement.classList.contains('dark');
+      document.documentElement.classList.toggle('dark', !isDark);
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    };
 
-      if (isDark) {
-        document.documentElement.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-      } else {
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-      }
+    toggles.forEach((toggle) => {
+      if (toggle.dataset.themeToggleBound === 'true') return;
+      toggle.dataset.themeToggleBound = 'true';
+      toggle.addEventListener('click', handleClick);
     });
   }
 
-  // Run on initial load
-  initThemeToggle();
-
-  // Re-run after Astro page transitions
-  document.addEventListener('astro:after-swap', initThemeToggle);
+  initThemeToggles();
+  document.addEventListener('astro:after-swap', initThemeToggles);
 </script>
