@@ -6,11 +6,11 @@ import { cases } from '@/data/rocketbase';
 const STATIC_PAGES = [
   { slug: 'index',        title: siteConfig.name,          description: siteConfig.description },
   { slug: 'services',    title: 'Leistungen',              description: 'Discovery, Konzeption, Individualsoftware und Betrieb. Vier Leistungsbereiche für nachhaltige Softwareprojekte.' },
-  { slug: 'mission',     title: 'Mission',                 description: 'Wie und warum wir bei Rocketbase arbeiten. Acht Haltungen hinter jedem Projekt.' },
+  { slug: 'mission',     title: 'Mission',                 description: 'Wie und warum wir bei RocketBase arbeiten. Acht Haltungen hinter jedem Projekt.' },
   { slug: 'work',        title: 'Wie wir arbeiten',        description: 'Vier konkrete Wechsel, die unsere Projekte schneller, leichter und tragfähiger machen.' },
   { slug: 'referenzen',  title: 'Referenzen',              description: 'Ausgewählte Referenzen mit Hintergrund zu Ausgangslage, Vorgehen und Projektrahmen.' },
   { slug: 'contact',     title: 'Kontakt',                 description: `Sprechen Sie direkt mit Marten Prieß von ${siteConfig.name}.` },
-  { slug: 'impressum',   title: 'Impressum',               description: 'Rechtliche Informationen zu Rocketbase.' },
+  { slug: 'impressum',   title: 'Impressum',               description: 'Rechtliche Informationen zu RocketBase.' },
   { slug: 'datenschutz', title: 'Datenschutz',             description: 'Datenschutzinformationen und Ihre Rechte als Nutzer.' },
 ];
 

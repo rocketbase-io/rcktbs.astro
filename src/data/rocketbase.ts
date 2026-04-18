@@ -2,7 +2,7 @@ export const strengths = [
   {
     title: 'Direkte Zusammenarbeit mit Marten Prieß',
     description:
-      'Sie arbeiten nicht primär mit Vertrieb oder Projektweitergaben, sondern direkt mit dem Gründer von Rocketbase, der fachliche, technische und strukturelle Entscheidungen mitträgt.',
+      'Sie arbeiten nicht primär mit Vertrieb oder Projektweitergaben, sondern direkt mit dem Gründer von RocketBase, der fachliche, technische und strukturelle Entscheidungen mitträgt.',
   },
   {
     title: 'Konzernniveau für den Mittelstand',
@@ -12,7 +12,7 @@ export const strengths = [
   {
     title: 'Team statt Einzelkämpfer',
     description:
-      'Rocketbase arbeitet als eingespieltes kleines Team mit klarer Kommunikation, schlanken Prozessen und hoher Verbindlichkeit.',
+      'RocketBase arbeitet als eingespieltes kleines Team mit klarer Kommunikation, schlanken Prozessen und hoher Verbindlichkeit.',
   },
   {
     title: 'Pragmatisch mit Open Source',
@@ -60,7 +60,7 @@ export const serviceAreas = [
   {
     title: 'Betrieb & Weiterentwicklung',
     description:
-      'Nach dem Go-live bleibt Rocketbase technischer Ansprechpartner für Qualität, Betrieb und die nächsten sinnvollen Ausbaustufen.',
+      'Nach dem Go-live bleibt RocketBase technischer Ansprechpartner für Qualität, Betrieb und die nächsten sinnvollen Ausbaustufen.',
     bullets: [
       'Qualitätssicherung und Monitoring',
       'Iterative Weiterentwicklung',
@@ -75,7 +75,7 @@ export const cases = [
     client: 'bonprix',
     title: 'PLM/PIM-Neubau mit internationaler Teamintegration',
     description:
-      'Rocketbase wirkte an der Neuentwicklung einer komplexen Produktdaten-Plattform mit, übernahm technische Führung und verband Hamburger Delivery mit einem indischen Entwicklungsteam.',
+      'RocketBase wirkte an der Neuentwicklung einer komplexen Produktdaten-Plattform mit, übernahm technische Führung und verband Hamburger Delivery mit einem indischen Entwicklungsteam.',
     kicker:
       'Komplexe Produktlogik, internationale Zusammenarbeit und technische Führung in einem zentralen Konzernprojekt.',
     highlights: [
@@ -86,9 +86,9 @@ export const cases = [
     challenge:
       'Das Projekt verband anspruchsvolle Produktdatenlogik mit der Aufgabe, ein verteiltes Setup zwischen verschiedenen Teams und Kulturen produktiv zusammenzuführen.',
     approach:
-      'Rocketbase übernahm nicht nur Entwicklungsarbeit, sondern half dabei, Zusammenarbeit, Workshops und operative Abläufe so zu strukturieren, dass das Projekt in der Delivery tragfähig blieb.',
+      'RocketBase übernahm nicht nur Entwicklungsarbeit, sondern half dabei, Zusammenarbeit, Workshops und operative Abläufe so zu strukturieren, dass das Projekt in der Delivery tragfähig blieb.',
     impact:
-      'Der Fall zeigt, dass Rocketbase nicht nur Software umsetzt, sondern Teams, Kommunikation und technische Verantwortung in komplexen Setups zusammenbringen kann.',
+      'Der Fall zeigt, dass RocketBase nicht nur Software umsetzt, sondern Teams, Kommunikation und technische Verantwortung in komplexen Setups zusammenbringen kann.',
     processFocus: 'Pflege und Abstimmung von Produktdaten über mehrere Teams und Standorte hinweg.',
     outcomes: [
       'Weniger Reibung zwischen beteiligten Teams und Zuständigkeiten',
@@ -107,7 +107,7 @@ export const cases = [
     ],
     testimonial: {
       quote:
-        'Unsere Zusammenarbeit mit Rocketbase war durchweg positiv. Die langjährige Erfahrung in der Individualentwicklung und das umfassende Know-how von Bonrpix haben sich wirklich ausgezahlt. Selbst die Herausforderung, mit indischen Entwicklungsteams zu kooperieren, hat Rocketbase hervorragend gemeistert. Letztendlich sind wir äußerst zufrieden, dass wir unseren Monolithen erfolgreich in Microservices aufgeteilt haben, was uns nun eine flexible und effiziente Systemarchitektur ermöglicht.',
+        'Unsere Zusammenarbeit mit RocketBase war durchweg positiv. Die langjährige Erfahrung in der Individualentwicklung und das umfassende Know-how von Bonrpix haben sich wirklich ausgezahlt. Selbst die Herausforderung, mit indischen Entwicklungsteams zu kooperieren, hat RocketBase hervorragend gemeistert. Letztendlich sind wir äußerst zufrieden, dass wir unseren Monolithen erfolgreich in Microservices aufgeteilt haben, was uns nun eine flexible und effiziente Systemarchitektur ermöglicht.',
       author: 'Lars Globisch',
       position: 'Head of Product & Technology',
       portraitKey: 'globisch',
@@ -129,9 +129,9 @@ export const cases = [
     challenge:
       'Bestehende Redaktions- und Pflegeprozesse waren durch gewachsene Strukturen geprägt. Die Aufgabe war, eine belastbare neue Plattform aufzubauen, ohne die reale Arbeit der Fachanwender aus dem Blick zu verlieren.',
     approach:
-      'Rocketbase verband Architektur, Produktdenken und enge Zusammenarbeit mit Anwendern, um eine moderne Pflegeumgebung mit besserem Prozesszuschnitt und klarerer technischer Basis zu schaffen.',
+      'RocketBase verband Architektur, Produktdenken und enge Zusammenarbeit mit Anwendern, um eine moderne Pflegeumgebung mit besserem Prozesszuschnitt und klarerer technischer Basis zu schaffen.',
     impact:
-      'Der Case zeigt die Stärke von Rocketbase in Vorhaben, bei denen bestehende Kernsysteme modernisiert und gleichzeitig interne Prozesse neu gedacht werden müssen.',
+      'Der Case zeigt die Stärke von RocketBase in Vorhaben, bei denen bestehende Kernsysteme modernisiert und gleichzeitig interne Prozesse neu gedacht werden müssen.',
     processFocus:
       'Pflege, Strukturierung und Veröffentlichung von Statistik- und Content-Daten in redaktionellen Abläufen.',
     outcomes: [
@@ -162,7 +162,7 @@ export const cases = [
     client: 'FKC Consulting',
     title: 'Von Standardsoftware zur belastbaren Wachstumsplattform',
     description:
-      'Rocketbase begleitete die Ablösung einer Standardsoftware, strukturierte Datenübernahme und den Aufbau einer individuellen Lösung, die besser zu den realen Arbeitsweisen passte.',
+      'RocketBase begleitete die Ablösung einer Standardsoftware, strukturierte Datenübernahme und den Aufbau einer individuellen Lösung, die besser zu den realen Arbeitsweisen passte.',
     kicker:
       'Ablösung einer Standardsoftware, die operative Realität und Wachstum nicht mehr sauber abbildete.',
     highlights: [
@@ -173,7 +173,7 @@ export const cases = [
     challenge:
       'Die vorhandene Standardsoftware deckte zentrale Anforderungen nicht sauber ab. Gleichzeitig mussten Daten und gewachsene Strukturen aus einem proprietären System herausgelöst werden.',
     approach:
-      'Rocketbase arbeitete sich in das Bestandssystem ein, plante die Migration, überführte relevante Daten und entwickelte eine individuelle Lösung, die sich an den tatsächlichen Abläufen des Unternehmens orientiert.',
+      'RocketBase arbeitete sich in das Bestandssystem ein, plante die Migration, überführte relevante Daten und entwickelte eine individuelle Lösung, die sich an den tatsächlichen Abläufen des Unternehmens orientiert.',
     impact:
       'Der Case steht exemplarisch für Projekte, in denen Standardsoftware zunächst ausreichend wirkt, später aber zum Engpass für Prozesse, Transparenz und Wachstum wird.',
     processFocus:
@@ -211,9 +211,9 @@ export const cases = [
     challenge:
       'Die Planung lief bisher über manuelle Excel-Tabellen. Es fehlte ein zentraler Überblick, wer wann an welchem Auftrag arbeitet, und Abwesenheiten mussten gesondert gepflegt werden. Mit wachsendem Betrieb wurde das System zunehmend unhandlich.',
     approach:
-      'Rocketbase entwickelte eine flexible Individuallösung mit dynamischem Kalender- und Aufgabenflow, rollenbasierten Dashboards und automatischer Abwesenheitsberücksichtigung – ergänzt um Barcode-Integration und ein eigens entwickeltes NFC-Login für den Alltag im handwerklichen Betrieb.',
+      'RocketBase entwickelte eine flexible Individuallösung mit dynamischem Kalender- und Aufgabenflow, rollenbasierten Dashboards und automatischer Abwesenheitsberücksichtigung – ergänzt um Barcode-Integration und ein eigens entwickeltes NFC-Login für den Alltag im handwerklichen Betrieb.',
     impact:
-      'Der Case zeigt, wie Rocketbase operative Planungsprozesse mit modernen Mitteln neu denken kann, ohne dabei die Alltagsrealität eines handwerklichen Betriebs aus dem Blick zu verlieren.',
+      'Der Case zeigt, wie RocketBase operative Planungsprozesse mit modernen Mitteln neu denken kann, ohne dabei die Alltagsrealität eines handwerklichen Betriebs aus dem Blick zu verlieren.',
     processFocus:
       'Mitarbeiter- und Auftragsplanung, Ressourcenzuweisung und tägliche Betriebssteuerung im handwerklichen Umfeld.',
     outcomes: [
@@ -240,7 +240,7 @@ export const additionalCases = [
     client: 'Statista',
     title: 'Statista-Daten direkt in Canva nutzbar',
     description:
-      'Rocketbase entwickelte die Statista-App für das Canva-Ökosystem, über die Nutzerinnen und Nutzer geprüfte Statistiken direkt in ihre Designs und Präsentationen einbinden können – samt neu entwickeltem Image-Service für Preview-Grafiken.',
+      'RocketBase entwickelte die Statista-App für das Canva-Ökosystem, über die Nutzerinnen und Nutzer geprüfte Statistiken direkt in ihre Designs und Präsentationen einbinden können – samt neu entwickeltem Image-Service für Preview-Grafiken.',
     kicker:
       'Statistische Inhalte erreichen Nutzer dort, wo sie ohnehin gestalten – eingebettet statt nachgelagert.',
     highlights: [
@@ -251,9 +251,9 @@ export const additionalCases = [
     challenge:
       'Statista suchte einen Weg, Inhalte außerhalb der eigenen Plattform dort verfügbar zu machen, wo Anwender sie direkt weiterverarbeiten. Die neue Canva-Datenintegration war noch in der Alpha, inklusive offener technischer Fragen zu Preview-Bildern und Authentifizierung.',
     approach:
-      'Rocketbase begleitete Konzeption, Organisation und Umsetzung: Integration in das Canva SDK, Abstimmung mit dem Canva-Team und Aufbau eines eigenen Image-Services inklusive Betriebsinfrastruktur auf AWS.',
+      'RocketBase begleitete Konzeption, Organisation und Umsetzung: Integration in das Canva SDK, Abstimmung mit dem Canva-Team und Aufbau eines eigenen Image-Services inklusive Betriebsinfrastruktur auf AWS.',
     impact:
-      'Der Case zeigt, wie Rocketbase frühzeitig in neue Plattform-Ökosysteme einsteigt und bestehende Inhalte anschlussfähig macht – technisch tragfähig und organisatorisch sauber aufgesetzt.',
+      'Der Case zeigt, wie RocketBase frühzeitig in neue Plattform-Ökosysteme einsteigt und bestehende Inhalte anschlussfähig macht – technisch tragfähig und organisatorisch sauber aufgesetzt.',
     processFocus:
       'Bereitstellung und Integration statistischer Daten in fremde Gestaltungsumgebungen über geprüfte Schnittstellen.',
     outcomes: [
@@ -284,7 +284,7 @@ export const additionalCases = [
     client: 'Stage Entertainment',
     title: 'Budgetplanung raus aus Excel, rein in einen belastbaren Prozess',
     description:
-      'Rocketbase überführte die Excel-gestützte Budgetplanung von Stage Entertainment in eine datenbankbasierte Plattform mit Validierung, nächtlichem Abgleich zur Buchhaltung und sauberen Reportings.',
+      'RocketBase überführte die Excel-gestützte Budgetplanung von Stage Entertainment in eine datenbankbasierte Plattform mit Validierung, nächtlichem Abgleich zur Buchhaltung und sauberen Reportings.',
     kicker:
       'Planung, die nicht mehr an einzelnen Tabellen hängt – und Zahlen, die sich mit der Buchhaltung decken.',
     highlights: [
@@ -295,7 +295,7 @@ export const additionalCases = [
     challenge:
       'Die Budgetplanung lief auf komplexen, gewachsenen Excel-Modellen. Das System skalierte nicht mehr, parallele Arbeit war fehleranfällig und eine saubere Verbindung zur Buchhaltung fehlte.',
     approach:
-      'Rocketbase transformierte die bestehenden Modelle in eine datenbankgestützte Plattform, ergänzte Validierungs- und Prüfmechanismen und etablierte einen nächtlichen Abgleichslauf zwischen Planung und Buchhaltungssystem.',
+      'RocketBase transformierte die bestehenden Modelle in eine datenbankgestützte Plattform, ergänzte Validierungs- und Prüfmechanismen und etablierte einen nächtlichen Abgleichslauf zwischen Planung und Buchhaltungssystem.',
     impact:
       'Der Case steht für Projekte, in denen über Jahre gewachsene Tabellen-Werkzeuge in belastbare Systeme überführt werden, ohne den Fachanwendern das gewohnte Arbeiten zu nehmen.',
     processFocus:
@@ -317,7 +317,7 @@ export const additionalCases = [
     ],
     testimonial: {
       quote:
-        'Mit Rocketbase als Partner haben wir eine signifikante Qualitätssteigerung in unserer Finanzabwicklung erzielt.',
+        'Mit RocketBase als Partner haben wir eine signifikante Qualitätssteigerung in unserer Finanzabwicklung erzielt.',
       author: 'Dirk Schwartzkopff',
       position: 'Managing Director',
       portraitKey: 'schwartzkopff',
@@ -328,7 +328,7 @@ export const additionalCases = [
     client: 'Smart Active Media',
     title: 'Gutscheinportal, das sich in fremde Checkouts einbettet',
     description:
-      'Für Smart Active Media baute Rocketbase ein Gutscheinportal, das per JavaScript in Partner-Websites und Checkouts eingebunden wird und Leads aus Käufen und Gewinnspielen weiterverwertet.',
+      'Für Smart Active Media baute RocketBase ein Gutscheinportal, das per JavaScript in Partner-Websites und Checkouts eingebunden wird und Leads aus Käufen und Gewinnspielen weiterverwertet.',
     kicker:
       'Ein eingebettetes Produkt, das zuverlässig in fremden Umgebungen läuft – und dort Conversions generiert.',
     highlights: [
@@ -339,9 +339,9 @@ export const additionalCases = [
     challenge:
       'Smart Active Media brauchte eine Lösung, die sich reibungsarm in fremde Checkouts einbauen lässt, dabei performant bleibt und gleichzeitig verschiedene Kooperationspartner sauber bedient.',
     approach:
-      'Rocketbase begleitete Konzept und Wettbewerbsanalyse, setzte Frontend und Backend um und betrieb den Dienst auf einer Infrastruktur, die für hochfrequentierte Einbindungen ausgelegt ist.',
+      'RocketBase begleitete Konzept und Wettbewerbsanalyse, setzte Frontend und Backend um und betrieb den Dienst auf einer Infrastruktur, die für hochfrequentierte Einbindungen ausgelegt ist.',
     impact:
-      'Der Case zeigt, wie Rocketbase eine Startup-Idee in ein stabil betriebenes Produkt übersetzt – inklusive Partnerintegration und Betrieb auf Infrastruktur, die auch unter Last trägt.',
+      'Der Case zeigt, wie RocketBase eine Startup-Idee in ein stabil betriebenes Produkt übersetzt – inklusive Partnerintegration und Betrieb auf Infrastruktur, die auch unter Last trägt.',
     processFocus:
       'Leadverwertung über eingebettete Gutscheinflächen in Partner-Websites.',
     outcomes: [
@@ -361,7 +361,7 @@ export const additionalCases = [
     ],
     testimonial: {
       quote:
-        'Rocketbase hat unsere Startup-Idee erfolgreich zum Leben erweckt und uns eine solide technische Grundlage geschaffen.',
+        'RocketBase hat unsere Startup-Idee erfolgreich zum Leben erweckt und uns eine solide technische Grundlage geschaffen.',
       author: 'Thorsten Blöcker',
       position: 'CEO & Founder',
       portraitKey: 'bloecker',
@@ -372,7 +372,7 @@ export const additionalCases = [
     client: 'MAVOX Winterdienst',
     title: 'Tourenplanung und mobile Einsatzerfassung im Außendienst',
     description:
-      'Rocketbase löste ein nicht mehr tragfähiges Altsystem ab und entwickelte eine hybride App inklusive neuem Backend für Routen, Fahrzeuge, Objekte und Einsätze – mit Offline-Funktion für den harten Außendienst.',
+      'RocketBase löste ein nicht mehr tragfähiges Altsystem ab und entwickelte eine hybride App inklusive neuem Backend für Routen, Fahrzeuge, Objekte und Einsätze – mit Offline-Funktion für den harten Außendienst.',
     kicker:
       'Ein System, das auch dann funktioniert, wenn draußen kein Netz ist – und trotzdem sauber synchronisiert.',
     highlights: [
@@ -383,9 +383,9 @@ export const additionalCases = [
     challenge:
       'Die bestehende Lösung war ein gewachsenes Altsystem, dessen Datenmodell kaum dokumentiert war. Gleichzeitig wuchs MAVOX und brauchte mobile Erfassung im Einsatz – auch ohne stabiles Netz.',
     approach:
-      'Rocketbase analysierte und migrierte das Bestandssystem, baute ein neues Backend für Routen, Objekte und Mitarbeiter und entwickelte eine hybride App, die offline arbeitet und später synchronisiert.',
+      'RocketBase analysierte und migrierte das Bestandssystem, baute ein neues Backend für Routen, Objekte und Mitarbeiter und entwickelte eine hybride App, die offline arbeitet und später synchronisiert.',
     impact:
-      'Der Case zeigt, wie Rocketbase operative Prozesse im Außendienst digital abbildet, ohne die reale Einsatzsituation – von Handschuhen bis fehlendem Empfang – aus dem Blick zu verlieren.',
+      'Der Case zeigt, wie RocketBase operative Prozesse im Außendienst digital abbildet, ohne die reale Einsatzsituation – von Handschuhen bis fehlendem Empfang – aus dem Blick zu verlieren.',
     processFocus:
       'Einsatzplanung, Tourenführung und Leistungserfassung im mobilen Außendienst.',
     outcomes: [
@@ -405,7 +405,7 @@ export const additionalCases = [
     ],
     testimonial: {
       quote:
-        'Die Software von Rocketbase hat unsere Prozesse exakt so abgebildet, wie wir es benötigen, wodurch wir unsere Effizienz und Effektivität weiter steigern konnten.',
+        'Die Software von RocketBase hat unsere Prozesse exakt so abgebildet, wie wir es benötigen, wodurch wir unsere Effizienz und Effektivität weiter steigern konnten.',
       author: 'Christian Grupp',
       position: 'Head of IT',
       portraitKey: 'man-placeholder-1',
@@ -416,7 +416,7 @@ export const additionalCases = [
     client: 'bonprix',
     title: 'VK- und Sortimentsplanung aus Excel in eine kollaborative Plattform überführt',
     description:
-      'Rocketbase übertrug das in Excel entstandene VK-Planungsmodell und Sortimentsmengenmodell in eine datenbankgestützte Plattform mit Massenbearbeitung, Versionierung und verlässlichen Referenzwerten.',
+      'RocketBase übertrug das in Excel entstandene VK-Planungsmodell und Sortimentsmengenmodell in eine datenbankgestützte Plattform mit Massenbearbeitung, Versionierung und verlässlichen Referenzwerten.',
     kicker:
       'Die Flexibilität von Excel erhalten – und gleichzeitig Mehrbenutzerbetrieb, Datenqualität und Versionierung gewinnen.',
     highlights: [
@@ -427,7 +427,7 @@ export const additionalCases = [
     challenge:
       'Die Planungsmodelle waren in Excel über Jahre verfeinert worden. Der Betrieb stieß an Grenzen bei paralleler Arbeit, Schutz vor Formelüberschreibung und der Frage, wie Planwerte sauber festgeschrieben und später als Referenz genutzt werden.',
     approach:
-      'Rocketbase analysierte die Modelle und Abläufe, portierte sie in eine Plattform mit bekannten Excel-Bedienmustern und ergänzte Prüfmechanismen, Versionierung und Freigabeprozesse.',
+      'RocketBase analysierte die Modelle und Abläufe, portierte sie in eine Plattform mit bekannten Excel-Bedienmustern und ergänzte Prüfmechanismen, Versionierung und Freigabeprozesse.',
     impact:
       'Der Case zeigt, wie aus einem stark genutzten Tabellenwerkzeug eine dauerhaft betreibbare Plattform wird, die Controllerinnen und Controller weiter so arbeiten lässt, wie sie es gewohnt sind.',
     processFocus:
@@ -449,7 +449,7 @@ export const additionalCases = [
     ],
     testimonial: {
       quote:
-        'Rocketbase hat uns nicht nur mit einer leistungsfähigen Plattform überzeugt, sondern auch mit hervorragender Beratung und kreativen Lösungen.',
+        'RocketBase hat uns nicht nur mit einer leistungsfähigen Plattform überzeugt, sondern auch mit hervorragender Beratung und kreativen Lösungen.',
       author: 'Remin',
       position: 'Controlling Specialist',
       portraitKey: 'remin',
@@ -511,7 +511,7 @@ export const missionClaim = {
   eyebrow: 'Unsere Mission',
   headline: 'Wir bauen nicht einfach Software.',
   highlight: 'Wir verstehen Prozesse, denken sie weiter – und entwickeln Systeme, die Unternehmen wachsen lassen.',
-  lead: 'Acht Haltungen, die beschreiben, wie und warum wir bei Rocketbase arbeiten. Keine Floskeln, sondern die Prinzipien hinter jedem Projekt.',
+  lead: 'Acht Haltungen, die beschreiben, wie und warum wir bei RocketBase arbeiten. Keine Floskeln, sondern die Prinzipien hinter jedem Projekt.',
 };
 
 export const missionSections = [
@@ -529,7 +529,7 @@ export const missionSections = [
     timeline: [
       { year: '2009', label: 'Otto Group · Projektmanager' },
       { year: '2014', label: 'Otto Group · Architect' },
-      { year: '2016', label: 'Rocketbase · bonprix, statista, klingel u.a.' },
+      { year: '2016', label: 'RocketBase · bonprix, statista, klingel u.a.' },
       { year: 'heute', label: 'Plattformen, die in 5+ Jahren noch tragen' },
     ],
     body:
@@ -576,7 +576,7 @@ export const missionSections = [
         ],
       },
       b: {
-        kicker: 'Rocketbase',
+        kicker: 'RocketBase',
         title: 'Ein eingespieltes Team. Eine Verantwortung.',
         points: [
           'Beratung, Konzept und Umsetzung sitzen am selben Tisch',
@@ -662,7 +662,7 @@ export const missionSections = [
     visual: 'duo' as const,
     duo: {
       a: { label: 'Kunde', sub: 'Domäne, Markt, Realität' },
-      b: { label: 'Rocketbase', sub: 'Prozess, Architektur, Delivery' },
+      b: { label: 'RocketBase', sub: 'Prozess, Architektur, Delivery' },
     },
     body:
       'Wir verstehen uns nicht als externer Dienstleister, sondern als Partner. Gute Lösungen entstehen im Dialog – deshalb arbeiten wir bewusst in kleinen, fokussierten Teams direkt mit unseren Kunden zusammen. Weniger Übergaben, schnellere Entscheidungen, eine gemeinsame Verantwortung für das Ergebnis.',

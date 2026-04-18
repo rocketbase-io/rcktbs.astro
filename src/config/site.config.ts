@@ -49,7 +49,7 @@ export interface SiteConfig {
 const env = import.meta.env;
 
 const siteConfig: SiteConfig = {
-  name: 'Rocketbase',
+  name: 'RocketBase',
   description:
     'Digitalpartner für individuelle Software, Prozessoptimierung und nachhaltige Plattformen mit direkter Begleitung durch Marten Prieß.',
   url: env.SITE_URL || env.PUBLIC_SITE_URL || 'https://www.rocketbase.io',
@@ -68,7 +68,7 @@ const siteConfig: SiteConfig = {
   // Replace the SVG files there with your own branding
   branding: {
     logo: {
-      alt: 'Rocketbase Logo',
+      alt: 'RocketBase Logo',
     },
     favicon: {
       svg: '/favicon.svg',

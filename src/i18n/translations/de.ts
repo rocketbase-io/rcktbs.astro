@@ -1,13 +1,13 @@
 export const de = {
   site: {
-    name: 'Rocketbase',
+    name: 'RocketBase',
     description:
       'Digitalpartner für individuelle Software, Prozessoptimierung und nachhaltige Plattformen mit direkter Begleitung durch Marten Prieß.',
   },
 
   nav: {
     home: 'Start',
-    about: 'Über Rocketbase',
+    about: 'Über RocketBase',
     blog: 'Blog',
     contact: 'Kontakt',
     features: 'Leistungen',
@@ -31,7 +31,7 @@ export const de = {
   },
 
   footer: {
-    copyright: '© {year} Rocketbase. Alle Rechte vorbehalten.',
+    copyright: '© {year} RocketBase. Alle Rechte vorbehalten.',
     madeWith: 'Made with',
     maintainedBy: 'Betreut von',
     links: {
@@ -43,9 +43,9 @@ export const de = {
   },
 
   about: {
-    title: 'Über Rocketbase',
+    title: 'Über RocketBase',
     description:
-      'Rocketbase verbindet Konzern-Erfahrung, Prozessverständnis und pragmatische Softwareentwicklung für ambitionierte mittelständische Unternehmen.',
+      'RocketBase verbindet Konzern-Erfahrung, Prozessverständnis und pragmatische Softwareentwicklung für ambitionierte mittelständische Unternehmen.',
   },
 
   services: {
@@ -58,7 +58,7 @@ export const de = {
     meta: {
       title: 'Kontakt',
       description:
-        'Sprechen Sie direkt mit Rocketbase über Prozesse, individuelle Software und den nächsten sinnvollen Digitalisierungsschritt.',
+        'Sprechen Sie direkt mit RocketBase über Prozesse, individuelle Software und den nächsten sinnvollen Digitalisierungsschritt.',
     },
     hero: {
       badge: 'Direkter Kontakt',
@@ -84,7 +84,7 @@ export const de = {
       error: 'Die Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut.',
     },
     info: {
-      title: 'Direkte Wege zu Rocketbase',
+      title: 'Direkte Wege zu RocketBase',
       email: {
         label: 'E-Mail',
         value: 'marten@rocketbase.com',
