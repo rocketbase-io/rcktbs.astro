@@ -38,7 +38,7 @@ const directCollaborationDefinition =
   routeId="contact"
 >
   <section class="border-b border-border bg-background-secondary py-24">
-    <div class="container grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
+    <div class="container grid gap-24 lg:grid-cols-[1.05fr_0.95fr] lg:items-end lg:gap-12">
       <div data-reveal="fade-right" class="max-w-3xl">
         <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Kontakt</p>
         <h1 class="mt-4 font-display text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
@@ -98,15 +98,11 @@ const directCollaborationDefinition =
             href={`mailto:${contactLinks.email}`}
             class="rounded-[1.5rem] border border-white/10 bg-white/5 p-5 transition-colors hover:bg-white/10"
           >
-            <div class="flex items-center gap-4">
-              <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-brand-300">
-                <Icon name="mail" size="md" />
-              </div>
-              <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-on-invert-muted">E-Mail</p>
-                <p class="mt-1 text-base font-semibold text-on-invert">{contactLinks.email}</p>
-              </div>
-            </div>
+            <p class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-on-invert-muted">
+              <Icon name="mail" size="xs" class="text-brand-300" />
+              E-Mail
+            </p>
+            <p class="mt-2 break-words text-base font-semibold text-on-invert">{contactLinks.email}</p>
           </a>
 
           <a
@@ -114,15 +110,11 @@ const directCollaborationDefinition =
             target="_blank"
             class="rounded-[1.5rem] border border-white/10 bg-white/5 p-5 transition-colors hover:bg-white/10"
           >
-            <div class="flex items-center gap-4">
-              <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-brand-300">
-                <Icon name="clock" size="md" />
-              </div>
-              <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-on-invert-muted">Termin</p>
-                <p class="mt-1 text-base font-semibold text-on-invert">Erstgespräch mit Marten Prieß</p>
-              </div>
-            </div>
+            <p class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-on-invert-muted">
+              <Icon name="clock" size="xs" class="text-brand-300" />
+              Termin
+            </p>
+            <p class="mt-2 text-base font-semibold text-on-invert">Erstgespräch mit Marten Prieß</p>
           </a>
         </div>
 
