@@ -12,7 +12,6 @@ import siteConfig from '@/config/site.config';
 import { type Locale, defaultLocale, getLocaleFromPath } from '@/i18n/config';
 import { useTranslations } from '@/i18n/index';
 import type { RouteId } from '@/i18n/routes';
-import "aos/dist/aos.css";
 
 interface Props {
   title?: string;
@@ -135,36 +134,33 @@ if (includeOrgSchema) {
     </script>
 
     <style is:inline>
-      /* Before AOS boots, keep content visible. Doubled-attr specificity
-         beats AOS's own [data-aos^=fade][data-aos^=fade]{opacity:0} rule. */
-      html:not(.aos-ready) [data-aos][data-aos] {
-        opacity: 1 !important;
-        transform: none !important;
-        transition: none !important;
-      }
-      /* While AOS is active but not settled, hide for the reveal animation. */
-      html.aos-ready:not(.aos-settled) [data-aos][data-aos] {
+      /* ------------------------------------------------------------------
+         Reveal animations — JS-driven via IntersectionObserver.
+         Predictable on every browser, works on initially-visible elements,
+         easy to tune. Hidden state only applies after JS marks the page
+         ready (no FOUC when JS is disabled — content stays visible).
+         ------------------------------------------------------------------ */
+      html.reveal-ready [data-reveal] {
         opacity: 0;
-        transition-property: opacity, transform;
-        transition-duration: 800ms;
+        transform: translateY(60px);
+        transition:
+          opacity 900ms cubic-bezier(0.22, 1, 0.36, 1),
+          transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+        will-change: opacity, transform;
       }
-      html.aos-ready:not(.aos-settled) [data-aos][data-aos].aos-animate {
+      html.reveal-ready [data-reveal="fade-down"] { transform: translateY(-60px); }
+      html.reveal-ready [data-reveal="fade-left"] { transform: translateX(60px); }
+      html.reveal-ready [data-reveal="fade-right"] { transform: translateX(-60px); }
+      html.reveal-ready [data-reveal="zoom-in"] { transform: scale(0.85); }
+      html.reveal-ready [data-reveal="fade"] { transform: none; }
+
+      html.reveal-ready [data-reveal].is-in {
         opacity: 1;
         transform: none;
       }
-      html.aos-ready:not(.aos-settled) [data-aos="fade-up"]:not(.aos-animate) { transform: translateY(24px); }
-      html.aos-ready:not(.aos-settled) [data-aos="fade-down"]:not(.aos-animate) { transform: translateY(-24px); }
-      html.aos-ready:not(.aos-settled) [data-aos="fade-left"]:not(.aos-animate) { transform: translateX(24px); }
-      html.aos-ready:not(.aos-settled) [data-aos="fade-right"]:not(.aos-animate) { transform: translateX(-24px); }
-      html.aos-ready:not(.aos-settled) [data-aos="zoom-in"]:not(.aos-animate) { transform: scale(0.94); }
-      /* Once settled, force every data-aos element visible regardless of AOS state.
-         Doubled-attr specificity + !important wins over AOS's own opacity:0 rule. */
-      html.aos-settled [data-aos][data-aos] {
-        opacity: 1 !important;
-        transform: none !important;
-      }
+
       @media (prefers-reduced-motion: reduce) {
-        html [data-aos][data-aos] {
+        html.reveal-ready [data-reveal] {
           opacity: 1 !important;
           transform: none !important;
           transition: none !important;
@@ -173,28 +169,96 @@ if (includeOrgSchema) {
     </style>
 
     <script is:inline>
-      // Safety net: if AOS fails to boot (iOS Safari bfcache, stalled module
-      // load, slow network) the aos-settled class unconditionally reveals all
-      // [data-aos] content so the page never stays blank.
+      // Reveal on scroll — IntersectionObserver, one-shot per element.
+      // The reveal-ready class on <html> only gates the hidden state,
+      // so if JS fails to run for any reason, content stays visible.
       (function () {
-        var FALLBACK_MS = 600;
-        var settled = false;
-        var settle = function () {
-          if (settled) return;
-          settled = true;
-          document.documentElement.classList.add('aos-settled');
+        var html = document.documentElement;
+        var rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (rm) return;
+
+        html.classList.add('reveal-ready');
+
+        var reveal = function (el) {
+          if (el.classList.contains('is-in')) return;
+          var delay = 0;
+          var parent = el.parentElement;
+          if (parent) {
+            var idx = Array.prototype.indexOf.call(parent.children, el);
+            if (idx > 0 && idx < 8) delay = idx * 80;
+          }
+          if (delay) {
+            setTimeout(function () { el.classList.add('is-in'); }, delay);
+          } else {
+            el.classList.add('is-in');
+          }
         };
-        setTimeout(settle, FALLBACK_MS);
-        window.addEventListener('pageshow', function (e) {
-          if (e.persisted) settle();
-        });
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', function () {
-            setTimeout(settle, 200);
+
+        var run = function () {
+          var els = document.querySelectorAll('[data-reveal]');
+          if (!els.length) return;
+
+          // Trigger early: start revealing as soon as the element enters the
+          // lower third of the viewport. Using a large negative rootMargin
+          // on the top means the trigger zone is the bottom 66% of the
+          // screen — catches fast scrolls reliably.
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) {
+                reveal(e.target);
+                io.unobserve(e.target);
+              }
+            });
+          }, {
+            rootMargin: '-5% 0px -10% 0px',
+            threshold: [0, 0.01, 0.1],
           });
+
+          els.forEach(function (el) {
+            io.observe(el);
+            // Also reveal anything that is already in the viewport at page load
+            // (above-the-fold) — with a slight cascade so it feels alive.
+            var rect = el.getBoundingClientRect();
+            var vh = window.innerHeight || document.documentElement.clientHeight;
+            if (rect.top < vh && rect.bottom > 0) {
+              reveal(el);
+              io.unobserve(el);
+            }
+          });
+        };
+
+        // Fallback: poll on scroll in case IntersectionObserver misses an
+        // element during extreme fast scrolls (trackpad flings, momentum on
+        // iOS). Very cheap — only runs while something is still hidden.
+        var scrollCatchup = function () {
+          var pending = document.querySelectorAll('[data-reveal]:not(.is-in)');
+          if (!pending.length) {
+            window.removeEventListener('scroll', scrollCatchup);
+            return;
+          }
+          var vh = window.innerHeight || document.documentElement.clientHeight;
+          pending.forEach(function (el) {
+            var rect = el.getBoundingClientRect();
+            if (rect.top < vh * 0.9 && rect.bottom > 0) {
+              reveal(el);
+            }
+          });
+        };
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', run);
         } else {
-          setTimeout(settle, 200);
+          run();
         }
+
+        window.addEventListener('scroll', scrollCatchup, { passive: true });
+
+        // Safety net: after 2.5s, force-reveal anything still hidden
+        setTimeout(function () {
+          document.querySelectorAll('[data-reveal]:not(.is-in)').forEach(function (el) {
+            el.classList.add('is-in');
+          });
+        }, 2500);
       })();
     </script>
   </head>
@@ -210,48 +274,6 @@ if (includeOrgSchema) {
 
     <slot name="header" />
     <ScrollProgress />
-    <script>
-      import AOS from "aos";
-
-      const settle = () => {
-        document.documentElement.classList.add("aos-settled");
-      };
-
-      const init = () => {
-        try {
-          document.documentElement.classList.add("aos-ready");
-          AOS.init({
-            duration: 800,
-            once: true,
-            disable: () =>
-              window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-          });
-          // After AOS has had a chance to mark above-the-fold elements as
-          // animated, flip the safety class so nothing can stay invisible.
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              AOS.refresh();
-              setTimeout(settle, 900);
-            });
-          });
-        } catch {
-          settle();
-        }
-      };
-
-      init();
-      window.addEventListener("pageshow", (e) => {
-        const evt = e as PageTransitionEvent;
-        if (evt.persisted) {
-          settle();
-          try {
-            AOS.refreshHard();
-          } catch {
-            /* ignore */
-          }
-        }
-      });
-    </script>
     <main id="main-content" class="flex-1">
       <slot />
     </main>

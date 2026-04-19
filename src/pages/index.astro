@@ -147,7 +147,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
     />
     <div class="container relative z-10 flex min-h-screen flex-col justify-center pt-24 pb-14 max-[760px]:pt-20 max-[760px]:pb-10 sm:pt-30 lg:pt-28">
       <div class="hero-landing-grid grid gap-10 max-[760px]:gap-8 lg:grid-cols-[minmax(0,1.02fr)_minmax(380px,0.92fr)] lg:items-center lg:gap-12">
-        <div data-aos="fade-right" class="hero-landing-copy max-w-3xl will-change-transform" data-hero-copy>
+        <div data-reveal="fade-right" class="hero-landing-copy max-w-3xl will-change-transform" data-hero-copy>
           <h1 class="hero-landing-title font-display text-foreground max-w-5xl text-4xl font-bold tracking-tight max-[760px]:text-[2.15rem] sm:text-5xl xl:text-6xl">
             Wir entwickeln nicht einfach Software.
             <span class="mt-2 block text-brand-500">Wir denken Prozesse weiter.</span>
@@ -159,7 +159,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
             wie technisch mitdenkt.
           </p>
 
-          <div data-aos="fade-up" data-aos-delay="80" class="hero-landing-actions mt-8 flex flex-wrap gap-4 max-[760px]:mt-6 max-[760px]:gap-3">
+          <div data-reveal class="hero-landing-actions mt-8 flex flex-wrap gap-4 max-[760px]:mt-6 max-[760px]:gap-3">
             <Button size="lg" href={contactLinks.cal} target="_blank">
               Erstgespräch buchen
               <Icon name="arrow-up-right" size="sm" />
@@ -173,17 +173,17 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
           <div
             class="hero-landing-facts text-foreground-muted mt-10 grid gap-4 text-sm max-[760px]:mt-7 max-[760px]:gap-4 max-[760px]:text-[13px] sm:grid-cols-3"
           >
-            <div data-aos="fade-up" data-aos-delay="120">
+            <div data-reveal>
               <p class="text-foreground font-semibold">Seit 2016</p>
               <p class="mt-2 leading-6">Aufbau von Digitalprodukten und internen Plattformen.</p>
             </div>
-            <div data-aos="fade-up" data-aos-delay="190">
+            <div data-reveal>
               <p class="text-foreground font-semibold">bonprix &amp; Statista</p>
               <p class="mt-2 leading-6">
                 Konzern-Erfahrung, übertragen auf mittelständische Realitäten.
               </p>
             </div>
-            <div data-aos="fade-up" data-aos-delay="260">
+            <div data-reveal>
               <p class="text-foreground font-semibold">Discovery bis Betrieb</p>
               <p class="mt-2 leading-6">
                 Konzeption, Delivery, Integration und Weiterentwicklung aus einer Hand.
@@ -192,7 +192,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
           </div>
         </div>
 
-        <div data-aos="fade-left" class="hero-landing-visual relative will-change-transform max-[760px]:px-0 lg:pl-2" data-hero-visual>
+        <div data-reveal="fade-left" class="hero-landing-visual relative will-change-transform max-[760px]:px-0 lg:pl-2" data-hero-visual>
           <div class="rb-float-slow bg-brand-300/14 absolute -top-4 right-8 h-44 w-44 rounded-full blur-3xl" />
           <div class="relative mx-auto w-full max-w-xl">
             <article class="hero-landing-card border-border/70 bg-card/90 relative overflow-hidden rounded-[2.3rem] border p-5 shadow-[0_28px_70px_rgba(34,43,74,0.12)] backdrop-blur max-[760px]:rounded-[2rem] max-[760px]:p-4 sm:p-6">
@@ -269,7 +269,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
     <div class="bg-brand-300/10 absolute left-0 top-1/3 h-80 w-80 rounded-full blur-3xl" />
     <div class="container relative z-10 grid items-center gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
       <div
-        data-aos="fade-right"
+        data-reveal="fade-right"
         class="group relative mx-auto w-full max-w-[220px] sm:max-w-[260px] lg:max-w-none"
       >
         <div class="bg-brand-300/15 absolute -inset-3 -z-10 rounded-[2rem] blur-2xl" aria-hidden="true" />
@@ -286,7 +286,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
         </div>
       </div>
 
-      <div data-aos="fade-left">
+      <div data-reveal="fade-left">
         <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Über RocketBase</p>
         <h2 class="font-display text-foreground mt-6 text-3xl font-bold tracking-tight sm:text-4xl">
           Marten Prieß
@@ -304,7 +304,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
           Erfahrung aus Konzernprojekten, Produktentwicklung und Mittelstandsvorhaben fließt so in
           jedes Projekt ein, ohne dass Kommunikation unnötig aufgebläht wird.
         </p>
-        <div data-aos="fade-up" class="mt-8 flex flex-wrap gap-4">
+        <div data-reveal class="mt-8 flex flex-wrap gap-4">
           <Button href={contactLinks.cal} target="_blank">
             Erstgespräch buchen
             <Icon name="arrow-up-right" size="sm" />
@@ -322,7 +322,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
     <div class="bg-grid-pattern pointer-events-none absolute inset-0 opacity-25 [mask-image:radial-gradient(circle_at_center,black_24%,transparent_78%)]" />
     <div class="container relative z-10 space-y-14">
       <div class="grid gap-10 xl:grid-cols-[1.05fr_0.95fr] xl:items-end xl:gap-16">
-        <div data-aos="fade-right">
+        <div data-reveal="fade-right">
           <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Warum RocketBase</p>
           <h2 class="font-display text-foreground mt-4 max-w-4xl text-3xl font-bold tracking-tight sm:text-4xl">
             Keine verlängerte Werkbank.
@@ -335,7 +335,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
           </p>
         </div>
 
-        <div data-aos="fade-left" class="border-brand-300/70 hidden max-w-2xl border-l-2 pl-5 sm:block xl:justify-self-end">
+        <div data-reveal="fade-left" class="border-brand-300/70 hidden max-w-2xl border-l-2 pl-5 sm:block xl:justify-self-end">
           <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
             Kurz gesagt
           </p>
@@ -353,8 +353,8 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
         {
           topStrengths.map((strength, index) => (
             <article
-              data-aos="fade-left"
-              data-aos-delay={index * 70}
+              data-reveal="fade-left"
+
               data-why-card
               class:list={[
                 'why-rocketbase-card rounded-[2rem] border p-8 transition-all duration-300',
@@ -383,7 +383,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
 
   <section class="border-border relative overflow-hidden border-b py-24 lg:py-32">
     <div class="container">
-      <a data-aos="zoom-in" href={workUrl} class="how-we-work group block" data-how-we-work>
+      <a data-reveal="zoom-in" href={workUrl} class="how-we-work group block" data-how-we-work>
         <div class="relative overflow-hidden py-2 transition-all duration-500">
           <div class="bg-brand-300/12 absolute top-12 right-0 h-48 w-48 rounded-full blur-3xl transition-all duration-500 group-hover:bg-brand-300/20" />
           <div class="relative space-y-10">
@@ -402,7 +402,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
 
               <div class="relative mx-auto w-full max-w-2xl xl:pt-2">
                 <div class="relative min-h-[22rem] sm:min-h-[27rem]">
-                  <div class="how-we-work-after absolute right-0 top-0 z-10 w-[74%] sm:w-[72%]" data-aos="fade-left" data-aos-delay="120">
+                  <div class="how-we-work-after absolute right-0 top-0 z-10 w-[74%] sm:w-[72%]" data-reveal="fade-left">
                     <div class="relative overflow-hidden rounded-[2.4rem] shadow-[0_30px_70px_rgba(34,43,74,0.16)] transition-all duration-500 group-hover:z-20 group-hover:-translate-y-2 group-hover:scale-[1.03] group-hover:shadow-[0_38px_90px_rgba(34,43,74,0.22)]">
                       <img
                         src={toolsAfter.src}
@@ -416,7 +416,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
                     </div>
                   </div>
 
-                  <div class="how-we-work-before absolute bottom-0 left-0 z-0 w-[48%] sm:w-[46%]" data-aos="fade-right" data-aos-delay="60">
+                  <div class="how-we-work-before absolute bottom-0 left-0 z-0 w-[48%] sm:w-[46%]" data-reveal="fade-right">
                     <div class="relative overflow-hidden rounded-[2rem] shadow-[0_20px_45px_rgba(34,43,74,0.08)] transition-all duration-500 group-hover:translate-y-2 group-hover:scale-[0.97] group-hover:opacity-85 group-hover:shadow-[0_16px_30px_rgba(34,43,74,0.08)]">
                       <img
                         src={toolsBefore.src}
@@ -434,7 +434,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
             </div>
 
             <div class="hidden gap-8 border-t border-border/70 pt-8 sm:grid lg:grid-cols-2 lg:gap-12">
-              <div data-aos="fade-up" data-aos-delay="80">
+              <div data-reveal>
                 <p class="text-foreground text-lg font-semibold">Vorher</p>
                 <p class="text-foreground-secondary mt-3 max-w-2xl text-base leading-7">
                   Gewachsener Tool-Zoo: Bestellungen in Excel, Kunden im CRM, Versand in Trello,
@@ -443,7 +443,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
                 </p>
               </div>
 
-              <div data-aos="fade-up" data-aos-delay="140">
+              <div data-reveal>
                 <p class="text-brand-600 text-lg font-semibold">Mit RocketBase</p>
                 <p class="text-foreground-secondary mt-3 max-w-2xl text-base leading-7">
                   Eine integrierte Lösung: Ein PIM, ein ERP-Backend, ein Dashboard. Bestellungen,
@@ -533,7 +533,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
 
   <section class="border-border hidden border-b py-28 sm:block lg:py-36">
     <div class="container">
-      <div data-aos="fade-up" class="max-w-3xl">
+      <div data-reveal class="max-w-3xl">
         <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Typische Vorhaben</p>
         <h2 class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
           Lösungen für Prozesse,
@@ -549,8 +549,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
         {
           useCaseTeasers.map((useCase, index) => (
             <article
-              data-aos="fade-up"
-              data-aos-delay={index * 60}
+              data-reveal
               class="group relative overflow-hidden rounded-[1.8rem] border border-border bg-card p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_24px_50px_rgba(34,43,74,0.12)] sm:p-7"
             >
               <div class="flex items-center gap-4 sm:block">
@@ -565,7 +564,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
         }
       </div>
 
-      <div data-aos="fade-up" class="mt-10 flex justify-center">
+      <div data-reveal class="mt-10 flex justify-center">
         <Button variant="outline" href={servicesUrl}>
           Alle Leistungen im Detail
           <Icon name="arrow-right" size="sm" />
@@ -576,7 +575,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
 
   <section class="border-border bg-background-secondary border-b py-28 lg:py-36">
     <div class="container grid gap-14 lg:grid-cols-[0.84fr_1.16fr] lg:items-start">
-      <div data-aos="fade-right" class="lg:sticky lg:top-28">
+      <div data-reveal="fade-right" class="lg:sticky lg:top-28">
         <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Leistungen</p>
         <h2 class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
           Beratung, Konzeption und Umsetzung
@@ -591,7 +590,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
         </div>
       </div>
 
-      <div class="space-y-6" data-aos="fade-left">
+      <div class="space-y-6" data-reveal="fade-left">
         {
           serviceAreas.map((service, index) => (
             <article class="rounded-[2rem] border border-border bg-card p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(34,43,74,0.08)]">
@@ -625,7 +624,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
 
   <section class="border-border border-b py-28 lg:py-36">
     <div class="container">
-      <div data-aos="fade-up" class="max-w-3xl">
+      <div data-reveal class="max-w-3xl">
         <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Referenzen</p>
         <h2 class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
           Konzern-Erfahrung, sauber übersetzt
@@ -639,7 +638,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
       </div>
 
       <div class="mt-16 grid gap-6 lg:grid-cols-3 lg:items-stretch">
-        <article data-aos="fade-right" class="group flex flex-col overflow-hidden rounded-[2rem] border border-border bg-card shadow-[0_22px_55px_rgba(34,43,74,0.08)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_30px_70px_rgba(34,43,74,0.12)]">
+        <article data-reveal="fade-right" class="group flex flex-col overflow-hidden rounded-[2rem] border border-border bg-card shadow-[0_22px_55px_rgba(34,43,74,0.08)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_30px_70px_rgba(34,43,74,0.12)]">
           <a href={getReferenceUrl(featuredCases[0].slug)} class="flex h-full flex-col">
             <div class="overflow-hidden">
               {featuredCases[0].image && (
@@ -680,8 +679,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
         {
           featuredCases.slice(1).map((item, index) => (
             <article
-              data-aos="fade-left"
-              data-aos-delay={index * 70}
+              data-reveal="fade-left"
               class="group flex h-full flex-col overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(34,43,74,0.1)]"
             >
               <a href={getReferenceUrl(item.slug)} class="flex h-full flex-col">
@@ -727,7 +725,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
         }
       </div>
 
-      <div class="mt-10 flex justify-start" data-aos="fade-up">
+      <div class="mt-10 flex justify-start" data-reveal>
         <Button variant="outline" href={referencesUrl}>
           Alle Referenzen ansehen
           <Icon name="arrow-right" size="sm" />
@@ -739,7 +737,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
   {testimonialItems.length > 0 && (
     <section class="border-border border-b py-20 lg:py-24">
       <div class="container max-w-2xl">
-        <header class="mb-10" data-aos="fade-up">
+        <header class="mb-10" data-reveal>
           <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
             Stimmen aus Projekten
           </p>
@@ -747,7 +745,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
             O-Töne unserer Kunden.
           </h2>
         </header>
-        <div data-aos="fade-up" data-aos-delay="60">
+        <div data-reveal>
           <TestimonialCarousel items={testimonialItems} />
         </div>
       </div>
@@ -756,7 +754,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
 
   <section class="border-border bg-surface-invert text-on-invert border-b py-28 lg:py-36">
     <div class="container grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-      <div data-aos="fade-right" class="lg:sticky lg:top-28">
+      <div data-reveal="fade-right" class="lg:sticky lg:top-28">
         <p class="text-brand-300 text-sm font-semibold tracking-[0.22em] uppercase">Projektverlauf</p>
         <h2 class="font-display mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
           Kein Sprung ins Unklare.
@@ -772,8 +770,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
         {
           processSteps.map((step, index) => (
             <article
-              data-aos="fade-left"
-              data-aos-delay={index * 70}
+              data-reveal="fade-left"
               class="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur sm:rounded-[2rem] sm:p-7"
             >
               <div class="flex items-center gap-4 sm:grid sm:gap-5 md:grid-cols-[72px_1fr] md:items-start">
@@ -793,7 +790,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
   <section class="border-border bg-background-secondary border-b py-28 lg:py-36">
     <div class="container max-w-6xl">
       <div class="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
-        <div data-aos="fade-right">
+        <div data-reveal="fade-right">
           <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
             Presales mit Substanz
           </p>
@@ -807,7 +804,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
         </div>
 
         <div
-          data-aos="fade-left"
+          data-reveal="fade-left"
           class="rounded-[2.2rem] border border-border bg-card p-8 shadow-[0_22px_55px_rgba(34,43,74,0.08)]"
         >
           <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
@@ -816,7 +813,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
           <ul class="text-foreground-secondary mt-6 space-y-4 text-base leading-7">
             {
               discoveryOffer.deliverables.map((item, index) => (
-                <li data-aos="zoom-in" data-aos-delay={index * 60} class="flex gap-3">
+                <li data-reveal="zoom-in" class="flex gap-3">
                   <Icon name="check-circle" size="sm" class="text-brand-500 mt-1 shrink-0" />
                   <span>{item}</span>
                 </li>
@@ -838,7 +835,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
     <div class="container">
       <div class="overflow-hidden rounded-[2.8rem] border border-border bg-background-secondary p-8 shadow-[0_24px_60px_rgba(34,43,74,0.08)] sm:p-10 lg:p-12">
         <div class="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
-          <div data-aos="fade-right">
+          <div data-reveal="fade-right">
             <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Nächster Schritt</p>
             <h2 class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
               Von Standardsoftware zur Lösung,
@@ -851,7 +848,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
             </p>
           </div>
 
-          <div data-aos="fade-left" class="rounded-[2rem] border border-border bg-card p-7">
+          <div data-reveal="fade-left" class="rounded-[2rem] border border-border bg-card p-7">
             <div class="text-foreground-muted space-y-4 text-sm">
               <div class="flex items-center gap-3">
                 <Icon name="clock" size="sm" class="text-brand-500" />

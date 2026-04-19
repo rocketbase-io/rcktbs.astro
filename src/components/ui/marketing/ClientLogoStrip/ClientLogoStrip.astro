@@ -42,15 +42,15 @@ const sectionBg = variant === 'light' ? 'bg-background' : 'bg-background-seconda
     {heading && (
       <p
         class="text-foreground-muted mb-8 text-center text-xs font-semibold uppercase tracking-[0.22em]"
-        data-aos="fade-up"
+        data-reveal
       >
         {heading}
       </p>
     )}
     <ul
       class="flex flex-wrap items-center justify-center gap-x-10 gap-y-6 sm:gap-x-14 lg:gap-x-16"
-      data-aos="fade-up"
-      data-aos-delay="60"
+      data-reveal
+
     >
       {resolved.map((logo) => {
         const content = logo.image ? (
