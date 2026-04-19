@@ -135,27 +135,36 @@ if (includeOrgSchema) {
     </script>
 
     <style is:inline>
-      [data-aos] {
+      /* Before AOS boots, keep content visible. Doubled-attr specificity
+         beats AOS's own [data-aos^=fade][data-aos^=fade]{opacity:0} rule. */
+      html:not(.aos-ready) [data-aos][data-aos] {
         opacity: 1 !important;
         transform: none !important;
         transition: none !important;
       }
-      html.aos-ready:not(.aos-settled) [data-aos] {
-        opacity: 0 !important;
+      /* While AOS is active but not settled, hide for the reveal animation. */
+      html.aos-ready:not(.aos-settled) [data-aos][data-aos] {
+        opacity: 0;
         transition-property: opacity, transform;
         transition-duration: 800ms;
       }
-      html.aos-ready:not(.aos-settled) [data-aos].aos-animate {
+      html.aos-ready:not(.aos-settled) [data-aos][data-aos].aos-animate {
+        opacity: 1;
+        transform: none;
+      }
+      html.aos-ready:not(.aos-settled) [data-aos="fade-up"]:not(.aos-animate) { transform: translateY(24px); }
+      html.aos-ready:not(.aos-settled) [data-aos="fade-down"]:not(.aos-animate) { transform: translateY(-24px); }
+      html.aos-ready:not(.aos-settled) [data-aos="fade-left"]:not(.aos-animate) { transform: translateX(24px); }
+      html.aos-ready:not(.aos-settled) [data-aos="fade-right"]:not(.aos-animate) { transform: translateX(-24px); }
+      html.aos-ready:not(.aos-settled) [data-aos="zoom-in"]:not(.aos-animate) { transform: scale(0.94); }
+      /* Once settled, force every data-aos element visible regardless of AOS state.
+         Doubled-attr specificity + !important wins over AOS's own opacity:0 rule. */
+      html.aos-settled [data-aos][data-aos] {
         opacity: 1 !important;
         transform: none !important;
       }
-      html.aos-ready:not(.aos-settled) [data-aos="fade-up"]:not(.aos-animate) { transform: translateY(24px) !important; }
-      html.aos-ready:not(.aos-settled) [data-aos="fade-down"]:not(.aos-animate) { transform: translateY(-24px) !important; }
-      html.aos-ready:not(.aos-settled) [data-aos="fade-left"]:not(.aos-animate) { transform: translateX(24px) !important; }
-      html.aos-ready:not(.aos-settled) [data-aos="fade-right"]:not(.aos-animate) { transform: translateX(-24px) !important; }
-      html.aos-ready:not(.aos-settled) [data-aos="zoom-in"]:not(.aos-animate) { transform: scale(0.94) !important; }
       @media (prefers-reduced-motion: reduce) {
-        html.aos-ready [data-aos] {
+        html [data-aos][data-aos] {
           opacity: 1 !important;
           transform: none !important;
           transition: none !important;
@@ -164,29 +173,27 @@ if (includeOrgSchema) {
     </style>
 
     <script is:inline>
-      // Safety net: ensure AOS content becomes visible even if JS/AOS fails to
-      // fire (iOS Safari bfcache, stalled module loads, etc.). The aos-settled
-      // class makes :not(.aos-settled) rules above stop hiding elements.
+      // Safety net: if AOS fails to boot (iOS Safari bfcache, stalled module
+      // load, slow network) the aos-settled class unconditionally reveals all
+      // [data-aos] content so the page never stays blank.
       (function () {
-        var FALLBACK_MS = 2000;
+        var FALLBACK_MS = 600;
+        var settled = false;
         var settle = function () {
+          if (settled) return;
+          settled = true;
           document.documentElement.classList.add('aos-settled');
         };
-        // Fire settle automatically after a hard deadline
         setTimeout(settle, FALLBACK_MS);
-        // Fire settle immediately on bfcache restore
         window.addEventListener('pageshow', function (e) {
           if (e.persisted) settle();
         });
-        // Also settle once DOM is idle
-        if (document.readyState === 'complete') {
-          requestAnimationFrame(function () {
-            setTimeout(settle, 1500);
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(settle, 200);
           });
         } else {
-          window.addEventListener('load', function () {
-            setTimeout(settle, 1500);
-          });
+          setTimeout(settle, 200);
         }
       })();
     </script>
@@ -206,23 +213,42 @@ if (includeOrgSchema) {
     <script>
       import AOS from "aos";
 
+      const settle = () => {
+        document.documentElement.classList.add("aos-settled");
+      };
+
       const init = () => {
-        document.documentElement.classList.add("aos-ready");
-        AOS.init({
-          duration: 800,
-          once: true,
-          disable: () =>
-            window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-        });
+        try {
+          document.documentElement.classList.add("aos-ready");
+          AOS.init({
+            duration: 800,
+            once: true,
+            disable: () =>
+              window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+          });
+          // After AOS has had a chance to mark above-the-fold elements as
+          // animated, flip the safety class so nothing can stay invisible.
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              AOS.refresh();
+              setTimeout(settle, 900);
+            });
+          });
+        } catch {
+          settle();
+        }
       };
 
       init();
       window.addEventListener("pageshow", (e) => {
         const evt = e as PageTransitionEvent;
         if (evt.persisted) {
-          // bfcache restore: force everything visible and re-run AOS
-          document.documentElement.classList.add("aos-settled");
-          AOS.refreshHard();
+          settle();
+          try {
+            AOS.refreshHard();
+          } catch {
+            /* ignore */
+          }
         }
       });
     </script>
