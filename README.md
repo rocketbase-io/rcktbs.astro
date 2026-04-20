@@ -1,120 +1,107 @@
 <p align="center">
-  <img src="src/assets/branding/logo-full.svg" alt="Velocity" width="370" />
+  <a href="https://www.rocketbase.io">
+    <img src="src/assets/rocketbase/logo.svg" alt="Rocketbase" width="280" />
+  </a>
 </p>
 
 <p align="center">
-  <strong>Astro 6 Boilerplate</strong> — A production-ready starter template built on Astro 6 and Tailwind CSS v4.
+  <strong>rocketbase.io</strong> — Digitalpartner für individuelle Software, Prozessoptimierung und nachhaltige Plattformen.
 </p>
 
 <p align="center">
-  <a href="https://astro.build"><img src="https://img.shields.io/badge/Astro-6.0-bc52ee?logo=astro&logoColor=white" alt="Astro" /></a>
-  <a href="https://tailwindcss.com"><img src="https://img.shields.io/badge/Tailwind-4.0-38bdf8?logo=tailwindcss&logoColor=white" alt="Tailwind CSS" /></a>
-  <a href="https://www.typescriptlang.org"><img src="https://img.shields.io/badge/TypeScript-5.7-3178c6?logo=typescript&logoColor=white" alt="TypeScript" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-22c55e" alt="License" /></a>
+  <a href="https://www.rocketbase.io">www.rocketbase.io</a>
 </p>
 
 ---
 
-## What's Included
+## Über diese Website
 
-- **57 components** across 7 categories — all accessible, typed, and dark-mode ready
-- **Design token system** with OKLCH colors, fluid typography, and two built-in themes
-- **SEO toolkit** — meta tags, JSON-LD, sitemap, robots.txt, and auto-generated OG images
-- **Content collections** — type-safe blog, pages, authors, and FAQs with Zod validation
-- **API routes** — contact form and newsletter endpoints with validation
-- **React islands** — optional client-side interactivity where needed
-- **i18n-ready** — locale-aware schemas; full i18n via the [CLI](https://github.com/southwellmedia/create-velocity-astro)
+Dies ist der Quellcode der öffentlichen Rocketbase-Website. Die Seite erklärt, was wir tun, wen wir begleiten und wie eine Zusammenarbeit aussieht — mit direktem Draht zu Marten Prieß.
+
+Inhaltlich im Fokus:
+
+- **Individuelle Software & Plattformen** — vom Konzept bis zum laufenden Betrieb
+- **Prozessoptimierung** — Digitalisierung entlang bestehender Abläufe
+- **Direkte Begleitung** — kein Agentur-Staffellauf, sondern ein Ansprechpartner
+- **Blog & Cases** — Einblicke in Projekte, Technik und Arbeitsweise
+
+Die Seite ist deutschsprachig (B2B, DACH) und wird über Netlify ausgeliefert.
 
 ---
 
-## Quick Start
+## Entwicklung
 
 ```bash
-# Clone
-git clone https://github.com/southwellmedia/velocity.git my-project
-cd my-project
-
-# Install (requires Node 22.12+)
+# Voraussetzungen: Node ≥ 22.12, pnpm
 pnpm install
 
-# Configure
+# .env anlegen (siehe .env.example)
 cp .env.example .env
 
-# Develop
+# Dev-Server
 pnpm dev
 ```
 
-Or use the CLI for the full experience including i18n:
+### Commands
 
-```bash
-pnpm create velocity-astro my-project
-```
-
----
-
-## Commands
-
-| Command | Description |
-|---------|-------------|
-| `pnpm dev` | Start dev server |
-| `pnpm build` | Production build |
-| `pnpm preview` | Preview production build |
-| `pnpm check` | Astro type checker |
+| Command | Beschreibung |
+|---------|--------------|
+| `pnpm dev` | Dev-Server starten |
+| `pnpm build` | Production-Build |
+| `pnpm preview` | Build lokal vorschauen |
+| `pnpm check` | Astro Type-Checker |
 | `pnpm lint` | ESLint |
+| `pnpm lint:fix` | ESLint mit Auto-Fix |
 | `pnpm format` | Prettier |
-| `pnpm test` | Vitest |
-| `pnpm test:e2e` | Playwright E2E |
+| `pnpm test` | Vitest (Unit) |
+| `pnpm test:e2e` | Playwright (E2E) |
+| `pnpm validate` | lint + check + build |
 
 ---
 
-## Project Structure
+## Stack & Dependencies
+
+- **[Astro 6](https://astro.build)** mit React Islands für interaktive Komponenten
+- **[Tailwind CSS v4](https://tailwindcss.com)** via `@tailwindcss/vite` — Design-Tokens in `src/styles/tokens/`
+- **TypeScript**, **MDX** für Inhalte, **CVA** für Component-Varianten
+- **Satori** für automatisch generierte OG-Images
+- **Pagefind** für die Volltextsuche
+- **Vitest** (Unit) und **Playwright** (E2E) für Tests
+- Deployment über **[Netlify](https://www.netlify.com)** (`@astrojs/netlify`)
+
+Aufgesetzt auf dem [**Velocity**](https://github.com/southwellmedia/velocity) Astro-Boilerplate von Southwell Media — inzwischen stark an Rocketbase angepasst.
+
+---
+
+## Projektstruktur
 
 ```
 src/
+  assets/         # Bilder, Logos, Client-Logos, Cases
   components/
-    ui/           # 31 UI components (form, data-display, feedback, overlay, etc.)
-    patterns/     # 7 composed patterns (ContactForm, SearchInput, StatCard, etc.)
-    layout/       # Header, Footer, ThemeToggle, Analytics
-    blog/         # ArticleHero, BlogCard, ShareButtons, RelatedPosts
-    landing/      # Credibility, TechStack, FeatureTabs, and more
-    seo/          # SEO, JsonLd, Breadcrumbs
-  content/        # Blog posts, authors, FAQs
-  config/         # Site and navigation config
-  styles/         # Global CSS and design tokens
-  pages/          # Routes, API endpoints, OG image generation
+    ui/           # Basis-UI-Komponenten
+    patterns/     # Zusammengesetzte Patterns (ContactForm, etc.)
+    layout/       # Header, Footer, ThemeToggle
+    blog/         # ArticleHero, BlogCard, ShareButtons
+    landing/      # Credibility, TechStack, FeatureTabs
+    seo/          # SEO, JSON-LD, Breadcrumbs
+  content/        # Blog-Posts, Autoren, FAQs (MDX/JSON)
+  config/         # site.config.ts, nav.config.ts
+  data/           # rocketbase.ts — Cases, Strengths, Kontaktdaten
+  i18n/           # Routen- und Locale-Config
+  styles/         # Global CSS, Tokens, Themes
+  pages/          # Routen, API-Endpoints, OG-Image-Generierung
 ```
 
 ---
 
-## Configuration
+## Konfiguration
 
-**Site config**: `src/config/site.config.ts` — name, description, URL, social links
-
-**Design tokens**: `src/styles/tokens/` — colors, typography, spacing
-
-**Themes**: `src/styles/themes/` — switch between `default` and `midnight`, or create your own
-
-**Environment**: `.env` — see `.env.example` for available variables
-
-View all components at `/components` in development.
+- **Site-Config**: `src/config/site.config.ts` — Name, Beschreibung, Kontakt, Social Links
+- **Navigation**: `src/config/nav.config.ts`
+- **Inhalte & Daten**: `src/data/rocketbase.ts` (Cases, Strengths, Service-Areas)
+- **Design-Tokens**: `src/styles/tokens/` (Farben, Typografie, Spacing)
+- **Themes**: `src/styles/themes/` (`default`, `midnight`)
+- **Environment**: `.env` — siehe `.env.example`
 
 ---
-
-## Contributing
-
-1. Fork the repo
-2. Create a feature branch
-3. Ensure `pnpm lint` and `pnpm check` pass
-4. Open a PR
-
----
-
-## License
-
-MIT — see [LICENSE](LICENSE) for details.
-
----
-
-**Links**: [Docs](https://github.com/southwellmedia/velocity-docs) | [CLI](https://github.com/southwellmedia/create-velocity-astro) | [Astro](https://docs.astro.build) | [Tailwind v4](https://tailwindcss.com/docs)
-
-**Built by [Southwell Media](https://southwellmedia.com)**
