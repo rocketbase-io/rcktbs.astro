@@ -690,8 +690,9 @@ export const missionSections = [
 ];
 
 export const contactLinks = {
-  email: 'marten@rocketbase.com',
+  email: 'marten@rocketbase.io',
   github: 'https://github.com/rocketbase-io',
   linkedin: 'https://www.linkedin.com/company/rocketbase-io/',
+  instagram: 'https://www.instagram.com/rocketbase.io/',
   cal: 'https://cal.com/rocketbase-marten/erstgespraech',
 };

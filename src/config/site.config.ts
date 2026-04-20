@@ -55,10 +55,19 @@ const siteConfig: SiteConfig = {
   url: env.SITE_URL || env.PUBLIC_SITE_URL || 'https://www.rocketbase.io',
   ogImage: '/og-default.png',
   author: 'Marten Prieß',
-  email: 'marten@rocketbase.com',
+  email: 'marten@rocketbase.io',
+  phone: '+49 4173 21995 20',
+  address: {
+    street: 'Am Ortsfelde 24',
+    city: 'Winsen (Luhe)',
+    state: 'Niedersachsen',
+    zip: '21423',
+    country: 'DE',
+  },
   socialLinks: [
     'https://github.com/rocketbase-io',
     'https://www.linkedin.com/company/rocketbase-io/',
+    'https://www.instagram.com/rocketbase.io/',
   ],
   verification: {
     google: env.GOOGLE_SITE_VERIFICATION,

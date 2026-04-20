@@ -87,7 +87,7 @@ export const de = {
       title: 'Direkte Wege zu RocketBase',
       email: {
         label: 'E-Mail',
-        value: 'marten@rocketbase.com',
+        value: 'marten@rocketbase.io',
       },
       github: {
         label: 'GitHub',

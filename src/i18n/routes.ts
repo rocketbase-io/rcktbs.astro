@@ -96,6 +96,16 @@ export const routes = {
     de: 'mission',
     nav: { show: true, order: 4, label: 'nav.mission' },
   },
+
+  // Legal pages (noindex, no nav)
+  imprint: {
+    de: 'impressum',
+    nav: { show: false, order: 90, label: 'nav.imprint' },
+  },
+  privacy: {
+    de: 'datenschutz',
+    nav: { show: false, order: 91, label: 'nav.privacy' },
+  },
 } as const satisfies Record<string, RouteDefinition>;
 
 /**

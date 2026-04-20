@@ -263,21 +263,21 @@ const directCollaborationDefinition =
   </section>
 
   <section class="border-t border-border bg-background-secondary py-24">
-    <div class="container grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-      <div data-reveal="zoom-in" class="rounded-[2rem] border border-border bg-card p-8 shadow-sm">
+    <div class="container space-y-10">
+      <div data-reveal="zoom-in" class="max-w-3xl">
         <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Alternative Kanäle</p>
-        <h2 class="mt-4 font-display text-3xl font-bold tracking-tight text-foreground">
+        <h2 class="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
           Wenn Sie lieber direkt schreiben oder einen Blick auf die Profile werfen möchten.
         </h2>
       </div>
 
-      <div  class="grid gap-4 sm:grid-cols-2">
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         <a
           data-reveal="zoom-in"
           href={contactLinks.linkedin}
           target="_blank"
           rel="noopener noreferrer"
-          class="rounded-[1.6rem] border border-border bg-card p-6 shadow-sm transition-colors hover:border-brand-300"
+          class="rounded-[1.6rem] border border-border bg-card p-8 shadow-sm transition-colors hover:border-brand-300"
         >
           <Icon name="linkedin" size="md" class="text-brand-500" />
           <p class="mt-5 text-lg font-semibold text-foreground">LinkedIn</p>
@@ -291,12 +291,26 @@ const directCollaborationDefinition =
           href={contactLinks.github}
           target="_blank"
           rel="noopener noreferrer"
-          class="rounded-[1.6rem] border border-border bg-card p-6 shadow-sm transition-colors hover:border-brand-300"
+          class="rounded-[1.6rem] border border-border bg-card p-8 shadow-sm transition-colors hover:border-brand-300"
         >
           <Icon name="github" size="md" class="text-brand-500" />
           <p class="mt-5 text-lg font-semibold text-foreground">GitHub</p>
           <p class="mt-2 text-sm leading-6 text-foreground-secondary">
             Technischer Hintergrund und Open-Source-Nähe statt reiner Agenturbehauptungen.
+          </p>
+        </a>
+
+        <a
+          data-reveal="zoom-in"
+          href={contactLinks.instagram}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="rounded-[1.6rem] border border-border bg-card p-8 shadow-sm transition-colors hover:border-brand-300"
+        >
+          <Icon name="instagram" size="md" class="text-brand-500" />
+          <p class="mt-5 text-lg font-semibold text-foreground">Instagram</p>
+          <p class="mt-2 text-sm leading-6 text-foreground-secondary">
+            Einblicke in den Alltag hinter den Projekten – mehr Inhalte folgen.
           </p>
         </a>
       </div>

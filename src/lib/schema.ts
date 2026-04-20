@@ -29,14 +29,29 @@ export function createOrganizationSchema(): WithContext<Organization> {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: siteConfig.name,
+    legalName: 'rocketbase.io software productions GmbH',
     url: siteConfig.url,
     logo: `${siteConfig.url}/favicon.svg`,
+    email: siteConfig.email,
     sameAs: siteConfig.socialLinks,
+    address: siteConfig.address
+      ? {
+          '@type': 'PostalAddress',
+          streetAddress: siteConfig.address.street,
+          postalCode: siteConfig.address.zip,
+          addressLocality: siteConfig.address.city,
+          addressRegion: siteConfig.address.state,
+          addressCountry: siteConfig.address.country,
+        }
+      : undefined,
     contactPoint: siteConfig.phone
       ? {
           '@type': 'ContactPoint',
           telephone: siteConfig.phone,
+          email: siteConfig.email,
           contactType: 'customer service',
+          areaServed: 'DE',
+          availableLanguage: ['de', 'en'],
         }
       : undefined,
   };

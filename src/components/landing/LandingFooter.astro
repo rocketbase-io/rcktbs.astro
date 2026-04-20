@@ -7,6 +7,8 @@ import rocketbaseLogo from '@/assets/rocketbase/logo.svg';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import { type Locale, getLocaleFromPath } from '@/i18n/config';
 import { useTranslations, getLocalizedPath } from '@/i18n/index';
+import { contactLinks } from '@/data/rocketbase';
+import siteConfig from '@/config/site.config';
 
 interface Props {
   locale?: Locale;
@@ -27,8 +29,9 @@ const navLinks = [
 ];
 
 const socialLinks = [
-  { label: 'GitHub', href: 'https://github.com/rocketbase-io' },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/rocketbase-io/' },
+  { label: 'LinkedIn', href: contactLinks.linkedin, icon: 'linkedin' },
+  { label: 'GitHub', href: contactLinks.github, icon: 'github' },
+  { label: 'Instagram', href: contactLinks.instagram, icon: 'instagram' },
 ];
 
 const legalLinks = [
@@ -40,45 +43,73 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="border-t border-border bg-background-secondary">
-  <div class="mx-auto max-w-6xl px-6">
+  <div class="mx-auto max-w-7xl px-6">
     <!-- Main row -->
-    <div class="flex flex-col gap-8 py-12 md:flex-row md:items-start md:justify-between">
+    <div class="grid gap-12 py-16 md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]">
       <!-- Brand -->
-      <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-5">
         <a href={getLocalizedPath('home', locale)} class="flex items-center">
-          <img src={rocketbaseLogo.src} alt="RocketBase" class="h-8 w-auto dark:invert" />
+          <img src={rocketbaseLogo.src} alt="RocketBase" class="h-10 w-auto dark:invert" />
         </a>
-        <p class="max-w-xs text-sm leading-6 text-foreground-muted">{t('site.description')}</p>
+        <p class="max-w-sm text-sm leading-6 text-foreground-muted">{t('site.description')}</p>
+        {siteConfig.address && (
+          <address class="not-italic text-xs leading-6 text-foreground-subtle">
+            rocketbase.io software productions GmbH<br />
+            {siteConfig.address.street}, {siteConfig.address.zip} {siteConfig.address.city}
+          </address>
+        )}
       </div>
 
-      <!-- Nav + Social -->
-      <div class="flex flex-wrap gap-12">
-        <div class="flex flex-col gap-3">
-          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-foreground-subtle">Navigation</p>
-          <nav class="flex flex-col gap-2">
-            {navLinks.map((link) => (
-              <a href={link.href} class="text-sm text-foreground-muted hover:text-foreground transition-colors">
-                {link.label}
-              </a>
-            ))}
-          </nav>
-        </div>
+      <!-- Navigation -->
+      <div class="flex flex-col gap-4">
+        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-foreground-subtle">Navigation</p>
+        <nav class="flex flex-col gap-2.5">
+          {navLinks.map((link) => (
+            <a href={link.href} class="text-sm text-foreground-muted hover:text-foreground transition-colors">
+              {link.label}
+            </a>
+          ))}
+        </nav>
+      </div>
 
-        <div class="flex flex-col gap-3">
-          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-foreground-subtle">Kontakt</p>
-          <nav class="flex flex-col gap-2">
-            {socialLinks.map((link) => (
-              <a
-                href={link.href}
-                class="text-sm text-foreground-muted hover:text-foreground transition-colors"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {link.label}
-              </a>
-            ))}
-          </nav>
+      <!-- Kontakt -->
+      <div class="flex flex-col gap-4">
+        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-foreground-subtle">Kontakt</p>
+        <div class="flex flex-col gap-2.5">
+          <a
+            href={`mailto:${contactLinks.email}`}
+            class="text-sm text-foreground-muted hover:text-foreground transition-colors"
+          >
+            {contactLinks.email}
+          </a>
+          <a
+            href={contactLinks.cal}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-sm text-foreground-muted hover:text-foreground transition-colors"
+          >
+            Erstgespräch buchen
+          </a>
         </div>
+      </div>
+
+      <!-- Social -->
+      <div class="flex flex-col gap-4">
+        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-foreground-subtle">Folgen</p>
+        <nav class="flex flex-col gap-2.5">
+          {socialLinks.map((link) => (
+            <a
+              href={link.href}
+              class="group inline-flex items-center gap-2.5 text-sm text-foreground-muted hover:text-foreground transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={link.label}
+            >
+              <Icon name={link.icon} size="sm" class="text-foreground-subtle group-hover:text-brand-500 transition-colors" />
+              <span>{link.label}</span>
+            </a>
+          ))}
+        </nav>
       </div>
     </div>
 
