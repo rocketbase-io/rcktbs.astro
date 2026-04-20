@@ -11,8 +11,6 @@ import {
   processSteps,
   serviceAreas,
 } from '@/data/rocketbase';
-import { cn } from '@/lib/cn';
-
 const locale = defaultLocale;
 const contactUrl = getLocalizedPath('contact', locale);
 const workUrl = getLocalizedPath('work', locale);
@@ -129,7 +127,7 @@ const useCases = [
 
       <div class="mt-16 grid gap-6 md:grid-cols-2">
         {
-          serviceAreas.map((service: any, index: number) => (
+          serviceAreas.map((service, index) => (
             <article
               data-reveal
               class="hover-lift group border-border bg-card hover:border-brand-300 relative overflow-hidden rounded-2xl border p-7 shadow-sm"
@@ -202,7 +200,7 @@ const useCases = [
 
       <div class="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {
-          useCases.map((useCase, index) => (
+          useCases.map((useCase) => (
             <article
               data-reveal
               class="hover-lift group border-border bg-card hover:border-brand-300 relative overflow-hidden rounded-2xl border p-6 shadow-sm"
@@ -242,7 +240,7 @@ const useCases = [
 
       <div class="mt-16 grid gap-4 md:grid-cols-4">
         {
-          processSteps.map((step: any, index: number) => (
+          processSteps.map((step, index) => (
             <article
               data-reveal
               class="hover-lift group border-border bg-card hover:border-brand-300 hover:bg-background-secondary relative flex flex-col rounded-2xl border p-6"

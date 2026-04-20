@@ -22,6 +22,7 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID;
   <>
     <script is:inline async src={`https://plausible.io/js/${plausibleScriptId}.js`}></script>
     <script is:inline>
+      /* eslint-disable prefer-rest-params */
       window.plausible = window.plausible || function () { (plausible.q = plausible.q || []).push(arguments); };
       plausible.init = plausible.init || function (i) { plausible.o = i || {}; };
       plausible.init();
@@ -78,8 +79,8 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID;
           window.lintrk = function(a, b) { window.lintrk.q.push([a, b]); };
           window.lintrk.q = [];
         }
-        var s = document.getElementsByTagName('script')[0];
-        var b = document.createElement('script');
+        const s = document.getElementsByTagName('script')[0];
+        const b = document.createElement('script');
         b.type = 'text/javascript';
         b.async = true;
         b.src = 'https://snap.licdn.com/li.lms-analytics/insight.min.js';

@@ -9,7 +9,7 @@ import ConsentBanner from '@/components/ui/overlay/ConsentBanner';
 import { createWebsiteSchema, createOrganizationSchema } from '@/lib/schema';
 import type { WebSite, Organization, WithContext } from 'schema-dts';
 import siteConfig from '@/config/site.config';
-import { type Locale, defaultLocale, getLocaleFromPath } from '@/i18n/config';
+import { type Locale, getLocaleFromPath } from '@/i18n/config';
 import { useTranslations } from '@/i18n/index';
 import type { RouteId } from '@/i18n/routes';
 
@@ -173,18 +173,18 @@ if (includeOrgSchema) {
       // The reveal-ready class on <html> only gates the hidden state,
       // so if JS fails to run for any reason, content stays visible.
       (function () {
-        var html = document.documentElement;
-        var rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const html = document.documentElement;
+        const rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         if (rm) return;
 
         html.classList.add('reveal-ready');
 
-        var reveal = function (el) {
+        const reveal = function (el) {
           if (el.classList.contains('is-in')) return;
-          var delay = 0;
-          var parent = el.parentElement;
+          let delay = 0;
+          const parent = el.parentElement;
           if (parent) {
-            var idx = Array.prototype.indexOf.call(parent.children, el);
+            const idx = Array.prototype.indexOf.call(parent.children, el);
             if (idx > 0 && idx < 8) delay = idx * 80;
           }
           if (delay) {
@@ -194,15 +194,15 @@ if (includeOrgSchema) {
           }
         };
 
-        var run = function () {
-          var els = document.querySelectorAll('[data-reveal]');
+        const run = function () {
+          const els = document.querySelectorAll('[data-reveal]');
           if (!els.length) return;
 
           // Trigger early: start revealing as soon as the element enters the
           // lower third of the viewport. Using a large negative rootMargin
           // on the top means the trigger zone is the bottom 66% of the
           // screen — catches fast scrolls reliably.
-          var io = new IntersectionObserver(function (entries) {
+          const io = new IntersectionObserver(function (entries) {
             entries.forEach(function (e) {
               if (e.isIntersecting) {
                 reveal(e.target);
@@ -218,8 +218,8 @@ if (includeOrgSchema) {
             io.observe(el);
             // Also reveal anything that is already in the viewport at page load
             // (above-the-fold) — with a slight cascade so it feels alive.
-            var rect = el.getBoundingClientRect();
-            var vh = window.innerHeight || document.documentElement.clientHeight;
+            const rect = el.getBoundingClientRect();
+            const vh = window.innerHeight || document.documentElement.clientHeight;
             if (rect.top < vh && rect.bottom > 0) {
               reveal(el);
               io.unobserve(el);
@@ -230,15 +230,15 @@ if (includeOrgSchema) {
         // Fallback: poll on scroll in case IntersectionObserver misses an
         // element during extreme fast scrolls (trackpad flings, momentum on
         // iOS). Very cheap — only runs while something is still hidden.
-        var scrollCatchup = function () {
-          var pending = document.querySelectorAll('[data-reveal]:not(.is-in)');
+        const scrollCatchup = function () {
+          const pending = document.querySelectorAll('[data-reveal]:not(.is-in)');
           if (!pending.length) {
             window.removeEventListener('scroll', scrollCatchup);
             return;
           }
-          var vh = window.innerHeight || document.documentElement.clientHeight;
+          const vh = window.innerHeight || document.documentElement.clientHeight;
           pending.forEach(function (el) {
-            var rect = el.getBoundingClientRect();
+            const rect = el.getBoundingClientRect();
             if (rect.top < vh * 0.9 && rect.bottom > 0) {
               reveal(el);
             }
