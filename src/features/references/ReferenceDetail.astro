@@ -86,20 +86,6 @@ const contextBlocks = [
   { label: 'Warum das relevant war', text: item.impact },
 ];
 
-const ogImageAsset = caseImages[item.slug as keyof typeof caseImages];
-const ogImage = ogImageAsset
-  ? (
-      await getImage({
-        src: ogImageAsset,
-        width: 1200,
-        height: 630,
-        format: 'png',
-        quality: 90,
-        fit: 'cover',
-      })
-    ).src
-  : undefined;
-
 const resolvedScreenshots = await Promise.all(
   (item.screenshots ?? []).map(async (shot) => {
     const image = screenshotImages[shot.key];
@@ -118,7 +104,6 @@ const resolvedScreenshots = await Promise.all(
 <PageLayout
   title={`${item.client} | Referenz`}
   description={item.description}
-  image={ogImage}
   imageAlt={`${item.client} – ${item.title}`}
   lang={locale}
 >

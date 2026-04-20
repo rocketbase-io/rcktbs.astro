@@ -33,16 +33,23 @@ const pageTitle = title ? `${title} — ${siteConfig.name}` : siteConfig.name;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 // Process image - priority: explicit prop > local screenshot override > generated OG template
+// Screenshots prefer .jpg (smaller for photographic content); fall back to .png if present.
 const pathnameSlug = Astro.url.pathname.replace(/^\/|\/$/g, '') || 'index';
 let ogImage: string;
 let ogImageSource: 'custom' | 'screenshot' | 'generated';
+let screenshotExt: 'jpg' | 'png' | null = null;
 if (image) {
   ogImage = image.startsWith('http') ? image : new URL(image, Astro.site).toString();
   ogImageSource = 'custom';
 } else {
-  const screenshotFsPath = resolve(process.cwd(), 'public/og-screenshots', `${pathnameSlug}.png`);
-  if (existsSync(screenshotFsPath)) {
-    ogImage = new URL(`/og-screenshots/${pathnameSlug}.png`, Astro.site).toString();
+  const screenshotsDir = resolve(process.cwd(), 'public/og-screenshots');
+  if (existsSync(resolve(screenshotsDir, `${pathnameSlug}.jpg`))) {
+    screenshotExt = 'jpg';
+  } else if (existsSync(resolve(screenshotsDir, `${pathnameSlug}.png`))) {
+    screenshotExt = 'png';
+  }
+  if (screenshotExt) {
+    ogImage = new URL(`/og-screenshots/${pathnameSlug}.${screenshotExt}`, Astro.site).toString();
     ogImageSource = 'screenshot';
   } else {
     ogImage = new URL(`/og/${pathnameSlug}.png`, Astro.site).toString();
@@ -73,9 +80,14 @@ function getImageType(url: string): string | undefined {
   const ext = url.match(/(\.\w+)(?:\?|$)/)?.[1]?.toLowerCase();
   return ext ? extToMime[ext] : undefined;
 }
-const ogImageType = ogImageSource === 'generated' || ogImageSource === 'screenshot'
-  ? 'image/png'
-  : getImageType(ogImage);
+// Generated case OGs (/og/referenzen/*) are JPEG, others are PNG.
+const isGeneratedCaseOG = ogImageSource === 'generated' && /\/og\/referenzen\//.test(ogImage);
+const ogImageType =
+  ogImageSource === 'generated'
+    ? isGeneratedCaseOG ? 'image/jpeg' : 'image/png'
+    : ogImageSource === 'screenshot'
+      ? screenshotExt === 'jpg' ? 'image/jpeg' : 'image/png'
+      : getImageType(ogImage);
 ---
 
 <!-- Primary Meta Tags -->

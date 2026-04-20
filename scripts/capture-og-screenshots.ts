@@ -15,8 +15,18 @@ import { spawn, type ChildProcess } from 'node:child_process';
 import { mkdir } from 'node:fs/promises';
 import { createServer } from 'node:net';
 import { resolve } from 'node:path';
+import sharp from 'sharp';
 
 const OUT_DIR = resolve(process.cwd(), 'public/og-screenshots');
+
+// Capture at a slightly larger desktop viewport (keeps OG aspect ratio
+// 1200:630) and downsample to the OG target size. 1440 keeps empty margins
+// small (container max-width is 1280px) while giving the hero content a
+// bit more breathing room than capturing at 1200 directly.
+const CAPTURE_WIDTH = 1440;
+const CAPTURE_HEIGHT = 756; // 1440 * 630/1200
+const OG_WIDTH = 1200;
+const OG_HEIGHT = 630;
 
 const TARGETS: Array<{ path: string; slug: string }> = [
   { path: '/', slug: 'index' },
@@ -25,6 +35,8 @@ const TARGETS: Array<{ path: string; slug: string }> = [
   { path: '/arbeitsweise', slug: 'arbeitsweise' },
   { path: '/referenzen', slug: 'referenzen' },
   { path: '/kontakt', slug: 'kontakt' },
+  { path: '/impressum', slug: 'impressum' },
+  { path: '/datenschutz', slug: 'datenschutz' },
 ];
 
 function findFreePort(): Promise<number> {
@@ -86,8 +98,8 @@ async function main() {
 
     const browser = await chromium.launch();
     const context = await browser.newContext({
-      viewport: { width: 1200, height: 630 },
-      deviceScaleFactor: 2,
+      viewport: { width: CAPTURE_WIDTH, height: CAPTURE_HEIGHT },
+      deviceScaleFactor: 1,
       colorScheme: 'light',
     });
     const page = await context.newPage();
@@ -115,11 +127,15 @@ async function main() {
             .forEach((el) => el.remove());
         });
         await page.waitForTimeout(800);
-        const outPath = resolve(OUT_DIR, `${slug}.png`);
-        await page.screenshot({
-          path: outPath,
-          clip: { x: 0, y: 0, width: 1200, height: 630 },
+        const outPath = resolve(OUT_DIR, `${slug}.jpg`);
+        const rawBuffer = await page.screenshot({
+          type: 'png',
+          clip: { x: 0, y: 0, width: CAPTURE_WIDTH, height: CAPTURE_HEIGHT },
         });
+        await sharp(rawBuffer)
+          .resize(OG_WIDTH, OG_HEIGHT, { fit: 'cover', kernel: 'lanczos3' })
+          .jpeg({ quality: 82, mozjpeg: true, progressive: true })
+          .toFile(outPath);
         console.log(`  ✓ ${outPath}`);
       } catch (err) {
         console.warn(`  ✗ ${url}: ${(err as Error).message}`);
