@@ -57,7 +57,7 @@ export const routes = {
     nav: { show: false, order: 4, label: 'nav.about' },
   },
   contact: {
-    de: 'contact',
+    de: 'kontakt',
     nav: { show: false, order: 5, label: 'nav.contact' },
   },
 
@@ -75,14 +75,13 @@ export const routes = {
 
   // Custom page: services
   services: {
-    de: 'services',
-    nav
-      : { show: true, order: 1, label: 'nav.services' },
+    de: 'leistungen',
+    nav: { show: true, order: 1, label: 'nav.services' },
   },
 
   // How we work
   work: {
-    de: 'work',
+    de: 'arbeitsweise',
     nav: { show: true, order: 2, label: 'nav.work' },
   },
 

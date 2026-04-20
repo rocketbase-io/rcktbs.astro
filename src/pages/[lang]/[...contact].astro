@@ -30,7 +30,7 @@ export function getStaticPaths() {
 const { lang } = Astro.params;
 
 if (!lang || !isValidLocale(lang)) {
-  return Astro.redirect('/contact');
+  return Astro.redirect('/kontakt');
 }
 
 const locale = lang as Locale;

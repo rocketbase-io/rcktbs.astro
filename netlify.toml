@@ -28,3 +28,51 @@
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200
+
+# Legacy rocketbase.io URL redirects (301)
+[[redirects]]
+  from = "/imprint"
+  to = "/impressum"
+  status = 301
+
+[[redirects]]
+  from = "/privacy"
+  to = "/datenschutz"
+  status = 301
+
+[[redirects]]
+  from = "/contact"
+  to = "/kontakt"
+  status = 301
+
+[[redirects]]
+  from = "/services"
+  to = "/leistungen"
+  status = 301
+
+[[redirects]]
+  from = "/work"
+  to = "/arbeitsweise"
+  status = 301
+
+[[redirects]]
+  from = "/leistungen/*"
+  to = "/leistungen"
+  status = 301
+
+[[redirects]]
+  from = "/referenzen/bonprix-pim"
+  to = "/referenzen/bonprix"
+  status = 301
+
+[[redirects]]
+  from = "/referenzen/statista-numera"
+  to = "/referenzen/statista"
+  status = 301
+
+# Catch-all: unknown routes redirect to landing page
+[[redirects]]
+  from = "/*"
+  to = "/"
+  status = 301
+  force = false

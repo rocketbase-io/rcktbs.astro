@@ -21,10 +21,10 @@ const OUT_DIR = resolve(process.cwd(), 'public/og-screenshots');
 const TARGETS: Array<{ path: string; slug: string }> = [
   { path: '/', slug: 'index' },
   { path: '/mission', slug: 'mission' },
-  { path: '/services', slug: 'services' },
-  { path: '/work', slug: 'work' },
+  { path: '/leistungen', slug: 'leistungen' },
+  { path: '/arbeitsweise', slug: 'arbeitsweise' },
   { path: '/referenzen', slug: 'referenzen' },
-  { path: '/contact', slug: 'contact' },
+  { path: '/kontakt', slug: 'kontakt' },
 ];
 
 function findFreePort(): Promise<number> {
