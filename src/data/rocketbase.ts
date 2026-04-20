@@ -189,10 +189,10 @@ export const cases = [
       'Aufbau einer individuellen Wachstumsplattform',
     ],
     screenshots: [
-      { key: 'fkc-quotes', alt: 'Angebote' },
-      { key: 'fkc-quote', alt: 'Angebotsdetail' },
-      { key: 'fkc-customer', alt: 'Kunde' },
-      { key: 'fkc-proposal', alt: 'Fertiges Angebot' },
+      { key: 'fkc-sales-kanban', alt: 'Sales-Pipeline im Kanban-Board' },
+      { key: 'fkc-proposal-calculate', alt: 'Angebotskalkulation' },
+      { key: 'fkc-poroposal-presentation', alt: 'Angebotspräsentation' },
+      { key: 'fkc-invoice', alt: 'Rechnungsansicht' },
     ],
   },
   {
@@ -227,8 +227,9 @@ export const cases = [
       'NFC-Login und Barcode-Integration',
     ],
     screenshots: [
-      { key: 'metall-planning', alt: 'Einsatzplanung' },
-      { key: 'metall-days', alt: 'Tagesansicht' },
+      { key: 'metall-dashboard', alt: 'Rollenbasiertes Dashboard' },
+      { key: 'metall-board', alt: 'Einsatzplanungs-Board' },
+      { key: 'metall-board-highlighted', alt: 'Einsatzplanung mit hervorgehobenem Auftrag' },
       { key: 'metall-order', alt: 'Auftragsübersicht' },
     ],
   },
