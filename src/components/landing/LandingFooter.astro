@@ -8,7 +8,6 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import { type Locale, getLocaleFromPath } from '@/i18n/config';
 import { useTranslations, getLocalizedPath } from '@/i18n/index';
 import { contactLinks } from '@/data/rocketbase';
-import siteConfig from '@/config/site.config';
 
 interface Props {
   locale?: Locale;
@@ -51,13 +50,12 @@ const year = new Date().getFullYear();
         <a href={getLocalizedPath('home', locale)} class="flex items-center">
           <img src={rocketbaseLogo.src} alt="RocketBase" class="h-10 w-auto dark:invert" />
         </a>
-        <p class="max-w-sm text-sm leading-6 text-foreground-muted">{t('site.description')}</p>
-        {siteConfig.address && (
-          <address class="not-italic text-xs leading-6 text-foreground-subtle">
-            rocketbase.io software productions GmbH<br />
-            {siteConfig.address.street}, {siteConfig.address.zip} {siteConfig.address.city}
-          </address>
-        )}
+        <p class="max-w-md font-display text-base leading-7 text-foreground-muted">
+          Wir bauen nicht einfach Software.
+          <span class="mt-1 block text-foreground">
+            Wir verstehen Prozesse, denken sie weiter – und entwickeln Systeme, die Unternehmen wachsen lassen.
+          </span>
+        </p>
       </div>
 
       <!-- Navigation -->
