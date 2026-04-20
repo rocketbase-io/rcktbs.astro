@@ -31,7 +31,7 @@ export default [
       '.netlify/',
       'public/pagefind/',
       // Scaffolding not yet wired into the site. Remove when activating.
-      'src/pages/[lang]/**',
+      'src/pages/\\[lang\\]/**',
       'src/pages/_blog/**',
       'src/layouts/BlogLayout.astro',
       'src/layouts/MarketingLayout.astro',
