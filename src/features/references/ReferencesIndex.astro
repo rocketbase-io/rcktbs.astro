@@ -118,7 +118,7 @@ const teaserCaptions: Record<string, string> = {
                   widths={[480, 720, 960, 1280]}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 560px"
                   formats={['avif', 'webp']}
-                  class="h-72 w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                  class="h-72 w-full object-cover transition-transform duration-500 will-change-transform [backface-visibility:hidden] group-hover:scale-[1.02]"
                   loading="lazy"
                 />
               </div>
@@ -218,7 +218,7 @@ const teaserCaptions: Record<string, string> = {
             <li>
               <a
                 href={`/referenzen/${item.slug}`}
-                class="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-sm"
+                class="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-[transform,border-color,box-shadow] duration-200 will-change-transform [backface-visibility:hidden] hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-sm"
               >
                 {item.slug in caseImages && (
                   <div class="overflow-hidden">
@@ -228,7 +228,7 @@ const teaserCaptions: Record<string, string> = {
                       widths={[320, 480, 640]}
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 360px"
                       formats={['avif', 'webp']}
-                      class="h-40 w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                      class="h-40 w-full object-cover transition-transform duration-500 will-change-transform [backface-visibility:hidden] group-hover:scale-[1.03]"
                       loading="lazy"
                     />
                   </div>

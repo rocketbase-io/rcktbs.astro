@@ -430,6 +430,28 @@
       0 20px 50px -15px color-mix(in oklab, var(--color-brand-500) 35%, transparent);
   }
 
+  /* -------------------------------------------------------------------
+     Flicker-free hover surface.
+     Apply to cards/tiles that use hover:-translate-y-* or group-hover
+     transforms. Solves two issues:
+     1. Cursor jitter at card edges (card translates out from under cursor,
+        hover flips off, card falls back, loop repeats).
+     2. Subpixel rendering flicker from compounded transforms.
+     ------------------------------------------------------------------- */
+  .hover-stable {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  .hover-stable::before {
+    content: '';
+    position: absolute;
+    inset: -6px -2px 0 -2px;
+    pointer-events: auto;
+    z-index: -1;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .hover-lift,
     .hover-glow {

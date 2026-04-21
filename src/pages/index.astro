@@ -273,7 +273,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
         class="group relative mx-auto w-full max-w-[220px] sm:max-w-[260px] lg:max-w-none"
       >
         <div class="bg-brand-300/15 absolute -inset-3 -z-10 rounded-[2rem] blur-2xl" aria-hidden="true" />
-        <div class="overflow-hidden rounded-[1.8rem] border border-border shadow-[0_20px_50px_rgba(34,43,74,0.12)] rotate-[-2.5deg] transition-transform duration-500 group-hover:rotate-0 group-hover:-translate-y-1">
+        <div class="overflow-hidden rounded-[1.8rem] border border-border shadow-[0_20px_50px_rgba(34,43,74,0.12)] rotate-[-2.5deg] transition-transform duration-500 will-change-transform [backface-visibility:hidden] group-hover:rotate-0 group-hover:-translate-y-1">
           <Picture
             src={founderImage}
             alt="Marten Prieß, Gründer von RocketBase"
@@ -403,11 +403,11 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
               <div class="relative mx-auto w-full max-w-2xl xl:pt-2">
                 <div class="relative min-h-[22rem] sm:min-h-[27rem]">
                   <div class="how-we-work-after absolute right-0 top-0 z-10 w-[74%] sm:w-[72%]" data-reveal="fade-left">
-                    <div class="relative overflow-hidden rounded-[2.4rem] shadow-[0_30px_70px_rgba(34,43,74,0.16)] transition-all duration-500 group-hover:z-20 group-hover:-translate-y-2 group-hover:scale-[1.03] group-hover:shadow-[0_38px_90px_rgba(34,43,74,0.22)]">
+                    <div class="relative overflow-hidden rounded-[2.4rem] shadow-[0_30px_70px_rgba(34,43,74,0.16)] transition-[transform,box-shadow] duration-500 will-change-transform [backface-visibility:hidden] group-hover:z-20 group-hover:-translate-y-2 group-hover:scale-[1.03] group-hover:shadow-[0_38px_90px_rgba(34,43,74,0.22)]">
                       <img
                         src={toolsAfter.src}
                         alt="Nachher: integriertes System mit klaren Datenflüssen"
-                        class="aspect-[4/3.8] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                        class="aspect-[4/3.8] w-full object-cover"
                       />
                       <div class="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/35 to-transparent" />
                       <div class="absolute right-5 bottom-5 rounded-full bg-white/88 px-3 py-1 text-[11px] font-semibold tracking-[0.22em] uppercase text-brand-700 backdrop-blur">
@@ -417,11 +417,11 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
                   </div>
 
                   <div class="how-we-work-before absolute bottom-0 left-0 z-0 w-[48%] sm:w-[46%]" data-reveal="fade-right">
-                    <div class="relative overflow-hidden rounded-[2rem] shadow-[0_20px_45px_rgba(34,43,74,0.08)] transition-all duration-500 group-hover:translate-y-2 group-hover:scale-[0.97] group-hover:opacity-85 group-hover:shadow-[0_16px_30px_rgba(34,43,74,0.08)]">
+                    <div class="relative overflow-hidden rounded-[2rem] shadow-[0_20px_45px_rgba(34,43,74,0.08)] transition-[transform,box-shadow,opacity] duration-500 will-change-transform [backface-visibility:hidden] group-hover:translate-y-2 group-hover:scale-[0.97] group-hover:opacity-85 group-hover:shadow-[0_16px_30px_rgba(34,43,74,0.08)]">
                       <img
                         src={toolsBefore.src}
                         alt="Vorher: gewachsener Tool-Zoo mit verteilten Systemen"
-                        class="aspect-[4/4.5] w-full object-cover grayscale transition-all duration-700 group-hover:scale-[1.03] group-hover:grayscale-[0.15]"
+                        class="aspect-[4/4.5] w-full object-cover grayscale transition-[filter] duration-500 group-hover:grayscale-[0.15]"
                       />
                       <div class="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/35 to-transparent" />
                       <div class="absolute right-4 bottom-4 rounded-full bg-white/80 px-3 py-1 text-[11px] font-semibold tracking-[0.22em] uppercase text-foreground backdrop-blur">
@@ -550,7 +550,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
           useCaseTeasers.map((useCase) => (
             <article
               data-reveal
-              class="group relative overflow-hidden rounded-[1.8rem] border border-border bg-card p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_24px_50px_rgba(34,43,74,0.12)] sm:p-7"
+              class="hover-stable group relative rounded-[1.8rem] border border-border bg-card p-5 shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_24px_50px_rgba(34,43,74,0.12)] sm:p-7"
             >
               <div class="flex items-center gap-4 sm:block">
                 <div class="bg-brand-50 text-brand-600 dark:bg-brand-900/30 dark:text-brand-100 group-hover:bg-brand-500 group-hover:text-on-invert inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-all duration-300 group-hover:scale-110 sm:h-12 sm:w-12">
@@ -593,7 +593,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
       <div class="space-y-6" data-reveal="fade-left">
         {
           serviceAreas.map((service, index) => (
-            <article class="rounded-[2rem] border border-border bg-card p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(34,43,74,0.08)]">
+            <article class="hover-stable relative rounded-[2rem] border border-border bg-card p-7 shadow-sm transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(34,43,74,0.08)]">
               <div class="grid gap-5 md:grid-cols-[68px_1fr] md:items-start">
                 <div class="text-brand-600 text-sm font-semibold">0{index + 1}</div>
                 <div>
@@ -638,7 +638,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
       </div>
 
       <div class="mt-16 grid gap-6 lg:grid-cols-3 lg:items-stretch">
-        <article data-reveal="fade-right" class="group flex flex-col overflow-hidden rounded-[2rem] border border-border bg-card shadow-[0_22px_55px_rgba(34,43,74,0.08)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_30px_70px_rgba(34,43,74,0.12)]">
+        <article data-reveal="fade-right" class="group flex flex-col overflow-hidden rounded-[2rem] border border-border bg-card shadow-[0_22px_55px_rgba(34,43,74,0.08)] transition-[transform,box-shadow] duration-500 hover:-translate-y-1 hover:shadow-[0_30px_70px_rgba(34,43,74,0.12)] will-change-transform [backface-visibility:hidden]">
           <a href={getReferenceUrl(featuredCases[0].slug)} class="flex h-full flex-col">
             <div class="overflow-hidden">
               {featuredCases[0].image && (
@@ -680,7 +680,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
           featuredCases.slice(1).map((item) => (
             <article
               data-reveal="fade-left"
-              class="group flex h-full flex-col overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(34,43,74,0.1)]"
+              class="group flex h-full flex-col overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(34,43,74,0.1)] will-change-transform [backface-visibility:hidden]"
             >
               <a href={getReferenceUrl(item.slug)} class="flex h-full flex-col">
                 {item.image ? (

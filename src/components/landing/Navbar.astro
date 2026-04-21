@@ -76,7 +76,7 @@ const featuredReferences = cases
             </button>
 
             <div
-              class="absolute right-0 top-full z-50 hidden w-[26rem] pt-3"
+              class="absolute right-0 top-full z-50 hidden w-[26rem] pt-3 before:absolute before:inset-x-0 before:-top-2 before:h-5 before:content-[''] before:block"
               data-nav-dropdown-panel
               role="menu"
             >
@@ -290,7 +290,7 @@ const featuredReferences = cases
           trigger.setAttribute('aria-expanded', 'false');
           if (chevron) chevron.style.transform = '';
           closeTimer = 0;
-        }, 180);
+        }, 400);
       };
 
       trigger.addEventListener('click', (e) => {
