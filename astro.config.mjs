@@ -3,13 +3,9 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
-import netlify from '@astrojs/netlify';
-
-const isProd = process.env.NODE_ENV === 'production';
 
 export default defineConfig({
   output: 'static',
-  adapter: isProd ? netlify({ imageCDN: false }) : undefined,
 
   site: process.env.SITE_URL || 'https://www.rocketbase.io',
 
