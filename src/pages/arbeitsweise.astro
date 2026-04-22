@@ -1,5 +1,6 @@
 ---
 import PageLayout from '@/layouts/PageLayout.astro';
+import { Picture } from 'astro:assets';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Moon from '@/components/hero-backgrounds/Moon.astro';
@@ -241,15 +242,23 @@ const sections = [
 
                 <div data-reveal="fade-left" class="relative mx-auto w-full max-w-md">
                   <div class="group relative">
-                    <img
-                      src={section.after.image.src}
+                    <Picture
+                      src={section.after.image}
                       alt={section.after.title}
+                      widths={[320, 480, 640, 900]}
+                      sizes="(max-width: 768px) calc(100vw - 3rem), 448px"
+                      formats={['avif', 'webp']}
                       class="border-border w-full rotate-1 rounded-3xl border shadow-xl transition-all duration-500 ease-out group-hover:rotate-0 group-hover:-translate-y-1 group-hover:shadow-2xl"
+                      loading="lazy"
                     />
-                    <img
-                      src={section.before.image.src}
+                    <Picture
+                      src={section.before.image}
                       alt={section.before.title}
+                      widths={[128, 160, 320]}
+                      sizes="(max-width: 640px) 128px, 160px"
+                      formats={['avif', 'webp']}
                       class="border-border bg-card absolute -top-6 -left-6 w-32 -rotate-6 rounded-2xl border-4 border-white shadow-lg transition-all duration-500 ease-out hover:rotate-0 hover:scale-110 hover:z-20 sm:w-40"
+                      loading="lazy"
                     />
                   </div>
                   <p class="text-foreground-muted mt-6 flex items-center justify-center gap-2 text-xs">
@@ -264,15 +273,23 @@ const sections = [
             {section.layout === 'stacked' && (
               <div class="mt-16 grid gap-12 md:grid-cols-[1fr_1.1fr] md:items-center md:gap-16">
                 <div data-reveal="zoom-in" class="group relative mx-auto h-[360px] w-full max-w-sm">
-                  <img
-                    src={section.before.image.src}
+                  <Picture
+                    src={section.before.image}
                     alt={section.before.title}
+                    widths={[224, 336, 448]}
+                    sizes="224px"
+                    formats={['avif', 'webp']}
                     class="border-border absolute top-12 left-0 w-56 -rotate-3 rounded-2xl border opacity-70 shadow-md grayscale transition-all duration-500 ease-out group-hover:-translate-x-4 group-hover:rotate-[-6deg] group-hover:opacity-90 group-hover:grayscale-0"
+                    loading="lazy"
                   />
-                  <img
-                    src={section.after.image.src}
+                  <Picture
+                    src={section.after.image}
                     alt={section.after.title}
+                    widths={[256, 384, 512]}
+                    sizes="256px"
+                    formats={['avif', 'webp']}
                     class="border-border absolute top-0 right-0 w-64 rotate-3 rounded-2xl border shadow-2xl transition-all duration-500 ease-out group-hover:translate-x-4 group-hover:rotate-6 group-hover:-translate-y-2"
+                    loading="lazy"
                   />
                   <div
                     class="bg-brand-300/20 pointer-events-none absolute inset-0 -z-10 rounded-full blur-3xl"
@@ -317,20 +334,28 @@ const sections = [
                       <span class="font-display text-brand-600 absolute top-3 left-3 z-10 text-xs font-bold tracking-[0.22em]">
                         SO MACHEN WIR'S
                       </span>
-                      <img
-                        src={section.after.image.src}
+                      <Picture
+                        src={section.after.image}
                         alt={section.after.title}
+                        widths={[400, 560, 720, 960]}
+                        sizes="(max-width: 640px) calc(100vw - 4rem), (max-width: 1024px) 55vw, 560px"
+                        formats={['avif', 'webp']}
                         class="aspect-square w-full rounded-2xl object-cover transition-all duration-500 ease-out group-hover:scale-105"
+                        loading="lazy"
                       />
                     </div>
                     <div class="group relative opacity-70 transition-opacity duration-500 hover:opacity-100">
                       <span class="font-display text-foreground-muted absolute top-3 left-3 z-10 text-[10px] font-bold tracking-[0.22em]">
                         STATUS QUO
                       </span>
-                      <img
-                        src={section.before.image.src}
+                      <Picture
+                        src={section.before.image}
                         alt={section.before.title}
+                        widths={[320, 448, 560, 720]}
+                        sizes="(max-width: 640px) calc(100vw - 4rem), (max-width: 1024px) 42vw, 420px"
+                        formats={['avif', 'webp']}
                         class="aspect-square w-full rounded-2xl object-cover grayscale transition-all duration-500 ease-out group-hover:scale-105 group-hover:grayscale-0"
+                        loading="lazy"
                       />
                     </div>
                   </div>
@@ -369,15 +394,23 @@ const sections = [
             {section.layout === 'reveal' && (
               <div class="mt-16 grid gap-12 md:grid-cols-[1.1fr_1fr] md:items-center md:gap-16">
                 <div data-reveal="fade-right" class="group relative mx-auto h-[400px] w-full max-w-md">
-                  <img
-                    src={section.before.image.src}
+                  <Picture
+                    src={section.before.image}
                     alt={section.before.title}
+                    widths={[176, 208, 352, 416]}
+                    sizes="(max-width: 640px) 176px, 208px"
+                    formats={['avif', 'webp']}
                     class="border-border absolute bottom-0 left-0 w-44 rounded-2xl border opacity-40 shadow-md grayscale transition-all duration-500 ease-out group-hover:opacity-80 group-hover:grayscale-0 sm:w-52"
+                    loading="lazy"
                   />
-                  <img
-                    src={section.after.image.src}
+                  <Picture
+                    src={section.after.image}
                     alt={section.after.title}
+                    widths={[288, 320, 576, 640]}
+                    sizes="(max-width: 640px) 288px, 320px"
+                    formats={['avif', 'webp']}
                     class="border-brand-300 absolute top-0 right-0 w-72 rotate-2 rounded-3xl border-2 shadow-[0_30px_60px_-15px_rgba(99,102,241,0.4)] transition-all duration-500 ease-out group-hover:rotate-0 group-hover:-translate-y-2 group-hover:shadow-[0_40px_80px_-15px_rgba(99,102,241,0.6)] sm:w-80"
+                    loading="lazy"
                   />
                 </div>
 
