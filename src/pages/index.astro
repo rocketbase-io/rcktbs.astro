@@ -129,7 +129,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
   lang={locale}
   routeId="home"
 >
-  <section class="hero-landing border-border relative min-h-screen overflow-hidden border-b max-[760px]:min-h-0" data-hero-root>
+  <section class="hero-landing border-border relative min-h-[88vh] max-h-[900px] overflow-hidden border-b max-[760px]:min-h-0 max-[760px]:max-h-none" data-hero-root>
     <div
       class="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(99,114,165,0.14),transparent_0,transparent_28%),radial-gradient(circle_at_82%_20%,rgba(99,114,165,0.16),transparent_0,transparent_32%),linear-gradient(135deg,rgba(255,255,255,0.98)_0%,rgba(248,250,253,0.97)_36%,rgba(242,246,251,0.96)_100%)] dark:bg-[radial-gradient(circle_at_18%_18%,rgba(99,114,165,0.18),transparent_0,transparent_28%),radial-gradient(circle_at_82%_20%,rgba(99,114,165,0.2),transparent_0,transparent_32%),linear-gradient(135deg,rgba(18,22,31,0.98)_0%,rgba(20,25,35,0.97)_36%,rgba(15,19,27,0.96)_100%)]"
     />
@@ -145,7 +145,7 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
       class="pointer-events-none absolute right-[10%] bottom-[18%] h-56 w-56 rounded-full border border-brand-300/30 opacity-50 blur-[2px] dark:border-brand-300/15 dark:opacity-30"
       aria-hidden="true"
     />
-    <div class="container relative z-10 flex min-h-screen flex-col justify-center pt-24 pb-24 max-[760px]:min-h-0 max-[760px]:pt-20 max-[760px]:pb-28 sm:pt-30 lg:pt-28 lg:pb-28">
+    <div class="container relative z-10 flex min-h-[88vh] max-h-[900px] flex-col justify-center pt-24 pb-24 max-[760px]:min-h-0 max-[760px]:max-h-none max-[760px]:pt-20 max-[760px]:pb-28 sm:pt-30 lg:pt-28 lg:pb-28">
       <div class="hero-landing-grid grid gap-10 max-[760px]:gap-8 lg:grid-cols-[minmax(0,1.02fr)_minmax(380px,0.92fr)] lg:items-center lg:gap-12">
         <div data-reveal="fade-right" class="hero-landing-copy max-w-3xl will-change-transform" data-hero-copy>
           <h1 class="hero-landing-title font-display text-foreground max-w-5xl text-4xl font-bold tracking-tight max-[760px]:text-[2.15rem] sm:text-5xl xl:text-6xl">
@@ -226,7 +226,21 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
         </div>
       </div>
     </div>
+
+    {/* Scroll indicator */}
+    <a
+      href="#hero-next"
+      aria-label="Weiter scrollen"
+      class="group text-foreground-muted hover:text-brand-500 absolute bottom-6 left-1/2 z-10 -translate-x-1/2 transition-colors duration-300 max-[760px]:hidden"
+    >
+      <span class="block text-[10px] font-semibold tracking-[0.3em] uppercase">Scrollen</span>
+      <span class="border-foreground-muted/40 group-hover:border-brand-500 mx-auto mt-3 flex h-10 w-6 justify-center rounded-full border-2 transition-colors duration-300">
+        <span class="bg-foreground-muted/60 group-hover:bg-brand-500 mt-2 h-2 w-1 animate-bounce rounded-full transition-colors duration-300" />
+      </span>
+    </a>
   </section>
+
+  <div id="hero-next" class="scroll-mt-24" aria-hidden="true" />
 
   <script is:inline>
     (() => {
