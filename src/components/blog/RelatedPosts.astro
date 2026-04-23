@@ -20,20 +20,17 @@ const allPosts = await getCollection('blog', ({ data }) => {
   return data.locale === locale && (import.meta.env.PROD ? data.draft !== true : true);
 });
 
-// Filter to find posts with matching tags
+// Always show all other posts (excluding the current one),
+// ranked by tag-match relevance first, then recency.
 const relatedPosts = allPosts
-  .filter((post) => {
-    // Exclude current post
-    if (post.id === currentSlug || post.id.endsWith(`/${currentSlug}`)) return false;
-
-    // Must have at least one matching tag
-    if (!tags.length) return false;
-    return post.data.tags.some((tag) => tags.includes(tag));
-  })
-  // Sort by number of matching tags, then by date
+  .filter((post) => post.id !== currentSlug && !post.id.endsWith(`/${currentSlug}`))
   .sort((a, b) => {
-    const aMatches = a.data.tags.filter((tag) => tags.includes(tag)).length;
-    const bMatches = b.data.tags.filter((tag) => tags.includes(tag)).length;
+    const aMatches = tags.length
+      ? a.data.tags.filter((tag) => tags.includes(tag)).length
+      : 0;
+    const bMatches = tags.length
+      ? b.data.tags.filter((tag) => tags.includes(tag)).length
+      : 0;
 
     if (bMatches !== aMatches) return bMatches - aMatches;
     return b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf();

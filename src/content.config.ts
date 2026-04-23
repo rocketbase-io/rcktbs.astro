@@ -18,6 +18,13 @@ const blog = defineCollection({
       draft: z.boolean().default(false),
       featured: z.boolean().default(false),
       locale: z.enum(['de']).default('de'),
+      cta: z
+        .object({
+          eyebrow: z.string().optional(),
+          headline: z.string().optional(),
+          body: z.string().optional(),
+        })
+        .optional(),
     }),
 });
 

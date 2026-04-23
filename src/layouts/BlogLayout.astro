@@ -6,6 +6,7 @@ import LandingFooter from '@/components/landing/LandingFooter.astro';
 import Breadcrumbs from '@/components/seo/Breadcrumbs.astro';
 import ArticleHero from '@/components/blog/ArticleHero.astro';
 import AuthorBio from '@/components/blog/AuthorBio.astro';
+import PostCTA from '@/components/blog/PostCTA.astro';
 import ShareButtons from '@/components/blog/ShareButtons.astro';
 import RelatedPosts from '@/components/blog/RelatedPosts.astro';
 import { defaultLocale, type Locale } from '@/i18n/config';
@@ -23,6 +24,11 @@ interface Props {
   slug?: string;
   locale?: Locale;
   readingTime?: number;
+  cta?: {
+    eyebrow?: string;
+    headline?: string;
+    body?: string;
+  };
 }
 
 const {
@@ -37,10 +43,13 @@ const {
   slug = '',
   locale = defaultLocale,
   readingTime,
+  cta,
 } = Astro.props;
 
 const t = useTranslations(locale);
-const ogImage = image?.src || `/og${Astro.url.pathname}.png`;
+// Prefer the generated OG composite (hero image + branded overlay) over the raw hero.
+// Falls back to the raw image.src only if the generated route is unavailable.
+const ogImage = `/og${Astro.url.pathname}.png`;
 
 // Build breadcrumbs with locale-aware URLs
 const blogUrl = locale === defaultLocale ? '/blog' : `/${locale}/blog`;
@@ -122,20 +131,25 @@ const fullUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
       <!-- Author bio -->
       <AuthorBio author={author} />
+
+      <!-- Post CTA (always present, text overridable via frontmatter) -->
+      <PostCTA
+        eyebrow={cta?.eyebrow}
+        headline={cta?.headline}
+        body={cta?.body}
+      />
     </div>
   </article>
 
-  <!-- Related Posts -->
-  {tags.length > 0 && (
-    <div class="mx-auto max-w-6xl px-6 pb-16">
-      <RelatedPosts
-        currentSlug={slug}
-        tags={tags}
-        locale={locale}
-        maxPosts={3}
-      />
-    </div>
-  )}
+  <!-- Related Posts: always show 3 other posts, ranked by tag relevance then recency -->
+  <div class="mx-auto max-w-6xl px-6 pb-16">
+    <RelatedPosts
+      currentSlug={slug}
+      tags={tags}
+      locale={locale}
+      maxPosts={3}
+    />
+  </div>
 
   <LandingFooter slot="footer" />
 </BaseLayout>

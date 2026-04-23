@@ -55,6 +55,7 @@ const readingTime = getReadingTime(post.body ?? '');
   slug={post.id}
   locale={locale}
   readingTime={readingTime}
+  cta={post.data.cta}
 >
   <Content />
 </BlogLayout>
