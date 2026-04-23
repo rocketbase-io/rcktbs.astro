@@ -10,12 +10,35 @@ export function formatDate(date: Date, locale = 'en-US'): string {
 }
 
 /**
- * Calculate reading time for content
+ * Calculate reading time for MDX content. Strips JSX blocks, imports, and
+ * code fences so only the actual prose is counted.
  */
 export function getReadingTime(content: string): number {
   const wordsPerMinute = 200;
-  const words = content.trim().split(/\s+/).length;
-  return Math.ceil(words / wordsPerMinute);
+
+  const prose = content
+    // Strip frontmatter (defensive — usually already removed before reaching here)
+    .replace(/^---[\s\S]*?---\n/, '')
+    // Strip import / export statements
+    .replace(/^(import|export)\s+[^\n]*$/gm, '')
+    // Strip fenced code blocks (```...```)
+    .replace(/```[\s\S]*?```/g, '')
+    // Strip multi-line JSX/HTML blocks — any top-level JSX element spanning multiple lines
+    // (attributes, nested JSX and all). Matches conservatively: block-level tags only.
+    .replace(/<([A-Za-z][A-Za-z0-9]*)\b[^>]*>[\s\S]*?<\/\1>/g, '')
+    // Strip self-closing JSX (e.g. <Image ... />)
+    .replace(/<[A-Za-z][^>]*\/>/g, '')
+    // Strip remaining inline HTML/JSX tags
+    .replace(/<\/?[A-Za-z][^>]*>/g, '')
+    // Strip Markdown link URLs, keep the label text
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    // Strip images
+    .replace(/!\[[^\]]*\]\([^)]+\)/g, '')
+    // Strip markdown emphasis markers
+    .replace(/[*_`~]+/g, ' ');
+
+  const words = prose.trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(words / wordsPerMinute));
 }
 
 /**

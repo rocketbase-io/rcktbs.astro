@@ -1,0 +1,339 @@
+---
+title: "Vom Quartalsende-Puzzle zur echten Entscheidungsgrundlage"
+description: "Warum Standardsoftware selten saubere Kennzahlen liefert — und wie die Kombination aus maßgeschneiderter Anwendung und Metabase Auswertungen in Minuten statt Wochen ermöglicht."
+publishedAt: 2026-04-23
+author: "Marten Prieß"
+image: "./hero.png"
+imageAlt: "Von verstreuten Zahlen zu einem einheitlichen Steuerungs-Dashboard"
+tags: ["business-intelligence", "metabase", "kpi", "individualsoftware", "reporting"]
+featured: true
+draft: true
+locale: de
+---
+
+import Button from '@/components/ui/form/Button/Button.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import { contactLinks } from '@/data/rocketbase';
+
+Eine der konsistentesten Beobachtungen aus unseren Projekten: Die größte unausgesprochene Frustration in mittelständischen Geschäftsführungen ist nicht die Software selbst, sondern das, was sie beim Blick auf die eigenen Zahlen nicht liefert.
+
+Konkret meinen wir das Muster, bei dem die monatliche oder quartalsweise Auswertung zur Projektarbeit wird: Daten aus drei Systemen werden exportiert, in Excel zusammengeführt, händisch abgeglichen, in ein Reporting-Template übertragen, Diskrepanzen geklärt, und am Ende steht ein PDF, das — wenn es gut läuft — zwei bis drei Wochen nach dem eigentlichen Betrachtungszeitraum verfügbar ist. Bis dahin hat sich die Lage im Unternehmen längst weiterentwickelt.
+
+Dieser Artikel beschreibt, warum das strukturell passiert, wie eine Kombination aus individueller Kernanwendung und Open-Source-Reporting das Problem löst und warum das wirtschaftlich sinnvoller ist, als es auf den ersten Blick wirkt.
+
+## Warum Standardsoftware selten saubere Zahlen liefert
+
+Es geht in diesem Abschnitt nicht darum, Standardsoftware schlechtzureden. Es geht darum zu verstehen, warum Reporting aus einem Standardsystem strukturell an Grenzen stößt, sobald ein Unternehmen spezifische Geschäftsfragen beantworten will.
+
+### Das Datenmodell passt nicht zu Ihrer Geschäftslogik
+
+Ein Standardsystem bildet Geschäftsvorfälle in einer generischen Struktur ab. Ein Auftrag, eine Position, ein Kunde, ein Zahlungsvorgang. Auf dieser Basis lassen sich die klassischen Kennzahlen sauber ausweisen — Umsatz, offene Posten, Auftragseingang.
+
+Die Fragen, die wirklich interessant sind, sehen anders aus:
+
+<div className="not-prose my-10 grid gap-4 sm:grid-cols-2" data-reveal="fade-up">
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Deckungsbeitrag</p>
+    <p className="text-foreground mt-2 text-sm leading-6">Auf Kundensegment-Ebene, gewichtet nach strategischer Bedeutung.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Margenentwicklung</p>
+    <p className="text-foreground mt-2 text-sm leading-6">In einem neu eröffneten Produktbereich, differenziert nach Vertriebskanal.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Projekt-Profitabilität</p>
+    <p className="text-foreground mt-2 text-sm leading-6">Pro Projekttyp, unter Einbeziehung interner Aufwände, die nicht fakturiert werden.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Time-to-Cash</p>
+    <p className="text-foreground mt-2 text-sm leading-6">Abgeleitet aus Projektbeginn bis tatsächlichem Zahlungseingang.</p>
+  </div>
+</div>
+
+Diese Fragen setzen ein Datenmodell voraus, das Ihr spezifisches Geschäft kennt — nicht das generische Geschäft einer beliebigen Branche. Standardsoftware kann das nur über Custom-Felder oder externe Auswertungen abbilden. Beides erzeugt genau die Brüche, die das Reporting so mühsam machen.
+
+### Die Auswertungsschicht ist der Engpass
+
+Selbst wenn das Datenmodell grundsätzlich tragen würde: Die Reporting-Funktionen in Standardsoftware sind oft der älteste Teil des Systems. Starre Report-Definitionen, begrenzte Filter, keine sinnvolle Verknüpfung mehrerer Datenquellen, Export-Formate, die keine Pivotierung erlauben.
+
+Viele Unternehmen behelfen sich mit Excel als Auswertungsschicht. Das funktioniert für Momentaufnahmen, skaliert aber nicht. Die Person, die das Master-Template pflegt, wird zum Single Point of Failure. Versionen verzweigen sich. Bei Datenänderungen muss alles manuell nachgezogen werden.
+
+### Daten leben in mehreren Systemen
+
+In der Realität liegen die Daten, die eine Geschäftsführung braucht, fast nie in einem System allein. Umsätze im ERP, Pipeline im CRM, Kosten in der Buchhaltung, Projektzeiten in einem Zeiterfassungstool, Marketingkosten in HubSpot, Hosting in einer Lieferantenrechnung. Jede dieser Datenquellen hat eigene Definitionen, eigene Stammdatenschlüssel, eigene Zeitstempel.
+
+Die Zusammenführung ist der eigentliche Aufwand. Und sie ist selten einmalig — jeden Monat neu.
+
+<figure className="not-prose my-12" data-reveal="fade-up">
+  <div className="rounded-[2rem] border border-border bg-card p-8 shadow-sm sm:p-10">
+    <p className="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">Ausgangslage</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6 max-w-xl">Typische Systemlandschaft im Mittelstand: Jedes System ist für sich gut — das Gesamtbild entsteht nur über manuelle Zusammenführung.</p>
+    <div className="relative mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
+      {[
+        { icon: 'table', label: 'ERP' },
+        { icon: 'users', label: 'CRM' },
+        { icon: 'file-text', label: 'Buchhaltung' },
+        { icon: 'clock', label: 'Zeiterfassung' },
+        { icon: 'layers', label: 'Marketing-Tools' },
+        { icon: 'table', label: 'Excel-Tabellen' },
+      ].map((sys) => (
+        <div className="flex items-center gap-3 rounded-xl border border-border bg-background-secondary px-4 py-3">
+          <span className="text-brand-600 shrink-0">
+            <Icon name={sys.icon} size="sm" />
+          </span>
+          <span className="text-foreground text-sm font-medium">{sys.label}</span>
+        </div>
+      ))}
+    </div>
+    <div className="mt-8 flex items-center gap-4 sm:gap-6">
+      <div className="h-px flex-1 bg-[repeating-linear-gradient(90deg,var(--color-border)_0,var(--color-border)_6px,transparent_6px,transparent_12px)]"></div>
+      <div className="inline-flex items-center gap-2 rounded-full border border-dashed border-brand-300 bg-brand-50 px-4 py-2 text-brand-700 dark:bg-brand-900/20 dark:text-brand-300 dark:border-brand-800">
+        <Icon name="alert-circle" size="sm" />
+        <span className="text-sm font-semibold">Gesamtbild?</span>
+      </div>
+      <div className="h-px flex-1 bg-[repeating-linear-gradient(90deg,var(--color-border)_0,var(--color-border)_6px,transparent_6px,transparent_12px)]"></div>
+    </div>
+  </div>
+</figure>
+
+<aside className="not-prose my-8" data-reveal="fade-up">
+  <div className="rounded-2xl border border-brand-200 bg-brand-50/60 p-6 dark:border-brand-800 dark:bg-brand-900/15 sm:p-7">
+    <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
+      <div className="flex-1">
+        <p className="font-display text-foreground text-lg font-semibold leading-snug sm:text-xl">Kommt Ihnen das bekannt vor?</p>
+        <p className="text-foreground-secondary mt-1.5 text-sm leading-6">30 Minuten Erstgespräch. Wir klären, ob sich ein strukturierter Umbau für Sie lohnt.</p>
+      </div>
+      <div className="shrink-0">
+        <Button href={contactLinks.cal} target="_blank" rel="noopener"><span>Mit Marten sprechen</span><Icon name="arrow-up-right" size="sm" /></Button>
+      </div>
+    </div>
+  </div>
+</aside>
+
+## Der Ansatz: Kernlogik individuell, Auswertung mit erprobten Open-Source-Bausteinen
+
+Der Weg, den wir in mehreren Projekten gegangen sind, kombiniert zwei Bausteine, die oft getrennt gedacht werden:
+
+**Baustein 1 — eine individuelle Kernanwendung**, die genau die Geschäftsprozesse abbildet, die das Unternehmen ausmachen. Das Datenmodell ist auf die spezifischen Fragen des Hauses zugeschnitten, nicht generisch. Die Anwendung wird zur einzigen Quelle der Wahrheit für ihren Scope.
+
+**Baustein 2 — Metabase als Reporting-Layer**. Metabase ist eine Open-Source-Plattform für Business Intelligence, die direkt auf eine Datenbank aufsetzt und sowohl Self-Service-Auswertungen als auch fertig konfigurierte Dashboards ermöglicht. Nutzer mit einem mittleren Verständnis für Daten kommen ohne SQL aus, technisch versierte Nutzer können beliebig tief gehen.
+
+Die Kombination ist aus einem einfachen Grund stark: Wenn das Datenmodell sauber ist — weil Sie es selbst auf Ihr Geschäft zugeschnitten haben — wird Reporting trivial. Die Zeit, die in einem typischen Reporting-Projekt auf Datenaufbereitung entfällt, entfällt in dieser Konstellation komplett. Metabase macht aus einem guten Datenmodell in Stunden das, wofür klassische BI-Projekte Monate brauchen.
+
+<figure className="not-prose my-12" data-reveal="fade-up">
+  <div className="grid gap-4 md:grid-cols-2 md:items-stretch">
+    <div className="relative rounded-[2rem] border border-border bg-background-secondary p-6 opacity-80 sm:p-8">
+      <p className="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">Vorher</p>
+      <p className="text-foreground mt-3 text-lg font-semibold">Zahlen aus jedem System einzeln</p>
+      <div className="mt-6 space-y-2">
+        {['ERP', 'CRM', 'Buchhaltung', 'Zeiterfassung'].map((sys) => (
+          <div className="flex items-center gap-3 rounded-lg border border-border bg-background/60 px-3 py-2 grayscale">
+            <span className="text-foreground-subtle shrink-0">
+              <Icon name="table" size="xs" />
+            </span>
+            <span className="text-foreground-secondary text-sm">{sys}</span>
+            <span className="ml-auto text-foreground-subtle text-xs">Export</span>
+          </div>
+        ))}
+        <div className="mt-3 flex items-center gap-3 rounded-lg border border-dashed border-border bg-background/60 px-3 py-2 grayscale">
+          <span className="text-foreground-subtle shrink-0">
+            <Icon name="file-text" size="xs" />
+          </span>
+          <span className="text-foreground-secondary text-sm">Excel-Konsolidierung</span>
+          <span className="ml-auto text-foreground-subtle text-xs">manuell</span>
+        </div>
+      </div>
+      <p className="text-foreground-muted mt-6 text-xs leading-5">
+        Jeden Monat neu. Fehleranfällig. Verzögert.
+      </p>
+    </div>
+
+    <div className="relative rounded-[2rem] border border-brand-300 bg-card p-6 shadow-[0_22px_55px_rgba(34,43,74,0.08)] sm:p-8">
+      <p className="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">Mit RocketBase</p>
+      <p className="text-foreground mt-3 text-lg font-semibold">Eine Quelle, ein Dashboard</p>
+      <div className="mt-6 space-y-3">
+        <div className="flex flex-wrap items-center gap-2 text-foreground-muted text-xs">
+          <span className="rounded-md bg-background-secondary px-2 py-1">ERP</span>
+          <span className="rounded-md bg-background-secondary px-2 py-1">CRM</span>
+          <span className="rounded-md bg-background-secondary px-2 py-1">Buchhaltung</span>
+          <span className="rounded-md bg-background-secondary px-2 py-1">…</span>
+        </div>
+        <div className="flex justify-center text-brand-500">
+          <Icon name="arrow-right" size="sm" class="rotate-90" />
+        </div>
+        <div className="flex items-center gap-3 rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 dark:border-brand-800 dark:bg-brand-900/20">
+          <span className="text-brand-600 shrink-0">
+            <Icon name="layers" size="sm" />
+          </span>
+          <div>
+            <p className="text-foreground text-sm font-semibold">Individuelle Kernanwendung</p>
+            <p className="text-foreground-muted text-xs">Datenmodell auf Ihr Geschäft zugeschnitten</p>
+          </div>
+        </div>
+        <div className="flex justify-center text-brand-500">
+          <Icon name="arrow-right" size="sm" class="rotate-90" />
+        </div>
+        <div className="flex items-center gap-3 rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 dark:border-brand-800 dark:bg-brand-900/20">
+          <span className="text-brand-600 shrink-0">
+            <Icon name="trending-up" size="sm" />
+          </span>
+          <div>
+            <p className="text-foreground text-sm font-semibold">Metabase-Dashboards</p>
+            <p className="text-foreground-muted text-xs">Live-Auswertung statt Monatsprojekt</p>
+          </div>
+        </div>
+      </div>
+      <p className="text-foreground-muted mt-6 text-xs leading-5">
+        Einmal sauber modelliert. Danach dauerhaft tragfähig.
+      </p>
+    </div>
+  </div>
+</figure>
+
+## Was das in der Praxis heißt
+
+Ein Beispiel aus einem realen Projekt: Ein mittelständisches Unternehmen im Professional-Services-Umfeld hatte seine Projektabrechnung und Kapazitätsplanung über Jahre in einer Standardlösung plus Excel gefahren. Die zentralen Fragen — welche Projekte sind profitabel, welche Kundensegmente tragen das Geschäft, welche Auslastung läuft wo — waren zwar irgendwo in den Daten enthalten, aber nur über mehrtägige manuelle Auswertungen zugänglich.
+
+Der Umbau lief in drei Schritten:
+
+**Schritt 1 — Datenmodell neu entworfen.** Gemeinsam mit der Geschäftsführung und den Projektverantwortlichen haben wir das Datenmodell so geschnitten, dass die eigentlich interessanten Dimensionen — Kundensegment, Projekttyp, Leistungsart, interne vs. externe Aufwände — nativ abgebildet sind. Nicht als Custom-Feld, sondern als tragende Struktur. Parallel dazu: neue Oberflächen und Arbeitsabläufe, die das Datenmodell im Alltag tragen — damit das Team die saubere Struktur nicht pflegen *muss*, sondern sie *nebenbei* entsteht.
+
+**Schritt 2 — Altdaten migriert.** Die historischen Daten aus der bisherigen Standardlösung wurden mit aufgenommen. Das war bewusst — nicht um das alte System zu konservieren, sondern damit vom ersten Tag an Trendauswertungen über mehrere Jahre möglich sind. Ohne Historie wäre ein neues System ein Jahr lang blind.
+
+**Schritt 3 — Metabase angebunden.** Die Geschäftsführung bekam einen Satz von Dashboards: Deckungsbeitrag pro Kundensegment, Projekt-Profitabilität im Zeitverlauf, Auslastung pro Team, Cashflow-Prognose auf Basis der Pipeline. Keine Folienpräsentation mit aufbereiteten Zahlen — ein Dashboard, das sich jederzeit live abfragen lässt.
+
+Was bemerkenswert ist an diesem dritten Schritt: Er war der kleinste. Wenn das Datenmodell einmal sauber steht und die Arbeitsabläufe es mit tragen, kommt Reporting praktisch geschenkt. Neue Fragen, die morgen auftauchen, sind eine Abfrage von Stunden — nicht ein Projekt von Wochen.
+
+Das Ergebnis: Die monatliche Auswertung, die vorher mehrere Personen zusammengezogen hat, wird nicht mehr gemacht. Nicht weil sie weggefallen ist — sondern weil sie dauerhaft live verfügbar ist und niemand mehr eine punktuelle Zusammenstellung braucht. Und die Organisation hat damit etwas, das über das ursprüngliche Problem hinausgeht: eine Basis, auf der sich neue Fragestellungen, Experimente und Perspektiven ausprobieren lassen, ohne dass jedes Mal ein neues IT-Projekt nötig wird.
+
+<figure className="not-prose my-12" data-reveal="fade-up">
+  <div className="grid gap-4 md:grid-cols-[1fr_auto_1fr] md:items-stretch">
+    <div className="rounded-[2rem] border border-border bg-background-secondary p-8 sm:p-10">
+      <p className="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">Vorher</p>
+      <p className="font-display text-foreground mt-4 text-4xl font-bold tracking-tight sm:text-5xl">2–4&nbsp;Stunden</p>
+      <p className="text-foreground-secondary mt-3 text-sm leading-6">Einmal im Monat Zahlen aus dem System exportieren, ins Excel-Modell kippen, Abweichungen klären, versenden.</p>
+    </div>
+    <div className="flex items-center justify-center text-brand-500">
+      <Icon name="arrow-right" size="xl" class="hidden md:block" />
+      <Icon name="arrow-right" size="xl" class="md:hidden rotate-90" />
+    </div>
+    <div className="rounded-[2rem] border border-brand-300 bg-card p-8 shadow-[0_22px_55px_rgba(34,43,74,0.08)] sm:p-10">
+      <p className="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">Nachher</p>
+      <p className="font-display text-foreground mt-4 text-4xl font-bold tracking-tight sm:text-5xl">Live.</p>
+      <p className="text-foreground-secondary mt-3 text-sm leading-6">Dashboard jederzeit abrufbar. Kein manueller Aufwand. Entscheidungen auf Basis aktueller Zahlen.</p>
+    </div>
+  </div>
+</figure>
+
+## Warum wir uns nicht mit Tooling aufhalten
+
+Wir hätten das gleiche Projekt auch mit einem proprietären BI-Tool machen können. Es gibt ausgereifte kommerzielle Lösungen in diesem Bereich, und sie haben ihre Berechtigung. In fast allen Projekten entscheiden wir uns trotzdem für Metabase oder vergleichbare Open-Source-Alternativen. Drei Gründe:
+
+<div className="not-prose my-10 grid gap-4 md:grid-cols-3" data-reveal="fade-up">
+  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+    <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">01</p>
+    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Fokus auf das eigentliche Problem</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Die Tool-Auswahl ist nicht der Engpass — das Datenmodell ist es. Ein gutes Open-Source-Tool ist in zwei Tagen aufgesetzt. Wer Monate in BI-Lizenzvergleiche steckt, hat den falschen Hebel gedrückt.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+    <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">02</p>
+    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Keine Lizenzfalle</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Unsere Kunden sollen nach dem Projekt nicht an uns oder einen BI-Hersteller gebunden sein. Metabase können sie selbst betreiben, erweitern, anpassen. Wenn sie uns irgendwann nicht mehr brauchen, ist das in Ordnung.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+    <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">03</p>
+    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Transparenz im Datenfluss</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Bei Open-Source-Bausteinen können wir bis auf die Ebene der Abfragelogik zeigen, was passiert. Das hilft in Entwicklung und Betrieb — und es hilft den Kunden, die Verantwortung für ihre Zahlen wirklich zu übernehmen.</p>
+  </div>
+</div>
+
+Das ist keine ideologische Präferenz. Wir setzen kommerzielle Software ein, wo sie eindeutig das bessere Werkzeug ist. Aber im Bereich Reporting ist die Open-Source-Landschaft heute so reif, dass es schwierig ist, gute Gründe für die teureren Alternativen zu finden.
+
+## Wirtschaftlich: was kostet das, was spart es
+
+Die Kostenrechnung, die unsere Kunden typischerweise aufmachen, sieht ungefähr so aus:
+
+<div className="not-prose my-10 grid gap-4 md:grid-cols-2" data-reveal="fade-up">
+  <div className="rounded-2xl border border-border bg-background-secondary p-6 sm:p-7">
+    <div className="flex items-center gap-2">
+      <span className="text-foreground-muted">
+        <Icon name="trending-down" size="sm" />
+      </span>
+      <p className="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">Was entfällt</p>
+    </div>
+    <ul className="mt-5 space-y-3 text-sm leading-6">
+      <li className="flex gap-3">
+        <span className="text-brand-500 mt-1 shrink-0"><Icon name="minus" size="xs" /></span>
+        <span className="text-foreground-secondary">Lizenzkosten für Reporting-Module der Bestandssysteme, die nie wirklich genutzt wurden.</span>
+      </li>
+      <li className="flex gap-3">
+        <span className="text-brand-500 mt-1 shrink-0"><Icon name="minus" size="xs" /></span>
+        <span className="text-foreground-secondary">Interne Arbeitszeit für monatliche und quartalsweise Zusammenstellungen — je nach Unternehmensgröße grob <strong className="text-foreground">3–5 Personentage pro Monat</strong>.</span>
+      </li>
+      <li className="flex gap-3">
+        <span className="text-brand-500 mt-1 shrink-0"><Icon name="minus" size="xs" /></span>
+        <span className="text-foreground-secondary">Externe Dienstleister, die diese Aufbereitung teilweise übernommen haben.</span>
+      </li>
+      <li className="flex gap-3">
+        <span className="text-brand-500 mt-1 shrink-0"><Icon name="minus" size="xs" /></span>
+        <span className="text-foreground-secondary">Opportunitätskosten verspäteter Entscheidungen, weil Zahlen erst mit Verzug vorliegen.</span>
+      </li>
+    </ul>
+  </div>
+
+  <div className="rounded-2xl border border-brand-200 bg-card p-6 shadow-[0_22px_55px_rgba(34,43,74,0.06)] dark:border-brand-800 sm:p-7">
+    <div className="flex items-center gap-2">
+      <span className="text-brand-600">
+        <Icon name="trending-up" size="sm" />
+      </span>
+      <p className="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">Was entsteht</p>
+    </div>
+    <ul className="mt-5 space-y-3 text-sm leading-6">
+      <li className="flex gap-3">
+        <span className="text-brand-500 mt-1 shrink-0"><Icon name="plus" size="xs" /></span>
+        <span className="text-foreground-secondary">Projekt-Investition in die individuelle Kernanwendung (Größenordnung je nach Scope).</span>
+      </li>
+      <li className="flex gap-3">
+        <span className="text-brand-500 mt-1 shrink-0"><Icon name="plus" size="xs" /></span>
+        <span className="text-foreground-secondary">Betriebskosten für die individuelle Anwendung und Metabase — in der Regel <strong className="text-foreground">unter 50 EUR im Monat</strong> auf einem deutschen Rechenzentrums-Setup (<a href="/blog/legacy-hosting-hetzner-dsgvo" className="text-brand-600 hover:text-brand-500 dark:text-brand-400 dark:hover:text-brand-300 underline underline-offset-2">mehr dazu im Hosting-Artikel</a>).</span>
+      </li>
+      <li className="flex gap-3">
+        <span className="text-brand-500 mt-1 shrink-0"><Icon name="plus" size="xs" /></span>
+        <span className="text-foreground-secondary">Einmalige Einarbeitung der Nutzer in das Dashboard-Konzept.</span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+Das Projekt-Investment ist real und nicht klein. Aber es ist eine einmalige Investition, die eine laufende, teurer werdende Aufwandslinie ersetzt. Die Amortisationsrechnung entscheidet sich in der Regel nicht an Lizenzen, sondern an der eingesparten Arbeitszeit plus an Entscheidungen, die schneller und auf besserer Grundlage getroffen werden.
+
+## Ein ehrlicher Einwand
+
+Nicht jedes Unternehmen braucht eine individuelle Anwendung für saubere Zahlen. Manchmal reicht es, ein gutes BI-Tool auf eine bestehende Standardsoftware aufzusetzen, die Datenqualität an den Rändern zu verbessern und damit zu leben, dass bestimmte Auswertungen Näherungen bleiben.
+
+Wir empfehlen diesen Weg aktiv, wenn das Kerngeschäft nicht von den Reporting-Fragen abhängt und wenn die bestehenden Systeme grundsätzlich sauber sind. Die volle Kombination — individuelle Kernanwendung plus Reporting-Layer — lohnt sich dort, wo die Geschäftsfragen spezifisch sind, wo die Daten heute über mehrere Systeme verteilt sind und wo die Geschäftsführung das Reporting als echtes Steuerungsinstrument nutzen will.
+
+## Wenn Ihnen das bekannt vorkommt
+
+Wenn Ihr Monatsabschluss aktuell Projektcharakter hat, wenn "wie profitabel sind wir eigentlich?" eine Frage ist, die niemand zuverlässig beantworten kann, oder wenn Sie strategische Entscheidungen regelmäßig auf Bauchgefühl statt auf Zahlen stützen müssen — dann lohnt sich ein Gespräch.
+
+Wir schauen uns in einem Discovery-Workshop Ihre Systemlandschaft an, sezieren den Reporting-Prozess, den Sie heute haben, und skizzieren einen Weg zu einer Kennzahlenbasis, auf die Sie sich verlassen können. Kompakt, mit konkretem Output, ohne unverbindliche Präsentationsfolien.
+
+<aside className="not-prose my-12" data-reveal="fade-up">
+  <div className="rounded-[2rem] border border-border bg-card p-8 shadow-[0_22px_55px_rgba(34,43,74,0.08)] sm:p-10">
+    <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+      <div>
+        <p className="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">Nächster Schritt</p>
+        <p className="font-display text-foreground mt-3 text-2xl font-bold leading-snug sm:text-3xl">30 Minuten, die Ihren Monatsabschluss verändern können.</p>
+        <p className="text-foreground-secondary mt-4 text-base leading-7">Direkt mit Marten Prieß — kein Vertrieb, kein Funnel. Ein strukturiertes Gespräch, um zu klären, ob ein Umbau für Ihr Unternehmen sinnvoll ist.</p>
+      </div>
+      <div className="flex flex-col gap-4">
+        <Button href={contactLinks.cal} target="_blank" rel="noopener"><span>Erstgespräch buchen</span><Icon name="arrow-up-right" size="sm" /></Button>
+        <div className="flex flex-col gap-2">
+          <p className="text-foreground-muted text-xs leading-5">Lieber Text statt Termin?</p>
+          <Button variant="outline" href={`mailto:${contactLinks.email}`}><Icon name="mail" size="sm" /><span>{contactLinks.email}</span></Button>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>

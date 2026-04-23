@@ -64,7 +64,7 @@ export const routes = {
   // Blog section
   blog: {
     de: 'blog',
-    nav: { show: false, order: 99, label: 'nav.blog' },
+    nav: { show: true, order: 5, label: 'nav.blog' },
   },
 
   // Components showcase

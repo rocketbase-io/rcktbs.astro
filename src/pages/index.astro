@@ -4,10 +4,13 @@ import { Picture } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import BlogCard from '@/components/blog/BlogCard.astro';
 import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
 import { TestimonialCarousel } from '@/components/ui/marketing/TestimonialCarousel';
+import { getCollection } from 'astro:content';
 import { defaultLocale } from '@/i18n/config';
 import { getLocalizedPath } from '@/i18n/index';
+import { getReadingTime } from '@/lib/utils';
 import siteConfig from '@/config/site.config';
 import founderImage from '@/assets/rocketbase/founder-marten-priess.jpg';
 import bonprixCaseImage from '@/assets/references/teaser-bonprix.jpeg';
@@ -120,6 +123,16 @@ const testimonialItems = allCases
   });
 
 const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
+
+const featuredBlogPosts = (
+  await getCollection('blog', ({ data }) => {
+    return data.locale === locale && data.featured === true && (import.meta.env.PROD ? data.draft !== true : true);
+  })
+)
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
+  .slice(0, 2);
+
+const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`, '')}`;
 ---
 
 <LandingLayout
@@ -774,6 +787,44 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
         </header>
         <div data-reveal>
           <TestimonialCarousel items={testimonialItems} />
+        </div>
+      </div>
+    </section>
+  )}
+
+  {featuredBlogPosts.length > 0 && (
+    <section class="border-border border-b py-20 lg:py-24">
+      <div class="container">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between" data-reveal>
+          <div class="max-w-2xl">
+            <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
+              Einblicke aus der Praxis
+            </p>
+            <h2 class="font-display text-foreground mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+              Was uns in Projekten auffällt.
+            </h2>
+          </div>
+          <a
+            href="/blog"
+            class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 hover:text-brand-500 dark:text-brand-400 dark:hover:text-brand-300 transition-colors"
+          >
+            Alle Beiträge
+            <Icon name="arrow-right" size="sm" />
+          </a>
+        </div>
+
+        <div class="mt-10 grid gap-6 md:grid-cols-2" data-reveal="fade-up">
+          {featuredBlogPosts.map((post) => (
+            <BlogCard
+              title={post.data.title}
+              description={post.data.description}
+              href={getBlogPostUrl(post.id)}
+              publishedAt={post.data.publishedAt}
+              tags={post.data.tags}
+              image={post.data.image}
+              readingTime={getReadingTime(post.body ?? '')}
+            />
+          ))}
         </div>
       </div>
     </section>

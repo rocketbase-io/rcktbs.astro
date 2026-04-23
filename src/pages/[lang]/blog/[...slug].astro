@@ -3,6 +3,7 @@
 import BlogLayout from '@/layouts/BlogLayout.astro';
 import { getCollection, render } from 'astro:content';
 import { locales, defaultLocale, isValidLocale, type Locale } from '@/i18n/config';
+import { getReadingTime } from '@/lib/utils';
 
 export async function getStaticPaths() {
   const paths: { params: { lang: string; slug: string }; props: { post: any } }[] = [];
@@ -38,6 +39,8 @@ if (!lang || !isValidLocale(lang)) {
 
 const locale = lang as Locale;
 const { Content } = await render(post);
+
+const readingTime = getReadingTime(post.body ?? '');
 ---
 
 <BlogLayout
@@ -51,6 +54,7 @@ const { Content } = await render(post);
   tags={post.data.tags}
   slug={post.id}
   locale={locale}
+  readingTime={readingTime}
 >
   <Content />
 </BlogLayout>

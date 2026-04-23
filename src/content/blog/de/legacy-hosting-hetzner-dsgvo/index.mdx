@@ -1,0 +1,102 @@
+---
+title: "Der Server im Büroschrank — und warum er Sie mehr kostet, als Sie denken"
+description: "Kritische Software auf dem Büro-Server kostet mehr, als Sie denken. Eine Migration ins deutsche Rechenzentrum bringt bessere Verfügbarkeit bei Betriebskosten unter 50 Euro im Monat."
+publishedAt: 2026-03-01
+author: "Marten Prieß"
+image: "./hero.png"
+imageAlt: "Server im Büroschrank versus DSGVO-konformes Rechenzentrum bei Hetzner"
+tags: ["hosting", "hetzner", "dsgvo", "legacy", "infrastruktur", "betrieb"]
+featured: false
+draft: true
+locale: de
+---
+
+In mehreren unserer Ablöseprojekte steht am Anfang nicht nur die Frage der Anwendung, sondern auch der Umgebung, in der sie läuft. Die Situation ist oft verblüffend ähnlich: Ein Server im Büroraum, eine NAS für Backups, ein VPN zum Zugriff von außen, und seit Jahren das Gefühl, dass das "so nicht mehr zeitgemäß" ist, aber auch nie oben auf der Agenda stand.
+
+Wir kennen diese Konstellation aus verschiedenen Projekten — sowohl bei Handwerksbetrieben mit klassischer Eigenentwicklung aus den späten Neunzigern als auch bei Beratungshäusern mit einer gewachsenen Standardsoftware im lokalen Betrieb. Die Geschichten ähneln sich. Dieser Artikel beschreibt, warum der Status quo oft teurer und riskanter ist als er wirkt und wie eine saubere Migration aussieht, die auch wirtschaftlich stimmig ist.
+
+## Der Status quo: was typischerweise im Einsatz ist
+
+Die Ausgangslage, die wir immer wieder sehen, sieht grob so aus:
+
+- Ein physischer Server, oft seit sechs, acht oder zehn Jahren im Betrieb.
+- Ein zweites Gerät als Backup-Ziel, meist ein NAS, häufig im gleichen Raum.
+- Ein Zugang per VPN, damit Mitarbeiter aus dem Homeoffice oder von unterwegs auf das System zugreifen können.
+- Eine Wartung, die der IT-affinste Mitarbeiter im Haus mitmacht, oft neben seiner eigentlichen Rolle.
+- Updates, die dann laufen, wenn gerade niemand im System arbeitet — Freitagabend, am Wochenende, manchmal nachts.
+
+Das funktioniert. Es hat jahrelang funktioniert. Und deswegen bleibt es oft so, bis ein konkreter Anlass kommt.
+
+## Was dieser Status quo wirklich kostet
+
+Wenn wir in Projekten die Kosten dieser Konstellation durchrechnen, kommen fast immer Zahlen zusammen, die die Beteiligten überraschen. Nicht die direkten Hardwarekosten — die sind oft abgeschrieben — sondern die Summe aus vier Effekten:
+
+### 1. Ausfallrisiko und Wiederherstellungszeit
+
+Ein einzelner Server im Büroraum hat keine echte Redundanz. Wenn die Festplatte ausfällt, das Netzteil stirbt oder das Board defekt ist, steht das System. Bis ein Ersatzgerät beschafft, eingerichtet und das Backup zurückgespielt ist, vergehen im günstigen Fall ein paar Stunden, im schlechten ein paar Tage.
+
+Wir haben Unternehmen erlebt, bei denen solche Ausfälle nicht theoretisch waren, sondern im Laufe der Jahre zwei- oder dreimal reale Arbeitstage gekostet haben. Das sind Ausfälle, die in keiner Kostenrechnung auftauchen, weil sie als "ist halt passiert" verbucht werden.
+
+### 2. Das VPN als ständige Reibung
+
+VPN-Zugänge sind einer der häufigsten Gründe für kleine tägliche Produktivitätsverluste. Die Verbindung hängt. Der VPN-Client braucht ein Update. Der Tunnel bricht ab, wenn das Handy ins WLAN wechselt. Ein neuer Mitarbeiter braucht drei Anläufe, bis er aus dem Homeoffice sauber arbeiten kann.
+
+Einzeln ist jedes dieser Probleme klein. Summiert über fünfzig Mitarbeiter und zweihundertfünfzig Arbeitstage pro Jahr wird daraus ein messbarer Reibungsverlust — dazu ein subtiler Effekt auf die Unternehmenskultur, weil das Arbeiten außerhalb des Büros spürbar unangenehmer ist als innen.
+
+### 3. Wartung, die immer jemanden bindet
+
+Der Kollege, der sich um den Server kümmert, ist in dieser Rolle selten im Anforderungsprofil eingestellt worden. Er macht das, weil er es kann und niemand sonst es macht. Das ist für das Unternehmen billig, bis er ausfällt, den Job wechselt oder in Rente geht. Dann offenbart sich, dass das Wissen um die eigene Infrastruktur an einer einzelnen Person hing.
+
+### 4. Datenschutz und Rechtslage
+
+Die Einschätzung, dass eigenes Hosting "sicherer" als externes sei, hält einer nüchternen Betrachtung meist nicht stand. Ein Büro-Server ohne professionelle physische Zutrittssicherung, ohne redundante Stromversorgung, ohne zertifizierte Prozesse ist aus DSGVO-Sicht in vielen Aspekten schwerer zu dokumentieren als ein Rechenzentrum, das genau diese Anforderungen als Produkt anbietet.
+
+Das ist kein Automatismus — es kommt darauf an, was im Büro läuft und welche Daten verarbeitet werden. Aber die pauschale Annahme "bei uns im Haus ist es sicherer" trägt bei einer ernsthaften Prüfung selten.
+
+## Was ein deutsches Rechenzentrum konkret kostet
+
+Wir nutzen in vielen unserer Projekte Hetzner als Hosting-Provider, mit Standort Falkenstein oder Nürnberg. Das ist nicht die einzige sinnvolle Wahl, aber es ist eine, die für die meisten mittelständischen Kontexte in Deutschland sehr gut passt: DSGVO-konform, deutsches Recht, deutsche Rechenzentren, professioneller Betrieb, transparente Preismodelle.
+
+Die konkreten Zahlen, über die wir sprechen, sind für Projekte dieser Größenordnung überraschend niedrig. Für eine individuelle Anwendung mit Datenbank, moderatem Traffic und Backup-Infrastruktur liegen die reinen Infrastruktur-Kosten typischerweise unter 50 Euro im Monat. In Fällen, in denen mehrere Anwendungen auf eine gemeinsame Infrastruktur laufen, liegt der Betrag pro Anwendung noch darunter.
+
+Das ist kein Lockpreis-Phänomen. Es reflektiert den Umstand, dass Hardware heute dramatisch günstiger ist als in den frühen 2010ern und dass moderne Provider eine hohe Automatisierung im Betrieb erreichen. Für den gleichen Preisbereich, in dem man sich vor zehn Jahren einen Low-End-Rootserver gemietet hat, bekommt man heute eine Umgebung mit mehreren Gigabyte RAM, nutzbaren CPU-Ressourcen, schnellem Netzwerk und guter Uptime.
+
+## Was dafür gebraucht wird
+
+Die Migration ist nicht trivial, aber auch kein Großprojekt. Typisch sind drei Bausteine:
+
+**1. Saubere Container-Basis.** Die Anwendung läuft in einem reproduzierbaren Setup — meist Docker-basiert — statt in einer über Jahre gewachsenen Installation auf dem alten Server. Das ist der größte technische Schritt und der, der den eigentlichen Nutzen bringt: Die Umgebung lässt sich nach der Migration in Minuten irgendwo anders aufsetzen, nicht in Tagen.
+
+**2. Automatisierte Backups, die tatsächlich funktionieren.** Tägliche, verschlüsselte Backups der Datenbank und der kritischen Dateien, in einer zweiten Region. Regelmäßige automatisierte Restore-Tests, damit nicht erst im Ernstfall auffällt, dass das Backup zwar existiert, aber nicht wiederherstellbar ist. Das ist einer der Punkte, an denen der Abstand zwischen Büro-Server und professionellem Betrieb am größten ist.
+
+**3. Zugriff ohne VPN.** Moderne Anwendungen sind über HTTPS erreichbar, mit Identity-Provider-Anbindung für die Authentifizierung. Für administrative Zugriffe kann es weiterhin einen geschützten Kanal geben, aber der tägliche Arbeitszugriff der Mitarbeiter läuft über einen Standard-Browser, von überall aus, ohne VPN-Client. Das allein ist für viele Unternehmen der spürbarste Gewinn.
+
+Dazu kommt — abhängig vom Sensibilitätsgrad der Daten — ein DSGVO-Dokumentationsniveau, das im eigenen Büro schwerer herzustellen ist: Auftragsverarbeitungsvertrag mit dem Provider, Dokumentation der technischen und organisatorischen Maßnahmen, klare Zugriffsprotokolle.
+
+## Das Migrationsprojekt im Überblick
+
+Eine realistische Grobplanung für eine Hosting-Migration einer bestehenden Anwendung sieht ungefähr so aus:
+
+**Wochen 1–2 — Bestandsaufnahme.** Welche Anwendungen laufen, welche Datenvolumina, welche Integrationen nach außen, welche Nutzer, welche Zugriffswege. Entscheidung, ob die Anwendung 1:1 migriert wird oder ob parallel eine Modernisierung passiert.
+
+**Wochen 3–4 — Zielumgebung aufbauen.** Hetzner-Cloud-Ressourcen einrichten, Containerisierung der Anwendung, automatisierte Deploys, Backup-Konzept, Monitoring.
+
+**Wochen 5–6 — Testmigration.** Ein vollständiger Durchlauf mit einer Kopie der Produktivdaten. Funktionstest aller kritischen Abläufe. Performance-Vergleich. Typischerweise entdeckt man hier zwei oder drei Stellen, die Nacharbeit brauchen.
+
+**Wochen 7–8 — Cut-over.** Geplante Umstellung über ein Wochenende oder eine definierte Wartungsphase. Einmalige Datenübernahme, Umstellung der DNS-Einträge, Abschaltung des alten Systems mit definierter Rückfallzeit.
+
+Das ist eine typische Bandbreite. Wenn die Anwendung klein ist und klar strukturiert, geht es schneller. Wenn sie in einer komplexen Integrationslandschaft liegt oder die Containerisierung aufwendig ist, entsprechend länger. Der Punkt: Das ist ein überschaubares Projekt, kein Programm.
+
+## Wann sich die Migration nicht lohnt
+
+Es gibt Fälle, in denen der Status quo weiterbetrieben werden sollte. Wenn die Anwendung ohnehin in den nächsten achtzehn Monaten abgelöst wird, ist die Migration verlorene Arbeit. Wenn die Infrastruktur im Büro als Teil eines größeren IT-Setups funktioniert und professionell gewartet wird, ist der Handlungsdruck geringer. Wenn aus rechtlichen Gründen bestimmte Datenkategorien zwingend in einem spezifischen Setup liegen müssen, gelten eigene Regeln.
+
+In allen anderen Fällen — und das ist die Mehrheit der mittelständischen Setups, die wir sehen — ist der Weg ins Rechenzentrum eine der risikoärmsten Verbesserungen, die ein Unternehmen an seiner IT-Landschaft machen kann. Wenig Gefahr, relativ überschaubare Kosten, spürbare Verbesserung in Verfügbarkeit, Wartbarkeit und Arbeitskomfort.
+
+## Wenn Ihr Server noch im Büro steht
+
+Wenn Sie am Wochenende die Updates machen, wenn Ihre Kollegen regelmäßig VPN-Probleme melden, wenn der Backup-Prozess in einer Person steckt und niemand so recht weiß, ob ein Restore im Ernstfall wirklich funktionieren würde — dann lohnt sich ein Gespräch.
+
+Wir machen mit Ihnen einen kompakten Infrastruktur-Check: eine ehrliche Bewertung Ihres aktuellen Setups, eine realistische Einschätzung zum Migrationsaufwand und eine klare Zahl zu Betriebskosten und Aufwand. Ohne Cloud-Buzzword-Bingo und ohne Pauschalempfehlung.
+
+[Discovery-Workshop anfragen](/kontakt)
