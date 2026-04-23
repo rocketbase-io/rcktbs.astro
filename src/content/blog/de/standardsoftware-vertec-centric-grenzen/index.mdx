@@ -9,7 +9,15 @@ tags: ["standardsoftware", "vertec", "centric", "individualsoftware", "migration
 featured: true
 draft: false
 locale: de
+cta:
+  eyebrow: "Nächster Schritt"
+  headline: "Kippt die Standardlösung bei Ihnen — oder trägt sie noch?"
+  body: "30 Minuten Erstgespräch, um die drei Signale und Ihre konkrete Situation einzuordnen. Danach ist klar, ob sich ein strukturierter Workshop für Sie lohnt — oder ob Sie beim Bestand bleiben sollten."
 ---
+
+import Button from '@/components/ui/form/Button/Button.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import { contactLinks } from '@/data/rocketbase';
 
 Wir haben in den letzten Jahren mehrere Ablöseprojekte rund um bekannte Business-Standardsoftware begleitet - darunter Systeme wie Vertec im Professional-Services-Umfeld und Centric im Textilhandel. Die Geschichten ähneln sich, obwohl die Branchen unterschiedlich sind. Dieser Artikel beschreibt das Muster, warum es entsteht und wann eine individuelle Lösung der bessere Weg ist.
 
@@ -19,36 +27,76 @@ Vorweg: Vertec und Centric sind beide keine schlechten Produkte. Sie lösen real
 
 Die Einstiegssituation in den Projekten war verblüffend ähnlich:
 
-- Die Software wurde vor 8, 10, manchmal 15 Jahren eingeführt.
-- Zu Beginn passte sie ganz ordentlich. Die wesentlichen Prozesse ließen sich abbilden, die Einführung war dokumentiert, die Anbieterbindung akzeptabel.
-- Über die Jahre sind die Geschäftsprozesse deutlich spezifischer geworden. Neue Geschäftsfelder, neue Kundensegmente, neue Steuerungslogiken.
-- Das System hat mitgehalten - aber über Custom-Felder, über Workarounds, über Excel-Exporte an den Rändern, über zwei parallele Datenbanken, weil sich manches im Standard nicht abbilden ließ.
+<div className="not-prose my-10 grid gap-4 sm:grid-cols-2" data-reveal="fade-up">
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-center gap-2">
+      <span className="text-brand-600"><Icon name="clock" size="sm" /></span>
+      <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Einführung</p>
+    </div>
+    <p className="text-foreground mt-2 text-sm leading-6">Die Software wurde vor 5, 10, manchmal 15 Jahren eingeführt — oft als klarer Fortschritt gegenüber dem, was davor da war.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-center gap-2">
+      <span className="text-brand-600"><Icon name="check-circle" size="sm" /></span>
+      <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Anfangs-Fit</p>
+    </div>
+    <p className="text-foreground mt-2 text-sm leading-6">Zu Beginn passt sie ordentlich: die wesentlichen Prozesse lassen sich abbilden, die Einführung ist dokumentiert, die Anbieterbindung akzeptabel.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-center gap-2">
+      <span className="text-brand-600"><Icon name="trending-up" size="sm" /></span>
+      <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Prozess-Drift</p>
+    </div>
+    <p className="text-foreground mt-2 text-sm leading-6">Mit der Zeit werden die Geschäftsprozesse spezifischer — neue Geschäftsfelder, neue Kundensegmente, neue Steuerungslogiken.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-center gap-2">
+      <span className="text-brand-600"><Icon name="alert-triangle" size="sm" /></span>
+      <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Flickschusterei</p>
+    </div>
+    <p className="text-foreground mt-2 text-sm leading-6">Das System hält mit — aber über Custom-Felder, Workarounds, Excel-Exporte an den Rändern und parallele Datenbanken.</p>
+  </div>
+</div>
 
 Irgendwann kommt der Punkt, an dem die Ausnahmen mehr werden als die Regeln. An dem in einer Dokumentation zur internen Kalkulation siebzehn Sonderfälle aufgelistet sind, die irgendwo im System stecken, aber nirgendwo sauber modelliert sind. An dem niemand im Haus mehr genau sagen kann, warum eine bestimmte Auswertung so aussieht, wie sie aussieht.
 
 Das ist der Moment, an dem wir typischerweise ins Gespräch kommen.
 
+<aside className="not-prose my-8" data-reveal="fade-up">
+  <div className="rounded-2xl border border-brand-200 bg-brand-50/60 p-6 dark:border-brand-800 dark:bg-brand-900/15 sm:p-7">
+    <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
+      <div className="flex-1">
+        <p className="font-display text-foreground text-lg font-semibold leading-snug sm:text-xl">Sie erkennen Ihr Haus wieder?</p>
+        <p className="text-foreground-secondary mt-1.5 text-sm leading-6">30 Minuten, um gemeinsam einzuordnen, ob und wann eine Ablösung für Sie sinnvoll wäre.</p>
+      </div>
+      <div className="shrink-0">
+        <Button href={contactLinks.cal} target="_blank"><span>Mit Marten sprechen</span><Icon name="arrow-up-right" size="sm" /></Button>
+      </div>
+    </div>
+  </div>
+</aside>
+
 ## Warum das passiert - und zwar systematisch
 
 Die Ursache liegt nicht an der Software selbst, sondern an einer strukturellen Eigenschaft von Standardlösungen. Drei Punkte greifen ineinander:
 
-### Generizität als Geburtsfehler
-
-Standardsoftware verkauft sich über Breite. Sie muss für das Beratungshaus mit 15 Mitarbeitenden genauso funktionieren wie für das mit 400. Für Kanzleien, Ingenieurbüros und Digitalagenturen gleichermaßen. Diese Breite wird über Konfigurierbarkeit erkauft: Custom-Felder, frei definierbare Workflows, rollenbasierte Sichten, generische Reporting-Engines.
-
-Solange ein Unternehmen im Mainstream liegt, funktioniert das. Sobald die Geschäftslogik ein paar spezifische Kanten hat - eine eigene Leistungsverrechnung, ein abweichendes Margenmodell, eine prozessuale Besonderheit in der Projektkalkulation - beginnt die Konfiguration zur Flickschusterei zu werden. Was fehlt, sind keine Features. Was fehlt, ist die Fähigkeit des Datenmodells, die spezifische Fachlichkeit nativ abzubilden.
-
-### Schnittstellen, die Jahrzehnte alt sind
-
-Was unter der Oberfläche der großen Standardlösungen liegt, ist oft nicht mehr auf dem aktuellen Stand. Datenbankschemata, die in den frühen 2000ern entworfen wurden. APIs, die als SOAP-Endpunkt entstanden und heute mit einer REST-Fassade überklebt sind. Import-/Export-Formate, die auf CSV-Dateien mit festgelegter Spaltenreihenfolge basieren.
-
-Das rächt sich in dem Moment, in dem ein Unternehmen nicht mehr nur in der Standardsoftware arbeitet, sondern sie integrieren muss: mit dem CRM, dem Data Warehouse, dem Buchhaltungssystem, dem Reporting-Stack. Die Schnittstellen sind da - aber sie liefern das, was vor 15 Jahren als ausreichend galt, nicht das, was man heute für einen sauberen Datenfluss bräuchte.
-
-### Updates, die den Workaround bedrohen
-
-Jedes Unternehmen, das mit einer Standardsoftware lange genug lebt, hat seine eigenen Anpassungen darin. Custom-Felder, Skripte, Report-Definitionen, vielleicht ein angeflanschter Eigenbauteil. Das ist nicht falsch - das ist der normale Umgang mit generischen Systemen.
-
-Das Problem: Bei jedem größeren Release beginnt die Angst. Läuft der Workaround weiter? Hat der Hersteller das Feld-Verhalten geändert? Funktioniert das Reporting noch? Wir haben Kunden erlebt, die Updates bewusst um 2 Jahre verschleppt haben, weil die Risikoabwägung "was bricht dadurch" schwerer wog als "was gewinnen wir dadurch".
+<div className="not-prose my-10 grid gap-4 md:grid-cols-3" data-reveal="fade-up">
+  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+    <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">01</p>
+    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Für alle gemacht, für niemanden maßgeschneidert</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Standardsoftware verkauft sich über Breite — für 15 MA genauso wie für 400, für Kanzleien wie für Digitalagenturen. Diese Breite wird über Konfigurierbarkeit erkauft: Custom-Felder, freie Workflows, generische Reporting-Engines. Sobald Ihre Geschäftslogik spezifische Kanten hat, beginnt die Konfiguration zur Flickschusterei zu werden.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+    <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">02</p>
+    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Schnittstellen aus einer anderen Zeit</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Datenbankschemata aus den frühen 2000ern, SOAP-APIs mit REST-Fassade überklebt, CSV-Import mit festgelegter Spaltenreihenfolge. Solange Sie innerhalb der Software arbeiten, fällt das nicht auf. Sobald Sie integrieren müssen — CRM, Data Warehouse, BI — wird es schmerzhaft.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+    <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">03</p>
+    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Updates, die den Workaround bedrohen</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Jedes größere Release weckt die Angst: Läuft der Workaround weiter? Hat sich das Feld-Verhalten geändert? Funktioniert das Reporting noch? Wir haben Kunden erlebt, die Updates bewusst zwei Jahre verschleppt haben — aus reiner Risiko-Abwägung.</p>
+  </div>
+</div>
 
 Das ist der Punkt, an dem eine Standardlösung de facto zur Legacy-Software geworden ist - nur dass man dafür weiterhin Lizenzen bezahlt.
 
@@ -63,9 +111,26 @@ Wenn Unternehmen uns mit der Frage einer Ablösung ansprechen, kommen sie prakti
 
 Die technische Diskussion kommt danach. Und an dem Punkt wird es spannend, weil es zwei mögliche Antworten gibt:
 
-**Antwort A - innerhalb der Standardsoftware bleiben.** Modul erweitern, Workaround konsolidieren, externes Reporting-Tool anbinden, Prozess in zweiter Reihe bauen. Das ist oft die schnellere, im ersten Moment günstigere Variante. Und manchmal die richtige.
-
-**Antwort B - Kernprozesse in eine individuelle Lösung überführen.** Die Standardsoftware dort behalten, wo sie wirklich Standard abbildet (Buchhaltung, HR, vielleicht Teile des CRM). Die spezifische Geschäftslogik, die das Unternehmen ausmacht, in einer eigenen Anwendung sauber modellieren.
+<div className="not-prose my-10 grid gap-4 md:grid-cols-2 md:items-stretch" data-reveal="fade-up">
+  <div className="rounded-2xl border border-border bg-background-secondary p-6 sm:p-7">
+    <p className="text-foreground-muted font-mono text-xs font-semibold tracking-wider">Antwort A</p>
+    <p className="font-display text-foreground mt-2 text-xl font-semibold leading-snug">Innerhalb der Standardsoftware bleiben</p>
+    <p className="text-foreground-secondary mt-4 text-sm leading-6">Modul erweitern, Workarounds konsolidieren, externes Reporting-Tool anbinden, Prozesse in zweiter Reihe bauen.</p>
+    <div className="mt-5 flex items-start gap-2 text-xs leading-5 text-foreground-muted">
+      <Icon name="info" size="xs" class="mt-0.5 shrink-0 text-brand-500" />
+      <span>Oft die schnellere, im ersten Moment günstigere Variante — und manchmal die richtige.</span>
+    </div>
+  </div>
+  <div className="rounded-2xl border border-brand-300 bg-card p-6 shadow-[0_22px_55px_rgba(34,43,74,0.08)] dark:border-brand-800 sm:p-7">
+    <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">Antwort B</p>
+    <p className="font-display text-foreground mt-2 text-xl font-semibold leading-snug">Kernprozesse in eine individuelle Lösung überführen</p>
+    <p className="text-foreground-secondary mt-4 text-sm leading-6">Die Standardsoftware dort behalten, wo sie wirklich Standard abbildet (Buchhaltung, HR, Teile des CRM). Die spezifische Geschäftslogik in einer eigenen Anwendung sauber modellieren.</p>
+    <div className="mt-5 flex items-start gap-2 text-xs leading-5 text-foreground-muted">
+      <Icon name="check-circle" size="xs" class="mt-0.5 shrink-0 text-brand-500" />
+      <span>Das Datenmodell passt nativ zu Ihrem Geschäft — keine Custom-Felder, keine Sonderfalldokumentation.</span>
+    </div>
+  </div>
+</div>
 
 Die zweite Antwort ist nicht immer die richtige. Aber wenn sie es ist, funktioniert sie in der Regel aus einem simplen Grund: Die eigene Anwendung muss nicht generisch sein. Sie modelliert genau das eine Geschäftsmodell, das sie unterstützen soll. Keine Custom-Felder. Keine Workarounds. Keine Sonderfalldokumentation. Die Geschäftslogik steht direkt im Code und im Datenmodell.
 
@@ -73,9 +138,32 @@ Die zweite Antwort ist nicht immer die richtige. Aber wenn sie es ist, funktioni
 
 Wir haben für uns drei Signale extrahiert, die in Gesprächen immer wieder auftauchen:
 
-1. **Die Fachabteilung pflegt eine parallele Excel-Welt.** Nicht für Notfälle, sondern im Tagesgeschäft. Das ist der deutlichste Hinweis, dass das System die reale Arbeit nicht trägt.
-2. **Ihre Power-User sind Ihr Risiko.** Wenn zwei bis drei Personen im Haus die einzigen sind, die die Besonderheiten des Systems verstehen, und ihr Urlaub Projekte ausbremst, ist der Zustand nicht tragfähig.
-3. **Neue Geschäftsideen scheitern am System, nicht am Markt.** Wenn "könnte unser System das?" die erste Frage bei jeder neuen Idee ist und die Antwort regelmäßig "schwierig" lautet, bremst das System die Strategie, nicht umgekehrt.
+<div className="not-prose my-10 grid gap-4 md:grid-cols-3" data-reveal="fade-up">
+  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+    <div className="flex items-center gap-2">
+      <span className="text-brand-600"><Icon name="alert-triangle" size="sm" /></span>
+      <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Signal 1</p>
+    </div>
+    <p className="font-display text-foreground mt-3 text-lg font-semibold leading-snug">Parallele Excel-Welt</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Die Fachabteilung führt eine Excel-Welt parallel zur Standardsoftware — nicht für Notfälle, sondern im Tagesgeschäft. Deutlichster Hinweis, dass das System die reale Arbeit nicht trägt.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+    <div className="flex items-center gap-2">
+      <span className="text-brand-600"><Icon name="users" size="sm" /></span>
+      <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Signal 2</p>
+    </div>
+    <p className="font-display text-foreground mt-3 text-lg font-semibold leading-snug">Power-User als Risiko</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Zwei bis drei Personen verstehen die Besonderheiten — ihr Urlaub bremst Projekte. Schlüsselwissen hängt an Einzelnen, nicht am System.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+    <div className="flex items-center gap-2">
+      <span className="text-brand-600"><Icon name="alert-circle" size="sm" /></span>
+      <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Signal 3</p>
+    </div>
+    <p className="font-display text-foreground mt-3 text-lg font-semibold leading-snug">Strategie-Bremse</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">„Könnte unser System das?" ist die erste Frage bei jeder neuen Idee — und die Antwort lautet regelmäßig „schwierig". Das System bremst die Strategie, nicht umgekehrt.</p>
+  </div>
+</div>
 
 Einzeln ist keines dieser Signale ein Grund, ein etabliertes System über den Haufen zu werfen. In Kombination - und bei einem Unternehmen, das strukturell wachsen will - schon.
 
@@ -83,31 +171,60 @@ Einzeln ist keines dieser Signale ein Grund, ein etabliertes System über den Ha
 
 Wir sind mit der Aussage "wir lösen jetzt ab" bewusst vorsichtig. In den Projekten, die wir begleitet haben, hat sich ein Muster bewährt, das deutlich pragmatischer ist als ein Big-Bang-Austausch:
 
-**Phase 1 - Discovery:** Die tatsächlichen Kernprozesse aufnehmen, nicht die Systemlandschaft. Was muss das Unternehmen können, unabhängig davon, welche Tools gerade im Einsatz sind? Wo liegen die Workarounds, die heute die Lücken füllen?
-
-**Phase 2 - Schnitt definieren:** Welcher Teil der heutigen Systemlandschaft bleibt (oft: Buchhaltung, HR, Standard-CRM)? Welcher Teil wird durch eine individuelle Anwendung ersetzt (meist: die unternehmensspezifische Kernlogik, das Reporting, die kritischen Arbeitsabläufe)?
-
-**Phase 3 - Parallelbetrieb:** Die individuelle Lösung wird entwickelt und läuft zunächst parallel. Datenimport aus dem Bestandssystem, schrittweise Übergabe von Teilbereichen. Die Altwerte werden dabei übernommen, sodass die historische Datenbasis nicht verloren geht.
-
-**Phase 4 - Abschaltung:** Erst wenn die neue Lösung den kompletten betroffenen Prozess abdeckt und produktiv stabil läuft, wird die Altlösung heruntergefahren.
+<div className="not-prose my-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4" data-reveal="fade-up">
+  <div className="relative rounded-2xl border border-border bg-background-secondary p-6">
+    <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">Phase 1</p>
+    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Discovery</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Die tatsächlichen Kernprozesse aufnehmen — nicht die Systemlandschaft. Was muss das Unternehmen können, unabhängig von heutigen Tools?</p>
+  </div>
+  <div className="relative rounded-2xl border border-border bg-background-secondary p-6">
+    <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">Phase 2</p>
+    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Schnitt definieren</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Was bleibt im Standard (Buchhaltung, HR, Standard-CRM)? Was wird durch eine individuelle Lösung ersetzt (Kernlogik, Reporting, kritische Abläufe)?</p>
+  </div>
+  <div className="relative rounded-2xl border border-border bg-background-secondary p-6">
+    <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">Phase 3</p>
+    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Parallelbetrieb</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Die neue Lösung läuft parallel. Datenimport, schrittweise Übergabe von Teilbereichen. Altwerte werden übernommen, die Historie bleibt nutzbar.</p>
+  </div>
+  <div className="relative rounded-2xl border border-brand-300 bg-card p-6 shadow-[0_22px_55px_rgba(34,43,74,0.08)] dark:border-brand-800">
+    <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">Phase 4</p>
+    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Abschaltung</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Erst wenn die neue Lösung den kompletten Prozess abdeckt und stabil läuft, wird die Altlösung heruntergefahren. Keine Deadline-Kompromisse.</p>
+  </div>
+</div>
 
 Das ist weniger glamourös als ein Komplettaustausch, aber risikoärmer - und für den Mittelstand meist der einzig gangbare Weg, weil das Tagesgeschäft nicht stehenbleiben kann.
 
 ## Ehrlich bleiben: wann Standardsoftware weiterhin das Mittel der Wahl ist
 
-Damit dieser Artikel nicht wie ein Plädoyer pro Individualentwicklung wirkt - es gibt klare Fälle, in denen Standardsoftware weiterhin die richtige Wahl ist:
+Damit dieser Artikel nicht wie ein Plädoyer pro Individualentwicklung wirkt — es gibt klare Fälle, in denen Standardsoftware weiterhin die richtige Wahl ist:
 
-- Ihre Kernprozesse sind branchenüblich und werden von einem ausgereiften Produkt gut abgebildet.
-- Sie wollen bewusst nicht, dass Prozesse zu Ihrem Wettbewerbsvorteil werden (dann müssen Sie sie auch nicht individuell bauen).
-- Das System ist nur am Rand Ihrer Wertschöpfung, nicht im Zentrum.
-- Sie haben die interne Kapazität, mit der Konfigurations- und Update-Zyklik eines Herstellers zu leben.
+<div className="not-prose my-10 grid gap-4 sm:grid-cols-2" data-reveal="fade-up">
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-start gap-3">
+      <span className="text-brand-500 mt-1 shrink-0"><Icon name="check" size="xs" /></span>
+      <p className="text-foreground-secondary text-sm leading-6"><strong className="text-foreground">Branchenüblicher Kernprozess.</strong> Ein ausgereiftes Produkt bildet ihn gut ab — kein Bedarf für Eigenentwicklung.</p>
+    </div>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-start gap-3">
+      <span className="text-brand-500 mt-1 shrink-0"><Icon name="check" size="xs" /></span>
+      <p className="text-foreground-secondary text-sm leading-6"><strong className="text-foreground">Prozesse nicht als USP gewollt.</strong> Wenn Abläufe kein Wettbewerbsvorteil sein sollen, müssen sie auch nicht individuell sein.</p>
+    </div>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-start gap-3">
+      <span className="text-brand-500 mt-1 shrink-0"><Icon name="check" size="xs" /></span>
+      <p className="text-foreground-secondary text-sm leading-6"><strong className="text-foreground">Randthema, nicht Wertschöpfungs-Kern.</strong> Das System ist an der Peripherie, nicht im Zentrum des Geschäfts.</p>
+    </div>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-start gap-3">
+      <span className="text-brand-500 mt-1 shrink-0"><Icon name="check" size="xs" /></span>
+      <p className="text-foreground-secondary text-sm leading-6"><strong className="text-foreground">Interne Kapazität für Hersteller-Zyklik.</strong> Ihr Team kann mit Konfigurations- und Update-Rhythmen gut leben.</p>
+    </div>
+  </div>
+</div>
 
 In allen diesen Fällen ist eine Individualentwicklung teuer und bringt wenig. Wir sagen das in Erstgesprächen auch so, wenn es so ist.
-
-## Wo wir helfen können
-
-Wenn eines der drei Signale in Ihrem Haus vertraut klingt - parallele Excel-Welten, Schlüsselpersonen-Abhängigkeit, Strategie-Bremse durch System - ist der nächste sinnvolle Schritt kein Projekt, sondern ein Gespräch.
-
-Wir machen mit Ihnen einen Discovery-Workshop: kompakt, mit klarem Output. Eine ehrliche Bewertung, ob eine Ablösung sinnvoll wäre, in welchem Schnitt, mit welcher Reihenfolge - und wann nicht. Wenn wir zum Schluss kommen, dass Ihre aktuelle Standardlösung weiterhin trägt, sagen wir Ihnen das auch.
-
-[Discovery-Workshop anfragen](/kontakt)

@@ -1,5 +1,5 @@
 ---
-title: "Der Server im Büroschrank - und warum er Sie mehr kostet, als Sie denken"
+title: "Der Server im Büroschrank — und warum er Sie mehr kostet, als Sie denken"
 description: "Kritische Software auf dem Büro-Server kostet mehr, als Sie denken. Eine Migration ins deutsche Rechenzentrum bringt bessere Verfügbarkeit bei Betriebskosten unter 50 Euro im Monat."
 publishedAt: 2026-03-01
 author: "Marten Prieß"
@@ -9,7 +9,15 @@ tags: ["hosting", "hetzner", "dsgvo", "legacy", "infrastruktur", "betrieb"]
 featured: false
 draft: false
 locale: de
+cta:
+  eyebrow: "Nächster Schritt"
+  headline: "Steht Ihr Server noch im Büro?"
+  body: "30 Minuten Infrastruktur-Check: Wo liegen die größten Risiken, was wäre der kleinstmögliche sinnvolle Migrationsschritt — und rechnet sich das für Ihre Situation?"
 ---
+
+import Button from '@/components/ui/form/Button/Button.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import { contactLinks } from '@/data/rocketbase';
 
 In mehreren unserer Ablöseprojekte steht am Anfang nicht nur die Frage der Anwendung, sondern auch der Umgebung, in der sie läuft. Die Situation ist oft verblüffend ähnlich: Ein Server im Büroraum, eine NAS für Backups, ein VPN zum Zugriff von außen, und seit Jahren das Gefühl, dass das "so nicht mehr zeitgemäß" ist, aber auch nie oben auf der Agenda stand.
 
@@ -19,39 +27,98 @@ Wir kennen diese Konstellation aus verschiedenen Projekten - sowohl bei Handwerk
 
 Die Ausgangslage, die wir immer wieder sehen, sieht grob so aus:
 
-- Ein physischer Server, oft seit sechs, acht oder zehn Jahren im Betrieb.
-- Ein zweites Gerät als Backup-Ziel, meist ein NAS, häufig im gleichen Raum.
-- Ein Zugang per VPN, damit Mitarbeiter aus dem Homeoffice oder von unterwegs auf das System zugreifen können.
-- Eine Wartung, die der IT-affinste Mitarbeiter im Haus mitmacht, oft neben seiner eigentlichen Rolle.
-- Updates, die dann laufen, wenn gerade niemand im System arbeitet - Freitagabend, am Wochenende, manchmal nachts.
+<div className="not-prose my-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-reveal="fade-up">
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-center gap-2">
+      <span className="text-brand-600"><Icon name="database" size="sm" /></span>
+      <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Hardware</p>
+    </div>
+    <p className="text-foreground mt-2 text-sm leading-6">Ein physischer Server, oft seit sechs, acht oder zehn Jahren im Betrieb.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-center gap-2">
+      <span className="text-brand-600"><Icon name="archive" size="sm" /></span>
+      <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Backup</p>
+    </div>
+    <p className="text-foreground mt-2 text-sm leading-6">Ein zweites Gerät als Backup-Ziel, meist ein NAS — häufig im gleichen Raum wie der Server.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-center gap-2">
+      <span className="text-brand-600"><Icon name="globe" size="sm" /></span>
+      <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Zugriff</p>
+    </div>
+    <p className="text-foreground mt-2 text-sm leading-6">Ein VPN, damit Mitarbeiter aus dem Homeoffice oder von unterwegs arbeiten können — mit den üblichen Reibungen.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-center gap-2">
+      <span className="text-brand-600"><Icon name="users" size="sm" /></span>
+      <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Wartung</p>
+    </div>
+    <p className="text-foreground mt-2 text-sm leading-6">Ein IT-affiner Kollege hält den Betrieb am Laufen — oft neben seiner eigentlichen Rolle, ohne formale Zuständigkeit.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-center gap-2">
+      <span className="text-brand-600"><Icon name="clock" size="sm" /></span>
+      <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Updates</p>
+    </div>
+    <p className="text-foreground mt-2 text-sm leading-6">Updates laufen, wenn niemand im System arbeitet — Freitagabend, am Wochenende, manchmal nachts.</p>
+  </div>
+</div>
 
 Das funktioniert. Es hat jahrelang funktioniert. Und deswegen bleibt es oft so, bis ein konkreter Anlass kommt.
 
 ## Was dieser Status quo wirklich kostet
 
-Wenn wir in Projekten die Kosten dieser Konstellation durchrechnen, kommen fast immer Zahlen zusammen, die die Beteiligten überraschen. Nicht die direkten Hardwarekosten - die sind oft abgeschrieben - sondern die Summe aus vier Effekten:
+Wenn wir in Projekten die Kosten dieser Konstellation durchrechnen, kommen fast immer Zahlen zusammen, die die Beteiligten überraschen. Nicht die direkten Hardwarekosten — die sind oft abgeschrieben — sondern die Summe aus vier Effekten:
 
-### 1. Ausfallrisiko und Wiederherstellungszeit
+<div className="not-prose my-10 grid gap-4 md:grid-cols-2" data-reveal="fade-up">
+  <div className="rounded-2xl border border-border bg-background-secondary p-6 sm:p-7">
+    <div className="flex items-center gap-2">
+      <span className="text-brand-600"><Icon name="alert-triangle" size="sm" /></span>
+      <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">01 · Ausfallrisiko</p>
+    </div>
+    <p className="font-display text-foreground mt-3 text-lg font-semibold leading-snug">Keine echte Redundanz</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Fällt die Festplatte, das Netzteil oder das Board aus, steht das System. Bis ein Ersatzgerät beschafft und das Backup zurückgespielt ist, vergehen Stunden bis Tage. In vielen Unternehmen waren das in den letzten Jahren zwei, drei reale Arbeitstage — verbucht als „ist halt passiert".</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-6 sm:p-7">
+    <div className="flex items-center gap-2">
+      <span className="text-brand-600"><Icon name="globe" size="sm" /></span>
+      <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">02 · VPN-Reibung</p>
+    </div>
+    <p className="font-display text-foreground mt-3 text-lg font-semibold leading-snug">Die tägliche kleine Bremse</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Die Verbindung hängt, der Client braucht ein Update, der Tunnel bricht ab, wenn das Handy ins WLAN wechselt. Einzeln klein. Summiert über 50 Mitarbeiter × 250 Tage ein messbarer Produktivitätsverlust — und ein subtiler Kultur-Effekt: Arbeit außerhalb des Büros wird unangenehmer als drinnen.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-6 sm:p-7">
+    <div className="flex items-center gap-2">
+      <span className="text-brand-600"><Icon name="users" size="sm" /></span>
+      <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">03 · Wartungs-Klumpenrisiko</p>
+    </div>
+    <p className="font-display text-foreground mt-3 text-lg font-semibold leading-snug">Wissen an einer Person</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Der Kollege, der den Server betreut, macht das, weil er es kann und niemand sonst es macht. Günstig für das Unternehmen — bis er ausfällt, wechselt oder in Rente geht. Dann zeigt sich, dass das gesamte Infrastruktur-Wissen an einer Person hing.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-6 sm:p-7">
+    <div className="flex items-center gap-2">
+      <span className="text-brand-600"><Icon name="shield" size="sm" /></span>
+      <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">04 · DSGVO & Rechtslage</p>
+    </div>
+    <p className="font-display text-foreground mt-3 text-lg font-semibold leading-snug">„Eigenes Hosting ist sicherer" — oft nicht</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Ein Büro-Server ohne professionelle Zutrittssicherung, ohne redundante Stromversorgung, ohne zertifizierte Prozesse ist aus DSGVO-Sicht schwerer zu dokumentieren als ein Rechenzentrum, das genau diese Anforderungen als Produkt anbietet.</p>
+  </div>
+</div>
 
-Ein einzelner Server im Büroraum hat keine echte Redundanz. Wenn die Festplatte ausfällt, das Netzteil stirbt oder das Board defekt ist, steht das System. Bis ein Ersatzgerät beschafft, eingerichtet und das Backup zurückgespielt ist, vergehen im günstigen Fall ein paar Stunden, im schlechten ein paar Tage.
-
-Wir haben Unternehmen erlebt, bei denen solche Ausfälle nicht theoretisch waren, sondern im Laufe der Jahre zwei- oder dreimal reale Arbeitstage gekostet haben. Das sind Ausfälle, die in keiner Kostenrechnung auftauchen, weil sie als "ist halt passiert" verbucht werden.
-
-### 2. Das VPN als ständige Reibung
-
-VPN-Zugänge sind einer der häufigsten Gründe für kleine tägliche Produktivitätsverluste. Die Verbindung hängt. Der VPN-Client braucht ein Update. Der Tunnel bricht ab, wenn das Handy ins WLAN wechselt. Ein neuer Mitarbeiter braucht drei Anläufe, bis er aus dem Homeoffice sauber arbeiten kann.
-
-Einzeln ist jedes dieser Probleme klein. Summiert über fünfzig Mitarbeiter und zweihundertfünfzig Arbeitstage pro Jahr wird daraus ein messbarer Reibungsverlust - dazu ein subtiler Effekt auf die Unternehmenskultur, weil das Arbeiten außerhalb des Büros spürbar unangenehmer ist als innen.
-
-### 3. Wartung, die immer jemanden bindet
-
-Der Kollege, der sich um den Server kümmert, ist in dieser Rolle selten im Anforderungsprofil eingestellt worden. Er macht das, weil er es kann und niemand sonst es macht. Das ist für das Unternehmen billig, bis er ausfällt, den Job wechselt oder in Rente geht. Dann offenbart sich, dass das Wissen um die eigene Infrastruktur an einer einzelnen Person hing.
-
-### 4. Datenschutz und Rechtslage
-
-Die Einschätzung, dass eigenes Hosting "sicherer" als externes sei, hält einer nüchternen Betrachtung meist nicht stand. Ein Büro-Server ohne professionelle physische Zutrittssicherung, ohne redundante Stromversorgung, ohne zertifizierte Prozesse ist aus DSGVO-Sicht in vielen Aspekten schwerer zu dokumentieren als ein Rechenzentrum, das genau diese Anforderungen als Produkt anbietet.
-
-Das ist kein Automatismus - es kommt darauf an, was im Büro läuft und welche Daten verarbeitet werden. Aber die pauschale Annahme "bei uns im Haus ist es sicherer" trägt bei einer ernsthaften Prüfung selten.
+<aside className="not-prose my-8" data-reveal="fade-up">
+  <div className="rounded-2xl border border-brand-200 bg-brand-50/60 p-6 dark:border-brand-800 dark:bg-brand-900/15 sm:p-7">
+    <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
+      <div className="flex-1">
+        <p className="font-display text-foreground text-lg font-semibold leading-snug sm:text-xl">Kommt Ihnen das bekannt vor?</p>
+        <p className="text-foreground-secondary mt-1.5 text-sm leading-6">30 Minuten, um den realen Status Ihrer Infrastruktur gemeinsam einzuordnen — und zu klären, ob der Weg ins Rechenzentrum für Sie lohnt.</p>
+      </div>
+      <div className="shrink-0">
+        <Button href={contactLinks.cal} target="_blank"><span>Mit Marten sprechen</span><Icon name="arrow-up-right" size="sm" /></Button>
+      </div>
+    </div>
+  </div>
+</aside>
 
 ## Was ein deutsches Rechenzentrum konkret kostet
 
@@ -65,38 +132,81 @@ Das ist kein Lockpreis-Phänomen. Es reflektiert den Umstand, dass Hardware heut
 
 Die Migration ist nicht trivial, aber auch kein Großprojekt. Typisch sind drei Bausteine:
 
-**1. Saubere Container-Basis.** Die Anwendung läuft in einem reproduzierbaren Setup - meist Docker-basiert - statt in einer über Jahre gewachsenen Installation auf dem alten Server. Das ist der größte technische Schritt und der, der den eigentlichen Nutzen bringt: Die Umgebung lässt sich nach der Migration in Minuten irgendwo anders aufsetzen, nicht in Tagen.
+<div className="not-prose my-10 grid gap-4 md:grid-cols-3" data-reveal="fade-up">
+  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+    <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">01</p>
+    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Saubere Container-Basis</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Die Anwendung läuft in einem reproduzierbaren Setup — meist Docker-basiert — statt in einer über Jahre gewachsenen Installation. Die Umgebung lässt sich danach in Minuten neu aufsetzen, nicht in Tagen.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+    <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">02</p>
+    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Backups, die wirklich funktionieren</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Tägliche verschlüsselte Backups in eine zweite Region, mit regelmäßigen automatisierten Restore-Tests. Hier ist der Abstand zwischen Büro-Server und professionellem Betrieb am größten.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+    <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">03</p>
+    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Zugriff ohne VPN</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">HTTPS mit Identity-Provider-Anbindung — der tägliche Zugriff läuft im Standard-Browser, von überall, ohne VPN-Client. Für viele Unternehmen der spürbarste Gewinn der Migration.</p>
+  </div>
+</div>
 
-**2. Automatisierte Backups, die tatsächlich funktionieren.** Tägliche, verschlüsselte Backups der Datenbank und der kritischen Dateien, in einer zweiten Region. Regelmäßige automatisierte Restore-Tests, damit nicht erst im Ernstfall auffällt, dass das Backup zwar existiert, aber nicht wiederherstellbar ist. Das ist einer der Punkte, an denen der Abstand zwischen Büro-Server und professionellem Betrieb am größten ist.
-
-**3. Zugriff ohne VPN.** Moderne Anwendungen sind über HTTPS erreichbar, mit Identity-Provider-Anbindung für die Authentifizierung. Für administrative Zugriffe kann es weiterhin einen geschützten Kanal geben, aber der tägliche Arbeitszugriff der Mitarbeiter läuft über einen Standard-Browser, von überall aus, ohne VPN-Client. Das allein ist für viele Unternehmen der spürbarste Gewinn.
-
-Dazu kommt - abhängig vom Sensibilitätsgrad der Daten - ein DSGVO-Dokumentationsniveau, das im eigenen Büro schwerer herzustellen ist: Auftragsverarbeitungsvertrag mit dem Provider, Dokumentation der technischen und organisatorischen Maßnahmen, klare Zugriffsprotokolle.
+Dazu kommt — abhängig vom Sensibilitätsgrad der Daten — ein DSGVO-Dokumentationsniveau, das im eigenen Büro schwerer herzustellen ist: Auftragsverarbeitungsvertrag mit dem Provider, Dokumentation der technischen und organisatorischen Maßnahmen, klare Zugriffsprotokolle.
 
 ## Das Migrationsprojekt im Überblick
 
 Eine realistische Grobplanung für eine Hosting-Migration einer bestehenden Anwendung sieht ungefähr so aus:
 
-**Wochen 1–2 - Bestandsaufnahme.** Welche Anwendungen laufen, welche Datenvolumina, welche Integrationen nach außen, welche Nutzer, welche Zugriffswege. Entscheidung, ob die Anwendung 1:1 migriert wird oder ob parallel eine Modernisierung passiert.
-
-**Wochen 3–4 - Zielumgebung aufbauen.** Hetzner-Cloud-Ressourcen einrichten, Containerisierung der Anwendung, automatisierte Deploys, Backup-Konzept, Monitoring.
-
-**Wochen 5–6 - Testmigration.** Ein vollständiger Durchlauf mit einer Kopie der Produktivdaten. Funktionstest aller kritischen Abläufe. Performance-Vergleich. Typischerweise entdeckt man hier zwei oder drei Stellen, die Nacharbeit brauchen.
-
-**Wochen 7–8 - Cut-over.** Geplante Umstellung über ein Wochenende oder eine definierte Wartungsphase. Einmalige Datenübernahme, Umstellung der DNS-Einträge, Abschaltung des alten Systems mit definierter Rückfallzeit.
+<div className="not-prose my-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4" data-reveal="fade-up">
+  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+    <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">Wochen 1–2</p>
+    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Bestandsaufnahme</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Welche Anwendungen laufen, welche Datenvolumina, welche Integrationen, welche Nutzer und Zugriffswege. Entscheidung: 1:1-Migration oder parallele Modernisierung.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+    <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">Wochen 3–4</p>
+    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Zielumgebung aufbauen</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Cloud-Ressourcen bei Hetzner einrichten, Containerisierung, automatisierte Deploys, Backup-Konzept, Monitoring.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+    <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">Wochen 5–6</p>
+    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Testmigration</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Vollständiger Durchlauf mit einer Kopie der Produktivdaten. Funktionstest, Performance-Vergleich. Typischerweise entdeckt man hier zwei, drei Stellen mit Nacharbeit.</p>
+  </div>
+  <div className="rounded-2xl border border-brand-300 bg-card p-6 shadow-[0_22px_55px_rgba(34,43,74,0.08)] dark:border-brand-800">
+    <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">Wochen 7–8</p>
+    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Cut-over</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Geplante Umstellung an einem Wochenende. Datenübernahme, DNS-Umstellung, Abschaltung des alten Systems — mit definierter Rückfallzeit.</p>
+  </div>
+</div>
 
 Das ist eine typische Bandbreite. Wenn die Anwendung klein ist und klar strukturiert, geht es schneller. Wenn sie in einer komplexen Integrationslandschaft liegt oder die Containerisierung aufwendig ist, entsprechend länger. Der Punkt: Das ist ein überschaubares Projekt, kein Programm.
 
 ## Wann sich die Migration nicht lohnt
 
-Es gibt Fälle, in denen der Status quo weiterbetrieben werden sollte. Wenn die Anwendung ohnehin in den nächsten achtzehn Monaten abgelöst wird, ist die Migration verlorene Arbeit. Wenn die Infrastruktur im Büro als Teil eines größeren IT-Setups funktioniert und professionell gewartet wird, ist der Handlungsdruck geringer. Wenn aus rechtlichen Gründen bestimmte Datenkategorien zwingend in einem spezifischen Setup liegen müssen, gelten eigene Regeln.
+Es gibt Fälle, in denen der Status quo weiterbetrieben werden sollte:
 
-In allen anderen Fällen - und das ist die Mehrheit der mittelständischen Setups, die wir sehen - ist der Weg ins Rechenzentrum eine der risikoärmsten Verbesserungen, die ein Unternehmen an seiner IT-Landschaft machen kann. Wenig Gefahr, relativ überschaubare Kosten, spürbare Verbesserung in Verfügbarkeit, Wartbarkeit und Arbeitskomfort.
+<div className="not-prose my-10 grid gap-4 md:grid-cols-3" data-reveal="fade-up">
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-center gap-2">
+      <span className="text-foreground-muted"><Icon name="clock" size="sm" /></span>
+      <p className="text-foreground-muted text-xs font-semibold tracking-[0.18em] uppercase">Ablöse geplant</p>
+    </div>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Wenn die Anwendung ohnehin in den nächsten 18 Monaten abgelöst wird, ist die Migration verlorene Arbeit.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-center gap-2">
+      <span className="text-foreground-muted"><Icon name="settings" size="sm" /></span>
+      <p className="text-foreground-muted text-xs font-semibold tracking-[0.18em] uppercase">Professionelles IT-Setup</p>
+    </div>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Wenn die Büro-Infrastruktur Teil eines größeren, professionell gewarteten IT-Setups ist, ist der Handlungsdruck deutlich geringer.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-center gap-2">
+      <span className="text-foreground-muted"><Icon name="shield" size="sm" /></span>
+      <p className="text-foreground-muted text-xs font-semibold tracking-[0.18em] uppercase">Rechtliche Bindung</p>
+    </div>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Wenn bestimmte Datenkategorien aus rechtlichen Gründen zwingend in einem spezifischen Setup liegen müssen, gelten eigene Regeln.</p>
+  </div>
+</div>
 
-## Wenn Ihr Server noch im Büro steht
-
-Wenn Sie am Wochenende die Updates machen, wenn Ihre Kollegen regelmäßig VPN-Probleme melden, wenn der Backup-Prozess in einer Person steckt und niemand so recht weiß, ob ein Restore im Ernstfall wirklich funktionieren würde - dann lohnt sich ein Gespräch.
-
-Wir machen mit Ihnen einen kompakten Infrastruktur-Check: eine ehrliche Bewertung Ihres aktuellen Setups, eine realistische Einschätzung zum Migrationsaufwand und eine klare Zahl zu Betriebskosten und Aufwand. Ohne Cloud-Buzzword-Bingo und ohne Pauschalempfehlung.
-
-[Discovery-Workshop anfragen](/kontakt)
+In allen anderen Fällen — und das ist die Mehrheit der mittelständischen Setups, die wir sehen — ist der Weg ins Rechenzentrum eine der risikoärmsten Verbesserungen, die ein Unternehmen an seiner IT-Landschaft machen kann. Wenig Gefahr, überschaubare Kosten, spürbare Verbesserung in Verfügbarkeit, Wartbarkeit und Arbeitskomfort.
