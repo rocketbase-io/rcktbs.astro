@@ -4,10 +4,13 @@ import { Picture } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import BlogCard from '@/components/blog/BlogCard.astro';
 import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
 import { TestimonialCarousel } from '@/components/ui/marketing/TestimonialCarousel';
+import { getCollection } from 'astro:content';
 import { defaultLocale } from '@/i18n/config';
 import { getLocalizedPath } from '@/i18n/index';
+import { getReadingTime } from '@/lib/utils';
 import siteConfig from '@/config/site.config';
 import founderImage from '@/assets/rocketbase/founder-marten-priess.jpg';
 import bonprixCaseImage from '@/assets/references/teaser-bonprix.jpeg';
@@ -31,6 +34,7 @@ const locale = defaultLocale;
 const servicesUrl = getLocalizedPath('services', locale);
 const contactUrl = getLocalizedPath('contact', locale);
 const missionUrl = getLocalizedPath('mission', locale);
+const workshopUrl = getLocalizedPath('discoveryWorkshop', locale);
 const referencesUrl = '/referenzen';
 const workUrl = getLocalizedPath('work', locale);
 
@@ -120,6 +124,16 @@ const testimonialItems = allCases
   });
 
 const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
+
+const featuredBlogPosts = (
+  await getCollection('blog', ({ data }) => {
+    return data.locale === locale && data.featured === true && (import.meta.env.PROD ? data.draft !== true : true);
+  })
+)
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
+  .slice(0, 2);
+
+const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`, '')}`;
 ---
 
 <LandingLayout
@@ -159,12 +173,12 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
             wie technisch mitdenkt.
           </p>
 
-          <div data-reveal class="hero-landing-actions mt-8 flex flex-wrap gap-4 max-[760px]:mt-6 max-[760px]:gap-3">
+          <div data-reveal class="hero-landing-actions mt-8 flex flex-wrap items-center gap-4 max-[760px]:mt-6 max-[760px]:gap-3">
             <Button size="lg" href={contactLinks.cal} target="_blank">
               Erstgespräch buchen
               <Icon name="arrow-up-right" size="sm" />
             </Button>
-            <Button size="lg" variant="secondary" href={servicesUrl}>
+            <Button variant="link" href={servicesUrl}>
               Leistungen ansehen
               <Icon name="arrow-right" size="sm" />
             </Button>
@@ -779,6 +793,44 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
     </section>
   )}
 
+  {featuredBlogPosts.length > 0 && (
+    <section class="border-border border-b py-20 lg:py-24">
+      <div class="container">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between" data-reveal>
+          <div class="max-w-2xl">
+            <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
+              Einblicke aus der Praxis
+            </p>
+            <h2 class="font-display text-foreground mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+              Was uns in Projekten auffällt.
+            </h2>
+          </div>
+          <a
+            href="/blog"
+            class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 hover:text-brand-500 dark:text-brand-400 dark:hover:text-brand-300 transition-colors"
+          >
+            Alle Beiträge
+            <Icon name="arrow-right" size="sm" />
+          </a>
+        </div>
+
+        <div class="mt-10 grid gap-6 md:grid-cols-2" data-reveal="fade-up">
+          {featuredBlogPosts.map((post) => (
+            <BlogCard
+              title={post.data.title}
+              description={post.data.description}
+              href={getBlogPostUrl(post.id)}
+              publishedAt={post.data.publishedAt}
+              tags={post.data.tags}
+              image={post.data.image}
+              readingTime={getReadingTime(post.body ?? '')}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
   <section class="border-border bg-surface-invert text-on-invert border-b py-28 lg:py-36">
     <div class="container grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
       <div data-reveal="fade-right" class="lg:sticky lg:top-28">
@@ -847,10 +899,14 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
               ))
             }
           </ul>
-          <div class="mt-8">
-            <Button href={contactLinks.cal} target="_blank">
+          <div class="mt-8 flex flex-wrap items-center gap-4">
+            <Button href={contactLinks.calDiscovery} target="_blank">
               Workshop anfragen
               <Icon name="arrow-up-right" size="sm" />
+            </Button>
+            <Button variant="link" href={workshopUrl}>
+              Details zum Workshop
+              <Icon name="arrow-right" size="sm" />
             </Button>
           </div>
         </div>
@@ -861,38 +917,45 @@ const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
   <section id="cta" class="py-28 lg:py-36">
     <div class="container">
       <div class="overflow-hidden rounded-[2.8rem] border border-border bg-background-secondary p-8 shadow-[0_24px_60px_rgba(34,43,74,0.08)] sm:p-10 lg:p-12">
-        <div class="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
-          <div data-reveal="fade-right">
-            <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Nächster Schritt</p>
-            <h2 class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
-              Von Standardsoftware zur Lösung,
-              <span class="mt-2 block text-brand-500">die wirklich zu Ihrem Unternehmen passt.</span>
-            </h2>
-            <p class="text-foreground-secondary mt-6 max-w-2xl text-lg leading-8">
-              Wenn Prozesse inzwischen mehr bremsen als tragen, lohnt ein strukturierter Blick.
-              RocketBase hilft bei der Einordnung, priorisiert sinnvolle Schritte und setzt tragfähige
-              Lösungen anschließend mit um.
-            </p>
-          </div>
+        <div data-reveal="fade-right" class="max-w-4xl">
+          <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Nächster Schritt</p>
+          <h2
+            lang="de"
+            class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-4xl"
+          >
+            Von Standardsoftware zur Lösung,
+            <span class="text-brand-500">die wirklich zu Ihrem Unternehmen passt.</span>
+          </h2>
+          <p class="text-foreground-secondary mt-6 max-w-3xl text-lg leading-8">
+            Wenn Prozesse inzwischen mehr bremsen als tragen, lohnt ein strukturierter Blick.
+            RocketBase hilft bei der Einordnung, priorisiert sinnvolle Schritte und setzt tragfähige
+            Lösungen anschließend mit um.
+          </p>
+        </div>
 
-          <div data-reveal="fade-left" class="rounded-[2rem] border border-border bg-card p-7">
-            <div class="text-foreground-muted space-y-4 text-sm">
+        <div
+          data-reveal="fade-up"
+          class="mt-10 rounded-[2rem] border border-border bg-card p-7 sm:p-8"
+        >
+          <div class="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div class="text-foreground-muted grid gap-4 text-sm sm:grid-cols-2 sm:gap-6">
               <div class="flex items-center gap-3">
-                <Icon name="clock" size="sm" class="text-brand-500" />
+                <Icon name="clock" size="sm" class="text-brand-500 shrink-0" />
                 30 Minuten direkt mit dem Gründer
               </div>
               <div class="flex items-center gap-3">
-                <Icon name="mail" size="sm" class="text-brand-500" />
-                {contactLinks.email}
+                <Icon name="mail" size="sm" class="text-brand-500 shrink-0" />
+                <span class="break-all">{contactLinks.email}</span>
               </div>
             </div>
-            <div class="mt-8 flex flex-wrap gap-4">
+            <div class="flex flex-wrap items-center gap-4 lg:justify-end">
               <Button href={contactLinks.cal} target="_blank">
                 Erstgespräch buchen
                 <Icon name="arrow-up-right" size="sm" />
               </Button>
-              <Button variant="outline" href={contactUrl}>
+              <Button variant="link" href={contactUrl}>
                 Kontaktseite
+                <Icon name="arrow-right" size="sm" />
               </Button>
             </div>
           </div>

@@ -14,6 +14,7 @@ import Navbar from '@/components/landing/Navbar.astro';
 import LandingFooter from '@/components/landing/LandingFooter.astro';
 import { type Locale, defaultLocale } from '@/i18n/config';
 import type { RouteId } from '@/i18n/routes';
+import type { Thing, WithContext } from 'schema-dts';
 
 interface Props {
   title?: string;
@@ -28,6 +29,7 @@ interface Props {
    * Route ID for generating proper hreflang tags with translated URLs.
    */
   routeId?: RouteId;
+  extraSchemas?: WithContext<Thing> | WithContext<Thing>[];
 }
 
 const {
@@ -40,6 +42,7 @@ const {
   includeOrgSchema = false,
   lang = defaultLocale,
   routeId,
+  extraSchemas,
 } = Astro.props;
 ---
 
@@ -53,6 +56,7 @@ const {
   includeOrgSchema={includeOrgSchema}
   lang={lang}
   routeId={routeId}
+  extraSchemas={extraSchemas}
 >
   <Navbar slot="header" locale={lang} />
 

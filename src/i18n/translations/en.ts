@@ -140,7 +140,7 @@ export const en = {
     },
     testimonial: {
       quote: "\"The cleanest boilerplate I've seen in 2024. It cuts the fluff.\"",
-      author: '— Alex C., Senior Frontend Dev',
+      author: '- Alex C., Senior Frontend Dev',
     },
   },
 
@@ -383,7 +383,7 @@ export const en = {
         limitContent: "You've used 80% of your monthly API quota. Consider upgrading your plan.",
         buildTitle: 'Build failed',
         buildContent: 'Error in',
-        buildError: '— missing required prop "variant"',
+        buildError: '- missing required prop "variant"',
       },
       overlays: {
         title: 'Overlays',
@@ -432,7 +432,7 @@ export const en = {
         avatars: 'Avatars',
         avatarsHint: 'User representations',
         icons: 'Icons',
-        iconsHint: 'Lucide icon set — 24 included',
+        iconsHint: 'Lucide icon set - 24 included',
         stacked: 'Stacked',
         performance: 'Performance',
         performanceScore: '100/100 Lighthouse',

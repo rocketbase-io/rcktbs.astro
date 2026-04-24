@@ -18,6 +18,13 @@ const blog = defineCollection({
       draft: z.boolean().default(false),
       featured: z.boolean().default(false),
       locale: z.enum(['de']).default('de'),
+      cta: z
+        .object({
+          eyebrow: z.string().optional(),
+          headline: z.string().optional(),
+          body: z.string().optional(),
+        })
+        .optional(),
     }),
 });
 
@@ -55,7 +62,9 @@ const faqs = defineCollection({
   loader: glob({ pattern: '**/*.json', base: './src/content/faqs' }),
   schema: z.object({
     question: z.string(),
-    answer: z.string(),
+    answer: z.string().optional(),
+    summary: z.string().optional(),
+    details: z.string().optional(),
     category: z.string().optional(),
     order: z.number().default(0),
     locale: z.enum(['de']).default('de'),

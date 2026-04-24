@@ -4,6 +4,7 @@
  * Dynamic navigation with translations and language switcher
  */
 import { Picture } from 'astro:assets';
+import { getCollection } from 'astro:content';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import ThemeToggle from '@/components/layout/ThemeToggle.astro';
@@ -33,6 +34,23 @@ const navRoutes = getNavRoutes();
 const homePath = getLocalizedPath('home', locale);
 const ctaLink = getLocalizedPath('contact', locale);
 const referencesPath = getLocalizedPath('references', locale);
+const blogPath = getLocalizedPath('blog', locale);
+
+const blogPosts = await getCollection('blog', ({ data }) => {
+  return data.locale === locale && (import.meta.env.PROD ? data.draft !== true : true);
+});
+
+const featuredBlogPosts = blogPosts
+  .filter((post) => post.data.featured)
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
+  .slice(0, 3)
+  .map((post) => ({
+    slug: post.id.replace(`${locale}/`, ''),
+    title: post.data.title,
+    description: post.data.description,
+    image: post.data.image,
+    imageAlt: post.data.imageAlt,
+  }));
 
 const referenceTeaserImages = {
   bonprix: bonprixCaseImage,
@@ -58,7 +76,7 @@ const featuredReferences = cases
       <img src={rocketbaseLogo.src} alt="RocketBase" class="h-8 w-auto dark:invert" width="114" height="32" loading="eager" fetchpriority="high" />
     </a>
 
-    <div class="hidden items-center gap-8 md:flex">
+    <div class="hidden items-center gap-6 lg:flex">
       {navRoutes.map(({ routeId, label }) => (
         routeId === 'references' ? (
           <div class="relative" data-nav-dropdown>
@@ -116,6 +134,65 @@ const featuredReferences = cases
               </div>
             </div>
           </div>
+        ) : routeId === 'blog' && featuredBlogPosts.length > 0 ? (
+          <div class="relative" data-nav-dropdown>
+            <button
+              type="button"
+              class="inline-flex items-center gap-1 text-sm font-medium text-foreground-muted hover:text-foreground transition-colors"
+              aria-expanded="false"
+              aria-haspopup="true"
+              data-nav-dropdown-trigger
+            >
+              {t(label as any)}
+              <svg class="h-3.5 w-3.5 transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-nav-dropdown-chevron>
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </button>
+
+            <div
+              class="absolute right-0 top-full z-50 hidden w-[26rem] pt-3 before:absolute before:inset-x-0 before:-top-2 before:h-5 before:content-[''] before:block"
+              data-nav-dropdown-panel
+              role="menu"
+            >
+              <div class="rounded-2xl border border-border bg-background p-3 shadow-[0_24px_60px_rgba(22,28,44,0.14)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.6)]">
+                {featuredBlogPosts.map((post) => (
+                  <a
+                    href={`${blogPath}/${post.slug}`}
+                    class="flex gap-3 rounded-xl p-2.5 transition-colors hover:bg-secondary"
+                    role="menuitem"
+                  >
+                    <div class="overflow-hidden rounded-lg shrink-0 h-14 w-14">
+                      {post.image ? (
+                        <Picture
+                          src={post.image}
+                          alt={post.imageAlt ?? post.title}
+                          widths={[56, 112, 168]}
+                          sizes="56px"
+                          formats={['avif', 'webp']}
+                          class="h-full w-full object-cover"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div class="h-full w-full bg-[linear-gradient(160deg,rgba(243,245,249,0.96),rgba(229,234,242,0.92))] dark:bg-[linear-gradient(160deg,rgba(36,43,57,0.92),rgba(26,31,42,0.9))]" />
+                      )}
+                    </div>
+                    <div class="min-w-0 flex-1 self-center">
+                      <p class="text-sm font-semibold text-foreground line-clamp-2">{post.title}</p>
+                    </div>
+                  </a>
+                ))}
+
+                <a
+                  href={blogPath}
+                  class="mt-1 flex items-center justify-between rounded-xl border-t border-border px-3 py-3 text-sm font-semibold text-brand-600 hover:text-brand-500"
+                  role="menuitem"
+                >
+                  Alle Beiträge ansehen
+                  <Icon name="arrow-right" size="xs" />
+                </a>
+              </div>
+            </div>
+          </div>
         ) : (
           <a
             href={getLocalizedPath(routeId, locale)}
@@ -135,7 +212,7 @@ const featuredReferences = cases
 
     <button
       type="button"
-      class="md:hidden p-2 text-foreground hover:bg-secondary rounded-md transition-colors"
+      class="lg:hidden p-2 text-foreground hover:bg-secondary rounded-md transition-colors"
       id="mobile-menu-toggle"
       aria-label="Toggle menu"
       aria-expanded="false"
@@ -149,7 +226,7 @@ const featuredReferences = cases
     </button>
   </div>
 
-  <div id="mobile-menu" class="hidden absolute top-16 left-0 w-full bg-background border-b border-border p-6 md:hidden flex-col gap-4 shadow-lg">
+  <div id="mobile-menu" class="hidden absolute top-16 left-0 w-full bg-background border-b border-border p-6 lg:hidden flex-col gap-4 shadow-lg">
     {navRoutes.map(({ routeId, label }) => (
       routeId === 'references' ? (
         <details class="group" data-mobile-accordion>
@@ -187,6 +264,48 @@ const featuredReferences = cases
               class="block rounded-lg p-2 text-sm font-semibold text-brand-600 hover:text-brand-500"
             >
               Alle Referenzen ansehen →
+            </a>
+          </div>
+        </details>
+      ) : routeId === 'blog' && featuredBlogPosts.length > 0 ? (
+        <details class="group" data-mobile-accordion>
+          <summary class="flex cursor-pointer items-center justify-between list-none text-base font-medium text-foreground-secondary hover:text-foreground transition-colors [&::-webkit-details-marker]:hidden">
+            <span>{t(label as any)}</span>
+            <svg class="h-4 w-4 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </summary>
+          <div class="mt-3 space-y-2 border-l-2 border-border pl-3">
+            {featuredBlogPosts.map((post) => (
+              <a
+                href={`${blogPath}/${post.slug}`}
+                class="flex gap-3 rounded-lg p-2 transition-colors hover:bg-secondary"
+              >
+                <div class="h-11 w-11 shrink-0 overflow-hidden rounded-md">
+                  {post.image ? (
+                    <Picture
+                      src={post.image}
+                      alt={post.imageAlt ?? post.title}
+                      widths={[44, 88]}
+                      sizes="44px"
+                      formats={['avif', 'webp']}
+                      class="h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div class="h-full w-full bg-[linear-gradient(160deg,rgba(243,245,249,0.96),rgba(229,234,242,0.92))] dark:bg-[linear-gradient(160deg,rgba(36,43,57,0.92),rgba(26,31,42,0.9))]" />
+                  )}
+                </div>
+                <div class="min-w-0 flex-1 self-center">
+                  <p class="text-sm font-semibold text-foreground line-clamp-2">{post.title}</p>
+                </div>
+              </a>
+            ))}
+            <a
+              href={blogPath}
+              class="block rounded-lg p-2 text-sm font-semibold text-brand-600 hover:text-brand-500"
+            >
+              Alle Beiträge ansehen →
             </a>
           </div>
         </details>

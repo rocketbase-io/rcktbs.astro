@@ -1,8 +1,10 @@
 import type { APIRoute, GetStaticPaths } from 'astro';
 import { resolve } from 'node:path';
-import { generateOGImage, generateCaseOGImage } from '@/lib/og';
+import { getCollection } from 'astro:content';
+import { generateOGImage, generateCaseOGImage, generateBlogOGImage } from '@/lib/og';
 import siteConfig from '@/config/site.config';
 import { cases, additionalCases } from '@/data/rocketbase';
+import { defaultLocale } from '@/i18n/config';
 
 const STATIC_PAGES = [
   { slug: 'index',        title: siteConfig.name,          description: siteConfig.description },
@@ -45,6 +47,14 @@ type CaseProps = {
   teaserPath: string;
 };
 
+type BlogProps = {
+  kind: 'blog';
+  title: string;
+  description?: string;
+  author?: string;
+  teaserPath: string;
+};
+
 export const getStaticPaths: GetStaticPaths = async () => {
   const staticPaths = STATIC_PAGES.map((page) => ({
     params: { slug: page.slug },
@@ -70,29 +80,69 @@ export const getStaticPaths: GetStaticPaths = async () => {
       } satisfies CaseProps,
     }));
 
-  return [...staticPaths, ...casePaths];
+  // Blog posts: use the post's own hero image as OG background.
+  // The image path in the frontmatter is relative to the MDX file (e.g. "./hero.png")
+  // - we resolve it against the post's directory via post.filePath.
+  const blogPosts = await getCollection('blog', ({ data }) => {
+    return data.locale === defaultLocale && (import.meta.env.PROD ? data.draft !== true : true);
+  });
+
+  const blogPaths = blogPosts
+    .filter((post) => post.data.image && post.filePath)
+    .map((post) => {
+      const slug = post.id.replace(`${defaultLocale}/`, '');
+      // post.filePath is like "src/content/blog/de/<slug>/index.mdx"
+      // Resolve the image path (e.g. "./hero.png") relative to its directory.
+      const postDir = resolve(process.cwd(), post.filePath!, '..');
+      const rawImagePath = (post.data.image as { src?: string } | undefined)?.src ?? './hero.png';
+      // ImageMetadata.src is something like "/@fs/.../hero.png" in dev or a hashed path.
+      // Fall back to the known convention ./hero.png inside the post folder for safety.
+      const teaserPath = resolve(postDir, 'hero.png');
+      void rawImagePath;
+      return {
+        params: { slug: `blog/${slug}` },
+        props: {
+          kind: 'blog',
+          title: post.data.title,
+          description: post.data.description,
+          author: post.data.author,
+          teaserPath,
+        } satisfies BlogProps,
+      };
+    });
+
+  return [...staticPaths, ...casePaths, ...blogPaths];
 };
 
 export const GET: APIRoute = async ({ props }) => {
-  const p = props as StaticProps | CaseProps;
+  const p = props as StaticProps | CaseProps | BlogProps;
 
-  const buffer =
-    p.kind === 'case'
-      ? await generateCaseOGImage({
-          teaserPath: p.teaserPath,
-          client: p.client,
-          title: p.title,
-          description: p.description,
-        })
-      : await generateOGImage({
-          title: p.title,
-          description: p.description,
-          type: p.type,
-        });
+  let buffer: Buffer;
+  if (p.kind === 'case') {
+    buffer = await generateCaseOGImage({
+      teaserPath: p.teaserPath,
+      client: p.client,
+      title: p.title,
+      description: p.description,
+    });
+  } else if (p.kind === 'blog') {
+    buffer = await generateBlogOGImage({
+      teaserPath: p.teaserPath,
+      title: p.title,
+      description: p.description,
+      author: p.author,
+    });
+  } else {
+    buffer = await generateOGImage({
+      title: p.title,
+      description: p.description,
+      type: p.type,
+    });
+  }
 
-  // Case OGs are JPEG (photographic background), static OGs are PNG (text-only).
+  // Case + Blog OGs are JPEG (photographic background), static OGs are PNG.
   // URL extension stays .png for route simplicity; content-type reflects real format.
-  const contentType = p.kind === 'case' ? 'image/jpeg' : 'image/png';
+  const contentType = p.kind === 'case' || p.kind === 'blog' ? 'image/jpeg' : 'image/png';
 
   return new Response(new Uint8Array(buffer), {
     headers: {

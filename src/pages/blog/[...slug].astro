@@ -1,8 +1,8 @@
 ---
-// @ts-nocheck — scaffolding, not yet wired into the site
 import BlogLayout from '@/layouts/BlogLayout.astro';
 import { getCollection, render } from 'astro:content';
 import { defaultLocale } from '@/i18n/config';
+import { getReadingTime } from '@/lib/utils';
 
 const locale = defaultLocale;
 
@@ -19,6 +19,8 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+const readingTime = getReadingTime(post.body ?? '');
 ---
 
 <BlogLayout
@@ -32,6 +34,8 @@ const { Content } = await render(post);
   tags={post.data.tags}
   slug={post.id}
   locale={locale}
+  readingTime={readingTime}
+  cta={post.data.cta}
 >
   <Content />
 </BlogLayout>

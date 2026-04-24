@@ -19,6 +19,15 @@ export interface CaseOGImageOptions {
   description?: string;
 }
 
+export interface BlogOGImageOptions {
+  /** Absolute path to the blog post's hero image */
+  teaserPath: string;
+  title: string;
+  description?: string;
+  /** Author name shown next to "Blog" badge */
+  author?: string;
+}
+
 const fontCaches = new Map<string, ArrayBuffer>();
 const logoCache = new Map<string, string>();
 
@@ -179,6 +188,72 @@ export async function generateCaseOGImage(options: CaseOGImageOptions): Promise<
   // 3. Composite: overlay on top of the darkened background.
   //    JPEG is much smaller than PNG for photographic content; quality 82
   //    with mozjpeg keeps text crisp and blob size under ~120KB.
+  return await sharp(backgroundBuffer)
+    .composite([{ input: overlayPng, blend: 'over' }])
+    .jpeg({ quality: 82, mozjpeg: true, progressive: true })
+    .toBuffer();
+}
+
+/**
+ * Blog OG image: same photographic-background + overlay pattern as case images,
+ * but with a "Blog" kicker (optionally prefixed with author name).
+ */
+export async function generateBlogOGImage(options: BlogOGImageOptions): Promise<Buffer> {
+  const { teaserPath, title, description, author } = options;
+
+  const fontData = loadFontFile('inter-latin-400-normal.ttf');
+  const fontBoldData = loadFontFile('inter-latin-700-normal.ttf');
+  const logoDataUri = await loadLogo('#fff');
+
+  const truncatedDescription = description
+    ? description.length > 140
+      ? description.slice(0, 137) + '...'
+      : description
+    : '';
+
+  const kicker = author ? `Blog · ${author}` : 'Blog';
+
+  const teaserBuffer = readFileSync(teaserPath);
+  const backgroundBuffer = await sharp(teaserBuffer)
+    .resize(1200, 630, { fit: 'cover', position: 'center' })
+    .modulate({ brightness: 0.55 })
+    .toBuffer();
+
+  const markup = html`
+    <div style="height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 60px 80px; font-family: 'Inter'; background: linear-gradient(135deg, rgba(13,15,20,0.82) 0%, rgba(22,26,36,0.55) 55%, rgba(13,15,20,0.82) 100%); position: relative;">
+      <div style="display: flex; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: linear-gradient(180deg, #6372A5 0%, #8b9bd4 50%, #6372A5 100%);"></div>
+
+      <div style="display: flex; align-items: center;">
+        <div style="display: flex; padding: 8px 18px; background: rgba(99, 114, 165, 0.22); border: 1px solid rgba(139, 155, 212, 0.45); border-radius: 9999px; color: #e5e7eb; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em;">${kicker}</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 18px; max-width: 960px;">
+        <div style="display: flex; font-size: ${title.length > 60 ? '44px' : '54px'}; font-weight: 700; color: #f4f4f5; line-height: 1.12; letter-spacing: -0.025em; text-shadow: 0 2px 20px rgba(0,0,0,0.45);">${title}</div>
+        <div style="display: ${truncatedDescription ? 'flex' : 'none'}; font-size: 20px; font-weight: 400; color: #d4d4d8; line-height: 1.5; max-width: 880px; text-shadow: 0 1px 8px rgba(0,0,0,0.6);">${truncatedDescription}</div>
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <img src="${logoDataUri}" style="width: 32px; height: 36px;" />
+          <span style="font-size: 20px; font-weight: 700; color: #f4f4f5; letter-spacing: -0.01em;">${siteConfig.name}</span>
+        </div>
+        <span style="font-size: 15px; font-weight: 400; color: #d4d4d8;">${siteHostname}</span>
+      </div>
+    </div>
+  `;
+
+  // @ts-expect-error satori-html VNode is compatible with satori
+  const overlaySvg = await satori(markup, {
+    width: 1200,
+    height: 630,
+    fonts: [
+      { name: 'Inter', data: fontData, weight: 400, style: 'normal' },
+      { name: 'Inter', data: fontBoldData, weight: 700, style: 'normal' },
+    ],
+  });
+
+  const overlayPng = await sharp(Buffer.from(overlaySvg)).png().toBuffer();
+
   return await sharp(backgroundBuffer)
     .composite([{ input: overlayPng, blend: 'over' }])
     .jpeg({ quality: 82, mozjpeg: true, progressive: true })

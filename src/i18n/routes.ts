@@ -64,7 +64,7 @@ export const routes = {
   // Blog section
   blog: {
     de: 'blog',
-    nav: { show: false, order: 99, label: 'nav.blog' },
+    nav: { show: true, order: 5, label: 'nav.blog' },
   },
 
   // Components showcase
@@ -95,6 +95,12 @@ export const routes = {
   mission: {
     de: 'mission',
     nav: { show: true, order: 4, label: 'nav.mission' },
+  },
+
+  // Discovery-Workshop (not in main nav - linked from footer and inline)
+  discoveryWorkshop: {
+    de: 'discovery-workshop',
+    nav: { show: false, order: 50, label: 'nav.discoveryWorkshop' },
   },
 
   // Legal pages (noindex, no nav)

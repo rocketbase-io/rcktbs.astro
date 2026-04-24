@@ -404,13 +404,11 @@ export const additionalCases = [
       { key: 'mavox-winterdienst-tourenplanung', alt: 'Tourenplanung' },
       { key: 'mavox-winterdienst-planung', alt: 'Umfassende Planung' },
     ],
-    testimonial: {
-      quote:
-        'Die Software von RocketBase hat unsere Prozesse exakt so abgebildet, wie wir es benötigen, wodurch wir unsere Effizienz und Effektivität weiter steigern konnten.',
-      author: 'Christian Grupp',
-      position: 'Head of IT',
-      portraitKey: 'man-placeholder-1',
-    },
+    // testimonial: deaktiviert, bis ein echtes Portrait von Christian Grupp verfügbar ist.
+    // Ursprüngliche Daten:
+    //   quote:    'Die Software von RocketBase hat unsere Prozesse exakt so abgebildet, wie wir es benötigen, wodurch wir unsere Effizienz und Effektivität weiter steigern konnten.'
+    //   author:   'Christian Grupp'
+    //   position: 'Head of IT'
   },
   {
     slug: 'bonprix-collection-planning',
@@ -696,4 +694,5 @@ export const contactLinks = {
   linkedin: 'https://www.linkedin.com/company/rocketbase-io/',
   instagram: 'https://www.instagram.com/rocketbase.io/',
   cal: 'https://cal.com/rocketbase-marten/erstgespraech',
+  calDiscovery: 'https://cal.com/rocketbase-marten/discovery-vorabgesprach',
 };

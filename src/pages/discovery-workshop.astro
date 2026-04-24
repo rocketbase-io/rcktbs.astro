@@ -1,0 +1,910 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import { Picture } from 'astro:assets';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import StarField from '@/components/hero-backgrounds/StarField.astro';
+import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
+import { defaultLocale } from '@/i18n/config';
+import { getLocalizedPath } from '@/i18n/index';
+import { contactLinks } from '@/data/rocketbase';
+import { createServiceSchema, createFAQSchema } from '@/lib/schema';
+
+import workshopBpmn from '@/assets/rocketbase/workshop-bpmn.jpg';
+import workshopMockup from '@/assets/rocketbase/workshop-mockup.jpg';
+import founderPortrait from '@/assets/rocketbase/founder-marten-priess.jpg';
+
+const locale = defaultLocale;
+const contactUrl = getLocalizedPath('contact', locale);
+const referencesUrl = getLocalizedPath('references', locale);
+
+const clientLogos = [
+  { key: 'bonprix_logo', name: 'bonprix' },
+  { key: 'statista-logo', name: 'Statista' },
+  { key: 'stage_logo', name: 'Stage Entertainment' },
+  { key: 'fkc_logo', name: 'FKC Consulting' },
+  { key: 'mavox_logo', name: 'MAVOX Winterdienst' },
+  { key: 'sam', name: 'Smart Active Media' },
+  { key: 'yomei_logo', name: 'YOMEI' },
+  { key: 'venus_logo', name: 'Venus' },
+];
+
+const deliverables = [
+  {
+    icon: 'share',
+    title: 'Ein klares Bild Ihrer Datenflüsse',
+    text: 'Wir zeigen sichtbar, welche Informationen zwischen welchen Systemen und Rollen wandern - und wo heute Reibung, Doppelarbeit oder blinde Flecken entstehen.',
+  },
+  {
+    icon: 'layers',
+    title: 'Ein Prozessbild, das alle verstehen',
+    text: 'Ihre Kernprozesse in einer standardisierten Darstellung - lesbar für Fachbereich, Geschäftsführung und IT. Kein Raum mehr für Missverständnisse oder unterschiedliche Sichtweisen im Team.',
+  },
+  {
+    icon: 'palette',
+    title: 'Greifbare Entwürfe statt abstrakter Ideen',
+    text: 'Konkrete Oberflächen-Skizzen der wichtigsten Abläufe - damit sich Stakeholder sofort ein Bild machen können, wie eine Lösung aussehen würde, statt über Konzepte zu diskutieren.',
+  },
+  {
+    icon: 'file-text',
+    title: 'Eine Entscheidungsgrundlage, die Ihnen gehört',
+    text: 'Schriftliche Zusammenfassung mit Handlungsempfehlungen und priorisierten nächsten Schritten. Geeignet für interne Weichenstellungen, Aufsichtsrat oder die Weiterarbeit mit uns.',
+  },
+];
+
+const formats = [
+  {
+    name: 'Kompakt',
+    duration: '½ Tag',
+    sessions: '1× 3-Stunden-Termin',
+    price: '1.200 €',
+    summary: 'Fokus auf einen konkreten Prozess oder eine klar umrissene Fragestellung.',
+    includes: [
+      'Ein 3-Stunden-Termin (remote, hybrid oder vor Ort)',
+      'Ein zentrales Prozessdiagramm + Mockup-Skizzen',
+      'Schriftliche Ausarbeitung mit Handlungsempfehlungen',
+    ],
+    fit: 'Wenn Sie ein konkretes Problem vor Augen haben und schnell Klarheit über den nächsten Schritt wollen.',
+  },
+  {
+    name: 'Standard',
+    duration: '1 Tag',
+    sessions: '2× 3-Stunden-Termine',
+    price: '2.400 €',
+    summary: 'Der häufigste Einstieg - ausreichend Zeit für mehrere Prozesse und Stakeholder-Sicht.',
+    includes: [
+      'Zwei 3-Stunden-Termine (wahlweise an einem Tag oder auf zwei Tage verteilt)',
+      'Stakeholder-Interviews und Keyuser-Gespräche',
+      'Prozessbilder + Datenflüsse + Oberflächen-Entwürfe',
+      'Schriftliche Ausarbeitung mit Handlungsempfehlungen',
+    ],
+    fit: 'Wenn mehrere Abläufe zusammenspielen und Sie eine belastbare Grundlage für weitreichende Entscheidungen brauchen.',
+    featured: true,
+  },
+  {
+    name: 'Vertieft',
+    duration: '2 Tage',
+    sessions: '4× 3-Stunden-Termine',
+    price: '4.500 €',
+    summary: 'Tiefenanalyse mit mehr Interviews, mehr Detail und einem erweiterten Ergebnisdokument.',
+    includes: [
+      'Vier 3-Stunden-Termine (wahlweise verteilt über bis zu vier Tage)',
+      'Erweiterte Stakeholder- und Keyuser-Runde',
+      'Mehrere Prozessbilder, Datenmodelle und Mockup-Strecken für verschiedene Abläufe',
+      'Ausführliches Dokument inkl. Handlungsempfehlungen und Roadmap-Vorschlag',
+    ],
+    fit: 'Wenn eine Altsystem-Ablösung, mehrere Abteilungen oder verschachtelte Integrationen im Raum stehen - und ein oberflächlicher Blick nicht reicht.',
+  },
+];
+
+const processSteps = [
+  {
+    number: '01',
+    icon: 'monitor',
+    title: 'Vorbereitungstermin',
+    text: '30-minütiger Online-Termin zur Ausgangslage und Erwartungshaltung. Wir klären gemeinsam, was im Workshop adressiert werden soll.',
+  },
+  {
+    number: '02',
+    icon: 'book',
+    title: 'Vorbereitung',
+    text: 'Wir erstellen eine Agenda passend zum Vorbereitungstermin und senden eine kurze Liste mit Fragen oder benötigten Unterlagen - damit der Workshop beim Kern startet.',
+  },
+  {
+    number: '03',
+    icon: 'users',
+    title: 'Workshop',
+    text: 'Remote, hybrid oder bei Ihnen vor Ort. Prozesse aufnehmen, Engpässe identifizieren, erste Lösungsskizzen entwickeln.',
+  },
+  {
+    number: '04',
+    icon: 'layers',
+    title: 'Nachbereitung',
+    text: 'Wir erstellen Prozessbilder, Datenflüsse, Oberflächen-Entwürfe und die schriftliche Zusammenfassung mit Handlungsempfehlungen.',
+  },
+  {
+    number: '05',
+    icon: 'check-circle',
+    title: 'Übergabe',
+    text: 'Review-Termin mit Durchsprache der Ergebnisse. Danach gehört das Dokument Ihnen - ohne Bindung.',
+  },
+];
+
+const notAWorkshop = [
+  'Kein unverbindliches Sales-Gespräch.',
+  'Keine Pitch-Präsentation unserer Agentur.',
+  'Keine generischen Folien - alles wird an Ihrem Fall erarbeitet.',
+];
+
+const workshopUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const workshopServiceSchema = createServiceSchema({
+  name: 'Discovery-Workshop',
+  description:
+    'Strukturierter Außenblick auf Prozesse und Systemlandschaft: Datenflüsse, Prozessbilder, Mockups und eine priorisierte Handlungsempfehlung. Für Entscheider, die eine belastbare Entscheidungsgrundlage brauchen, bevor gebaut wird.',
+  url: workshopUrl,
+  serviceType: 'Software-Discovery und Prozessanalyse',
+  areaServed: 'DE',
+  offers: [
+    {
+      name: 'Kompakt',
+      price: '1200',
+      description: '½ Tag, 1× 3-Stunden-Termin – Fokus auf einen konkreten Prozess oder eine klar umrissene Fragestellung.',
+    },
+    {
+      name: 'Standard',
+      price: '2400',
+      description: '1 Tag, 2× 3-Stunden-Termine – ausreichend Zeit für mehrere Prozesse und Stakeholder-Sicht.',
+    },
+    {
+      name: 'Vertieft',
+      price: '4500',
+      description: '2 Tage, 4× 3-Stunden-Termine – Tiefenanalyse inkl. erweitertem Ergebnisdokument.',
+    },
+  ],
+});
+
+const miniFaqs = [
+  {
+    q: 'Was muss ich vorbereiten?',
+    a: 'Sehr wenig. Wir führen vorab ein kurzes Online-Gespräch von etwa 30 Minuten, legen eine grobe Agenda fest und verschicken diese zusammen mit ein paar vorbereitenden Fragen an alle Teilnehmenden. Mehr nicht - der Fokus liegt auf dem direkten Austausch im Workshop selbst, nicht auf ausführlicher Vorarbeit.',
+  },
+  {
+    q: 'Kann ich das Dokument intern weiterverwenden?',
+    a: 'Ja, uneingeschränkt. Das Ergebnis gehört Ihnen und eignet sich als Arbeitsgrundlage für interne Planung oder die Zusammenarbeit mit uns. Der Workshop legt keinen finalen Projektpreis fest - er zeigt, was vorhanden ist, wo die Engpässe liegen und wie eine Lösung aussehen könnte. Daraus lässt sich nach Themen-Priorisierung ein Paketpreis oder eine Range schnüren, die man dann auch mit anderen Angeboten vergleichen könnte.',
+  },
+  {
+    q: 'Vor Ort, remote oder hybrid?',
+    a: 'Sie entscheiden. Wir empfehlen, sich mindestens einmal in Präsenz zu sehen, wenn Distanz und Aufwand es zulassen - das hebt die Gesprächsqualität spürbar. Für die Anfahrt legen wir eine Pauschale fest (Kilometergeld und anteilig Fahrtzeit), damit Aufwand und Kosten im Rahmen bleiben und für beide Seiten planbar sind. Die Anfahrt wird nicht von den Workshop-Stunden abgezogen.',
+  },
+  {
+    q: 'Was, wenn wir uns danach gegen eine Zusammenarbeit entscheiden?',
+    a: 'Das wäre schade, aber in Ordnung. Der Workshop ist eigenständig wertvoll und soll es auch bleiben - gleichzeitig ist er eine Voraussetzung für ein tiefgreifendes Konzept und eine belastbare Aufwandsschätzung. Ohne diese Grundlage einfach loszulegen und zu schauen, wo man landet, funktioniert erfahrungsgemäß nicht. Nach einer ausführlichen Analyse - die meist bereits mit dem Workshop abgeschlossen ist - können wir einen Festpreis oder eine verlässliche Range festlegen, die für beide Seiten planbar ist.',
+  },
+];
+---
+
+<PageLayout
+  title="Discovery-Workshop - Klarheit für Entscheider, bevor gebaut wird"
+  description="Ein strukturierter Außenblick auf Ihre Prozesse und Systemlandschaft: Datenflüsse, Prozessbilder, Mockups und eine priorisierte Handlungsempfehlung. Für Entscheider, die wissen, dass die Lage komplex ist - und eine belastbare Grundlage für den nächsten Schritt brauchen. Kompakt (1.200 €), Standard (2.400 €) oder Vertieft (4.500 €)."
+  lang={locale}
+  routeId="discoveryWorkshop"
+  extraSchemas={[
+    workshopServiceSchema,
+    createFAQSchema(miniFaqs.map((f) => ({ question: f.q, answer: f.a }))),
+  ]}
+>
+  <!-- HERO -->
+  <section
+    class="relative flex min-h-[60vh] items-center overflow-hidden py-24 sm:py-32"
+  >
+    <StarField />
+
+    <div class="container relative z-10 max-w-5xl text-center">
+      <p
+        data-reveal="fade-down"
+        class="text-brand-300 text-sm font-semibold tracking-[0.22em] uppercase"
+      >
+        Discovery-Workshop
+      </p>
+      <h1
+        data-reveal="fade-down"
+        lang="de"
+        class="font-display text-on-invert mt-6 text-4xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-5xl lg:text-6xl"
+      >
+        Sie wissen, dass es komplex ist.
+        <span
+          class="from-brand-300 via-brand-200 to-brand-400 mt-2 block bg-gradient-to-r bg-clip-text pb-2 text-transparent"
+        >
+          Wir ordnen es ein.
+        </span>
+      </h1>
+      <p
+        data-reveal
+        class="text-on-invert-secondary mx-auto mt-8 max-w-2xl text-lg leading-8 sm:text-xl"
+      >
+        Ein Außenblick von jemandem, der viele Systemlandschaften in Konzernen
+        und Mittelstand von innen gesehen hat. Wir nehmen Ihre Prozesse auf,
+        legen die echten Engpässe offen und liefern eine Entscheidungsgrundlage,
+        auf die sich Ihr Team stützen kann.
+      </p>
+      <div
+        data-reveal
+        class="mt-10 flex flex-wrap items-center justify-center gap-4"
+      >
+        <Button size="lg" href={contactLinks.calDiscovery} target="_blank">
+          Workshop anfragen
+          <Icon name="arrow-up-right" size="sm" />
+        </Button>
+        <Button
+          variant="link"
+          href="#formate"
+          class="text-on-invert-secondary hover:text-on-invert"
+        >
+          Formate &amp; Preise
+          <Icon name="chevron-down" size="sm" />
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLIENT LOGOS -->
+  <ClientLogoStrip
+    heading="Erfahrung aus Projekten mit"
+    logos={clientLogos}
+    variant="light"
+  />
+
+  <!-- DELIVERABLES -->
+  <section class="bg-background relative overflow-hidden py-24 lg:py-32">
+    <div class="container relative z-10 max-w-6xl">
+      <header data-reveal class="mx-auto max-w-3xl text-center">
+        <div class="mx-auto flex max-w-md items-center gap-4">
+          <span class="bg-border h-px flex-1"></span>
+          <span
+            class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold"
+          >
+            01
+          </span>
+          <span
+            class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase"
+          >
+            Was Sie bekommen
+          </span>
+          <span class="bg-border h-px flex-1"></span>
+        </div>
+        <h2
+          lang="de"
+          class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-4xl"
+        >
+          Danach wissen Sie, wo Sie stehen - und wo es hingehen kann.
+        </h2>
+        <p class="text-foreground-secondary mt-6 text-lg leading-8">
+          Der Workshop endet mit konkreten Artefakten, auf die sich
+          Fachbereich, IT und Entscheider gleichermaßen stützen können.
+        </p>
+      </header>
+
+      <div
+        data-reveal
+        class="mt-16 grid gap-6 md:grid-cols-2 md:gap-7"
+      >
+        {
+          deliverables.map((item) => (
+            <article class="group border-border bg-card relative flex flex-col gap-4 rounded-2xl border p-7 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg sm:p-8">
+              <div class="flex items-start gap-4">
+                <div class="border-brand-300/70 bg-brand-500/5 text-brand-600 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border transition-colors duration-300 group-hover:bg-brand-500 group-hover:text-on-invert group-hover:border-brand-500">
+                  <Icon name={item.icon} size="md" />
+                </div>
+                <h3 class="font-display text-foreground mt-1 text-lg font-bold tracking-tight sm:text-xl">
+                  {item.title}
+                </h3>
+              </div>
+              <p class="text-foreground-secondary text-[0.95rem] leading-7">
+                {item.text}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ABLAUF -->
+  <section
+    class="bg-background-secondary border-border relative overflow-hidden border-y py-24 lg:py-32"
+  >
+    <div
+      class="bg-grid-pattern pointer-events-none absolute inset-0 opacity-30 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]"
+      aria-hidden="true"
+    >
+    </div>
+    <div class="container relative z-10 max-w-6xl">
+      <header data-reveal class="mx-auto max-w-3xl text-center">
+        <div class="mx-auto flex max-w-md items-center gap-4">
+          <span class="bg-border h-px flex-1"></span>
+          <span
+            class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold"
+          >
+            02
+          </span>
+          <span
+            class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase"
+          >
+            Ablauf
+          </span>
+          <span class="bg-border h-px flex-1"></span>
+        </div>
+        <h2
+          class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl"
+        >
+          Fünf Schritte, keine Überraschungen.
+        </h2>
+      </header>
+
+      <!-- Icon-Timeline (Desktop) -->
+      <div
+        data-reveal
+        class="relative mt-16 hidden md:block"
+        aria-hidden="true"
+      >
+        <div class="bg-border/60 absolute left-[8%] right-[8%] top-8 h-px"></div>
+        <ol class="relative grid grid-cols-5 gap-4">
+          {
+            processSteps.map((step) => (
+              <li class="flex flex-col items-center text-center">
+                <div class="border-brand-300 bg-card text-brand-600 relative z-10 flex h-16 w-16 items-center justify-center rounded-2xl border-2 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-brand-500 hover:bg-brand-500 hover:text-on-invert">
+                  <Icon name={step.icon} size="lg" />
+                </div>
+                <p class="text-foreground-muted mt-4 font-mono text-xs font-semibold tracking-[0.22em] uppercase">
+                  {step.number}
+                </p>
+                <p class="font-display text-foreground mt-2 text-sm font-bold tracking-tight">
+                  {step.title}
+                </p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
+      <!-- Detail-Cards -->
+      <div
+        data-reveal
+        class="mt-12 grid gap-5 md:mt-16 md:grid-cols-2 md:gap-6 lg:grid-cols-3"
+      >
+        {
+          processSteps.map((step) => (
+            <article class="border-border bg-card group relative flex gap-4 rounded-2xl border p-6 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg">
+              <div class="border-brand-300/70 bg-brand-500/5 text-brand-600 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border transition-colors duration-300 group-hover:bg-brand-500 group-hover:text-on-invert group-hover:border-brand-500 md:hidden">
+                <Icon name={step.icon} size="md" />
+              </div>
+              <div class="min-w-0 flex-1">
+                <p class="text-foreground-muted font-mono text-xs font-semibold tracking-[0.22em] uppercase">
+                  {step.number}
+                </p>
+                <h3 class="font-display text-foreground mt-1 text-base font-bold tracking-tight sm:text-lg">
+                  {step.title}
+                </h3>
+                <p class="text-foreground-secondary mt-2.5 text-sm leading-6">
+                  {step.text}
+                </p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- KI + EXPERTISE -->
+  <section class="bg-background relative overflow-hidden py-24 lg:py-32">
+    <div
+      class="bg-brand-300/10 pointer-events-none absolute -left-24 top-1/3 h-96 w-96 rounded-full blur-3xl"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="container relative z-10 max-w-5xl">
+      <header data-reveal class="mx-auto max-w-3xl text-center">
+        <div class="mx-auto flex max-w-md items-center gap-4">
+          <span class="bg-border h-px flex-1"></span>
+          <span
+            class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold"
+          >
+            03
+          </span>
+          <span
+            class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase"
+          >
+            KI + Expertise
+          </span>
+          <span class="bg-border h-px flex-1"></span>
+        </div>
+        <h2
+          lang="de"
+          class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-4xl"
+        >
+          Warum dafür nicht einfach KI?
+        </h2>
+      </header>
+
+      <div
+        data-reveal
+        class="mt-12 grid gap-6 md:grid-cols-[1.1fr_0.9fr] md:items-stretch md:gap-8"
+      >
+        <article class="border-border bg-card relative flex flex-col gap-5 rounded-2xl border p-7 shadow-sm sm:p-8">
+          <div class="flex items-center gap-3">
+            <div class="border-brand-300/70 bg-brand-500/5 text-brand-600 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border">
+              <Icon name="zap" size="md" />
+            </div>
+            <h3 class="font-display text-foreground text-lg font-bold tracking-tight sm:text-xl">
+              Wo KI bei uns mitarbeitet
+            </h3>
+          </div>
+          <p class="text-foreground-secondary text-[0.95rem] leading-7">
+            KI ist ein hervorragender Verstärker: in der Entwicklung, für
+            Dokumentation, für schnelle Entwürfe. Sie beschleunigt Arbeit
+            messbar - dort, wo die Aufgabe bereits klar umrissen ist.
+          </p>
+          <p class="text-foreground-secondary text-[0.95rem] leading-7">
+            Aber genau das ist bei Ihnen nicht der Fall. Wenn Prozesse,
+            Stakeholder-Interessen und historisch gewachsene Systeme
+            zusammenwirken, lässt sich die richtige Einordnung nicht aus einem
+            Prompt ableiten - dafür braucht es jemanden, der die Zwischentöne
+            hört.
+          </p>
+        </article>
+
+        <article class="border-brand-300 bg-card relative flex flex-col gap-5 rounded-2xl border-2 p-7 shadow-[0_20px_50px_-20px_rgba(99,102,241,0.35)] sm:p-8">
+          <div class="flex items-center gap-3">
+            <div class="border-brand-500 bg-brand-500 text-on-invert flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border-2">
+              <Icon name="users" size="md" />
+            </div>
+            <h3 class="font-display text-foreground text-lg font-bold tracking-tight sm:text-xl">
+              Warum Erfahrung hier den Unterschied macht
+            </h3>
+          </div>
+          <p class="text-foreground-secondary text-[0.95rem] leading-7">
+            Eine tragfähige Lösung entsteht, wenn jemand schon viele
+            Systemlandschaften gesehen hat - in Konzernen wie im Mittelstand -
+            und daraus die richtigen Fragen zum richtigen Zeitpunkt stellen
+            kann.
+          </p>
+          <p class="text-foreground text-[0.95rem] font-medium leading-7">
+            Genau das bringe ich mit: über 15 Jahre Praxis als
+            Softwarearchitekt, ein ehrlich neugieriger Blick von außen - und
+            ein Team, das KI dort einsetzt, wo sie wirklich Hebel hat.
+          </p>
+        </article>
+      </div>
+
+      <p
+        data-reveal
+        class="text-foreground-muted mx-auto mt-10 max-w-3xl text-center text-sm leading-6"
+      >
+        Das Ergebnis: ein Workshop, der schneller zu Tiefe kommt als
+        klassische Beratung - und trotzdem die Substanz hat, die einen
+        KI-Output allein nicht erreicht.
+      </p>
+    </div>
+  </section>
+
+  <!-- FORMATE & PREISE -->
+  <section
+    id="formate"
+    class="bg-background-secondary border-border relative overflow-hidden border-y py-24 lg:py-32"
+  >
+    <div
+      class="bg-brand-300/15 pointer-events-none absolute -right-24 top-1/3 h-96 w-96 rounded-full blur-3xl"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="container relative z-10 max-w-6xl">
+      <header data-reveal class="mx-auto max-w-3xl text-center">
+        <div class="mx-auto flex max-w-md items-center gap-4">
+          <span class="bg-border h-px flex-1"></span>
+          <span
+            class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold"
+          >
+            04
+          </span>
+          <span
+            class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase"
+          >
+            Formate &amp; Preise
+          </span>
+          <span class="bg-border h-px flex-1"></span>
+        </div>
+        <h2
+          class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl"
+        >
+          Drei Formate, klar bepreist.
+        </h2>
+        <p class="text-foreground-secondary mt-6 text-lg leading-8">
+          Alle Preise zzgl. USt. Anreise- und Reisezeitkosten werden bei
+          Vor-Ort-Workshops individuell vereinbart.
+        </p>
+      </header>
+
+      <div
+        data-reveal
+        class="mt-16 grid gap-6 md:grid-cols-3 md:gap-7"
+      >
+        {
+          formats.map((format) => (
+            <article
+              class:list={[
+                'relative flex flex-col rounded-2xl border p-7 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg sm:p-8',
+                format.featured
+                  ? 'border-brand-300 bg-card shadow-[0_20px_50px_-20px_rgba(99,102,241,0.35)]'
+                  : 'border-border bg-card shadow-sm',
+              ]}
+            >
+              {format.featured && (
+                <span class="bg-brand-500 text-on-invert absolute -top-3 left-7 rounded-full px-3 py-1 text-[10px] font-bold tracking-[0.22em] uppercase">
+                  Empfohlen
+                </span>
+              )}
+              <div class="flex items-baseline justify-between gap-3">
+                <h3 class="font-display text-foreground text-xl font-bold tracking-tight">
+                  {format.name}
+                </h3>
+                <span class="text-foreground-muted font-mono text-xs uppercase tracking-[0.18em]">
+                  {format.duration}
+                </span>
+              </div>
+              <p class="text-brand-600 mt-3 font-display text-3xl font-bold">
+                {format.price}
+              </p>
+              <p class="text-foreground-muted border-border/60 mt-4 flex items-center gap-2 border-t pt-4 text-xs font-semibold tracking-[0.08em] uppercase">
+                <Icon name="clock" size="xs" class="text-brand-500" />
+                {format.sessions}
+              </p>
+              <p class="text-foreground-secondary mt-4 text-[0.95rem] leading-7">
+                {format.summary}
+              </p>
+              <ul class="mt-6 flex flex-col gap-3">
+                {format.includes.map((line) => (
+                  <li class="text-foreground flex items-start gap-2.5 text-sm leading-6">
+                    <Icon
+                      name="check-circle"
+                      size="sm"
+                      class="text-brand-500 mt-0.5 shrink-0"
+                    />
+                    <span>{line}</span>
+                  </li>
+                ))}
+              </ul>
+              <p class="text-foreground-muted border-border/60 mt-6 border-t pt-5 text-sm leading-6">
+                <strong class="text-foreground-secondary">Passt, wenn:</strong> {format.fit}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- VISUAL EXAMPLES -->
+  <section class="bg-background relative overflow-hidden py-24 lg:py-32">
+    <div class="container relative z-10 max-w-6xl">
+      <header data-reveal class="mx-auto max-w-3xl text-center">
+        <div class="mx-auto flex max-w-md items-center gap-4">
+          <span class="bg-border h-px flex-1"></span>
+          <span
+            class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold"
+          >
+            05
+          </span>
+          <span
+            class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase"
+          >
+            So sehen Ergebnisse aus
+          </span>
+          <span class="bg-border h-px flex-1"></span>
+        </div>
+        <h2
+          class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl"
+        >
+          Zwei Ausschnitte aus echten Workshops.
+        </h2>
+        <p class="text-foreground-secondary mt-6 text-lg leading-8">
+          Nur ein Eindruck - keine vollständigen Ergebnisse. Das tatsächliche
+          Workshop-Dokument ist deutlich umfangreicher.
+        </p>
+      </header>
+
+      <div
+        data-reveal
+        class="mx-auto mt-16 grid max-w-4xl gap-12 sm:grid-cols-2 sm:gap-10"
+      >
+        <figure class="group mx-auto w-full max-w-xs">
+          <div class="border-border bg-card overflow-hidden rounded-2xl border shadow-lg transition-all duration-500 ease-out -rotate-2 group-hover:rotate-0 group-hover:-translate-y-1 group-hover:shadow-2xl">
+            <Picture
+              src={workshopBpmn}
+              alt="Ausschnitt eines BPMN-Prozessdiagramms aus einem Discovery-Workshop"
+              widths={[240, 320, 480]}
+              sizes="(max-width: 640px) 80vw, 320px"
+              formats={['avif', 'webp']}
+              class="h-auto w-full object-cover"
+              loading="lazy"
+            />
+          </div>
+          <figcaption class="text-foreground-muted mt-5 flex items-start gap-2 text-sm">
+            <Icon name="layers" size="xs" class="text-brand-500 mt-1 shrink-0" />
+            <span>
+              <strong class="text-foreground">Prozessbild.</strong>
+              Eine standardisierte Darstellung Ihrer Abläufe - verständlich für
+              Geschäftsführung, Fachbereich und IT. Gemeinsame Basis statt
+              unterschiedlicher Vorstellungen im Team.
+            </span>
+          </figcaption>
+        </figure>
+
+        <figure class="group mx-auto w-full max-w-xs">
+          <div class="border-border bg-card overflow-hidden rounded-2xl border shadow-lg transition-all duration-500 ease-out rotate-2 group-hover:rotate-0 group-hover:-translate-y-1 group-hover:shadow-2xl">
+            <Picture
+              src={workshopMockup}
+              alt="Ausschnitt eines Mockups aus einem Discovery-Workshop"
+              widths={[240, 320, 480]}
+              sizes="(max-width: 640px) 80vw, 320px"
+              formats={['avif', 'webp']}
+              class="h-auto w-full object-cover"
+              loading="lazy"
+            />
+          </div>
+          <figcaption class="text-foreground-muted mt-5 flex items-start gap-2 text-sm">
+            <Icon name="palette" size="xs" class="text-brand-500 mt-1 shrink-0" />
+            <span>
+              <strong class="text-foreground">Oberflächen-Entwurf.</strong>
+              Konkrete Skizzen der wichtigsten Bildschirmmasken - damit
+              Stakeholder auf einen Blick verstehen, wie eine Lösung aussehen
+              könnte.
+            </span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- HALTUNG / KLARSTELLUNG -->
+  <section
+    class="bg-background-secondary border-border relative overflow-hidden border-y py-24 lg:py-32"
+  >
+    <div
+      class="bg-grid-pattern pointer-events-none absolute inset-0 opacity-30 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="bg-brand-300/10 pointer-events-none absolute -right-32 top-1/4 h-96 w-96 rounded-full blur-3xl"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="container relative z-10 max-w-6xl">
+      <div
+        data-reveal
+        class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-stretch lg:gap-10"
+      >
+        <!-- Haltung / Statement -->
+        <article
+          class="border-brand-300 bg-card relative flex flex-col gap-6 overflow-hidden rounded-[2rem] border-2 p-8 shadow-[0_24px_60px_-24px_rgba(99,102,241,0.35)] sm:p-10"
+        >
+          <div
+            class="bg-brand-500/5 pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full blur-2xl"
+            aria-hidden="true"
+          >
+          </div>
+
+          <div class="relative flex items-center gap-4">
+            <div
+              class="relative shrink-0"
+              aria-hidden="true"
+            >
+              <div
+                class="bg-brand-400/30 absolute -inset-1.5 -z-10 rounded-full blur-md"
+              >
+              </div>
+              <div
+                class="border-brand-300 bg-card h-16 w-16 overflow-hidden rounded-full border-2 shadow-md"
+              >
+                <Picture
+                  src={founderPortrait}
+                  alt="Marten Prieß"
+                  widths={[64, 96, 128]}
+                  sizes="64px"
+                  formats={['avif', 'webp']}
+                  class="h-full w-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <div class="min-w-0">
+              <p
+                class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase"
+              >
+                Haltung
+              </p>
+              <p class="text-foreground-muted mt-1 text-sm font-semibold">
+                Marten Prieß · Gründer
+              </p>
+            </div>
+          </div>
+
+          <h2
+            lang="de"
+            class="font-display text-foreground relative text-2xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-3xl"
+          >
+            Kein Vertriebsblabla. Keine leeren Versprechen.
+          </h2>
+
+          <div class="relative">
+            <Icon
+              name="zap"
+              size="lg"
+              class="text-brand-500/40 absolute -top-2 -left-1"
+            />
+            <blockquote
+              class="text-foreground-secondary relative flex flex-col gap-4 pl-9 text-lg leading-8"
+            >
+              <p>
+                „Ich bin Konzepter und Entwickler mit Herzblut. Was ich kann:
+                gut zuhören, Prozesse verstehen - und im Gespräch eigene Ideen
+                einbringen, die oft schon einen Schritt weiter denken, als man
+                im ersten Moment im Kopf hatte."
+              </p>
+              <p class="text-foreground font-medium">
+                „Das macht den Unterschied zwischen einer Umsetzung und einer
+                Lösung."
+              </p>
+            </blockquote>
+          </div>
+        </article>
+
+        <!-- Was dieser Workshop nicht ist -->
+        <article
+          class="border-border bg-card flex flex-col gap-6 rounded-[2rem] border p-8 shadow-sm sm:p-10"
+        >
+          <p
+            class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase"
+          >
+            Klarstellung
+          </p>
+          <h3
+            class="font-display text-foreground mt-1 text-xl font-bold tracking-tight sm:text-2xl"
+          >
+            Was dieser Workshop <span class="text-brand-500">nicht</span> ist.
+          </h3>
+          <ul class="mt-2 flex flex-col gap-4">
+            {
+              notAWorkshop.map((item) => (
+                <li class="text-foreground-secondary flex items-start gap-3 text-base leading-7">
+                  <Icon
+                    name="x-circle"
+                    size="sm"
+                    class="text-foreground-muted mt-1.5 shrink-0"
+                  />
+                  <span>{item}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- REFERENZ-CALLOUT -->
+  <section
+    class="border-border bg-background relative overflow-hidden border-y py-10"
+  >
+    <div class="container">
+      <a
+        href={referencesUrl}
+        data-reveal
+        class="group mx-auto flex max-w-3xl flex-col items-center justify-center gap-3 text-center sm:flex-row sm:gap-5 sm:text-left"
+      >
+        <p class="text-foreground-secondary text-base leading-7">
+          Wie aus Workshops echte Projekte werden, zeigen unsere
+          <span class="text-brand-600 font-semibold underline decoration-brand-300/60 underline-offset-4 group-hover:text-brand-700 transition-colors"
+            >Referenzen</span
+          >.
+        </p>
+        <Icon
+          name="arrow-right"
+          size="sm"
+          class="text-brand-500 transition-transform duration-200 group-hover:translate-x-1"
+        />
+      </a>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="bg-background relative overflow-hidden py-24 lg:py-32">
+    <div class="container relative z-10 max-w-4xl">
+      <header data-reveal class="mx-auto max-w-3xl text-center">
+        <div class="mx-auto flex max-w-md items-center gap-4">
+          <span class="bg-border h-px flex-1"></span>
+          <span
+            class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold"
+          >
+            06
+          </span>
+          <span
+            class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase"
+          >
+            Häufige Fragen
+          </span>
+          <span class="bg-border h-px flex-1"></span>
+        </div>
+        <h2
+          class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl"
+        >
+          Was Interessenten oft fragen.
+        </h2>
+      </header>
+
+      <div data-reveal class="mt-12 flex flex-col gap-4">
+        {
+          miniFaqs.map((item) => (
+            <details class="group border-border bg-card rounded-2xl border p-5 shadow-sm transition-shadow duration-300 open:shadow-lg sm:p-6">
+              <summary class="flex cursor-pointer list-none items-start gap-4 [&::-webkit-details-marker]:hidden">
+                <h3 class="font-display text-foreground flex-1 text-base font-bold tracking-tight sm:text-lg">
+                  {item.q}
+                </h3>
+                <Icon
+                  name="chevron-down"
+                  size="sm"
+                  class="text-foreground-muted mt-1 shrink-0 transition-transform duration-300 group-open:rotate-180"
+                />
+              </summary>
+              <p class="text-foreground-secondary mt-4 border-t border-border/60 pt-4 text-[0.95rem] leading-7">
+                {item.a}
+              </p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="border-border bg-background-secondary border-t py-24">
+    <div class="container max-w-4xl">
+      <div
+        data-reveal="zoom-in"
+        class="border-border bg-card rounded-[2.25rem] border p-6 shadow-sm sm:p-8 lg:p-10"
+      >
+        <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <div>
+            <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
+              Nächster Schritt
+            </p>
+            <h2
+              lang="de"
+              class="font-display text-foreground mt-4 text-2xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-3xl lg:text-4xl"
+            >
+              Bereit für einen strukturierten Blick auf Ihre Prozesse?
+            </h2>
+            <p class="text-foreground-secondary mt-6 text-lg leading-8">
+              Vereinbaren Sie ein kurzes Klärungsgespräch - wir finden
+              gemeinsam das passende Format und einen Termin.
+            </p>
+          </div>
+          <div class="bg-background-secondary flex flex-wrap items-center gap-4 rounded-[1.5rem] p-5 sm:p-6">
+            <Button href={contactLinks.calDiscovery} target="_blank">
+              Workshop anfragen
+              <Icon name="arrow-up-right" size="sm" />
+            </Button>
+            <Button variant="link" href={contactUrl}>
+              Kontaktseite
+              <Icon name="arrow-right" size="sm" />
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</PageLayout>

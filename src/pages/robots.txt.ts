@@ -11,10 +11,6 @@ Allow: /
 # Block API routes
 Disallow: /api/
 
-# Blog is not yet published
-Disallow: /blog/
-Disallow: /rss.xml
-
 Sitemap: ${siteUrl}sitemap-index.xml
 `.trim();
 

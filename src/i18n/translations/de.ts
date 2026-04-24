@@ -106,7 +106,7 @@ export const de = {
     allPosts: 'Alle Beiträge',
     featured: 'Empfohlen',
     noPosts: 'Noch keine Beiträge vorhanden.',
-    relatedPosts: 'Passende Beiträge',
+    relatedPosts: 'Weitere Beiträge',
     backToBlog: 'Zurück zum Blog',
     subscribe: 'Updates erhalten',
     subscribeDescription:
