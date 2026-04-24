@@ -1,12 +1,15 @@
 ---
 import PageLayout from '@/layouts/PageLayout.astro';
 import { Picture } from 'astro:assets';
+import { getCollection } from 'astro:content';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
 import Moon from '@/components/hero-backgrounds/Moon.astro';
 import { defaultLocale } from '@/i18n/config';
 import { contactLinks } from '@/data/rocketbase';
 import { cn } from '@/lib/cn.ts';
+import { createFAQSchema } from '@/lib/schema';
 
 import teamBefore from '@/assets/work/team-before.png';
 import teamAfter from '@/assets/work/team-after.png';
@@ -19,6 +22,28 @@ import kiAfter from '@/assets/work/ki-after.png';
 
 const locale = defaultLocale;
 const captionDefault = 'Visualisierung erstellt mit Midjourney v6.1';
+
+const faqEntries = await getCollection('faqs', ({ data }) => data.category === 'arbeitsweise');
+const faqs = faqEntries
+  .map((entry) => entry.data)
+  .sort((a, b) => a.order - b.order);
+
+const faqSchema = createFAQSchema(
+  faqs.map((f) => ({
+    question: f.question,
+    answer: [f.summary, f.details].filter(Boolean).join(' ') || f.answer || '',
+  })),
+);
+
+const faqIcons: Record<number, string> = {
+  1: 'clock',
+  2: 'file-text',
+  3: 'users',
+  4: 'globe',
+  5: 'shield',
+  6: 'heart',
+  7: 'layers',
+};
 
 const sections = [
   {
@@ -135,6 +160,7 @@ const sections = [
   lang={locale}
   routeId="work"
 >
+  <JsonLd schema={faqSchema} />
   <!-- HERO -->
   <section
     class="border-border bg-background-secondary relative flex min-h-[60vh] items-center overflow-hidden border-b py-24 sm:py-32"
@@ -556,6 +582,102 @@ const sections = [
       ))
     }
   </div>
+
+  <!-- FAQ -->
+  <section
+    id="faq"
+    class="bg-background-secondary border-border relative overflow-hidden border-t py-24 lg:py-32"
+  >
+    <div
+      class="bg-grid-pattern pointer-events-none absolute inset-0 opacity-30 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="bg-brand-300/15 pointer-events-none absolute -right-24 bottom-1/4 h-96 w-96 rounded-full blur-3xl"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="container relative z-10 max-w-6xl">
+      <header data-reveal class="mx-auto max-w-3xl text-center">
+        <div class="mx-auto flex max-w-md items-center gap-4">
+          <span class="bg-border h-px flex-1"></span>
+          <span
+            class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold"
+          >
+            06
+          </span>
+          <span
+            class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase"
+          >
+            Häufige Fragen
+          </span>
+          <span class="bg-border h-px flex-1"></span>
+        </div>
+        <h2
+          class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl"
+        >
+          Was Interessenten uns oft fragen.
+        </h2>
+        <p class="text-foreground-secondary mt-6 text-lg leading-8">
+          Dauer, Einstieg, Projektgröße, Hosting, Betrieb — die Antworten,
+          bevor Sie fragen müssen.
+        </p>
+      </header>
+
+      <div
+        data-reveal
+        class="mt-16 grid gap-5 md:grid-cols-2 md:gap-6"
+      >
+        {
+          faqs.map((faq) => (
+            <details
+              class="faq-card group border-border bg-card relative rounded-2xl border p-6 shadow-sm transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-lg open:shadow-lg sm:p-7"
+            >
+              <summary class="flex cursor-pointer list-none items-start gap-4 [&::-webkit-details-marker]:hidden">
+                <div class="border-brand-300/70 bg-brand-500/5 text-brand-600 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border transition-colors duration-300 group-hover:bg-brand-500 group-hover:text-on-invert group-hover:border-brand-500 group-open:bg-brand-500 group-open:text-on-invert group-open:border-brand-500">
+                  <Icon name={faqIcons[faq.order] ?? 'check-circle'} size="md" />
+                </div>
+                <div class="min-w-0 flex-1">
+                  <h3 class="font-display text-foreground text-lg font-bold tracking-tight sm:text-xl">
+                    {faq.question}
+                  </h3>
+                  <p class="text-foreground-secondary mt-2 text-[0.95rem] leading-7">
+                    {faq.summary}
+                  </p>
+                </div>
+                <Icon
+                  name="chevron-down"
+                  size="sm"
+                  class="faq-chevron text-foreground-muted mt-1 shrink-0 transition-transform duration-300 group-open:rotate-180"
+                />
+              </summary>
+              {faq.details && (
+                <div class="text-foreground-secondary mt-4 border-t border-border/60 pt-4 pl-[3.75rem] text-[0.95rem] leading-7">
+                  {faq.details}
+                </div>
+              )}
+            </details>
+          ))
+        }
+      </div>
+
+      <p
+        data-reveal
+        class="text-foreground-muted mx-auto mt-14 max-w-2xl text-center text-sm"
+      >
+        Nicht die passende Antwort dabei? Stellen Sie Ihre Frage direkt im
+        <a
+          href={contactLinks.cal}
+          target="_blank"
+          rel="noopener"
+          class="text-brand-600 hover:text-brand-700 font-semibold underline decoration-brand-300/60 underline-offset-4 transition-colors"
+          >Erstgespräch</a
+        >.
+      </p>
+    </div>
+  </section>
 
   <!-- CTA -->
   <section class="border-border bg-background-secondary border-t py-24">
