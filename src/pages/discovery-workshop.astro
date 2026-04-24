@@ -8,6 +8,7 @@ import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
 import { defaultLocale } from '@/i18n/config';
 import { getLocalizedPath } from '@/i18n/index';
 import { contactLinks } from '@/data/rocketbase';
+import { createServiceSchema, createFAQSchema } from '@/lib/schema';
 
 import workshopBpmn from '@/assets/rocketbase/workshop-bpmn.jpg';
 import workshopMockup from '@/assets/rocketbase/workshop-mockup.jpg';
@@ -135,6 +136,33 @@ const notAWorkshop = [
   'Keine generischen Folien - alles wird an Ihrem Fall erarbeitet.',
 ];
 
+const workshopUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const workshopServiceSchema = createServiceSchema({
+  name: 'Discovery-Workshop',
+  description:
+    'Strukturierter Außenblick auf Prozesse und Systemlandschaft: Datenflüsse, Prozessbilder, Mockups und eine priorisierte Handlungsempfehlung. Für Entscheider, die eine belastbare Entscheidungsgrundlage brauchen, bevor gebaut wird.',
+  url: workshopUrl,
+  serviceType: 'Software-Discovery und Prozessanalyse',
+  areaServed: 'DE',
+  offers: [
+    {
+      name: 'Kompakt',
+      price: '1200',
+      description: '½ Tag, 1× 3-Stunden-Termin – Fokus auf einen konkreten Prozess oder eine klar umrissene Fragestellung.',
+    },
+    {
+      name: 'Standard',
+      price: '2400',
+      description: '1 Tag, 2× 3-Stunden-Termine – ausreichend Zeit für mehrere Prozesse und Stakeholder-Sicht.',
+    },
+    {
+      name: 'Vertieft',
+      price: '4500',
+      description: '2 Tage, 4× 3-Stunden-Termine – Tiefenanalyse inkl. erweitertem Ergebnisdokument.',
+    },
+  ],
+});
+
 const miniFaqs = [
   {
     q: 'Was muss ich vorbereiten?',
@@ -160,6 +188,10 @@ const miniFaqs = [
   description="Ein strukturierter Außenblick auf Ihre Prozesse und Systemlandschaft: Datenflüsse, Prozessbilder, Mockups und eine priorisierte Handlungsempfehlung. Für Entscheider, die wissen, dass die Lage komplex ist - und eine belastbare Grundlage für den nächsten Schritt brauchen. Kompakt (1.200 €), Standard (2.400 €) oder Vertieft (4.500 €)."
   lang={locale}
   routeId="discoveryWorkshop"
+  extraSchemas={[
+    workshopServiceSchema,
+    createFAQSchema(miniFaqs.map((f) => ({ question: f.q, answer: f.a }))),
+  ]}
 >
   <!-- HERO -->
   <section

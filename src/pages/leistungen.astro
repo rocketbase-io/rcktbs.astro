@@ -11,11 +11,20 @@ import {
   processSteps,
   serviceAreas,
 } from '@/data/rocketbase';
+import { createProfessionalServiceSchema } from '@/lib/schema';
 const locale = defaultLocale;
 const contactUrl = getLocalizedPath('contact', locale);
 const workUrl = getLocalizedPath('work', locale);
 const missionUrl = getLocalizedPath('mission', locale);
 const workshopUrl = getLocalizedPath('discoveryWorkshop', locale);
+
+const servicesPageUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const professionalServiceSchema = createProfessionalServiceSchema({
+  url: servicesPageUrl,
+  description:
+    'Individuelle Softwareentwicklung, Prozessberatung und Plattformarchitektur für den ambitionierten Mittelstand. Von Discovery über Konzeption bis Betrieb aus einer Hand.',
+  services: serviceAreas.map((s) => s.title),
+});
 
 const serviceIcons = ['search', 'palette', 'code', 'monitor'];
 
@@ -58,6 +67,7 @@ const useCases = [
   description="Von Prozessanalyse bis Betrieb aus einer Hand: Discovery, Konzeption, Individualsoftware und Betrieb – sechs typische Vorhaben und ein Discovery-Workshop."
   lang={locale}
   routeId="services"
+  extraSchemas={professionalServiceSchema}
 >
   <!-- HERO -->
   <section

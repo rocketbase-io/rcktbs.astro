@@ -4,6 +4,8 @@ import type {
   BlogPosting,
   BreadcrumbList,
   FAQPage,
+  Service,
+  ProfessionalService,
   WithContext,
 } from 'schema-dts';
 import siteConfig from '@/config/site.config';
@@ -113,6 +115,98 @@ export function createBreadcrumbSchema(
       name: item.name,
       item: item.url,
     })),
+  };
+}
+
+/**
+ * Create Service schema for an individual offering (e.g. a productised workshop).
+ */
+export function createServiceSchema(service: {
+  name: string;
+  description: string;
+  url: string;
+  serviceType?: string;
+  areaServed?: string;
+  offers?: Array<{ name: string; price: string; priceCurrency?: string; description?: string }>;
+}): WithContext<Service> {
+  const provider: Organization = {
+    '@type': 'Organization',
+    name: siteConfig.name,
+    url: siteConfig.url,
+  };
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: service.name,
+    description: service.description,
+    url: service.url,
+    serviceType: service.serviceType,
+    areaServed: service.areaServed ?? 'DE',
+    provider,
+    ...(service.offers && service.offers.length > 0
+      ? {
+          offers: service.offers.map((o) => ({
+            '@type': 'Offer' as const,
+            name: o.name,
+            price: o.price,
+            priceCurrency: o.priceCurrency ?? 'EUR',
+            description: o.description,
+            availability: 'https://schema.org/InStock',
+            url: service.url,
+          })),
+        }
+      : {}),
+  };
+}
+
+/**
+ * Create ProfessionalService schema describing the agency itself
+ * (useful on the services overview page as a B2B local/pro-business signal).
+ */
+export function createProfessionalServiceSchema(params: {
+  url: string;
+  description: string;
+  services: string[];
+}): WithContext<ProfessionalService> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    name: siteConfig.name,
+    legalName: 'rocketbase.io software productions GmbH',
+    url: params.url,
+    description: params.description,
+    image: `${siteConfig.url}${siteConfig.ogImage}`,
+    logo: `${siteConfig.url}/favicon.svg`,
+    email: siteConfig.email,
+    telephone: siteConfig.phone,
+    areaServed: 'DE',
+    sameAs: siteConfig.socialLinks,
+    address: siteConfig.address
+      ? {
+          '@type': 'PostalAddress',
+          streetAddress: siteConfig.address.street,
+          postalCode: siteConfig.address.zip,
+          addressLocality: siteConfig.address.city,
+          addressRegion: siteConfig.address.state,
+          addressCountry: siteConfig.address.country,
+        }
+      : undefined,
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: `${siteConfig.name} Leistungen`,
+      itemListElement: params.services.map((s) => ({
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: s,
+          provider: {
+            '@type': 'Organization',
+            name: siteConfig.name,
+          },
+        },
+      })),
+    },
   };
 }
 

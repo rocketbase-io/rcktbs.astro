@@ -11,6 +11,9 @@ import ShareButtons from '@/components/blog/ShareButtons.astro';
 import RelatedPosts from '@/components/blog/RelatedPosts.astro';
 import { defaultLocale, type Locale } from '@/i18n/config';
 import { useTranslations } from '@/i18n/index';
+import { createBlogPostSchema, createBreadcrumbSchema } from '@/lib/schema';
+import siteConfig from '@/config/site.config';
+import type { Thing, WithContext } from 'schema-dts';
 
 interface Props {
   title: string;
@@ -63,6 +66,29 @@ const breadcrumbs = [
 
 // Get full URL for sharing
 const fullUrl = new URL(Astro.url.pathname, Astro.site).toString();
+
+// Build absolute URLs for structured data
+const absoluteOgImage = new URL(ogImage, Astro.site).toString();
+const absoluteHomeUrl = new URL(homeUrl, Astro.site).toString();
+const absoluteBlogUrl = new URL(blogUrl, Astro.site).toString();
+
+const blogPostingSchema = createBlogPostSchema({
+  title,
+  description,
+  url: fullUrl,
+  image: absoluteOgImage,
+  datePublished: publishedAt,
+  dateModified: updatedAt,
+  author: { name: author, url: siteConfig.url },
+});
+
+const breadcrumbSchema = createBreadcrumbSchema([
+  { name: t('nav.home'), url: absoluteHomeUrl },
+  { name: t('nav.blog'), url: absoluteBlogUrl },
+  { name: title, url: fullUrl },
+]);
+
+const articleSchemas: WithContext<Thing>[] = [blogPostingSchema, breadcrumbSchema];
 ---
 
 <BaseLayout
@@ -77,6 +103,7 @@ const fullUrl = new URL(Astro.url.pathname, Astro.site).toString();
     authors: [author],
     tags,
   }}
+  extraSchemas={articleSchemas}
 >
   <Navbar slot="header" />
 

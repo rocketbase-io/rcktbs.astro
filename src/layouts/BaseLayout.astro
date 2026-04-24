@@ -7,7 +7,7 @@ import Analytics from '@/components/layout/Analytics.astro';
 import ScrollProgress from '@/components/layout/ScrollProgress.astro';
 import ConsentBanner from '@/components/ui/overlay/ConsentBanner';
 import { createWebsiteSchema, createOrganizationSchema } from '@/lib/schema';
-import type { WebSite, Organization, WithContext } from 'schema-dts';
+import type { Thing, WebSite, Organization, WithContext } from 'schema-dts';
 import siteConfig from '@/config/site.config';
 import { type Locale, getLocaleFromPath } from '@/i18n/config';
 import { useTranslations } from '@/i18n/index';
@@ -33,6 +33,10 @@ interface Props {
    * If provided, uses translated URLs; otherwise falls back to path-based hreflang.
    */
   routeId?: RouteId;
+  /**
+   * Additional JSON-LD schemas to emit alongside WebSite / Organization.
+   */
+  extraSchemas?: WithContext<Thing> | WithContext<Thing>[];
 }
 
 const {
@@ -46,6 +50,7 @@ const {
   includeOrgSchema = false,
   lang,
   routeId,
+  extraSchemas,
 } = Astro.props;
 
 // Get locale from props or URL path
@@ -66,9 +71,15 @@ const consentUi = {
 const consentAlwaysOnLabel = tc('consent.alwaysOn');
 
 // Build JSON-LD schemas
-const schemas: Array<WithContext<WebSite> | WithContext<Organization>> = [createWebsiteSchema()];
+const schemas: Array<WithContext<Thing>> = [
+  createWebsiteSchema() as WithContext<WebSite>,
+];
 if (includeOrgSchema) {
-  schemas.push(createOrganizationSchema());
+  schemas.push(createOrganizationSchema() as WithContext<Organization>);
+}
+if (extraSchemas) {
+  const extras = Array.isArray(extraSchemas) ? extraSchemas : [extraSchemas];
+  schemas.push(...extras);
 }
 ---
 
