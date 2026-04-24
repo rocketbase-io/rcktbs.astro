@@ -13,6 +13,7 @@ import founderStamp from '@/assets/rocketbase/founder-marten-priess-alt.jpg';
 const locale = defaultLocale;
 const t = useTranslations(locale);
 const servicesUrl = getLocalizedPath('services', locale);
+const workshopUrl = getLocalizedPath('discoveryWorkshop', locale);
 
 const reasonsToReachOut = [
   'Sie wollen prüfen, ob Standardsoftware noch trägt oder bereits bremst.',
@@ -57,12 +58,12 @@ const directCollaborationDefinition =
           <p class="mt-3 text-base leading-7 text-foreground-secondary">{directCollaborationDefinition}</p>
         </div>
 
-        <div data-reveal class="mt-8 flex flex-wrap gap-4">
+        <div data-reveal class="mt-8 flex flex-wrap items-center gap-4">
           <Button href={contactLinks.cal} target="_blank">
             Erstgespräch buchen
             <Icon name="arrow-up-right" size="sm" />
           </Button>
-          <Button href={servicesUrl} variant="outline">
+          <Button href={servicesUrl} variant="link">
             Leistungen ansehen
             <Icon name="arrow-right" size="sm" />
           </Button>
@@ -95,26 +96,33 @@ const directCollaborationDefinition =
 
         <div class="mt-8 grid gap-4">
           <a
-            href={`mailto:${contactLinks.email}`}
-            class="rounded-[1.5rem] border border-white/10 bg-white/5 p-5 transition-colors hover:bg-white/10"
+            href={contactLinks.cal}
+            target="_blank"
+            class="group rounded-[1.5rem] border border-brand-300/40 bg-brand-500/15 p-5 transition-all hover:border-brand-300/70 hover:bg-brand-500/25"
           >
-            <p class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-on-invert-muted">
-              <Icon name="mail" size="xs" class="text-brand-300" />
-              E-Mail
+            <p class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-brand-200">
+              <Icon name="clock" size="xs" />
+              Erstgespräch · empfohlen
             </p>
-            <p class="mt-2 break-words text-base font-semibold text-on-invert">{contactLinks.email}</p>
+            <p class="mt-2 flex items-center gap-2 text-base font-semibold text-on-invert">
+              30 Minuten direkt mit Marten Prieß
+              <Icon
+                name="arrow-up-right"
+                size="sm"
+                class="text-brand-200 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              />
+            </p>
           </a>
 
           <a
-            href={contactLinks.cal}
-            target="_blank"
-            class="rounded-[1.5rem] border border-white/10 bg-white/5 p-5 transition-colors hover:bg-white/10"
+            href={`mailto:${contactLinks.email}`}
+            class="rounded-[1.5rem] border border-white/10 bg-white/5 p-4 transition-colors hover:bg-white/10"
           >
             <p class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-on-invert-muted">
-              <Icon name="clock" size="xs" class="text-brand-300" />
-              Termin
+              <Icon name="mail" size="xs" class="text-brand-300" />
+              Lieber schreiben?
             </p>
-            <p class="mt-2 text-base font-semibold text-on-invert">Erstgespräch mit Marten Prieß</p>
+            <p class="mt-1.5 break-words text-sm text-on-invert-secondary">{contactLinks.email}</p>
           </a>
         </div>
 
@@ -142,8 +150,9 @@ const directCollaborationDefinition =
         </h2>
         <p class="mt-6 text-lg leading-8 text-foreground-secondary">
           Nutzen Sie das Formular, wenn Sie Ihr Vorhaben strukturiert einordnen möchten. Für
-          komplexere Themen ist der Discovery-Workshop oft der sinnvollere Einstieg als ein loses
-          Sales-Gespräch.
+          komplexere Themen ist der
+          <a href={workshopUrl} class="text-brand-600 font-semibold underline decoration-brand-300/60 underline-offset-4 hover:text-brand-700 transition-colors">Discovery-Workshop</a>
+          oft der sinnvollere Einstieg als ein loses Sales-Gespräch.
         </p>
 
         <div data-reveal="zoom-in" class="mt-8 rounded-[1.9rem] border border-border bg-card p-7 shadow-sm">

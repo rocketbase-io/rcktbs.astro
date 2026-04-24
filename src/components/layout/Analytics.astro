@@ -5,8 +5,8 @@
  * Loads analytics scripts based on environment variables.
  *
  * Environment variables:
- * - PUBLIC_PLAUSIBLE_SCRIPT_ID: Plausible per-site script ID (e.g., pa-yhySJdsGHFMqpcbsczFVd) — cookieless, no consent needed
- * - PUBLIC_LINKEDIN_PARTNER_ID: LinkedIn Insight Tag partner ID — gated behind marketing consent
+ * - PUBLIC_PLAUSIBLE_SCRIPT_ID: Plausible per-site script ID (e.g., pa-yhySJdsGHFMqpcbsczFVd) - cookieless, no consent needed
+ * - PUBLIC_LINKEDIN_PARTNER_ID: LinkedIn Insight Tag partner ID - gated behind marketing consent
  * - PUBLIC_GA_MEASUREMENT_ID: Google Analytics 4 Measurement ID (e.g., G-XXXXXXXXXX)
  * - PUBLIC_GTM_ID: Google Tag Manager Container ID (e.g., GTM-XXXXXXX)
  */
@@ -17,7 +17,7 @@ const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 const gtmId = import.meta.env.PUBLIC_GTM_ID;
 ---
 
-{/* Plausible Analytics — cookieless, no consent required */}
+{/* Plausible Analytics - cookieless, no consent required */}
 {plausibleScriptId && (
   <>
     <script is:inline async src={`https://plausible.io/js/${plausibleScriptId}.js`}></script>
@@ -65,7 +65,7 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID;
   )
 }
 
-{/* LinkedIn Insight Tag — loaded only after marketing consent is granted */}
+{/* LinkedIn Insight Tag - loaded only after marketing consent is granted */}
 {linkedinPartnerId && (
   <script is:inline define:vars={{ linkedinPartnerId }}>
     function loadLinkedIn() {

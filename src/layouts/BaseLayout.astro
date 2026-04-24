@@ -135,10 +135,10 @@ if (includeOrgSchema) {
 
     <style is:inline>
       /* ------------------------------------------------------------------
-         Reveal animations — JS-driven via IntersectionObserver.
+         Reveal animations - JS-driven via IntersectionObserver.
          Predictable on every browser, works on initially-visible elements,
          easy to tune. Hidden state only applies after JS marks the page
-         ready (no FOUC when JS is disabled — content stays visible).
+         ready (no FOUC when JS is disabled - content stays visible).
          ------------------------------------------------------------------ */
       html.reveal-ready [data-reveal] {
         opacity: 0;
@@ -169,7 +169,7 @@ if (includeOrgSchema) {
     </style>
 
     <script is:inline>
-      // Reveal on scroll — IntersectionObserver, one-shot per element.
+      // Reveal on scroll - IntersectionObserver, one-shot per element.
       // The reveal-ready class on <html> only gates the hidden state,
       // so if JS fails to run for any reason, content stays visible.
       (function () {
@@ -201,7 +201,7 @@ if (includeOrgSchema) {
           // Trigger early: start revealing as soon as the element enters the
           // lower third of the viewport. Using a large negative rootMargin
           // on the top means the trigger zone is the bottom 66% of the
-          // screen — catches fast scrolls reliably.
+          // screen - catches fast scrolls reliably.
           const io = new IntersectionObserver(function (entries) {
             entries.forEach(function (e) {
               if (e.isIntersecting) {
@@ -217,7 +217,7 @@ if (includeOrgSchema) {
           els.forEach(function (el) {
             io.observe(el);
             // Also reveal anything that is already in the viewport at page load
-            // (above-the-fold) — with a slight cascade so it feels alive.
+            // (above-the-fold) - with a slight cascade so it feels alive.
             const rect = el.getBoundingClientRect();
             const vh = window.innerHeight || document.documentElement.clientHeight;
             if (rect.top < vh && rect.bottom > 0) {
@@ -229,7 +229,7 @@ if (includeOrgSchema) {
 
         // Fallback: poll on scroll in case IntersectionObserver misses an
         // element during extreme fast scrolls (trackpad flings, momentum on
-        // iOS). Very cheap — only runs while something is still hidden.
+        // iOS). Very cheap - only runs while something is still hidden.
         const scrollCatchup = function () {
           const pending = document.querySelectorAll('[data-reveal]:not(.is-in)');
           if (!pending.length) {

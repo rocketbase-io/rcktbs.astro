@@ -15,6 +15,7 @@ const locale = defaultLocale;
 const contactUrl = getLocalizedPath('contact', locale);
 const workUrl = getLocalizedPath('work', locale);
 const missionUrl = getLocalizedPath('mission', locale);
+const workshopUrl = getLocalizedPath('discoveryWorkshop', locale);
 
 const serviceIcons = ['search', 'palette', 'code', 'monitor'];
 
@@ -89,13 +90,13 @@ const useCases = [
         Beratung, Produktdenken und technische Umsetzung greifen ineinander – fachlich wie
         technisch konsistent, von der ersten Discovery bis zum stabilen Betrieb.
       </p>
-      <div data-reveal class="mt-10 flex flex-wrap justify-center gap-4">
+      <div data-reveal class="mt-10 flex flex-wrap items-center justify-center gap-4">
         <Button href={contactLinks.cal} target="_blank">
           Erstgespräch buchen
           <Icon name="arrow-up-right" size="sm" />
         </Button>
-        <Button variant="outline" href={contactUrl}>
-          Kontaktseite
+        <Button variant="link" href={contactUrl}>
+          Lieber schreiben? Zur Kontaktseite
           <Icon name="arrow-right" size="sm" />
         </Button>
       </div>
@@ -309,17 +310,18 @@ const useCases = [
             ))
           }
         </ul>
-        <div class="mt-8 flex flex-wrap gap-4">
-          <Button href={contactLinks.cal} target="_blank">
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          <Button href={contactLinks.calDiscovery} target="_blank">
             Workshop anfragen
             <Icon name="arrow-up-right" size="sm" />
           </Button>
           <Button
-            variant="outline"
-            href={contactUrl}
-            class="border-white/20 bg-transparent text-on-invert hover:border-white/40 hover:bg-white/10"
+            variant="link"
+            href={workshopUrl}
+            class="text-on-invert-secondary hover:text-on-invert"
           >
-            Kontakt
+            Details zum Workshop
+            <Icon name="arrow-right" size="sm" />
           </Button>
         </div>
       </div>

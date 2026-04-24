@@ -34,6 +34,7 @@ const locale = defaultLocale;
 const servicesUrl = getLocalizedPath('services', locale);
 const contactUrl = getLocalizedPath('contact', locale);
 const missionUrl = getLocalizedPath('mission', locale);
+const workshopUrl = getLocalizedPath('discoveryWorkshop', locale);
 const referencesUrl = '/referenzen';
 const workUrl = getLocalizedPath('work', locale);
 
@@ -172,12 +173,12 @@ const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`,
             wie technisch mitdenkt.
           </p>
 
-          <div data-reveal class="hero-landing-actions mt-8 flex flex-wrap gap-4 max-[760px]:mt-6 max-[760px]:gap-3">
+          <div data-reveal class="hero-landing-actions mt-8 flex flex-wrap items-center gap-4 max-[760px]:mt-6 max-[760px]:gap-3">
             <Button size="lg" href={contactLinks.cal} target="_blank">
               Erstgespräch buchen
               <Icon name="arrow-up-right" size="sm" />
             </Button>
-            <Button size="lg" variant="secondary" href={servicesUrl}>
+            <Button variant="link" href={servicesUrl}>
               Leistungen ansehen
               <Icon name="arrow-right" size="sm" />
             </Button>
@@ -898,10 +899,14 @@ const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`,
               ))
             }
           </ul>
-          <div class="mt-8">
-            <Button href={contactLinks.cal} target="_blank">
+          <div class="mt-8 flex flex-wrap items-center gap-4">
+            <Button href={contactLinks.calDiscovery} target="_blank">
               Workshop anfragen
               <Icon name="arrow-up-right" size="sm" />
+            </Button>
+            <Button variant="link" href={workshopUrl}>
+              Details zum Workshop
+              <Icon name="arrow-right" size="sm" />
             </Button>
           </div>
         </div>
@@ -912,38 +917,45 @@ const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`,
   <section id="cta" class="py-28 lg:py-36">
     <div class="container">
       <div class="overflow-hidden rounded-[2.8rem] border border-border bg-background-secondary p-8 shadow-[0_24px_60px_rgba(34,43,74,0.08)] sm:p-10 lg:p-12">
-        <div class="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
-          <div data-reveal="fade-right">
-            <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Nächster Schritt</p>
-            <h2 class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
-              Von Standardsoftware zur Lösung,
-              <span class="mt-2 block text-brand-500">die wirklich zu Ihrem Unternehmen passt.</span>
-            </h2>
-            <p class="text-foreground-secondary mt-6 max-w-2xl text-lg leading-8">
-              Wenn Prozesse inzwischen mehr bremsen als tragen, lohnt ein strukturierter Blick.
-              RocketBase hilft bei der Einordnung, priorisiert sinnvolle Schritte und setzt tragfähige
-              Lösungen anschließend mit um.
-            </p>
-          </div>
+        <div data-reveal="fade-right" class="max-w-4xl">
+          <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Nächster Schritt</p>
+          <h2
+            lang="de"
+            class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-4xl"
+          >
+            Von Standardsoftware zur Lösung,
+            <span class="text-brand-500">die wirklich zu Ihrem Unternehmen passt.</span>
+          </h2>
+          <p class="text-foreground-secondary mt-6 max-w-3xl text-lg leading-8">
+            Wenn Prozesse inzwischen mehr bremsen als tragen, lohnt ein strukturierter Blick.
+            RocketBase hilft bei der Einordnung, priorisiert sinnvolle Schritte und setzt tragfähige
+            Lösungen anschließend mit um.
+          </p>
+        </div>
 
-          <div data-reveal="fade-left" class="rounded-[2rem] border border-border bg-card p-7">
-            <div class="text-foreground-muted space-y-4 text-sm">
+        <div
+          data-reveal="fade-up"
+          class="mt-10 rounded-[2rem] border border-border bg-card p-7 sm:p-8"
+        >
+          <div class="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div class="text-foreground-muted grid gap-4 text-sm sm:grid-cols-2 sm:gap-6">
               <div class="flex items-center gap-3">
-                <Icon name="clock" size="sm" class="text-brand-500" />
+                <Icon name="clock" size="sm" class="text-brand-500 shrink-0" />
                 30 Minuten direkt mit dem Gründer
               </div>
               <div class="flex items-center gap-3">
-                <Icon name="mail" size="sm" class="text-brand-500" />
-                {contactLinks.email}
+                <Icon name="mail" size="sm" class="text-brand-500 shrink-0" />
+                <span class="break-all">{contactLinks.email}</span>
               </div>
             </div>
-            <div class="mt-8 flex flex-wrap gap-4">
+            <div class="flex flex-wrap items-center gap-4 lg:justify-end">
               <Button href={contactLinks.cal} target="_blank">
                 Erstgespräch buchen
                 <Icon name="arrow-up-right" size="sm" />
               </Button>
-              <Button variant="outline" href={contactUrl}>
+              <Button variant="link" href={contactUrl}>
                 Kontaktseite
+                <Icon name="arrow-right" size="sm" />
               </Button>
             </div>
           </div>

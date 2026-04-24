@@ -17,13 +17,13 @@ export function getReadingTime(content: string): number {
   const wordsPerMinute = 200;
 
   const prose = content
-    // Strip frontmatter (defensive — usually already removed before reaching here)
+    // Strip frontmatter (defensive - usually already removed before reaching here)
     .replace(/^---[\s\S]*?---\n/, '')
     // Strip import / export statements
     .replace(/^(import|export)\s+[^\n]*$/gm, '')
     // Strip fenced code blocks (```...```)
     .replace(/```[\s\S]*?```/g, '')
-    // Strip multi-line JSX/HTML blocks — any top-level JSX element spanning multiple lines
+    // Strip multi-line JSX/HTML blocks - any top-level JSX element spanning multiple lines
     // (attributes, nested JSX and all). Matches conservatively: block-level tags only.
     .replace(/<([A-Za-z][A-Za-z0-9]*)\b[^>]*>[\s\S]*?<\/\1>/g, '')
     // Strip self-closing JSX (e.g. <Image ... />)

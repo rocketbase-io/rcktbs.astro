@@ -1,5 +1,5 @@
 ---
-title: "Der Server im Büroschrank — und warum er Sie mehr kostet, als Sie denken"
+title: "Der Server im Büroschrank - und warum er Sie mehr kostet, als Sie denken"
 description: "Kritische Software auf dem Büro-Server kostet mehr, als Sie denken. Eine Migration ins deutsche Rechenzentrum bringt bessere Verfügbarkeit bei Betriebskosten unter 50 Euro im Monat."
 publishedAt: 2026-03-01
 author: "Marten Prieß"
@@ -12,7 +12,7 @@ locale: de
 cta:
   eyebrow: "Nächster Schritt"
   headline: "Steht Ihr Server noch im Büro?"
-  body: "30 Minuten Infrastruktur-Check: Wo liegen die größten Risiken, was wäre der kleinstmögliche sinnvolle Migrationsschritt — und rechnet sich das für Ihre Situation?"
+  body: "30 Minuten Infrastruktur-Check: Wo liegen die größten Risiken, was wäre der kleinstmögliche sinnvolle Migrationsschritt - und rechnet sich das für Ihre Situation?"
 ---
 
 import Button from '@/components/ui/form/Button/Button.astro';
@@ -40,28 +40,28 @@ Die Ausgangslage, die wir immer wieder sehen, sieht grob so aus:
       <span className="text-brand-600"><Icon name="archive" size="sm" /></span>
       <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Backup</p>
     </div>
-    <p className="text-foreground mt-2 text-sm leading-6">Ein zweites Gerät als Backup-Ziel, meist ein NAS — häufig im gleichen Raum wie der Server.</p>
+    <p className="text-foreground mt-2 text-sm leading-6">Ein zweites Gerät als Backup-Ziel, meist ein NAS - häufig im gleichen Raum wie der Server.</p>
   </div>
   <div className="rounded-2xl border border-border bg-background-secondary p-5">
     <div className="flex items-center gap-2">
       <span className="text-brand-600"><Icon name="globe" size="sm" /></span>
       <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Zugriff</p>
     </div>
-    <p className="text-foreground mt-2 text-sm leading-6">Ein VPN, damit Mitarbeiter aus dem Homeoffice oder von unterwegs arbeiten können — mit den üblichen Reibungen.</p>
+    <p className="text-foreground mt-2 text-sm leading-6">Ein VPN, damit Mitarbeiter aus dem Homeoffice oder von unterwegs arbeiten können - mit den üblichen Reibungen.</p>
   </div>
   <div className="rounded-2xl border border-border bg-background-secondary p-5">
     <div className="flex items-center gap-2">
       <span className="text-brand-600"><Icon name="users" size="sm" /></span>
       <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Wartung</p>
     </div>
-    <p className="text-foreground mt-2 text-sm leading-6">Ein IT-affiner Kollege hält den Betrieb am Laufen — oft neben seiner eigentlichen Rolle, ohne formale Zuständigkeit.</p>
+    <p className="text-foreground mt-2 text-sm leading-6">Ein IT-affiner Kollege hält den Betrieb am Laufen - oft neben seiner eigentlichen Rolle, ohne formale Zuständigkeit.</p>
   </div>
   <div className="rounded-2xl border border-border bg-background-secondary p-5">
     <div className="flex items-center gap-2">
       <span className="text-brand-600"><Icon name="clock" size="sm" /></span>
       <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Updates</p>
     </div>
-    <p className="text-foreground mt-2 text-sm leading-6">Updates laufen, wenn niemand im System arbeitet — Freitagabend, am Wochenende, manchmal nachts.</p>
+    <p className="text-foreground mt-2 text-sm leading-6">Updates laufen, wenn niemand im System arbeitet - Freitagabend, am Wochenende, manchmal nachts.</p>
   </div>
 </div>
 
@@ -69,7 +69,7 @@ Das funktioniert. Es hat jahrelang funktioniert. Und deswegen bleibt es oft so, 
 
 ## Was dieser Status quo wirklich kostet
 
-Wenn wir in Projekten die Kosten dieser Konstellation durchrechnen, kommen fast immer Zahlen zusammen, die die Beteiligten überraschen. Nicht die direkten Hardwarekosten — die sind oft abgeschrieben — sondern die Summe aus vier Effekten:
+Wenn wir in Projekten die Kosten dieser Konstellation durchrechnen, kommen fast immer Zahlen zusammen, die die Beteiligten überraschen. Nicht die direkten Hardwarekosten - die sind oft abgeschrieben - sondern die Summe aus vier Effekten:
 
 <div className="not-prose my-10 grid gap-4 md:grid-cols-2" data-reveal="fade-up">
   <div className="rounded-2xl border border-border bg-background-secondary p-6 sm:p-7">
@@ -78,7 +78,7 @@ Wenn wir in Projekten die Kosten dieser Konstellation durchrechnen, kommen fast 
       <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">01 · Ausfallrisiko</p>
     </div>
     <p className="font-display text-foreground mt-3 text-lg font-semibold leading-snug">Keine echte Redundanz</p>
-    <p className="text-foreground-secondary mt-3 text-sm leading-6">Fällt die Festplatte, das Netzteil oder das Board aus, steht das System. Bis ein Ersatzgerät beschafft und das Backup zurückgespielt ist, vergehen Stunden bis Tage. In vielen Unternehmen waren das in den letzten Jahren zwei, drei reale Arbeitstage — verbucht als „ist halt passiert".</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Fällt die Festplatte, das Netzteil oder das Board aus, steht das System. Bis ein Ersatzgerät beschafft und das Backup zurückgespielt ist, vergehen Stunden bis Tage. In vielen Unternehmen waren das in den letzten Jahren zwei, drei reale Arbeitstage - verbucht als „ist halt passiert".</p>
   </div>
   <div className="rounded-2xl border border-border bg-background-secondary p-6 sm:p-7">
     <div className="flex items-center gap-2">
@@ -86,7 +86,7 @@ Wenn wir in Projekten die Kosten dieser Konstellation durchrechnen, kommen fast 
       <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">02 · VPN-Reibung</p>
     </div>
     <p className="font-display text-foreground mt-3 text-lg font-semibold leading-snug">Die tägliche kleine Bremse</p>
-    <p className="text-foreground-secondary mt-3 text-sm leading-6">Die Verbindung hängt, der Client braucht ein Update, der Tunnel bricht ab, wenn das Handy ins WLAN wechselt. Einzeln klein. Summiert über 50 Mitarbeiter × 250 Tage ein messbarer Produktivitätsverlust — und ein subtiler Kultur-Effekt: Arbeit außerhalb des Büros wird unangenehmer als drinnen.</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Die Verbindung hängt, der Client braucht ein Update, der Tunnel bricht ab, wenn das Handy ins WLAN wechselt. Einzeln klein. Summiert über 50 Mitarbeiter × 250 Tage ein messbarer Produktivitätsverlust - und ein subtiler Kultur-Effekt: Arbeit außerhalb des Büros wird unangenehmer als drinnen.</p>
   </div>
   <div className="rounded-2xl border border-border bg-background-secondary p-6 sm:p-7">
     <div className="flex items-center gap-2">
@@ -94,14 +94,14 @@ Wenn wir in Projekten die Kosten dieser Konstellation durchrechnen, kommen fast 
       <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">03 · Wartungs-Klumpenrisiko</p>
     </div>
     <p className="font-display text-foreground mt-3 text-lg font-semibold leading-snug">Wissen an einer Person</p>
-    <p className="text-foreground-secondary mt-3 text-sm leading-6">Der Kollege, der den Server betreut, macht das, weil er es kann und niemand sonst es macht. Günstig für das Unternehmen — bis er ausfällt, wechselt oder in Rente geht. Dann zeigt sich, dass das gesamte Infrastruktur-Wissen an einer Person hing.</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Der Kollege, der den Server betreut, macht das, weil er es kann und niemand sonst es macht. Günstig für das Unternehmen - bis er ausfällt, wechselt oder in Rente geht. Dann zeigt sich, dass das gesamte Infrastruktur-Wissen an einer Person hing.</p>
   </div>
   <div className="rounded-2xl border border-border bg-background-secondary p-6 sm:p-7">
     <div className="flex items-center gap-2">
       <span className="text-brand-600"><Icon name="shield" size="sm" /></span>
       <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">04 · DSGVO & Rechtslage</p>
     </div>
-    <p className="font-display text-foreground mt-3 text-lg font-semibold leading-snug">„Eigenes Hosting ist sicherer" — oft nicht</p>
+    <p className="font-display text-foreground mt-3 text-lg font-semibold leading-snug">„Eigenes Hosting ist sicherer" - oft nicht</p>
     <p className="text-foreground-secondary mt-3 text-sm leading-6">Ein Büro-Server ohne professionelle Zutrittssicherung, ohne redundante Stromversorgung, ohne zertifizierte Prozesse ist aus DSGVO-Sicht schwerer zu dokumentieren als ein Rechenzentrum, das genau diese Anforderungen als Produkt anbietet.</p>
   </div>
 </div>
@@ -111,7 +111,7 @@ Wenn wir in Projekten die Kosten dieser Konstellation durchrechnen, kommen fast 
     <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
       <div className="flex-1">
         <p className="font-display text-foreground text-lg font-semibold leading-snug sm:text-xl">Kommt Ihnen das bekannt vor?</p>
-        <p className="text-foreground-secondary mt-1.5 text-sm leading-6">30 Minuten, um den realen Status Ihrer Infrastruktur gemeinsam einzuordnen — und zu klären, ob der Weg ins Rechenzentrum für Sie lohnt.</p>
+        <p className="text-foreground-secondary mt-1.5 text-sm leading-6">30 Minuten, um den realen Status Ihrer Infrastruktur gemeinsam einzuordnen - und zu klären, ob der Weg ins Rechenzentrum für Sie lohnt.</p>
       </div>
       <div className="shrink-0">
         <Button href={contactLinks.cal} target="_blank"><span>Mit Marten sprechen</span><Icon name="arrow-up-right" size="sm" /></Button>
@@ -136,7 +136,7 @@ Die Migration ist nicht trivial, aber auch kein Großprojekt. Typisch sind drei 
   <div className="rounded-2xl border border-border bg-background-secondary p-6">
     <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">01</p>
     <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Saubere Container-Basis</p>
-    <p className="text-foreground-secondary mt-3 text-sm leading-6">Die Anwendung läuft in einem reproduzierbaren Setup — meist Docker-basiert — statt in einer über Jahre gewachsenen Installation. Die Umgebung lässt sich danach in Minuten neu aufsetzen, nicht in Tagen.</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Die Anwendung läuft in einem reproduzierbaren Setup - meist Docker-basiert - statt in einer über Jahre gewachsenen Installation. Die Umgebung lässt sich danach in Minuten neu aufsetzen, nicht in Tagen.</p>
   </div>
   <div className="rounded-2xl border border-border bg-background-secondary p-6">
     <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">02</p>
@@ -146,11 +146,11 @@ Die Migration ist nicht trivial, aber auch kein Großprojekt. Typisch sind drei 
   <div className="rounded-2xl border border-border bg-background-secondary p-6">
     <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">03</p>
     <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Zugriff ohne VPN</p>
-    <p className="text-foreground-secondary mt-3 text-sm leading-6">HTTPS mit Identity-Provider-Anbindung — der tägliche Zugriff läuft im Standard-Browser, von überall, ohne VPN-Client. Für viele Unternehmen der spürbarste Gewinn der Migration.</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">HTTPS mit Identity-Provider-Anbindung - der tägliche Zugriff läuft im Standard-Browser, von überall, ohne VPN-Client. Für viele Unternehmen der spürbarste Gewinn der Migration.</p>
   </div>
 </div>
 
-Dazu kommt — abhängig vom Sensibilitätsgrad der Daten — ein DSGVO-Dokumentationsniveau, das im eigenen Büro schwerer herzustellen ist: Auftragsverarbeitungsvertrag mit dem Provider, Dokumentation der technischen und organisatorischen Maßnahmen, klare Zugriffsprotokolle.
+Dazu kommt - abhängig vom Sensibilitätsgrad der Daten - ein DSGVO-Dokumentationsniveau, das im eigenen Büro schwerer herzustellen ist: Auftragsverarbeitungsvertrag mit dem Provider, Dokumentation der technischen und organisatorischen Maßnahmen, klare Zugriffsprotokolle.
 
 ## Das Migrationsprojekt im Überblick
 
@@ -175,7 +175,7 @@ Eine realistische Grobplanung für eine Hosting-Migration einer bestehenden Anwe
   <div className="rounded-2xl border border-brand-300 bg-card p-6 shadow-[0_22px_55px_rgba(34,43,74,0.08)] dark:border-brand-800">
     <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">Wochen 7–8</p>
     <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Cut-over</p>
-    <p className="text-foreground-secondary mt-3 text-sm leading-6">Geplante Umstellung an einem Wochenende. Datenübernahme, DNS-Umstellung, Abschaltung des alten Systems — mit definierter Rückfallzeit.</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Geplante Umstellung an einem Wochenende. Datenübernahme, DNS-Umstellung, Abschaltung des alten Systems - mit definierter Rückfallzeit.</p>
   </div>
 </div>
 
@@ -209,4 +209,4 @@ Es gibt Fälle, in denen der Status quo weiterbetrieben werden sollte:
   </div>
 </div>
 
-In allen anderen Fällen — und das ist die Mehrheit der mittelständischen Setups, die wir sehen — ist der Weg ins Rechenzentrum eine der risikoärmsten Verbesserungen, die ein Unternehmen an seiner IT-Landschaft machen kann. Wenig Gefahr, überschaubare Kosten, spürbare Verbesserung in Verfügbarkeit, Wartbarkeit und Arbeitskomfort.
+In allen anderen Fällen - und das ist die Mehrheit der mittelständischen Setups, die wir sehen - ist der Weg ins Rechenzentrum eine der risikoärmsten Verbesserungen, die ein Unternehmen an seiner IT-Landschaft machen kann. Wenig Gefahr, überschaubare Kosten, spürbare Verbesserung in Verfügbarkeit, Wartbarkeit und Arbeitskomfort.

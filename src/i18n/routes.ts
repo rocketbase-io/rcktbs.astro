@@ -97,6 +97,12 @@ export const routes = {
     nav: { show: true, order: 4, label: 'nav.mission' },
   },
 
+  // Discovery-Workshop (not in main nav - linked from footer and inline)
+  discoveryWorkshop: {
+    de: 'discovery-workshop',
+    nav: { show: false, order: 50, label: 'nav.discoveryWorkshop' },
+  },
+
   // Legal pages (noindex, no nav)
   imprint: {
     de: 'impressum',

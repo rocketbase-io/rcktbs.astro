@@ -16,7 +16,7 @@ const sizes = {
   xl: 'w-8 h-8',
 };
 
-// Lucide icon paths — mirrors Icon.astro
+// Lucide icon paths - mirrors Icon.astro
 const icons: Record<string, string> = {
   // Navigation
   menu: 'M4 6h16M4 12h16M4 18h16',

@@ -155,7 +155,7 @@ const fullUrl = new URL(Astro.url.pathname, Astro.site).toString();
 </BaseLayout>
 
 <style is:global>
-  /* Blog content typography — scoped to the article body only.
+  /* Blog content typography - scoped to the article body only.
      Excludes .not-prose (CTAs, diagrams) which bring their own styling. */
   .blog-content > :not(.not-prose, :where(.not-prose *)) {
     /* Rhythm reset on direct children */

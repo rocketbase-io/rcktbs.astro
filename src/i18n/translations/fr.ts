@@ -142,7 +142,7 @@ export const fr: TranslationKeys = {
     },
     testimonial: {
       quote: '"Le boilerplate le plus propre que j\'ai vu en 2024. Il élimine le superflu."',
-      author: '— Alex C., Senior Frontend Dev',
+      author: '- Alex C., Senior Frontend Dev',
     },
   },
 
@@ -385,7 +385,7 @@ export const fr: TranslationKeys = {
         limitContent: "Vous avez utilisé 80% de votre quota API mensuel. Envisagez de passer à un plan supérieur.",
         buildTitle: 'Build échoué',
         buildContent: 'Erreur dans',
-        buildError: '— prop requise "variant" manquante',
+        buildError: '- prop requise "variant" manquante',
       },
       overlays: {
         title: 'Superpositions',
@@ -434,7 +434,7 @@ export const fr: TranslationKeys = {
         avatars: 'Avatars',
         avatarsHint: "Représentations d'utilisateurs",
         icons: 'Icônes',
-        iconsHint: 'Set Lucide — 24 incluses',
+        iconsHint: 'Set Lucide - 24 incluses',
         stacked: 'Empilés',
         performance: 'Performance',
         performanceScore: '100/100 Lighthouse',

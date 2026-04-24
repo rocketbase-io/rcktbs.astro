@@ -1,6 +1,6 @@
 ---
 /**
- * Polygon Luminary — bgjar-inspired hero background with a dense low-poly
+ * Polygon Luminary - bgjar-inspired hero background with a dense low-poly
  * mosaic of small, overlapping triangles. Gentle floating motion, parallax
  * on pointer move, brand-tinted, reduced-motion aware.
  */
@@ -45,7 +45,7 @@
     <circle cx="1220" cy="560" r="320" fill="url(#polyGlow)" />
     <circle cx="780" cy="360" r="260" fill="url(#polyGlow)" opacity="0.6" />
 
-    <!-- Dense low-poly mosaic — row 1 (y ≈ 0–140) -->
+    <!-- Dense low-poly mosaic - row 1 (y ≈ 0–140) -->
     <g class="hero-poly-layer">
       <polygon class="hero-poly a" points="-40,0 120,60 40,160"      fill="url(#polyGrad1)" />
       <polygon class="hero-poly b" points="120,60 40,160 200,180"    fill="url(#polyGrad2)" />
@@ -165,7 +165,7 @@
     will-change: transform, opacity;
   }
 
-  /* Six rotating variants — each polygon picks one via .a–.f class.
+  /* Six rotating variants - each polygon picks one via .a–.f class.
      Different duration/delay/translate vectors break up the rhythm so
      the mosaic shimmers instead of pulsing in unison. */
   .hero-poly.a { animation-duration: 11s; animation-delay:  0s;    translate: calc(var(--poly-mx) * 12px) calc(var(--poly-my) *  8px); opacity: 0.34; }

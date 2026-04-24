@@ -28,7 +28,7 @@ const {
   nofollow = false,
 } = Astro.props;
 
-const pageTitle = title ? `${title} — ${siteConfig.name}` : siteConfig.name;
+const pageTitle = title ? `${title} - ${siteConfig.name}` : siteConfig.name;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
@@ -70,7 +70,7 @@ const locale = rawLocale.includes('_') || rawLocale.includes('-')
   ? rawLocale.replace('-', '_')
   : (localeMap[rawLocale] || `${rawLocale}_${rawLocale.toUpperCase()}`);
 
-// Determine OG image metadata — emit width/height when we know them (generated template + local screenshots are 1200x630)
+// Determine OG image metadata - emit width/height when we know them (generated template + local screenshots are 1200x630)
 const hasKnownDimensions = ogImageSource === 'generated' || ogImageSource === 'screenshot';
 const extToMime: Record<string, string> = {
   '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',

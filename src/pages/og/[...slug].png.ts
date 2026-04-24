@@ -82,7 +82,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   // Blog posts: use the post's own hero image as OG background.
   // The image path in the frontmatter is relative to the MDX file (e.g. "./hero.png")
-  // — we resolve it against the post's directory via post.filePath.
+  // - we resolve it against the post's directory via post.filePath.
   const blogPosts = await getCollection('blog', ({ data }) => {
     return data.locale === defaultLocale && (import.meta.env.PROD ? data.draft !== true : true);
   });

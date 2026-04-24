@@ -398,7 +398,7 @@
   }
 
   /* -------------------------------------------------------------------
-     Premium hover utility — smoother than translate-y-1 / shadow-lg.
+     Premium hover utility - smoother than translate-y-1 / shadow-lg.
      Works with :focus-visible for keyboard a11y.
      ------------------------------------------------------------------- */
   .hover-lift {
@@ -433,7 +433,7 @@
   /* -------------------------------------------------------------------
      Flicker-free hover surface.
      Apply to cards/tiles that translate upward on hover. When a card
-     moves up by Npx, its bottom edge moves up with it — a cursor parked
+     moves up by Npx, its bottom edge moves up with it - a cursor parked
      on the bottom border finds itself *outside* the card, triggering
      mouseleave, the card falls back, mouseenter fires again, loop.
      Fix: extend the hit-area downward with a pseudo-element that moves
