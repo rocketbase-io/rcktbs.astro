@@ -7,7 +7,7 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   output: 'static',
 
-  site: process.env.SITE_URL || 'https://www.rocketbase.io',
+  site: process.env.SITE_URL || 'https://rocketbase.io',
 
   // i18n configuration
   i18n: {

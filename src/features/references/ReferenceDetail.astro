@@ -17,6 +17,21 @@ import bonprixCollectionCaseImage from '@/assets/references/teaser-bonprix-colle
 import { defaultLocale } from '@/i18n/config';
 import { cases, additionalCases, contactLinks } from '@/data/rocketbase';
 
+// Builds "<client>: <case> | Referenz" but truncates the case part so the
+// final <title> (incl. " - RocketBase" suffix) stays around 60 chars.
+function buildSeoTitle(client: string, caseTitle: string): string {
+  const suffix = ' | Referenz';
+  const budget = 45 - suffix.length - client.length - 2; // ": "
+  let casePart = caseTitle;
+  if (casePart.length > budget) {
+    const firstClause = casePart.split(/[,–:]/)[0].trim();
+    casePart = firstClause.length <= budget
+      ? firstClause
+      : casePart.slice(0, budget - 1).trimEnd() + '…';
+  }
+  return `${client}: ${casePart}${suffix}`;
+}
+
 const logoModules = import.meta.glob<{ default: ImageMetadata }>(
   '@/assets/client-logos/*.{svg,png,webp,jpeg,jpg}',
   { eager: true },
@@ -102,7 +117,7 @@ const resolvedScreenshots = await Promise.all(
 ---
 
 <PageLayout
-  title={`${item.client} | Referenz`}
+  title={buildSeoTitle(item.client, item.title)}
   description={item.description}
   imageAlt={`${item.client} – ${item.title}`}
   lang={locale}

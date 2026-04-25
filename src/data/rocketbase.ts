@@ -76,6 +76,7 @@ export const cases = [
     title: 'PLM/PIM-Neubau mit internationaler Teamintegration',
     description:
       'RocketBase wirkte an der Neuentwicklung einer komplexen Produktdaten-Plattform mit, übernahm technische Führung und verband Hamburger Delivery mit einem indischen Entwicklungsteam.',
+    navTeaser: 'PLM/PIM-Plattform für den Konzernalltag.',
     kicker:
       'Komplexe Produktlogik, internationale Zusammenarbeit und technische Führung in einem zentralen Konzernprojekt.',
     highlights: [
@@ -119,6 +120,7 @@ export const cases = [
     title: 'Neue Content-Plattform statt gewachsener Altsysteme',
     description:
       'Gemeinsam mit Statista entstand eine moderne Plattform zur Pflege von Statistiken und Inhalten, inklusive Migration, Parallelbetrieb und neuer Redaktionsoberflächen.',
+    navTeaser: 'Redaktionsplattform für Statistik-Inhalte.',
     kicker:
       'Modernisierung einer zentralen Plattform mit Fokus auf redaktionelle Prozesse, Datenpflege und schrittweise Ablösung gewachsener Strukturen.',
     highlights: [

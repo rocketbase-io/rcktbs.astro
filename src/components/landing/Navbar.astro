@@ -65,7 +65,7 @@ const featuredReferences = cases
   .map((c) => ({
     slug: c.slug,
     client: c.client,
-    kicker: c.kicker,
+    kicker: ('navTeaser' in c ? c.navTeaser : c.kicker) as string,
     image: referenceTeaserImages[c.slug as keyof typeof referenceTeaserImages],
   }));
 ---
