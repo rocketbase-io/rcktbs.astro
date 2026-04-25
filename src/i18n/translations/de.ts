@@ -56,7 +56,7 @@ export const de = {
 
   contact: {
     meta: {
-      title: 'Kontakt',
+      title: 'Kontakt - direkt mit Marten Prieß sprechen',
       description:
         'Sprechen Sie direkt mit RocketBase über Prozesse, individuelle Software und den nächsten sinnvollen Digitalisierungsschritt.',
     },
@@ -101,8 +101,11 @@ export const de = {
   },
 
   blog: {
-    title: 'Blog',
-    description: 'Einblicke zu Produktentwicklung, Prozessoptimierung und Softwareprojekten.',
+    title: 'Blog: Praxis-Einblicke zu Software & Prozessen',
+    description:
+      'Einblicke aus echten Projekten: Produktentwicklung, Prozessoptimierung, Plattformen und der Weg vom Tool-Wildwuchs zur belastbaren Steuerung.',
+    descriptionHtml:
+      'Einblicke aus echten Projekten: <strong>Produktentwicklung</strong>, <strong>Prozessoptimierung</strong>, Plattformen und der Weg vom Tool-Wildwuchs zur belastbaren Steuerung.',
     allPosts: 'Alle Beiträge',
     featured: 'Empfohlen',
     noPosts: 'Noch keine Beiträge vorhanden.',

@@ -14,7 +14,7 @@ const workUrl = getLocalizedPath('work', locale);
 ---
 
 <PageLayout
-  title="Mission"
+  title="Unsere Mission - acht Haltungen für gute Software"
   description="Acht Haltungen, wie und warum wir bei RocketBase arbeiten. Die Prinzipien hinter Prozessen, Technologien und Entscheidungen in jedem Projekt."
   lang={locale}
   routeId="mission"
@@ -36,9 +36,7 @@ const workUrl = getLocalizedPath('work', locale);
           {missionClaim.highlight}
         </span>
       </h1>
-      <p data-reveal class="text-foreground-secondary mx-auto mt-10 max-w-2xl text-lg leading-8 sm:text-xl">
-        {missionClaim.lead}
-      </p>
+      <p data-reveal class="text-foreground-secondary mx-auto mt-10 max-w-2xl text-lg leading-8 sm:text-xl" set:html={missionClaim.lead}></p>
     </div>
 
     {/* Scroll indicator */}

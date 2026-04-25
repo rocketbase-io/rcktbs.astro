@@ -8,6 +8,7 @@ const blog = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string().max(100),
+      seoTitle: z.string().max(60).optional(),
       description: z.string().max(200),
       publishedAt: z.coerce.date(),
       updatedAt: z.coerce.date().optional(),

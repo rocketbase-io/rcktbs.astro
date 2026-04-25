@@ -509,8 +509,8 @@ export const teamPrinciples = [
 export const missionClaim = {
   eyebrow: 'Unsere Mission',
   headline: 'Wir bauen nicht einfach Software.',
-  highlight: 'Wir verstehen Prozesse, denken sie weiter – und entwickeln Systeme, die Unternehmen wachsen lassen.',
-  lead: 'Acht Haltungen, die beschreiben, wie und warum wir bei RocketBase arbeiten. Keine Floskeln, sondern die Prinzipien hinter jedem Projekt.',
+  highlight: 'Wir denken Prozesse weiter.',
+  lead: '<strong>Acht Haltungen</strong>, die beschreiben, wie und warum wir bei RocketBase arbeiten. Wir verstehen Prozesse, denken sie weiter und entwickeln Systeme, die Unternehmen wachsen lassen - <strong>keine Floskeln</strong>, sondern die Prinzipien hinter jedem Projekt.',
 };
 
 export const missionSections = [

@@ -17,6 +17,7 @@ import type { Thing, WithContext } from 'schema-dts';
 
 interface Props {
   title: string;
+  seoTitle?: string;
   description: string;
   publishedAt: Date;
   updatedAt?: Date;
@@ -36,6 +37,7 @@ interface Props {
 
 const {
   title,
+  seoTitle,
   description,
   publishedAt,
   updatedAt,
@@ -92,7 +94,7 @@ const articleSchemas: WithContext<Thing>[] = [blogPostingSchema, breadcrumbSchem
 ---
 
 <BaseLayout
-  title={title}
+  title={seoTitle ?? title}
   description={description}
   image={ogImage}
   imageAlt={imageAlt || title}

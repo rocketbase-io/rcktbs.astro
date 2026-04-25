@@ -58,9 +58,7 @@ const getPostUrl = (postId: string) => {
           {t('blog.title')}
         </h1>
 
-        <p class="text-xl text-foreground-muted leading-relaxed">
-          {t('blog.description')}
-        </p>
+        <p class="text-xl text-foreground-muted leading-relaxed" set:html={t('blog.descriptionHtml')}></p>
       </div>
     </div>
   </section>
