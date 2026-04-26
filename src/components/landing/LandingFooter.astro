@@ -4,6 +4,8 @@
  * Footer for landing pages with translations
  */
 import rocketbaseLogo from '@/assets/rocketbase/logo.svg';
+import bsfzSiegel2025 from '@/assets/rocketbase/bsfz_siegel-2025.svg';
+import bsfzSiegel2026 from '@/assets/rocketbase/bsfz_siegel-2026.svg';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import { type Locale, getLocaleFromPath } from '@/i18n/config';
 import { useTranslations, getLocalizedPath } from '@/i18n/index';
@@ -57,6 +59,38 @@ const year = new Date().getFullYear();
             Wir verstehen Prozesse, denken sie weiter – und entwickeln Systeme, die Unternehmen wachsen lassen.
           </span>
         </p>
+
+        <!-- BSFZ-Siegel: Bescheinigte Forschungszulage 2025 + 2026 -->
+        <div class="mt-2 flex flex-col gap-3">
+          <p class="text-xs font-semibold uppercase tracking-[0.18em] text-foreground-subtle">
+            Bescheinigte Forschung &amp; Entwicklung
+          </p>
+          <a
+            href="https://www.bescheinigung-forschungszulage.de/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group inline-flex items-center gap-3 self-start"
+            aria-label="BSFZ-Siegel: Bescheinigte Forschungszulage – mehr erfahren"
+            title="Bescheinigte Forschungszulage 2025 und 2026 – mehr auf bescheinigung-forschungszulage.de"
+          >
+            <img
+              src={bsfzSiegel2025.src}
+              alt="BSFZ-Siegel 2025 – Bescheinigte Forschungszulage"
+              width="64"
+              height="64"
+              class="h-16 w-16 transition-opacity group-hover:opacity-80"
+              loading="lazy"
+            />
+            <img
+              src={bsfzSiegel2026.src}
+              alt="BSFZ-Siegel 2026 – Bescheinigte Forschungszulage"
+              width="64"
+              height="64"
+              class="h-16 w-16 transition-opacity group-hover:opacity-80"
+              loading="lazy"
+            />
+          </a>
+        </div>
       </div>
 
       <!-- Navigation -->

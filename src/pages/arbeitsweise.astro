@@ -11,6 +11,8 @@ import { contactLinks } from '@/data/rocketbase';
 import { cn } from '@/lib/cn.ts';
 import { createFAQSchema } from '@/lib/schema';
 
+import bsfzSiegel2025 from '@/assets/rocketbase/bsfz_siegel-2025.svg';
+import bsfzSiegel2026 from '@/assets/rocketbase/bsfz_siegel-2026.svg';
 import teamBefore from '@/assets/work/team-before.png';
 import teamAfter from '@/assets/work/team-after.png';
 import serverBefore from '@/assets/work/server-before.png';
@@ -582,6 +584,59 @@ const sections = [
       ))
     }
   </div>
+
+  <!-- BSFZ-Anerkennung -->
+  <section class="border-border border-t py-20 lg:py-24">
+    <div class="container max-w-5xl">
+      <div data-reveal class="grid items-center gap-10 rounded-[2rem] border border-border bg-card p-8 shadow-sm sm:p-10 md:grid-cols-[auto_1fr] md:gap-12 lg:p-12">
+        <div class="flex items-center justify-center gap-4 md:flex-col md:gap-5">
+          <img
+            src={bsfzSiegel2025.src}
+            alt="BSFZ-Siegel 2025 – Bescheinigte Forschungszulage"
+            width="112"
+            height="112"
+            class="h-24 w-24 lg:h-28 lg:w-28"
+            loading="lazy"
+          />
+          <img
+            src={bsfzSiegel2026.src}
+            alt="BSFZ-Siegel 2026 – Bescheinigte Forschungszulage"
+            width="112"
+            height="112"
+            class="h-24 w-24 lg:h-28 lg:w-28"
+            loading="lazy"
+          />
+        </div>
+
+        <div>
+          <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
+            Anerkennung
+          </p>
+          <h2 class="font-display text-foreground mt-3 text-2xl font-bold tracking-tight sm:text-3xl">
+            Vom Bund anerkannte Forschung &amp; Entwicklung
+          </h2>
+          <p class="text-foreground-secondary mt-4 text-base leading-7 sm:text-lg">
+            Zwei unserer Vorhaben wurden 2025 und 2026 von der Bescheinigungsstelle
+            Forschungszulage (BSFZ) als <strong>förderfähige Forschungs- und Entwicklungsvorhaben</strong>
+            anerkannt.
+          </p>
+          <p class="text-foreground-secondary mt-4 text-base leading-7 sm:text-lg">
+            Für uns ist das eine unabhängige Bestätigung, dass wir nicht nur Software umsetzen,
+            sondern auch technisch anspruchsvolle Entwicklungsarbeit leisten.
+          </p>
+          <a
+            href="https://www.bescheinigung-forschungszulage.de/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-brand-600 hover:text-brand-500 dark:text-brand-400 mt-6 inline-flex items-center gap-1.5 text-sm font-semibold transition-colors"
+          >
+            Mehr zur Bescheinigungsstelle Forschungszulage
+            <Icon name="arrow-up-right" size="sm" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- FAQ -->
   <section
