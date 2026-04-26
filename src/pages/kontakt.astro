@@ -15,21 +15,6 @@ const t = useTranslations(locale);
 const servicesUrl = getLocalizedPath('services', locale);
 const workshopUrl = getLocalizedPath('discoveryWorkshop', locale);
 
-const reasonsToReachOut = [
-  'Sie wollen prüfen, ob Standardsoftware noch trägt oder bereits bremst.',
-  'Ein interner Prozess soll digitalisiert, vereinfacht oder beschleunigt werden.',
-  'Ein bestehendes System muss modernisiert, integriert oder sauber abgelöst werden.',
-  'Sie möchten eine Idee direkt mit Marten Prieß statt mit Vertrieb abstimmen.',
-];
-
-const nextSteps = [
-  'Kurzer Austausch zu Zielbild, Prozess und aktuellem Engpass',
-  'Ehrliche Einordnung, ob Discovery, Workshop oder direkter Projektstart sinnvoll ist',
-  'Konkrete nächste Schritte statt unverbindlichem Follow-up',
-];
-
-const directCollaborationDefinition =
-  'Bei RocketBase arbeiten Sie direkt mit Marten Prieß. Analyse, Lösungsrichtung und technische Entscheidungen bleiben dadurch nah an Ihrem Projekt.';
 ---
 
 <PageLayout
@@ -43,20 +28,13 @@ const directCollaborationDefinition =
       <div data-reveal="fade-right" class="max-w-3xl">
         <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Kontakt</p>
         <h1 class="mt-4 font-display text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
-          Direkt zum Gespräch, <span class="text-brand-500">nicht erst durch Agenturfilter.</span>
+          Direkt zum Gespräch, <span class="text-brand-500">direkt mit dem Gründer.</span>
         </h1>
         <p class="mt-6 text-lg leading-8 text-foreground-secondary">
           Wenn ein Prozess hakt, ein System an Grenzen stößt oder ein Vorhaben sauber eingeordnet
-          werden soll, sprechen Sie bei RocketBase <strong>direkt mit Marten Prieß</strong> über die
-          <strong>sinnvollsten nächsten Schritte</strong>.
+          werden soll – ein <strong>kurzes Erstgespräch</strong> ist meist der schnellste Weg zu
+          einer ehrlichen Einschätzung.
         </p>
-
-        <div data-reveal="zoom-in" class="mt-8 rounded-[1.9rem] border border-brand-200 bg-brand-50 p-6 shadow-sm dark:border-brand-800 dark:bg-brand-900/20">
-          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brand-700 dark:text-brand-200">
-            So arbeiten wir
-          </p>
-          <p class="mt-3 text-base leading-7 text-foreground-secondary">{directCollaborationDefinition}</p>
-        </div>
 
         <div data-reveal class="mt-8 flex flex-wrap items-center gap-4">
           <Button href={contactLinks.cal} target="_blank">
@@ -68,6 +46,7 @@ const directCollaborationDefinition =
             <Icon name="arrow-right" size="sm" />
           </Button>
         </div>
+
       </div>
 
       <div data-reveal="zoom-in" class="relative rounded-[2.25rem] border border-white/10 bg-surface-invert p-8 pt-16 text-on-invert shadow-[0_32px_90px_rgba(22,28,44,0.28)] sm:pt-20 lg:pt-24">
@@ -102,7 +81,7 @@ const directCollaborationDefinition =
           >
             <p class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-brand-200">
               <Icon name="clock" size="xs" />
-              Erstgespräch · empfohlen
+              Termin buchen
             </p>
             <p class="mt-2 flex items-center gap-2 text-base font-semibold text-on-invert">
               30 Minuten direkt mit Marten Prieß
@@ -115,34 +94,133 @@ const directCollaborationDefinition =
           </a>
 
           <a
-            href={`mailto:${contactLinks.email}`}
+            href="#anfrage-stellen"
             class="rounded-[1.5rem] border border-white/10 bg-white/5 p-4 transition-colors hover:bg-white/10"
           >
             <p class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-on-invert-muted">
               <Icon name="mail" size="xs" class="text-brand-300" />
               Lieber schreiben?
             </p>
-            <p class="mt-1.5 break-words text-sm text-on-invert-secondary">{contactLinks.email}</p>
+            <p class="mt-1.5 text-sm text-on-invert-secondary">Direkt zum Anfrageformular</p>
           </a>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <div class="mt-8 border-t border-white/10 pt-6">
-          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brand-300">Passt besonders gut, wenn ...</p>
-          <ul class="mt-4 space-y-4 text-sm leading-6 text-on-invert-secondary">
-            {reasonsToReachOut.slice(0, 3).map((reason) => (
-              <li class="flex gap-3">
-                <Icon name="check-circle" size="sm" class="mt-0.5 shrink-0 text-brand-300" />
-                <span>{reason}</span>
-              </li>
-            ))}
+  <section class="border-b border-border py-24">
+    <div class="container">
+      <div data-reveal="fade-down">
+        <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">
+          So sieht der Weg aus
+        </p>
+        <h2 class="mt-4 font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+          Erst sprechen, dann schauen,<br class="hidden sm:inline" />
+          was sinnvoll ist.
+        </h2>
+        <p class="mt-6 max-w-3xl text-lg leading-8 text-foreground-secondary">
+          Jedes Projekt beginnt mit einem unverbindlichen Erstgespräch. Was danach folgt – ein
+          strukturierter Workshop, ein direkter Projektstart oder gar nichts – entscheidet sich
+          dort gemeinsam, nicht hier auf einer Übersichtsseite.
+        </p>
+      </div>
+
+      <!-- Hero-Karte: Erstgespräch (A) -->
+      <div data-reveal class="mt-12 grid gap-0 overflow-hidden rounded-[2rem] border-2 border-brand-300 bg-card shadow-[0_22px_55px_rgba(99,114,165,0.12)] md:grid-cols-[1.1fr_0.9fr] dark:border-brand-700">
+        <div class="p-8 sm:p-10 lg:p-12">
+          <div class="flex items-center gap-3">
+            <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-700 dark:bg-brand-900/40 dark:text-brand-200">
+              <Icon name="clock" size="md" />
+            </div>
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brand-600">
+                Schritt 01
+              </p>
+              <p class="text-sm font-semibold text-foreground">30 Minuten · unverbindlich · kostenfrei</p>
+            </div>
+          </div>
+
+          <h3 class="mt-6 font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+            Erstgespräch mit Marten Prieß
+          </h3>
+          <p class="mt-4 text-base leading-7 text-foreground-secondary">
+            Kurzer Austausch zu Ihrer aktuellen Lage, eine ehrliche Einordnung und ein klarer
+            nächster Schritt – passend zu Ihrem konkreten Vorhaben.
+          </p>
+
+          <p class="mt-8 text-xs font-semibold uppercase tracking-[0.22em] text-brand-600">
+            Worüber wir sprechen
+          </p>
+          <ul class="mt-4 space-y-3 text-sm leading-6 text-foreground-secondary">
+            <li class="flex gap-3">
+              <Icon name="check-circle" size="sm" class="mt-0.5 shrink-0 text-brand-600" />
+              <span>Kurze gegenseitige Vorstellung</span>
+            </li>
+            <li class="flex gap-3">
+              <Icon name="check-circle" size="sm" class="mt-0.5 shrink-0 text-brand-600" />
+              <span>Welche Systeme im Einsatz sind und was verbessert werden soll</span>
+            </li>
+            <li class="flex gap-3">
+              <Icon name="check-circle" size="sm" class="mt-0.5 shrink-0 text-brand-600" />
+              <span>Wo der Schuh aktuell drückt – Engpässe, Medienbrüche, Workarounds</span>
+            </li>
+            <li class="flex gap-3">
+              <Icon name="check-circle" size="sm" class="mt-0.5 shrink-0 text-brand-600" />
+              <span>Einordnung der nächsten möglichen Schritte</span>
+            </li>
+          </ul>
+
+          <div class="mt-8">
+            <Button href={contactLinks.cal} target="_blank">
+              Erstgespräch buchen
+              <Icon name="arrow-up-right" size="sm" />
+            </Button>
+          </div>
+        </div>
+
+        <div class="relative flex flex-col gap-5 border-t border-border bg-background-secondary p-8 sm:p-10 md:border-l md:border-t-0 dark:bg-background">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brand-600">
+              Mögliche nächste Schritte
+            </p>
+            <p class="mt-2 text-sm leading-6 text-foreground-secondary">
+              Was nach dem Erstgespräch konkret folgen kann – je nachdem, wo Sie stehen:
+            </p>
+          </div>
+
+          <ul class="space-y-4 text-sm leading-6 text-foreground-secondary">
+            <li class="flex gap-3">
+              <Icon name="layers" size="sm" class="mt-0.5 shrink-0 text-brand-600" />
+              <span>
+                <strong class="text-foreground">Discovery-Workshop</strong> – wenn die Lage komplex ist und vor einer Entscheidung Klarheit fehlt.
+                <a href={workshopUrl} class="ml-1 inline-flex items-center gap-1 text-brand-600 font-semibold hover:text-brand-500 dark:text-brand-400">
+                  Details
+                  <Icon name="arrow-right" size="xs" />
+                </a>
+              </span>
+            </li>
+            <li class="flex gap-3">
+              <Icon name="monitor" size="sm" class="mt-0.5 shrink-0 text-brand-600" />
+              <span><strong class="text-foreground">Zweittermin mit Screen-Sharing</strong> – gemeinsamer Blick auf die aktuelle Lösung und gewünschte Änderungen</span>
+            </li>
+            <li class="flex gap-3">
+              <Icon name="file-text" size="sm" class="mt-0.5 shrink-0 text-brand-600" />
+              <span><strong class="text-foreground">Durchsprache vorhandener Konzepte</strong> – wenn Anforderungen oder Mockups bereits skizziert sind</span>
+            </li>
+            <li class="flex gap-3">
+              <Icon name="trending-up" size="sm" class="mt-0.5 shrink-0 text-brand-600" />
+              <span><strong class="text-foreground">Erste grobe preisliche Einschätzung</strong> – sobald Scope und Substanz absehbar sind</span>
+            </li>
           </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="py-28">
-    <div class="container grid gap-12 lg:grid-cols-[0.88fr_1.12fr] lg:items-start">
+  <section id="anfrage-stellen" class="scroll-mt-24 relative overflow-hidden border-b border-border py-28">
+    <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_-10%,rgba(99,114,165,0.10),transparent_55%),radial-gradient(circle_at_85%_110%,rgba(99,114,165,0.08),transparent_55%)] dark:bg-[radial-gradient(circle_at_15%_-10%,rgba(99,114,165,0.18),transparent_55%),radial-gradient(circle_at_85%_110%,rgba(99,114,165,0.14),transparent_55%)]" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(99,114,165,0.22),transparent)]" aria-hidden="true"></div>
+    <div class="container relative z-10 grid gap-12 lg:grid-cols-[0.88fr_1.12fr] lg:items-start">
       <div data-reveal="fade-right" class="lg:sticky lg:top-28">
         <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Anfrage stellen</p>
         <h2 class="mt-4 font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
@@ -154,20 +232,6 @@ const directCollaborationDefinition =
           <a href={workshopUrl} class="text-brand-600 font-semibold underline decoration-brand-300/60 underline-offset-4 hover:text-brand-700 transition-colors">Discovery-Workshop</a>
           oft der sinnvollere Einstieg als ein loses Sales-Gespräch.
         </p>
-
-        <div data-reveal="zoom-in" class="mt-8 rounded-[1.9rem] border border-border bg-card p-7 shadow-sm">
-          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brand-600">Was Sie nach dem Erstkontakt bekommen</p>
-          <div class="mt-6 space-y-5">
-            {nextSteps.map((step, index) => (
-              <div class="grid gap-3 md:grid-cols-[42px_1fr] md:items-start">
-                <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-brand-50 text-sm font-semibold text-brand-700 dark:bg-brand-900/30 dark:text-brand-100">
-                  0{index + 1}
-                </div>
-                <p class="text-base leading-7 text-foreground-secondary">{step}</p>
-              </div>
-            ))}
-          </div>
-        </div>
 
       </div>
 
