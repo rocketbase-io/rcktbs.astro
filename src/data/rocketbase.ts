@@ -2,7 +2,7 @@ export const strengths = [
   {
     title: 'Direkte Zusammenarbeit mit Marten Prieß',
     description:
-      'Sie arbeiten nicht primär mit Vertrieb oder Projektweitergaben, sondern direkt mit dem Gründer von RocketBase, der fachliche, technische und strukturelle Entscheidungen mitträgt.',
+      'Ihr arbeitet nicht primär mit Vertrieb oder Projektweitergaben, sondern direkt mit dem Gründer von RocketBase, der fachliche, technische und strukturelle Entscheidungen mitträgt.',
   },
   {
     title: 'Konzernniveau für den Mittelstand',
@@ -17,12 +17,12 @@ export const strengths = [
   {
     title: 'Pragmatisch mit Open Source',
     description:
-      'Nicht alles wird neu gebaut. Wir integrieren bewährte Bausteine und entwickeln nur dort individuell, wo Ihr Prozess echten Vorsprung braucht.',
+      'Nicht alles wird neu gebaut. Wir integrieren bewährte Bausteine und entwickeln nur dort individuell, wo euer Prozess echten Vorsprung braucht.',
   },
   {
     title: 'Zukunftssichere Übergabe',
     description:
-      'Saubere Architektur, dokumentierbare Lösungen und bewährte Standards sorgen dafür, dass Sie nicht in unnötige Abhängigkeiten geraten.',
+      'Saubere Architektur, dokumentierbare Lösungen und bewährte Standards sorgen dafür, dass ihr nicht in unnötige Abhängigkeiten geratet.',
   },
 ];
 
@@ -50,7 +50,7 @@ export const serviceAreas = [
   {
     title: 'Individualsoftware & Integration',
     description:
-      'Wir bauen Plattformen, Portale und interne Werkzeuge, die mit Ihren Prozessen wachsen und sich sauber in bestehende Systeme einfügen.',
+      'Wir bauen Plattformen, Portale und interne Werkzeuge, die mit euren Prozessen wachsen und sich sauber in bestehende Systeme einfügen.',
     bullets: [
       'Webbasierte Individualsoftware',
       'Migration aus Standard- oder Altsystemen',
@@ -225,7 +225,7 @@ const casesRaw = [
     ],
   },
   {
-    slug: 'metall-pro',
+    slug: 'schlosserei-diezinger',
     client: 'Schlosserei Diezinger',
     title: 'Einsatzplanung, die den Betrieb wirklich kennt',
     description:
@@ -292,7 +292,7 @@ const casesRaw = [
 
 // Anzeige-Reihenfolge der Hauptreferenzen (Nav-Dropdown nimmt die ersten drei,
 // die Referenz-Übersicht zeigt sie in genau dieser Folge). bonprix bewusst zuletzt.
-const caseOrder = ['fkc-consulting', 'statista', 'metall-pro', 'bonprix'];
+const caseOrder = ['fkc-consulting', 'statista', 'schlosserei-diezinger', 'bonprix'];
 export const cases = [...casesRaw].sort(
   (a, b) => caseOrder.indexOf(a.slug) - caseOrder.indexOf(b.slug),
 );
@@ -545,7 +545,7 @@ export const discoveryOffer = {
   title: 'Discovery-Workshop',
   subtitle: 'Ein kompakter Beratungstermin mit greifbarem Ergebnis – statt unverbindlicher Sales-Folien.',
   description:
-    'Gemeinsam mit Ihren Keyusern nehmen wir die dringendsten Baustellen auf, identifizieren Quickwins und entwerfen ein Zielbild für die erste Ausbaustufe – inklusive Mockups, mit denen Sie intern sofort weiterarbeiten können.',
+    'Gemeinsam mit euren Keyusern nehmen wir die dringendsten Baustellen auf, identifizieren Quickwins und entwerfen ein Zielbild für die erste Ausbaustufe – inklusive Mockups, mit denen ihr intern sofort weiterarbeiten könnt.',
   deliverables: [
     'Bestandsaufnahme der dringendsten Baustellen und Engpässe',
     'Identifizierte Quickwins, die kurzfristig Wirkung entfalten',
@@ -647,7 +647,7 @@ export const missionSections = [
       },
     },
     body:
-      'Bei uns sprechen Sie nicht zuerst mit Vertrieb – und später mit jemand anderem, der es umsetzt. Beratung, Konzeption und Umsetzung liegen eng zusammen. Das reduziert Reibung, verhindert Missverständnisse und sorgt dafür, dass das, was geplant wird, auch genau so gebaut wird.',
+      'Bei uns sprecht ihr nicht zuerst mit Vertrieb – und später mit jemand anderem, der es umsetzt. Beratung, Konzeption und Umsetzung liegen eng zusammen. Das reduziert Reibung, verhindert Missverständnisse und sorgt dafür, dass das, was geplant wird, auch genau so gebaut wird.',
   },
   {
     id: 'systeme',
@@ -667,7 +667,7 @@ export const missionSections = [
       { label: 'Neue Mitarbeiter', icon: 'users' },
     ],
     body:
-      'Wir entwickeln Software nicht isoliert, sondern als Teil Ihres Unternehmens. Ziel ist es, Prozesse so abzubilden und zu optimieren, dass Ihr Unternehmen wachsen kann – ohne dass Komplexität explodiert. Gute Systeme sorgen dafür, dass neue Kollegen schneller produktiv werden und Wissen nicht verloren geht.',
+      'Wir entwickeln Software nicht isoliert, sondern als Teil eures Unternehmens. Ziel ist es, Prozesse so abzubilden und zu optimieren, dass euer Unternehmen wachsen kann – ohne dass Komplexität explodiert. Gute Systeme sorgen dafür, dass neue Kollegen schneller produktiv werden und Wissen nicht verloren geht.',
   },
   {
     id: 'pragmatismus',
@@ -685,11 +685,11 @@ export const missionSections = [
       { title: 'Bewährter Baustein', subtitle: 'Auth · Storage · Search', tone: 'muted' as const, icon: 'shield' },
       { title: 'Individuelle Logik', subtitle: 'Genau dort, wo Vorsprung entsteht', tone: 'brand' as const, icon: 'sparkles' },
       { title: 'Bewährter Baustein', subtitle: 'Monitoring · Logging · CI', tone: 'muted' as const, icon: 'monitor' },
-      { title: 'Individuelle Logik', subtitle: 'Ihre Geschäftsregeln, Ihr Vorteil', tone: 'brand' as const, icon: 'zap' },
+      { title: 'Individuelle Logik', subtitle: 'Eure Geschäftsregeln, euer Vorteil', tone: 'brand' as const, icon: 'zap' },
       { title: 'Bewährter Baustein', subtitle: 'PIM · DAM · Mailing', tone: 'muted' as const, icon: 'box' },
     ],
     body:
-      'Wir glauben nicht daran, alles neu zu erfinden. Stattdessen kombinieren wir bewährte Lösungen mit individueller Entwicklung. Open Source ist für uns kein Trend, sondern ein Werkzeug – genauso wie proprietäre Systeme. Entscheidend ist, was für Ihr Problem die beste Lösung ist.',
+      'Wir glauben nicht daran, alles neu zu erfinden. Stattdessen kombinieren wir bewährte Lösungen mit individueller Entwicklung. Open Source ist für uns kein Trend, sondern ein Werkzeug – genauso wie proprietäre Systeme. Entscheidend ist, was für euer Problem die beste Lösung ist.',
   },
   {
     id: 'qualitaet',
@@ -746,7 +746,7 @@ export const missionSections = [
       { label: 'Fallback-Pfade', icon: 'shield' },
     ],
     body:
-      'Software ist eine langfristige Investition. Deshalb achten wir darauf, dass Lösungen nachvollziehbar, wartbar und übergebbar bleiben. Unser Ziel ist es, dass Sie jederzeit die Kontrolle behalten – unabhängig von einzelnen Technologien oder Partnern.',
+      'Software ist eine langfristige Investition. Deshalb achten wir darauf, dass Lösungen nachvollziehbar, wartbar und übergebbar bleiben. Unser Ziel ist es, dass ihr jederzeit die Kontrolle behaltet – unabhängig von einzelnen Technologien oder Partnern.',
   },
 ];
 

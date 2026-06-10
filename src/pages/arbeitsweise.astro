@@ -23,7 +23,6 @@ import kiBefore from '@/assets/work/ki-before.png';
 import kiAfter from '@/assets/work/ki-after.png';
 
 const locale = defaultLocale;
-const captionDefault = 'Visualisierung erstellt mit Midjourney v6.1';
 
 const faqEntries = await getCollection('faqs', ({ data }) => data.category === 'arbeitsweise');
 const faqs = faqEntries
@@ -67,7 +66,6 @@ const sections = [
       text: 'Wir analysieren reale Prozesse, beobachten den Arbeitsalltag, interviewen Keyuser und mappen die Customer Journey. Daraus leiten wir Datenmodell und Architektur ab – die Software passt sich der Arbeit an, nicht umgekehrt.',
       image: null,
     },
-    caption: 'Visualisierung folgt – Bild kommt.',
   },
   {
     id: 'team',
@@ -88,7 +86,6 @@ const sections = [
       text: 'Ein eingespieltes Team aus Tech Lead, Engineering und Architektur. Entscheidungen fallen im Gespräch, nicht im Ticket-Tool. Output vergleichbar mit Teams ab 12 Personen.',
       image: teamAfter,
     },
-    caption: captionDefault,
   },
   {
     id: 'cloud',
@@ -109,7 +106,6 @@ const sections = [
       text: 'Hetzner Cloud, automatische Backups, kontinuierliches Monitoring. DSGVO-konform in Deutschland gehostet, jederzeit skalierbar – ohne eigenes Admin-Team.',
       image: serverAfter,
     },
-    caption: captionDefault,
   },
   {
     id: 'tools',
@@ -130,7 +126,6 @@ const sections = [
       text: 'Ein PIM, ein ERP-Backend, ein Dashboard. Bestellungen, Stammdaten und Auswertungen verzahnt – eine Quelle der Wahrheit.',
       image: toolsAfter,
     },
-    caption: captionDefault,
   },
   {
     id: 'ki',
@@ -151,7 +146,6 @@ const sections = [
       text: 'KI übernimmt die wiederkehrenden Fleißarbeiten. Unsere Entwickler stecken ihre Zeit dafür dorthin, wo es auf Erfahrung ankommt: in eure Geschäftslogik und eine Lösung, die trägt.',
       image: kiAfter,
     },
-    caption: captionDefault,
   },
 ];
 ---
@@ -289,10 +283,6 @@ const sections = [
                       loading="lazy"
                     />
                   </div>
-                  <p class="text-foreground-muted mt-6 flex items-center justify-center gap-2 text-xs">
-                    <Icon name="palette" size="xs" />
-                    {section.caption}
-                  </p>
                 </div>
               </div>
             )}
@@ -342,10 +332,6 @@ const sections = [
                       {section.before.text}
                     </p>
                   </div>
-                  <p class="text-foreground-muted flex items-center gap-2 text-xs">
-                    <Icon name="palette" size="xs" />
-                    {section.caption}
-                  </p>
                 </div>
               </div>
             )}
@@ -410,11 +396,6 @@ const sections = [
                     </p>
                   </div>
                 </div>
-
-                <p class="text-foreground-muted mt-6 flex items-center justify-center gap-2 text-xs">
-                  <Icon name="palette" size="xs" />
-                  {section.caption}
-                </p>
               </div>
             )}
 
@@ -459,10 +440,6 @@ const sections = [
                       {section.before.text}
                     </p>
                   </div>
-                  <p class="text-foreground-muted flex items-center gap-2 text-xs">
-                    <Icon name="palette" size="xs" />
-                    {section.caption}
-                  </p>
                 </div>
               </div>
             )}
@@ -677,7 +654,7 @@ const sections = [
         </h2>
         <p class="text-foreground-secondary mt-6 text-lg leading-8">
           Dauer, Einstieg, Projektgröße, Hosting, Betrieb - die Antworten,
-          bevor Sie fragen müssen.
+          bevor ihr fragen müsst.
         </p>
       </header>
 
@@ -722,7 +699,7 @@ const sections = [
         data-reveal
         class="text-foreground-muted mx-auto mt-14 max-w-2xl text-center text-sm"
       >
-        Nicht die passende Antwort dabei? Stellen Sie Ihre Frage direkt im
+        Nicht die passende Antwort dabei? Stellt eure Frage direkt im
         <a
           href={contactLinks.cal}
           target="_blank"
@@ -750,7 +727,7 @@ const sections = [
               Bereit für eine effizientere Softwareentwicklung?
             </h2>
             <p class="text-foreground-secondary mt-6 text-lg leading-8">
-              Lassen Sie uns gemeinsam herausfinden, wie wir Ihre Prozesse vereinfachen können.
+              Lasst uns gemeinsam herausfinden, wie wir eure Prozesse vereinfachen können.
             </p>
           </div>
           <div class="bg-background-secondary space-y-4 rounded-[1.5rem] p-5 sm:p-6">

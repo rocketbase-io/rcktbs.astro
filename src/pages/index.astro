@@ -44,13 +44,13 @@ type FeaturedCase = (typeof cases)[number] & { image?: ImageMetadata };
 const caseImageMap: Record<string, ImageMetadata> = {
   statista: statistaCaseImage,
   'fkc-consulting': fkcCaseImage,
-  'metall-pro': schlossereiCaseImage,
+  'schlosserei-diezinger': schlossereiCaseImage,
 };
 
 // Startseiten-Auswahl, konsistent mit Nav-Dropdown und Referenz-Übersicht:
 // FKC (Standardsoftware-Ablösung, Hauptfokus), Statista (Konzern-Track-Record)
 // und Schlosserei Diezinger (Einsatzplanung im Mittelstand).
-const featuredSlugs = ['fkc-consulting', 'statista', 'metall-pro'];
+const featuredSlugs = ['fkc-consulting', 'statista', 'schlosserei-diezinger'];
 const caseBySlug = new Map([...cases, ...additionalCases].map((c) => [c.slug, c]));
 const featuredCases: FeaturedCase[] = featuredSlugs
   .map((slug) => caseBySlug.get(slug))
@@ -144,7 +144,7 @@ const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`,
 ---
 
 <LandingLayout
-  title="Individuelle Software für den Mittelstand"
+  title="Individualsoftware, die euch trägt – statt ausbremst"
   description="Wenn Standardsoftware wie Vertec oder Centric oder eine gewachsene Excel-Welt das Wachstum bremst: RocketBase baut die individuelle Lösung, die zum echten Prozess passt - direkt mit Marten Prieß."
   includeOrgSchema
   lang={locale}
@@ -911,7 +911,7 @@ const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`,
             class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-4xl"
           >
             Von Standardsoftware zur Lösung,
-            <span class="text-brand-500">die wirklich zu Ihrem Unternehmen passt.</span>
+            <span class="text-brand-500">die wirklich zu eurem Unternehmen passt.</span>
           </h2>
           <p class="text-foreground-secondary mt-6 max-w-3xl text-lg leading-8">
             Wenn Prozesse inzwischen mehr bremsen als tragen, lohnt ein strukturierter Blick.
