@@ -68,6 +68,11 @@
   to = "/referenzen/statista"
   status = 301
 
+[[redirects]]
+  from = "/referenzen/metall-pro"
+  to = "/referenzen/schlosserei-diezinger"
+  status = 301
+
 # Catch-all: unknown routes redirect to landing page
 [[redirects]]
   from = "/*"

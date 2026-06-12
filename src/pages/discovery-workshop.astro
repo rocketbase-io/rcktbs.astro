@@ -3,7 +3,7 @@ import PageLayout from '@/layouts/PageLayout.astro';
 import { Picture } from 'astro:assets';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
-import StarField from '@/components/hero-backgrounds/StarField.astro';
+import Blueprint from '@/components/hero-backgrounds/Blueprint.astro';
 import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
 import { defaultLocale } from '@/i18n/config';
 import { getLocalizedPath } from '@/i18n/index';
@@ -32,13 +32,13 @@ const clientLogos = [
 const deliverables = [
   {
     icon: 'share',
-    title: 'Ein klares Bild Ihrer Datenflüsse',
-    text: 'Wir zeigen sichtbar, welche Informationen zwischen welchen Systemen und Rollen wandern - und wo heute Reibung, Doppelarbeit oder blinde Flecken entstehen.',
+    title: 'Ein klares Bild eurer Datenflüsse',
+    text: 'Ihr seht schwarz auf weiß, welche Infos zwischen welchen Systemen und Abteilungen wandern - und wo heute Reibung, Doppelarbeit oder blinde Flecken entstehen.',
   },
   {
     icon: 'layers',
     title: 'Ein Prozessbild, das alle verstehen',
-    text: 'Ihre Kernprozesse in einer standardisierten Darstellung - lesbar für Fachbereich, Geschäftsführung und IT. Kein Raum mehr für Missverständnisse oder unterschiedliche Sichtweisen im Team.',
+    text: 'Eure Kernprozesse in einer standardisierten Darstellung - lesbar für Fachbereich, Geschäftsführung und IT. Kein Raum mehr für Missverständnisse oder unterschiedliche Sichtweisen im Team.',
   },
   {
     icon: 'palette',
@@ -47,7 +47,7 @@ const deliverables = [
   },
   {
     icon: 'file-text',
-    title: 'Eine Entscheidungsgrundlage, die Ihnen gehört',
+    title: 'Eine Entscheidungsgrundlage, die euch gehört',
     text: 'Schriftliche Zusammenfassung mit Handlungsempfehlungen und priorisierten nächsten Schritten. Geeignet für interne Weichenstellungen, Aufsichtsrat oder die Weiterarbeit mit uns.',
   },
 ];
@@ -64,7 +64,7 @@ const formats = [
       'Ein zentrales Prozessdiagramm + Mockup-Skizzen',
       'Schriftliche Ausarbeitung mit Handlungsempfehlungen',
     ],
-    fit: 'Wenn Sie ein konkretes Problem vor Augen haben und schnell Klarheit über den nächsten Schritt wollen.',
+    fit: 'Wenn ihr ein konkretes Problem vor Augen habt und schnell Klarheit über den nächsten Schritt wollt.',
   },
   {
     name: 'Standard',
@@ -78,7 +78,7 @@ const formats = [
       'Prozessbilder + Datenflüsse + Oberflächen-Entwürfe',
       'Schriftliche Ausarbeitung mit Handlungsempfehlungen',
     ],
-    fit: 'Wenn mehrere Abläufe zusammenspielen und Sie eine belastbare Grundlage für weitreichende Entscheidungen brauchen.',
+    fit: 'Wenn mehrere Abläufe zusammenspielen und ihr eine belastbare Grundlage für weitreichende Entscheidungen braucht.',
     featured: true,
   },
   {
@@ -114,7 +114,7 @@ const processSteps = [
     number: '03',
     icon: 'users',
     title: 'Workshop',
-    text: 'Remote, hybrid oder bei Ihnen vor Ort. Prozesse aufnehmen, Engpässe identifizieren, erste Lösungsskizzen entwickeln.',
+    text: 'Remote, hybrid oder bei euch vor Ort. Prozesse aufnehmen, Engpässe identifizieren, erste Lösungsskizzen entwickeln.',
   },
   {
     number: '04',
@@ -126,14 +126,14 @@ const processSteps = [
     number: '05',
     icon: 'check-circle',
     title: 'Übergabe',
-    text: 'Review-Termin mit Durchsprache der Ergebnisse. Danach gehört das Dokument Ihnen - ohne Bindung.',
+    text: 'Review-Termin mit Durchsprache der Ergebnisse. Danach gehört das Dokument euch - ohne Bindung.',
   },
 ];
 
 const notAWorkshop = [
   'Kein unverbindliches Sales-Gespräch.',
   'Keine Pitch-Präsentation unserer Agentur.',
-  'Keine generischen Folien - alles wird an Ihrem Fall erarbeitet.',
+  'Keine generischen Folien - alles wird an eurem Fall erarbeitet.',
 ];
 
 const workshopUrl = new URL(Astro.url.pathname, Astro.site).toString();
@@ -170,11 +170,11 @@ const miniFaqs = [
   },
   {
     q: 'Kann ich das Dokument intern weiterverwenden?',
-    a: 'Ja, uneingeschränkt. Das Ergebnis gehört Ihnen und eignet sich als Arbeitsgrundlage für interne Planung oder die Zusammenarbeit mit uns. Der Workshop legt keinen finalen Projektpreis fest - er zeigt, was vorhanden ist, wo die Engpässe liegen und wie eine Lösung aussehen könnte. Daraus lässt sich nach Themen-Priorisierung ein Paketpreis oder eine Range schnüren, die man dann auch mit anderen Angeboten vergleichen könnte.',
+    a: 'Ja, uneingeschränkt. Das Ergebnis gehört euch und eignet sich als Arbeitsgrundlage für interne Planung oder die Zusammenarbeit mit uns. Der Workshop legt keinen finalen Projektpreis fest - er zeigt, was vorhanden ist, wo die Engpässe liegen und wie eine Lösung aussehen könnte. Daraus lässt sich nach Themen-Priorisierung ein Paketpreis oder eine Range schnüren, die man dann auch mit anderen Angeboten vergleichen könnte.',
   },
   {
     q: 'Vor Ort, remote oder hybrid?',
-    a: 'Sie entscheiden. Wir empfehlen, sich mindestens einmal in Präsenz zu sehen, wenn Distanz und Aufwand es zulassen - das hebt die Gesprächsqualität spürbar. Für die Anfahrt legen wir eine Pauschale fest (Kilometergeld und anteilig Fahrtzeit), damit Aufwand und Kosten im Rahmen bleiben und für beide Seiten planbar sind. Die Anfahrt wird nicht von den Workshop-Stunden abgezogen.',
+    a: 'Ihr entscheidet. Wir empfehlen, sich mindestens einmal in Präsenz zu sehen, wenn Distanz und Aufwand es zulassen - das hebt die Gesprächsqualität spürbar. Für die Anfahrt legen wir eine Pauschale fest (Kilometergeld und anteilig Fahrtzeit), damit Aufwand und Kosten im Rahmen bleiben und für beide Seiten planbar sind. Die Anfahrt wird nicht von den Workshop-Stunden abgezogen.',
   },
   {
     q: 'Was, wenn wir uns danach gegen eine Zusammenarbeit entscheiden?',
@@ -197,35 +197,37 @@ const miniFaqs = [
   <section
     class="relative flex min-h-[60vh] items-center overflow-hidden py-24 sm:py-32"
   >
-    <StarField />
+    <Blueprint />
+    <div
+      class="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,var(--color-background)_0%,transparent_75%)] opacity-70"
+      aria-hidden="true"
+    ></div>
 
     <div class="container relative z-10 max-w-5xl text-center">
       <p
         data-reveal="fade-down"
-        class="text-brand-300 text-sm font-semibold tracking-[0.22em] uppercase"
+        class="text-brand-600 dark:text-brand-300 text-sm font-semibold tracking-[0.22em] uppercase"
       >
         Discovery-Workshop
       </p>
       <h1
         data-reveal="fade-down"
         lang="de"
-        class="font-display text-on-invert mt-6 text-4xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-5xl lg:text-6xl"
+        class="font-display text-foreground mt-6 text-4xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-5xl lg:text-6xl"
       >
-        Sie wissen, dass es komplex ist.
-        <span
-          class="from-brand-300 via-brand-200 to-brand-400 mt-2 block bg-gradient-to-r bg-clip-text pb-2 text-transparent"
-        >
+        Ihr wisst, dass es komplex ist.
+        <span class="mt-2 block text-brand-500">
           Wir ordnen es ein.
         </span>
       </h1>
       <p
         data-reveal
-        class="text-on-invert-secondary mx-auto mt-8 max-w-2xl text-lg leading-8 sm:text-xl"
+        class="text-foreground-secondary mx-auto mt-8 max-w-2xl text-lg leading-8 sm:text-xl"
       >
-        Ein <strong>Außenblick</strong> von jemandem, der viele Systemlandschaften in Konzernen
-        und Mittelstand von innen gesehen hat. Wir nehmen Ihre Prozesse auf,
-        legen die <strong>echten Engpässe</strong> offen und liefern eine
-        <strong>Entscheidungsgrundlage</strong>, auf die sich Ihr Team stützen kann.
+        Bevor ihr viel Geld in eine Lösung steckt, solltet ihr wissen, wo ihr wirklich steht. Wir
+        nehmen eure Prozesse auf, legen die <strong>echten Engpässe</strong> offen und liefern eine
+        <strong>Entscheidungsgrundlage</strong>, auf die sich euer Team verlassen kann – von jemandem, der
+        viele Systemlandschaften in Konzern und Mittelstand von innen kennt.
       </p>
       <div
         data-reveal
@@ -238,7 +240,7 @@ const miniFaqs = [
         <Button
           variant="link"
           href="#formate"
-          class="text-on-invert-secondary hover:text-on-invert"
+          class="text-foreground-secondary hover:text-foreground"
         >
           Formate &amp; Preise
           <Icon name="chevron-down" size="sm" />
@@ -268,7 +270,7 @@ const miniFaqs = [
           <span
             class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase"
           >
-            Was Sie bekommen
+            Was ihr bekommt
           </span>
           <span class="bg-border h-px flex-1"></span>
         </div>
@@ -276,7 +278,7 @@ const miniFaqs = [
           lang="de"
           class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-4xl"
         >
-          Danach wissen Sie, wo Sie stehen - und wo es hingehen kann.
+          Danach wisst ihr, was zu tun ist - und was es ungefähr kostet.
         </h2>
         <p class="text-foreground-secondary mt-6 text-lg leading-8">
           Der Workshop endet mit konkreten Artefakten, auf die sich
@@ -447,7 +449,7 @@ const miniFaqs = [
             messbar - dort, wo die Aufgabe bereits klar umrissen ist.
           </p>
           <p class="text-foreground-secondary text-[0.95rem] leading-7">
-            Aber genau das ist bei Ihnen nicht der Fall. Wenn Prozesse,
+            Aber genau das ist bei euch nicht der Fall. Wenn Prozesse,
             Stakeholder-Interessen und historisch gewachsene Systeme
             zusammenwirken, lässt sich die richtige Einordnung nicht aus einem
             Prompt ableiten - dafür braucht es jemanden, der die Zwischentöne
@@ -635,7 +637,7 @@ const miniFaqs = [
             <Icon name="layers" size="xs" class="text-brand-500 mt-1 shrink-0" />
             <span>
               <strong class="text-foreground">Prozessbild.</strong>
-              Eine standardisierte Darstellung Ihrer Abläufe - verständlich für
+              Eine standardisierte Darstellung eurer Abläufe - verständlich für
               Geschäftsführung, Fachbereich und IT. Gemeinsame Basis statt
               unterschiedlicher Vorstellungen im Team.
             </span>
@@ -886,10 +888,10 @@ const miniFaqs = [
               lang="de"
               class="font-display text-foreground mt-4 text-2xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-3xl lg:text-4xl"
             >
-              Bereit für einen strukturierten Blick auf Ihre Prozesse?
+              Bereit für einen strukturierten Blick auf eure Prozesse?
             </h2>
             <p class="text-foreground-secondary mt-6 text-lg leading-8">
-              Vereinbaren Sie ein kurzes Klärungsgespräch - wir finden
+              Vereinbart ein kurzes Klärungsgespräch - wir finden
               gemeinsam das passende Format und einen Termin.
             </p>
           </div>

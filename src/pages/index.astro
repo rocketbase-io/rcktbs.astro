@@ -12,13 +12,13 @@ import { defaultLocale } from '@/i18n/config';
 import { getLocalizedPath } from '@/i18n/index';
 import { getReadingTime } from '@/lib/utils';
 import founderImage from '@/assets/rocketbase/founder-marten-priess.jpg';
-import bonprixCaseImage from '@/assets/references/teaser-bonprix.jpeg';
 import statistaCaseImage from '@/assets/references/teaser-statista.jpeg';
 import fkcCaseImage from '@/assets/references/teaser-fkc.jpeg';
 import schlossereiCaseImage from '@/assets/references/teaser-schlosserei.jpeg';
-import heroImage from '@/assets/rocketbase/hero-image.jpg';
 import toolsBefore from '@/assets/work/tools-before.png';
 import toolsAfter from '@/assets/work/tools-after.png';
+import logomark from '@/assets/branding/logomark.svg?url';
+import logomarkDark from '@/assets/branding/logomark-dark.svg?url';
 import {
   cases,
   additionalCases,
@@ -36,52 +36,60 @@ const missionUrl = getLocalizedPath('mission', locale);
 const workshopUrl = getLocalizedPath('discoveryWorkshop', locale);
 const referencesUrl = '/referenzen';
 const workUrl = getLocalizedPath('work', locale);
+const standardsoftwareUrl = getLocalizedPath('standardsoftwareAbloesung', locale);
+const einsatzplanungUrl = getLocalizedPath('einsatzplanung', locale);
 
 type FeaturedCase = (typeof cases)[number] & { image?: ImageMetadata };
 
 const caseImageMap: Record<string, ImageMetadata> = {
-  bonprix: bonprixCaseImage,
   statista: statistaCaseImage,
   'fkc-consulting': fkcCaseImage,
-  'metall-pro': schlossereiCaseImage,
+  'schlosserei-diezinger': schlossereiCaseImage,
 };
 
-const featuredCases: FeaturedCase[] = cases
-  .slice(0, 3)
+// Startseiten-Auswahl, konsistent mit Nav-Dropdown und Referenz-Übersicht:
+// FKC (Standardsoftware-Ablösung, Hauptfokus), Statista (Konzern-Track-Record)
+// und Schlosserei Diezinger (Einsatzplanung im Mittelstand).
+const featuredSlugs = ['fkc-consulting', 'statista', 'schlosserei-diezinger'];
+const caseBySlug = new Map([...cases, ...additionalCases].map((c) => [c.slug, c]));
+const featuredCases: FeaturedCase[] = featuredSlugs
+  .map((slug) => caseBySlug.get(slug))
+  .filter((entry): entry is (typeof cases)[number] => Boolean(entry))
   .map((entry) => ({ ...entry, image: caseImageMap[entry.slug] }));
 
-const topStrengths = strengths.slice(0, 3);
+// Bewusst die Stärken, die NICHT schon im Marten-Block stehen (direkte
+// Zusammenarbeit / Team sind dort abgedeckt): Konzernniveau, Open-Source-
+// Pragmatismus und zukunftssichere Übergabe.
+const topStrengths = [strengths[1], strengths[3], strengths[4]];
 
-const useCaseTeasers = [
-  {
-    icon: 'layers',
-    title: 'Interne Plattformen',
-    text: 'Wenn Produktdaten, Rollen und Prozesse in ein belastbares System zusammenlaufen sollen.',
-  },
+// "Wofür wir gerufen werden" – genau zwei benannte Situationen, jede führt auf
+// eine eigene, scharfe Sub-Landingpage. Bewusst nur zwei, kein dritter Einstieg.
+const calledForSituations = [
   {
     icon: 'box',
-    title: 'Standardsoftware ablösen',
-    text: 'Wenn ERP, CRM oder Branchensoftware den echten Arbeitsalltag eher verbiegt als trägt.',
+    eyebrow: 'Standardsoftware am Limit',
+    title: 'Vertec, Centric oder ein ähnliches System wächst nicht mehr mit.',
+    text: 'Egal ob bekanntes Branchensystem oder selbst gewachsene Lösung: Über die Jahre so weit verbogen, dass sie eure Arbeit eher behindert als trägt. Ihr arbeitet drumherum statt damit – und jede Stunde, die dafür draufgeht, fehlt in der fakturierbaren Leistung.',
+    points: [
+      'Updates werden zum Risiko – also bleiben sie aus',
+      'Neben dem teuren System läuft längst eine Excel-Welt mit',
+      'Bei den eigenen Zahlen bleibt ein ungutes Bauchgefühl',
+    ],
+    href: standardsoftwareUrl,
+    cta: 'Standardsoftware ablösen',
   },
   {
-    icon: 'database',
-    title: 'CRM · PIM · PLM',
-    text: 'Wenn Datenmodelle sauber werden müssen, statt nur mit Workarounds zu funktionieren.',
-  },
-  {
-    icon: 'archive',
-    title: 'Migration aus Altsystemen',
-    text: 'Wenn Bestandsdaten, Parallelbetrieb und Umstellung ohne Chaos zusammen gedacht werden müssen.',
-  },
-  {
-    icon: 'users',
-    title: 'Self-Service-Portale',
-    text: 'Wenn interne Teams oder B2B-Kunden klar geführte Oberflächen statt Tool-Sprünge brauchen.',
-  },
-  {
-    icon: 'globe',
-    title: 'Integrationsprojekte',
-    text: 'Wenn APIs, Drittsysteme und Prozesse endlich ohne Datensilos zusammenspielen sollen.',
+    icon: 'table',
+    eyebrow: 'Steuerung über Excel',
+    title: 'Disposition, Einsatzplanung und Abrechnung laufen über Excel.',
+    text: 'Auftrag, Disposition, Einsatz, Erfassung, Abrechnung – die ganze Kette hängt in gewachsenen Tabellen. Mit dem Betrieb wächst der manuelle Aufwand schneller als der Umsatz, und keiner hat den Echtzeit-Überblick.',
+    points: [
+      'Wer wann an was arbeitet, steckt in Köpfen und Tabellen',
+      'Abwesenheiten und Auslastung müssen mühsam gepflegt werden',
+      'Erfassung draußen und Abrechnung drinnen sind entkoppelt',
+    ],
+    href: einsatzplanungUrl,
+    cta: 'Einsatzplanung ansehen',
   },
 ];
 
@@ -136,13 +144,13 @@ const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`,
 ---
 
 <LandingLayout
-  title="Individuelle Software für den Mittelstand"
-  description="Individuelle Software, Prozessoptimierung und nachhaltige Plattformen für den ambitionierten Mittelstand - direkt begleitet durch Marten Prieß."
+  title="Individualsoftware, die euch trägt – statt ausbremst"
+  description="Wenn Standardsoftware wie Vertec oder Centric oder eine gewachsene Excel-Welt das Wachstum bremst: RocketBase baut die individuelle Lösung, die zum echten Prozess passt - direkt mit Marten Prieß."
   includeOrgSchema
   lang={locale}
   routeId="home"
 >
-  <section class="hero-landing border-border relative min-h-[88vh] max-h-[900px] overflow-hidden border-b max-[760px]:min-h-0 max-[760px]:max-h-none" data-hero-root>
+  <section class="hero-landing border-border relative min-h-[62vh] max-h-[760px] overflow-hidden border-b max-[760px]:min-h-0 max-[760px]:max-h-none" data-hero-root>
     <div
       class="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(99,114,165,0.14),transparent_0,transparent_28%),radial-gradient(circle_at_82%_20%,rgba(99,114,165,0.16),transparent_0,transparent_32%),linear-gradient(135deg,rgba(255,255,255,0.98)_0%,rgba(248,250,253,0.97)_36%,rgba(242,246,251,0.96)_100%)] dark:bg-[radial-gradient(circle_at_18%_18%,rgba(99,114,165,0.18),transparent_0,transparent_28%),radial-gradient(circle_at_82%_20%,rgba(99,114,165,0.2),transparent_0,transparent_32%),linear-gradient(135deg,rgba(18,22,31,0.98)_0%,rgba(20,25,35,0.97)_36%,rgba(15,19,27,0.96)_100%)]"
     />
@@ -158,84 +166,30 @@ const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`,
       class="pointer-events-none absolute right-[10%] bottom-[18%] h-56 w-56 rounded-full border border-brand-300/30 opacity-50 blur-[2px] dark:border-brand-300/15 dark:opacity-30"
       aria-hidden="true"
     />
-    <div class="container relative z-10 flex min-h-[88vh] max-h-[900px] flex-col justify-center pt-24 pb-24 max-[760px]:min-h-0 max-[760px]:max-h-none max-[760px]:pt-20 max-[760px]:pb-28 sm:pt-30 lg:pt-28 lg:pb-28">
-      <div class="hero-landing-grid grid gap-10 max-[760px]:gap-8 lg:grid-cols-[minmax(0,1.02fr)_minmax(380px,0.92fr)] lg:items-center lg:gap-12">
-        <div data-reveal="fade-right" class="hero-landing-copy max-w-3xl will-change-transform" data-hero-copy>
-          <h1 class="hero-landing-title font-display text-foreground max-w-5xl text-4xl font-bold tracking-tight max-[760px]:text-[2.15rem] sm:text-5xl xl:text-6xl">
-            Wir entwickeln nicht einfach Software.
-            <span class="mt-2 block text-brand-500">Wir denken Prozesse weiter.</span>
-          </h1>
+    <div class="container relative z-10 flex min-h-[62vh] max-h-[760px] flex-col justify-center pt-24 pb-24 max-[760px]:min-h-0 max-[760px]:max-h-none max-[760px]:pt-20 max-[760px]:pb-24 sm:pt-28 lg:pt-24 lg:pb-24">
+      <div data-reveal="fade-right" class="hero-landing-copy will-change-transform" data-hero-copy>
+        <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
+          Insellösungen verbinden · Prozesse bauen · Weiterdenken
+        </p>
+        <h1 class="hero-landing-title font-display text-foreground mt-5 text-4xl font-bold tracking-tight max-[760px]:mt-4 max-[760px]:text-[2.15rem] sm:text-5xl">
+          <span class="block sm:whitespace-nowrap">Eure Software sollte euch tragen –</span>
+          <span class="mt-2 block text-brand-500">nicht ausbremsen.</span>
+        </h1>
 
-          <p class="hero-landing-intro text-foreground-secondary mt-6 max-w-2xl text-lg leading-8 max-[760px]:mt-5 max-[760px]:text-base max-[760px]:leading-7 sm:text-xl">
-            RocketBase baut <strong>individuelle Software</strong> für Unternehmen, die nicht noch mehr Tool-Wildwuchs
-            brauchen, sondern <strong>klare Abläufe</strong>, belastbare Plattformen und einen Partner, der fachlich
-            wie technisch mitdenkt.
-          </p>
+        <p class="hero-landing-intro text-foreground-secondary mt-6 text-lg leading-8 max-[760px]:mt-5 max-[760px]:text-base max-[760px]:leading-7">
+          Software, die zu euren Abläufen passt – nicht umgekehrt. Gebaut für den Prozess, mit dem ihr
+          wirklich arbeitet, nicht für den, den ein Standard vorgibt.
+        </p>
 
-          <div data-reveal class="hero-landing-actions mt-8 flex flex-wrap items-center gap-4 max-[760px]:mt-6 max-[760px]:gap-3">
-            <Button size="lg" href={contactLinks.cal} target="_blank">
-              Erstgespräch buchen
-              <Icon name="arrow-up-right" size="sm" />
-            </Button>
-            <Button variant="link" href={servicesUrl}>
-              Leistungen ansehen
-              <Icon name="arrow-right" size="sm" />
-            </Button>
-          </div>
-
-          <div
-            class="hero-landing-facts text-foreground-muted mt-10 grid gap-4 text-sm max-[760px]:mt-7 max-[760px]:gap-4 max-[760px]:text-[13px] sm:grid-cols-3"
-          >
-            <div data-reveal>
-              <p class="text-foreground font-semibold">Seit 2016</p>
-              <p class="mt-2 leading-6">Aufbau von Digitalprodukten und internen Plattformen.</p>
-            </div>
-            <div data-reveal>
-              <p class="text-foreground font-semibold">bonprix &amp; Statista</p>
-              <p class="mt-2 leading-6">
-                Konzern-Erfahrung, übertragen auf mittelständische Realitäten.
-              </p>
-            </div>
-            <div data-reveal>
-              <p class="text-foreground font-semibold">Discovery bis Betrieb</p>
-              <p class="mt-2 leading-6">
-                Konzeption, Delivery, Integration und Weiterentwicklung aus einer Hand.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div data-reveal="fade-left" class="hero-landing-visual relative will-change-transform max-[760px]:px-0 lg:pl-2" data-hero-visual>
-          <div class="rb-float-slow bg-brand-300/14 absolute -top-4 right-8 h-44 w-44 rounded-full blur-3xl" />
-          <div class="relative mx-auto w-full max-w-xl">
-            <article class="hero-landing-card border-border/70 bg-card/90 relative overflow-hidden rounded-[2.3rem] border p-5 shadow-[0_28px_70px_rgba(34,43,74,0.12)] backdrop-blur max-[760px]:rounded-[2rem] max-[760px]:p-4 sm:p-6">
-              <Picture
-                src={heroImage}
-                alt="RocketBase Projektumfeld"
-                widths={[360, 480, 640, 800, 960, 1200]}
-                sizes="(max-width: 760px) calc(100vw - 3rem), (max-width: 1024px) 540px, 640px"
-                formats={['avif', 'webp']}
-                class="hero-landing-image h-[15rem] w-full rounded-[1.8rem] object-cover max-[760px]:h-[10.5rem] max-[760px]:rounded-[1.5rem] sm:h-[18rem] lg:h-[20rem]"
-                loading="eager"
-                fetchpriority="high"
-              />
-              <div class="mt-5 max-[760px]:mt-4">
-                <div>
-                  <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
-                    RocketBase Ansatz
-                  </p>
-                  <p class="text-foreground mt-3 text-xl font-semibold leading-tight max-[760px]:mt-2 max-[760px]:text-lg">
-                    Kleine, starke Einheit. Direkte Entscheidungen. Architektur mit Blick auf den echten Betrieb.
-                  </p>
-                  <p class="text-foreground-secondary mt-4 max-w-xl text-base leading-7 max-[760px]:mt-3 max-[760px]:text-sm max-[760px]:leading-6">
-                    Keine unnötige Agenturdramaturgie, sondern klare Gespräche über Prozesse,
-                    Prioritäten und die sinnvollste technische Lösung.
-                  </p>
-                </div>
-              </div>
-            </article>
-
-          </div>
+        <div data-reveal class="hero-landing-actions mt-8 flex flex-wrap items-center gap-4 max-[760px]:mt-6 max-[760px]:gap-3">
+          <Button size="lg" href={contactLinks.cal} target="_blank">
+            Erstgespräch buchen
+            <Icon name="arrow-up-right" size="sm" />
+          </Button>
+          <Button variant="link" href={servicesUrl}>
+            Leistungen ansehen
+            <Icon name="arrow-right" size="sm" />
+          </Button>
         </div>
       </div>
     </div>
@@ -259,9 +213,8 @@ const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`,
     (() => {
       const hero = document.querySelector('[data-hero-root]');
       const copy = document.querySelector('[data-hero-copy]');
-      const visual = document.querySelector('[data-hero-visual]');
 
-      if (!hero || !copy || !visual) return;
+      if (!hero || !copy) return;
 
       let ticking = false;
 
@@ -272,9 +225,6 @@ const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`,
 
         copy.style.transform = `translate3d(0, ${progress * 36}px, 0)`;
         copy.style.opacity = `${1 - progress * 0.22}`;
-
-        visual.style.transform = `translate3d(0, ${progress * 68}px, 0) scale(${1 - progress * 0.05})`;
-        visual.style.opacity = `${1 - progress * 0.16}`;
 
         ticking = false;
       };
@@ -291,11 +241,72 @@ const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`,
     })();
   </script>
 
-  <ClientLogoStrip
-    heading="Erfahrung aus Projekten mit"
-    logos={clientLogos}
-    variant="subtle"
-  />
+  <section class="border-border border-b py-24 lg:py-32">
+    <div class="container">
+      <div data-reveal>
+        <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Wofür wir gerufen werden</p>
+        <h2 class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
+          Zwei Situationen,
+          <span class="text-brand-500">in denen man uns dazuholt.</span>
+        </h2>
+        <p class="text-foreground-secondary mt-6 text-lg leading-8">
+          Ihr führt einen Betrieb, der läuft – und merkt an einer konkreten Stelle, dass die Software
+          den nächsten Schritt nicht mehr trägt. Meistens ist es eine von zwei Geschichten:
+        </p>
+      </div>
+
+      <div class="mt-16 grid gap-6 lg:grid-cols-2">
+        {
+          calledForSituations.map((situation) => (
+            <article
+              data-reveal
+              class="group relative flex flex-col rounded-[2rem] border border-border bg-card p-7 shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_28px_60px_rgba(34,43,74,0.12)] sm:p-9"
+            >
+              <div class="flex items-center gap-4">
+                <div class="bg-brand-50 text-brand-600 dark:bg-brand-900/30 dark:text-brand-100 group-hover:bg-brand-500 group-hover:text-on-invert inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-all duration-300 group-hover:scale-110">
+                  <Icon name={situation.icon} size="md" />
+                </div>
+                <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
+                  {situation.eyebrow}
+                </p>
+              </div>
+              <h3 class="font-display text-foreground mt-6 text-xl font-semibold leading-snug sm:text-2xl">
+                {situation.title}
+              </h3>
+              <p class="text-foreground-secondary mt-4 text-base leading-7">{situation.text}</p>
+              <ul class="text-foreground-secondary mt-6 space-y-3 text-sm leading-6">
+                {situation.points.map((point) => (
+                  <li class="flex gap-3">
+                    <Icon name="alert-circle" size="sm" class="text-brand-400 mt-0.5 shrink-0" />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+              <div class="mt-auto pt-8">
+                <a
+                  href={situation.href}
+                  class="inline-flex items-center gap-2 text-sm font-semibold text-brand-600 transition-transform duration-300 group-hover:translate-x-1"
+                >
+                  {situation.cta}
+                  <Icon name="arrow-right" size="sm" />
+                </a>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+
+      <div data-reveal class="mt-10 flex flex-wrap items-center gap-4">
+        <Button href={contactLinks.cal} target="_blank">
+          Lass uns draufschauen
+          <Icon name="arrow-up-right" size="sm" />
+        </Button>
+        <p class="text-foreground-muted text-sm leading-7">
+          Nicht eindeutig zuzuordnen? Ein Gespräch, ehrliche Einschätzung, kein Vertriebsdruck.
+        </p>
+      </div>
+    </div>
+  </section>
 
   <section class="border-border relative overflow-hidden border-b py-24 lg:py-28">
     <div class="bg-brand-300/10 absolute left-0 top-1/3 h-80 w-80 rounded-full blur-3xl" />
@@ -328,13 +339,13 @@ const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`,
           Diplom-Wirtschaftsinformatiker
         </p>
         <p class="text-foreground-secondary mt-6 text-lg leading-8">
-          Keine klassische Softwareagentur, kein Body-Leasing. Kunden arbeiten direkt mit dem
-          Gründer zusammen und mit einem eingespielten Team fester Entwicklerinnen und Entwickler
-          im Rücken.
+          Kein Body-Leasing, keine verlängerte Werkbank. Ihr arbeitet direkt mit dem Gründer – und einem
+          eingespielten Team fester Entwicklerinnen und Entwickler im Rücken. Einer, der zuhört, die
+          beiläufigen Ideen im Gespräch aufgreift und den besseren Prozess vorschlägt, wenn er einen sieht.
         </p>
         <p class="text-foreground-secondary mt-5 hidden text-lg leading-8 sm:block">
-          Erfahrung aus Konzernprojekten, Produktentwicklung und Mittelstandsvorhaben fließt so in
-          jedes Projekt ein, ohne dass Kommunikation unnötig aufgebläht wird.
+          Erfahrung aus Konzernprojekten, Produktentwicklung und Mittelstandsvorhaben fließt so in jedes
+          Projekt ein – ohne aufgeblähte Kommunikation, mit weniger Übergaben und schnelleren Entscheidungen.
         </p>
         <div data-reveal class="mt-8 flex flex-wrap gap-4">
           <Button href={contactLinks.cal} target="_blank">
@@ -346,39 +357,40 @@ const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`,
             <Icon name="arrow-right" size="sm" />
           </Button>
         </div>
+
+        <div class="border-border/70 text-foreground-muted mt-10 grid gap-4 border-t pt-8 text-sm sm:grid-cols-3">
+          <div data-reveal>
+            <p class="text-foreground font-semibold">Seit 2016</p>
+            <p class="mt-2 leading-6">Aufbau von Digitalprodukten und internen Plattformen.</p>
+          </div>
+          <div data-reveal>
+            <p class="text-foreground font-semibold">bonprix &amp; Statista</p>
+            <p class="mt-2 leading-6">Konzern-Erfahrung, übertragen auf mittelständische Realitäten.</p>
+          </div>
+          <div data-reveal>
+            <p class="text-foreground font-semibold">Discovery bis Betrieb</p>
+            <p class="mt-2 leading-6">Konzeption, Delivery, Integration und Weiterentwicklung aus einer Hand.</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
+  <ClientLogoStrip
+    heading="Erfahrung aus Projekten mit"
+    logos={clientLogos}
+    variant="subtle"
+  />
+
   <section class="border-border bg-background-secondary relative overflow-hidden border-b py-28 lg:py-36">
     <div class="bg-grid-pattern pointer-events-none absolute inset-0 opacity-25 [mask-image:radial-gradient(circle_at_center,black_24%,transparent_78%)]" />
     <div class="container relative z-10 space-y-14">
-      <div class="grid gap-10 xl:grid-cols-[1.05fr_0.95fr] xl:items-end xl:gap-16">
-        <div data-reveal="fade-right">
-          <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Warum RocketBase</p>
-          <h2 class="font-display text-foreground mt-4 max-w-4xl text-3xl font-bold tracking-tight sm:text-4xl">
-            Keine verlängerte Werkbank.
-            <span class="mt-2 block text-brand-500">Ein Team, das mitdenkt.</span>
-          </h2>
-          <p class="text-foreground-secondary mt-6 max-w-3xl text-lg leading-8">
-            RocketBase wurde nicht gegründet, um einzelne Entwickler in Projekte zu schicken. Der
-            Anspruch ist ein anderer: Verantwortung inhaltlich und technisch übernehmen, Prozesse
-            verstehen und Lösungen liefern, die langfristig funktionieren.
-          </p>
-        </div>
-
-        <div data-reveal="fade-left" class="border-brand-300/70 hidden max-w-2xl border-l-2 pl-5 sm:block xl:justify-self-end">
-          <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
-            Kurz gesagt
-          </p>
-          <p class="text-foreground mt-4 text-2xl font-semibold leading-tight">
-            Direkter Zugriff auf jemanden, der Business-Logik und Architektur zusammen denkt.
-          </p>
-          <p class="text-foreground-secondary mt-4 text-base leading-7">
-            Genau deshalb entstehen weniger Missverständnisse, weniger Übergaben und schneller
-            belastbare Entscheidungen.
-          </p>
-        </div>
+      <div data-reveal="fade-right">
+        <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Worauf ihr euch verlassen könnt</p>
+        <h2 class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
+          <span class="block">Drei Dinge, die den Unterschied&nbsp;machen –</span>
+          <span class="mt-2 block text-brand-500">vom ersten Gespräch bis in den Betrieb.</span>
+        </h2>
       </div>
 
       <div class="why-rocketbase-track relative space-y-6">
@@ -422,9 +434,9 @@ const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`,
             <div class="grid gap-10 xl:grid-cols-[0.9fr_1.1fr] xl:items-start xl:gap-12">
               <div>
                 <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Wie wir arbeiten</p>
-                <h2 class="font-display text-foreground mt-5 max-w-4xl text-3xl font-bold tracking-tight sm:text-4xl">
-                  Weniger Overhead.
-                  <span class="mt-2 block text-brand-500">Mehr Geschwindigkeit.</span>
+                <h2 class="font-display text-foreground mt-5 text-3xl font-bold tracking-tight sm:text-4xl">
+                  <span class="block">Weniger Overhead.</span>
+                  <span class="mt-2 block whitespace-nowrap text-brand-500">Mehr Geschwindigkeit.</span>
                 </h2>
                 <p class="text-foreground-secondary mt-6 max-w-3xl text-lg leading-8">
                   Wir zeigen dir konkret, wie moderne Softwareentwicklung heute funktioniert und warum
@@ -432,9 +444,9 @@ const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`,
                 </p>
               </div>
 
-              <div class="relative mx-auto w-full max-w-2xl xl:pt-2">
-                <div class="relative min-h-[22rem] sm:min-h-[27rem]">
-                  <div class="how-we-work-after absolute right-0 top-0 z-10 w-[74%] sm:w-[72%]" data-reveal="fade-left">
+              <div class="relative mx-auto w-full max-w-xl xl:pt-2">
+                <div class="relative min-h-[18rem] sm:min-h-[22rem]">
+                  <div class="how-we-work-after absolute right-0 top-0 z-10 w-[64%] sm:w-[62%]" data-reveal="fade-left">
                     <div class="relative overflow-hidden rounded-[2.4rem] shadow-[0_30px_70px_rgba(34,43,74,0.16)] transition-[transform,box-shadow] duration-500 will-change-transform [backface-visibility:hidden] group-hover:z-20 group-hover:-translate-y-2 group-hover:scale-[1.03] group-hover:shadow-[0_38px_90px_rgba(34,43,74,0.22)]">
                       <Picture
                         src={toolsAfter}
@@ -452,7 +464,7 @@ const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`,
                     </div>
                   </div>
 
-                  <div class="how-we-work-before absolute bottom-0 left-0 z-0 w-[48%] sm:w-[46%]" data-reveal="fade-right">
+                  <div class="how-we-work-before absolute bottom-0 left-0 z-0 w-[42%] sm:w-[40%]" data-reveal="fade-right">
                     <div class="relative overflow-hidden rounded-[2rem] shadow-[0_20px_45px_rgba(34,43,74,0.08)] transition-[transform,box-shadow,opacity] duration-500 will-change-transform [backface-visibility:hidden] group-hover:translate-y-2 group-hover:scale-[0.97] group-hover:opacity-85 group-hover:shadow-[0_16px_30px_rgba(34,43,74,0.08)]">
                       <Picture
                         src={toolsBefore}
@@ -478,16 +490,16 @@ const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`,
                 <p class="text-foreground text-lg font-semibold">Vorher</p>
                 <p class="text-foreground-secondary mt-3 max-w-2xl text-base leading-7">
                   Gewachsener Tool-Zoo: Bestellungen in Excel, Kunden im CRM, Versand in Trello,
-                  Reports per Mail. Daten leben in Silos, Prozesse laufen manuell, Doppelarbeit
-                  überall.
+                  Reports per Mail. Jedes System kennt nur seinen Teil, vieles läuft von Hand,
+                  Doppelarbeit überall.
                 </p>
               </div>
 
               <div data-reveal>
                 <p class="text-brand-600 text-lg font-semibold">Mit RocketBase</p>
                 <p class="text-foreground-secondary mt-3 max-w-2xl text-base leading-7">
-                  Eine integrierte Lösung: Ein PIM, ein ERP-Backend, ein Dashboard. Bestellungen,
-                  Stammdaten und Auswertungen verzahnt, eine Quelle der Wahrheit.
+                  Eine Lösung statt zehn Tools: Bestellungen, Stammdaten und Auswertungen greifen
+                  ineinander. Eine Stelle, auf die sich alle verlassen.
                 </p>
               </div>
             </div>
@@ -571,48 +583,6 @@ const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`,
     })();
   </script>
 
-  <section class="border-border hidden border-b py-28 sm:block lg:py-36">
-    <div class="container">
-      <div data-reveal class="max-w-3xl">
-        <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Typische Vorhaben</p>
-        <h2 class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
-          Lösungen für Prozesse,
-          <span class="text-brand-500">nicht für Buzzwords.</span>
-        </h2>
-        <p class="text-foreground-secondary mt-6 text-lg leading-8">
-          Sechs Vorhaben, bei denen RocketBase besonders gut trägt: wenn Abläufe gewachsen sind,
-          Datenqualität leidet und Standardsoftware nicht mehr sauber zur Realität passt.
-        </p>
-      </div>
-
-      <div class="mt-16 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {
-          useCaseTeasers.map((useCase) => (
-            <article
-              data-reveal
-              class="hover-stable group relative rounded-[1.8rem] border border-border bg-card p-5 shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_24px_50px_rgba(34,43,74,0.12)] sm:p-7"
-            >
-              <div class="flex items-center gap-4 sm:block">
-                <div class="bg-brand-50 text-brand-600 dark:bg-brand-900/30 dark:text-brand-100 group-hover:bg-brand-500 group-hover:text-on-invert inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-all duration-300 group-hover:scale-110 sm:h-12 sm:w-12">
-                  <Icon name={useCase.icon} size="md" />
-                </div>
-                <h3 class="font-display text-foreground text-base font-semibold sm:mt-6 sm:text-xl">{useCase.title}</h3>
-              </div>
-              <p class="text-foreground-secondary mt-3 hidden text-sm leading-7 sm:block">{useCase.text}</p>
-            </article>
-          ))
-        }
-      </div>
-
-      <div data-reveal class="mt-10 flex justify-center">
-        <Button variant="outline" href={servicesUrl}>
-          Alle Leistungen im Detail
-          <Icon name="arrow-right" size="sm" />
-        </Button>
-      </div>
-    </div>
-  </section>
-
   <section class="border-border bg-background-secondary border-b py-28 lg:py-36">
     <div class="container grid gap-14 lg:grid-cols-[0.84fr_1.16fr] lg:items-start">
       <div data-reveal="fade-right" class="lg:sticky lg:top-28">
@@ -627,6 +597,12 @@ const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`,
         </p>
         <div class="text-foreground-muted mt-8 text-sm leading-7">
           Discovery · Konzeption · Individualsoftware · Integration · Betrieb
+        </div>
+        <div class="mt-8">
+          <Button variant="outline" href={servicesUrl}>
+            Alle Leistungen im Detail
+            <Icon name="arrow-right" size="sm" />
+          </Button>
         </div>
       </div>
 
@@ -664,7 +640,7 @@ const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`,
 
   <section class="border-border border-b py-28 lg:py-36">
     <div class="container">
-      <div data-reveal class="max-w-3xl">
+      <div data-reveal>
         <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Referenzen</p>
         <h2 class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
           Konzern-Erfahrung, sauber übersetzt
@@ -835,12 +811,12 @@ const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`,
       <div data-reveal="fade-right" class="lg:sticky lg:top-28">
         <p class="text-brand-300 text-sm font-semibold tracking-[0.22em] uppercase">Projektverlauf</p>
         <h2 class="font-display mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
-          Kein Sprung ins Unklare.
+          Kein Blindflug.
           <span class="mt-2 block text-brand-200">Ein klarer Weg von Analyse bis Betrieb.</span>
         </h2>
         <p class="text-on-invert-secondary mt-6 text-lg leading-8">
-          Projekte werden tragfähig, wenn Prioritäten, Architektur und Delivery in einer sauberen
-          Reihenfolge passieren. Genau daran orientiert sich RocketBase.
+          Projekte gelingen, wenn das Wichtigste zuerst kommt und jeder Schritt auf dem vorigen
+          aufbaut – ohne teure Überraschungen unterwegs. Genau so arbeiten wir.
         </p>
       </div>
 
@@ -915,15 +891,27 @@ const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`,
 
   <section id="cta" class="py-28 lg:py-36">
     <div class="container">
-      <div class="overflow-hidden rounded-[2.8rem] border border-border bg-background-secondary p-8 shadow-[0_24px_60px_rgba(34,43,74,0.08)] sm:p-10 lg:p-12">
-        <div data-reveal="fade-right" class="max-w-4xl">
+      <div class="relative overflow-hidden rounded-[2.8rem] border border-border bg-background-secondary p-8 shadow-[0_24px_60px_rgba(34,43,74,0.08)] sm:p-10 lg:p-12">
+        <img
+          src={logomark}
+          alt=""
+          aria-hidden="true"
+          class="pointer-events-none absolute -right-12 -top-16 hidden w-72 opacity-[0.06] select-none lg:block dark:hidden"
+        />
+        <img
+          src={logomarkDark}
+          alt=""
+          aria-hidden="true"
+          class="pointer-events-none absolute -right-12 -top-16 hidden w-72 opacity-[0.08] select-none dark:lg:block"
+        />
+        <div data-reveal="fade-right" class="relative max-w-4xl">
           <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Nächster Schritt</p>
           <h2
             lang="de"
             class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-4xl"
           >
             Von Standardsoftware zur Lösung,
-            <span class="text-brand-500">die wirklich zu Ihrem Unternehmen passt.</span>
+            <span class="text-brand-500">die wirklich zu eurem Unternehmen passt.</span>
           </h2>
           <p class="text-foreground-secondary mt-6 max-w-3xl text-lg leading-8">
             Wenn Prozesse inzwischen mehr bremsen als tragen, lohnt ein strukturierter Blick.

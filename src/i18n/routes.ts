@@ -103,6 +103,16 @@ export const routes = {
     nav: { show: false, order: 50, label: 'nav.discoveryWorkshop' },
   },
 
+  // Schmerz-Einstiege (Sub-Landingpages - not in main nav, linked from home + inline)
+  standardsoftwareAbloesung: {
+    de: 'standardsoftware-abloesung',
+    nav: { show: false, order: 51, label: 'nav.standardsoftwareAbloesung' },
+  },
+  einsatzplanung: {
+    de: 'einsatzplanung',
+    nav: { show: false, order: 52, label: 'nav.einsatzplanung' },
+  },
+
   // Legal pages (noindex, no nav)
   imprint: {
     de: 'impressum',

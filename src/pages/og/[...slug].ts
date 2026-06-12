@@ -12,7 +12,10 @@ const STATIC_PAGES = [
   { slug: 'mission',      title: 'Mission',                description: 'Wie und warum wir bei RocketBase arbeiten. Acht Haltungen hinter jedem Projekt.' },
   { slug: 'arbeitsweise', title: 'Wie wir arbeiten',       description: 'Vier konkrete Wechsel, die unsere Projekte schneller, leichter und tragfähiger machen.' },
   { slug: 'referenzen',   title: 'Referenzen',             description: 'Ausgewählte Referenzen mit Hintergrund zu Ausgangslage, Vorgehen und Projektrahmen.' },
-  { slug: 'kontakt',      title: 'Kontakt',                description: `Sprechen Sie direkt mit Marten Prieß von ${siteConfig.name}.` },
+  { slug: 'standardsoftware-abloesung', title: 'Standardsoftware ablösen', description: 'Wenn Vertec, Centric oder ein ähnliches System das Wachstum bremst: Ablösung durch eine individuelle Lösung, die zum Prozess passt.' },
+  { slug: 'einsatzplanung', title: 'Einsatzplanung & Disposition', description: 'Disposition, Einsatzplanung und Abrechnung raus aus Excel – eine Lösung, die euren realen Ablauf kennt.' },
+  { slug: 'discovery-workshop', title: 'Discovery-Workshop', description: 'Strukturierter Außenblick auf Prozesse und Systemlandschaft: Datenflüsse, Mockups und eine priorisierte Handlungsempfehlung. Ab 1.200 €.' },
+  { slug: 'kontakt',      title: 'Kontakt',                description: `Sprecht direkt mit Marten Prieß von ${siteConfig.name}.` },
   { slug: 'imprint',      title: 'Impressum',              description: 'Rechtliche Informationen zu RocketBase.' },
   { slug: 'privacy',      title: 'Datenschutz',            description: 'Datenschutzinformationen und Ihre Rechte als Nutzer.' },
 ];
@@ -22,7 +25,7 @@ const CASE_TEASER_FILES: Record<string, string> = {
   bonprix: 'teaser-bonprix.jpeg',
   statista: 'teaser-statista.jpeg',
   'fkc-consulting': 'teaser-fkc.jpeg',
-  'metall-pro': 'teaser-schlosserei.jpeg',
+  'schlosserei-diezinger': 'teaser-schlosserei.jpeg',
   'statista-canva': 'teaser-statista-canva.jpeg',
   'stage-cml': 'teaser-stage-cml.jpeg',
   'sam-vorteilsguru': 'teaser-sam-vorteilsguru.jpeg',
@@ -57,7 +60,7 @@ type BlogProps = {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const staticPaths = STATIC_PAGES.map((page) => ({
-    params: { slug: page.slug },
+    params: { slug: `${page.slug}.png` },
     props: {
       kind: 'static',
       title: page.title,
@@ -70,7 +73,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const casePaths = allCases
     .filter((c) => CASE_TEASER_FILES[c.slug])
     .map((c) => ({
-      params: { slug: `referenzen/${c.slug}` },
+      params: { slug: `referenzen/${c.slug}.jpg` },
       props: {
         kind: 'case',
         client: c.client,
@@ -100,7 +103,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
       const teaserPath = resolve(postDir, 'hero.png');
       void rawImagePath;
       return {
-        params: { slug: `blog/${slug}` },
+        params: { slug: `blog/${slug}.jpg` },
         props: {
           kind: 'blog',
           title: post.data.title,
@@ -141,7 +144,8 @@ export const GET: APIRoute = async ({ props }) => {
   }
 
   // Case + Blog OGs are JPEG (photographic background), static OGs are PNG.
-  // URL extension stays .png for route simplicity; content-type reflects real format.
+  // The URL extension matches the real format (.jpg vs .png, see getStaticPaths),
+  // so Content-Type and og:image:type stay consistent.
   const contentType = p.kind === 'case' || p.kind === 'blog' ? 'image/jpeg' : 'image/png';
 
   return new Response(new Uint8Array(buffer), {

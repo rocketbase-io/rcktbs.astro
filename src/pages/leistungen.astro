@@ -17,6 +17,7 @@ const contactUrl = getLocalizedPath('contact', locale);
 const workUrl = getLocalizedPath('work', locale);
 const missionUrl = getLocalizedPath('mission', locale);
 const workshopUrl = getLocalizedPath('discoveryWorkshop', locale);
+const standardsoftwareUrl = getLocalizedPath('standardsoftwareAbloesung', locale);
 
 const servicesPageUrl = new URL(Astro.url.pathname, Astro.site).toString();
 const professionalServiceSchema = createProfessionalServiceSchema({
@@ -38,11 +39,12 @@ const useCases = [
     icon: 'box',
     title: 'Standardsoftware ablösen',
     text: 'Wenn ERP, CRM oder Standard-Tools Wachstum bremsen statt zu ermöglichen.',
+    href: standardsoftwareUrl,
   },
   {
     icon: 'database',
-    title: 'CRM · CMS · PIM · PLM',
-    text: 'Reporting-Lösungen mit individuellem Zuschnitt – passend zu echten Arbeitsabläufen.',
+    title: 'Kunden-, Produkt- & Stammdaten',
+    text: 'Auswertungen und Datenpflege, zugeschnitten auf eure echten Abläufe – statt Tabellen-Bastelei.',
   },
   {
     icon: 'archive',
@@ -57,7 +59,7 @@ const useCases = [
   {
     icon: 'globe',
     title: 'Integrationsprojekte',
-    text: 'Zwischen bestehenden Systemen und neuer Business-Logik – API-first, ohne Datensilos.',
+    text: 'Wenn eure Systeme endlich miteinander reden sollen, statt dass Daten von Hand hin- und herwandern.',
   },
 ];
 ---
@@ -97,8 +99,8 @@ const useCases = [
         data-reveal
         class="text-foreground-secondary mx-auto mt-8 max-w-2xl text-lg leading-8 sm:text-xl"
       >
-        <strong>Beratung, Produktdenken und technische Umsetzung</strong> greifen ineinander –
-        fachlich wie technisch konsistent, von der <strong>ersten Discovery bis zum stabilen Betrieb</strong>.
+        <strong>Beratung, Konzept und Umsetzung aus einer Hand</strong> – von der ersten Analyse bis zum
+        <strong>laufenden Betrieb</strong>. Keine Übergaben, bei denen Wissen verloren geht.
       </p>
       <div data-reveal class="mt-10 flex flex-wrap items-center justify-center gap-4">
         <Button href={contactLinks.cal} target="_blank">
@@ -131,8 +133,8 @@ const useCases = [
           Vier Bausteine, die sich an realen Projektverläufen orientieren.
         </h2>
         <p class="text-foreground-secondary mt-6 text-lg leading-8">
-          Statt austauschbarer Agenturmodule folgt die Struktur dem echten Verlauf
-          anspruchsvoller Projekte: verstehen, priorisieren, bauen, sinnvoll betreiben.
+          Kein Baukasten von der Stange: Die vier Schritte folgen dem echten Verlauf eines
+          Projekts – verstehen, priorisieren, bauen, dauerhaft betreiben.
         </p>
       </header>
 
@@ -211,20 +213,30 @@ const useCases = [
 
       <div class="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {
-          useCases.map((useCase) => (
-            <article
-              data-reveal
-              class="hover-lift group border-border bg-card hover:border-brand-300 relative overflow-hidden rounded-2xl border p-6 shadow-sm"
-            >
-              <div class="bg-brand-50 text-brand-600 dark:bg-brand-900/30 dark:text-brand-100 group-hover:bg-brand-500 group-hover:text-on-invert group-hover:scale-110 inline-flex h-12 w-12 items-center justify-center rounded-xl transition-all duration-300">
-                <Icon name={useCase.icon} size="md" />
-              </div>
-              <h3 class="font-display text-foreground mt-5 text-lg font-semibold">
-                {useCase.title}
-              </h3>
-              <p class="text-foreground-secondary mt-3 text-sm leading-6">{useCase.text}</p>
-            </article>
-          ))
+          useCases.map((useCase) => {
+            const Tag = useCase.href ? 'a' : 'article';
+            return (
+              <Tag
+                data-reveal
+                href={useCase.href}
+                class="hover-lift group border-border bg-card hover:border-brand-300 relative block overflow-hidden rounded-2xl border p-6 shadow-sm"
+              >
+                <div class="bg-brand-50 text-brand-600 dark:bg-brand-900/30 dark:text-brand-100 group-hover:bg-brand-500 group-hover:text-on-invert group-hover:scale-110 inline-flex h-12 w-12 items-center justify-center rounded-xl transition-all duration-300">
+                  <Icon name={useCase.icon} size="md" />
+                </div>
+                <h3 class="font-display text-foreground mt-5 text-lg font-semibold">
+                  {useCase.title}
+                </h3>
+                <p class="text-foreground-secondary mt-3 text-sm leading-6">{useCase.text}</p>
+                {useCase.href && (
+                  <span class="text-brand-600 mt-4 inline-flex items-center gap-1.5 text-sm font-semibold transition-transform duration-300 group-hover:translate-x-1">
+                    Mehr dazu
+                    <Icon name="arrow-right" size="xs" />
+                  </span>
+                )}
+              </Tag>
+            );
+          })
         }
       </div>
     </div>
@@ -304,7 +316,7 @@ const useCases = [
         class="mt-16 rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur sm:p-10"
       >
         <p class="text-brand-300 text-xs font-semibold tracking-[0.22em] uppercase">
-          Was Sie bekommen
+          Was ihr bekommt
         </p>
         <ul class="mt-6 grid gap-4 sm:grid-cols-2">
           {

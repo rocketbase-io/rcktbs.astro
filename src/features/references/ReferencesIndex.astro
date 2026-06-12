@@ -23,7 +23,7 @@ const caseImages = {
   bonprix: bonprixCaseImage,
   statista: statistaCaseImage,
   'fkc-consulting': fkcCaseImage,
-  'metall-pro': schlossereiCaseImage,
+  'schlosserei-diezinger': schlossereiCaseImage,
   'statista-canva': statistaCanvaCaseImage,
   'stage-cml': stageCmlCaseImage,
   'sam-vorteilsguru': samVorteilsguruCaseImage,
@@ -68,7 +68,7 @@ const teaserCaptions: Record<string, string> = {
   bonprix: 'Konzernumfeld, saubere Datenflüsse, viele beteiligte Systeme.',
   statista: 'Modernisierung eines gewachsenen Kernsystems im laufenden Betrieb.',
   'fkc-consulting': 'Ablösung einer Standardsoftware durch eine individuelle Plattform.',
-  'metall-pro': 'Handwerk statt Tabelle: Einsatzplanung im echten Werkstatt-Alltag.',
+  'schlosserei-diezinger': 'Handwerk statt Tabelle: Einsatzplanung im echten Werkstatt-Alltag.',
 };
 ---
 
@@ -134,15 +134,9 @@ const teaserCaptions: Record<string, string> = {
               </div>
             )}
             {teaserCaptions[item.slug] && (
-              <div class="mt-4 space-y-1.5 px-1">
-                <p class="text-sm leading-6 text-foreground-secondary">
-                  {teaserCaptions[item.slug]}
-                </p>
-                <p class="flex items-center gap-1.5 text-xs text-foreground-muted">
-                  <Icon name="palette" size="xs" />
-                  Visualisierung erstellt mit Midjourney v6.1
-                </p>
-              </div>
+              <p class="mt-4 px-1 text-sm leading-6 text-foreground-secondary">
+                {teaserCaptions[item.slug]}
+              </p>
             )}
           </a>
 
@@ -259,7 +253,7 @@ const teaserCaptions: Record<string, string> = {
       <div>
         <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Nächster Schritt</p>
         <h2 class="mt-4 font-display text-4xl font-bold tracking-tight text-foreground">
-          Wenn Ihr Vorhaben ähnlich gelagert ist, lohnt ein Gespräch.
+          Wenn euer Vorhaben ähnlich gelagert ist, lohnt ein Gespräch.
         </h2>
         <p class="mt-6 text-lg leading-8 text-foreground-secondary">
           Viele Projekte starten nicht mit einer klaren Spezifikation, sondern mit Reibung im

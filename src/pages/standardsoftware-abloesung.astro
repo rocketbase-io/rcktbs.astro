@@ -1,0 +1,556 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import { Picture } from 'astro:assets';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import GridShift from '@/components/hero-backgrounds/GridShift.astro';
+import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
+import { defaultLocale } from '@/i18n/config';
+import { getLocalizedPath } from '@/i18n/index';
+import { contactLinks } from '@/data/rocketbase';
+import { createServiceSchema, createFAQSchema } from '@/lib/schema';
+
+import heroShotKanban from '@/assets/references/fkc-sales-kanban.png';
+import heroShotCalc from '@/assets/references/fkc-proposal-calculate.png';
+
+const locale = defaultLocale;
+const contactUrl = getLocalizedPath('contact', locale);
+const workshopUrl = getLocalizedPath('discoveryWorkshop', locale);
+const einsatzplanungUrl = getLocalizedPath('einsatzplanung', locale);
+
+const clientLogos = [
+  { key: 'fkc_logo', name: 'FKC Consulting' },
+  { key: 'statista-logo', name: 'Statista' },
+  { key: 'bonprix_logo', name: 'bonprix' },
+  { key: 'stage_logo', name: 'Stage Entertainment' },
+];
+
+// Der Schmerz – reproduzierbar aus mehreren Ablöseprojekten (vgl. Blogartikel
+// "Wenn Standardsoftware wie Vertec oder Centric an ihre Grenzen stößt").
+const painPoints = [
+  {
+    icon: 'alert-triangle',
+    title: 'Angepasst, bis keine Updates mehr gehen',
+    text: 'Über Jahre an die eigenen Eigenheiten angepasst – bis jedes Update zum Risiko wird: Läuft danach noch alles? Viele schieben Updates bewusst um Jahre auf. Das System ist faktisch eingefroren, aber die Lizenz läuft weiter.',
+  },
+  {
+    icon: 'box',
+    title: 'Euer Modell, in den Standard gepresst',
+    text: 'Die Software ist für 15 wie für 400 Firmen gemacht – also für niemanden ganz richtig. Euer Geschäft passt nur über Sonderfälle hinein. Irgendwann gibt es mehr Ausnahmen als Regeln, und ihr könnt euch auf eure eigenen Zahlen nicht mehr blind verlassen.',
+  },
+  {
+    icon: 'table',
+    title: 'Die Excel-Welt daneben',
+    text: 'Die Fachabteilung führt parallel zur teuren Standardsoftware eine Excel-Welt – nicht für Notfälle, sondern im Tagesgeschäft. Der deutlichste Hinweis, dass das System die reale Arbeit nicht mehr trägt.',
+  },
+  {
+    icon: 'clock',
+    title: 'Jede Stunde am System kostet doppelt',
+    text: 'In der Beratung ist Zeit das Produkt. Was an Stunden in Behelfslösungen, Nachpflege und manuellem Zusammensuchen von Auswertungen versickert, fehlt direkt in der fakturierbaren Leistung.',
+  },
+];
+
+// Centric von innen – anonymer Autoritätsbaustein. Erfahrung aus einer Centric-
+// Einführung (Migration von Host-/Informatica-Strukturen) in einem Handels-/
+// Versandunternehmen. Kein Kundenname, keine Wertung über den Kunden – nur die
+// reproduzierbaren technischen Grenzen, die wir dort von innen gesehen haben.
+const centricLimits = [
+  {
+    icon: 'upload',
+    title: 'Saubere Importe fast nur über CSV',
+    text: 'Wer Daten ernsthaft und wiederholbar reinbekommen will, landet praktisch immer beim CSV-Import mit fester Spaltenlogik – moderne, robuste Schnittstellen sind die Ausnahme, nicht die Regel.',
+  },
+  {
+    icon: 'layers',
+    title: 'Dynamische Attribute nur mit Customizing',
+    text: 'Sobald das Datenmodell dynamische Attributierung braucht – Produkte, Varianten, Eigenschaften, die sich nicht in ein starres Schema pressen lassen – geht es nur über Customizing. Und genau dort beginnt wieder die Flickschusterei.',
+  },
+  {
+    icon: 'settings',
+    title: 'Auch der Standard kocht mit Wasser',
+    text: 'Der Eindruck „mit dem großen Produkt wird alles einfacher" hält der Praxis nicht stand. Die spezifischen Kanten eures Geschäfts kosten auch hier Anpassung – nur dass ihr sie auf fremdem Fundament baut.',
+  },
+];
+
+// Zwei mögliche Antworten – ehrlich gerahmt, nicht als Pauschal-Plädoyer.
+const twoAnswers = {
+  stay: {
+    label: 'Manchmal richtig',
+    title: 'Im Standard bleiben',
+    text: 'Modul erweitern, Workarounds konsolidieren, ein externes Reporting-Tool anbinden. Oft die schnellere, im ersten Moment günstigere Variante – und für einen branchenüblichen Kernprozess die richtige.',
+    note: 'Wenn der Prozess kein Wettbewerbsvorteil sein soll, muss er auch nicht individuell sein. Das sagen wir im Erstgespräch auch so, wenn es so ist.',
+  },
+  replace: {
+    label: 'Wenn der Prozess euer USP ist',
+    title: 'Kernprozesse individuell überführen',
+    text: 'Den Standard dort behalten, wo er wirklich passt – bei allem, was bei euch genauso läuft wie bei tausend anderen. Das, was euer Geschäft besonders macht, kommt in eine eigene Lösung.',
+    note: 'Die Lösung passt von Grund auf zu eurem Geschäft – keine Behelfsfelder, keine Liste mit siebzehn Sonderfällen. Euer Prozess steckt im System, nicht im Kopf von zwei, drei Schlüsselpersonen.',
+  },
+};
+
+// Pragmatischer Ablauf – kein Big-Bang-Austausch.
+const phases = [
+  {
+    number: '01',
+    title: 'Discovery',
+    text: 'Die Abläufe aufnehmen, mit denen ihr euer Geld verdient – nicht die Systemlandschaft. Was muss der Betrieb können, unabhängig von den heutigen Tools?',
+  },
+  {
+    number: '02',
+    title: 'Schnitt definieren',
+    text: 'Was bleibt im Standard, was wird ersetzt? Klare Grenze zwischen Buchhaltung/HR und der individuellen Kernlogik samt Reporting.',
+  },
+  {
+    number: '03',
+    title: 'Parallelbetrieb',
+    text: 'Die neue Lösung läuft neben dem Altsystem. Datenimport, schrittweise Übergabe von Teilbereichen, Historie bleibt nutzbar.',
+  },
+  {
+    number: '04',
+    title: 'Abschaltung',
+    text: 'Erst wenn die neue Lösung den kompletten Prozess stabil abdeckt, wird die Altlösung heruntergefahren. Keine Deadline-Kompromisse.',
+  },
+];
+
+const seoTitle = 'Standardsoftware ablösen – Vertec, Centric & Co.';
+const pageUrl = new URL(Astro.url.pathname, Astro.site).toString();
+
+const serviceSchema = createServiceSchema({
+  name: 'Standardsoftware-Ablösung',
+  description:
+    'Ablösung gewachsener Standardsoftware (z. B. Vertec oder Centric) durch eine individuelle Lösung, die zum tatsächlichen Geschäftsprozess passt. Pragmatischer Parallelbetrieb statt Big-Bang-Austausch.',
+  url: pageUrl,
+  serviceType: 'Ablösung von Standardsoftware durch Individualentwicklung',
+  areaServed: 'DE',
+});
+
+const miniFaqs = [
+  {
+    q: 'Müssen wir alles auf einmal ablösen?',
+    a: 'Nein. In den Projekten, die wir begleitet haben, hat sich ein schrittweises Vorgehen bewährt: Die neue Lösung läuft parallel zum Altsystem, Teilbereiche werden nacheinander übergeben, und erst wenn alles stabil läuft, wird die Altlösung abgeschaltet. Das Tagesgeschäft bleibt dabei nie stehen.',
+  },
+  {
+    q: 'Ist eine Individuallösung nicht teurer als die Standardsoftware?',
+    a: 'In der Anschaffung oft ja. Entscheidend ist aber die Gesamtrechnung: Lizenzkosten für ein System, das im Grunde stehengeblieben ist, plus die Stunden, die täglich in Behelfslösungen, Nachpflege und manuelles Zusammensuchen von Auswertungen fließen. Wann sich eine Ablösung rechnet, ordnen wir im Discovery sauber ein – inklusive ehrlicher Empfehlung, im Standard zu bleiben, wenn das die bessere Wahl ist.',
+  },
+  {
+    q: 'Was passiert mit unseren Bestandsdaten?',
+    a: 'Die werden übernommen. Datenimport und Migration aus dem Bestandssystem sind fester Teil des Vorgehens – die Historie bleibt nutzbar, der Parallelbetrieb sorgt dafür, dass nichts verloren geht.',
+  },
+  {
+    q: 'Wann ist Ablösen die falsche Entscheidung?',
+    a: 'Wenn euer Kernprozess branchenüblich ist und ein ausgereiftes Produkt ihn gut abbildet, wenn die Abläufe bewusst kein Wettbewerbsvorteil sein sollen, oder wenn das System ohnehin nur an der Peripherie sitzt. In diesen Fällen ist Individualentwicklung teuer und bringt wenig – und genau das sagen wir auch.',
+  },
+];
+---
+
+<PageLayout
+  title={seoTitle}
+  description="Vertec, Centric oder ein ähnliches Branchensystem wächst nicht mehr mit? RocketBase löst gewachsene Standardsoftware durch eine individuelle Lösung ab – pragmatisch, im Parallelbetrieb, ohne Big-Bang."
+  lang={locale}
+  routeId="standardsoftwareAbloesung"
+  extraSchemas={[
+    serviceSchema,
+    createFAQSchema(miniFaqs.map((f) => ({ question: f.q, answer: f.a }))),
+  ]}
+>
+  <!-- HERO -->
+  <section class="relative flex min-h-[60vh] items-center overflow-hidden py-24 sm:py-32">
+    <GridShift />
+    <div
+      class="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,var(--color-background)_0%,transparent_75%)] opacity-70"
+      aria-hidden="true"
+    ></div>
+
+    <div class="container relative z-10 max-w-5xl text-center">
+      <p data-reveal="fade-down" class="text-brand-600 dark:text-brand-300 text-sm font-semibold tracking-[0.22em] uppercase">
+        Standardsoftware ablösen
+      </p>
+      <h1
+        data-reveal="fade-down"
+        lang="de"
+        class="font-display text-foreground mt-6 text-4xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-5xl lg:text-6xl"
+      >
+        Wenn Vertec oder Centric das Wachstum
+        <span class="mt-2 block text-brand-500">
+          eher bremst als trägt.
+        </span>
+      </h1>
+      <p data-reveal class="text-foreground-secondary mx-auto mt-8 max-w-2xl text-lg leading-8 sm:text-xl">
+        Vertec und Centric stehen hier stellvertretend – das Muster gilt genauso für ein anderes
+        Branchensystem oder ein über Jahre gewachsenes Eigenkonstrukt. Standardsoftware ist nicht
+        schlecht, sie ist <strong>für alle</strong> gemacht. Irgendwann arbeitet ihr nicht mehr mit dem
+        System, sondern dagegen. RocketBase überführt <strong>eure wichtigsten Abläufe</strong> in eine
+        Lösung, die zu eurem tatsächlichen Geschäft passt.
+      </p>
+      <div data-reveal class="mt-10 flex flex-wrap items-center justify-center gap-4">
+        <Button size="lg" href={contactLinks.cal} target="_blank">
+          Erstgespräch buchen
+          <Icon name="arrow-up-right" size="sm" />
+        </Button>
+        <Button variant="link" href="#schmerz" class="text-foreground-secondary hover:text-foreground">
+          Kommt euch bekannt vor?
+          <Icon name="chevron-down" size="sm" />
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <ClientLogoStrip heading="Erfahrung aus Projekten mit" logos={clientLogos} variant="light" />
+
+  <!-- SCHMERZ -->
+  <section id="schmerz" class="bg-background relative overflow-hidden py-24 lg:py-32">
+    <div class="container relative z-10 max-w-6xl">
+      <header data-reveal class="mx-auto max-w-3xl text-center">
+        <div class="mx-auto flex max-w-md items-center gap-4">
+          <span class="bg-border h-px flex-1"></span>
+          <span class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold">
+            01
+          </span>
+          <span class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">
+            Das Muster
+          </span>
+          <span class="bg-border h-px flex-1"></span>
+        </div>
+        <h2
+          lang="de"
+          class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-4xl"
+        >
+          Immer die gleiche Geschichte – egal welche Branche.
+        </h2>
+        <p class="text-foreground-secondary mt-6 text-lg leading-8">
+          Die Software wurde vor 5, 10, manchmal 15 Jahren eingeführt – als klarer Fortschritt. Mit der
+          Zeit wird das Geschäft spezifischer, das System hält über Workarounds mit. Bis das Verhältnis kippt.
+        </p>
+      </header>
+
+      <div data-reveal class="mt-16 grid gap-6 md:grid-cols-2 md:gap-7">
+        {
+          painPoints.map((item) => (
+            <article class="group border-border bg-card relative flex flex-col gap-4 rounded-2xl border p-7 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg sm:p-8">
+              <div class="flex items-start gap-4">
+                <div class="border-brand-300/70 bg-brand-500/5 text-brand-600 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border transition-colors duration-300 group-hover:bg-brand-500 group-hover:text-on-invert group-hover:border-brand-500">
+                  <Icon name={item.icon} size="md" />
+                </div>
+                <h3 class="font-display text-foreground mt-1 text-lg font-bold tracking-tight sm:text-xl">
+                  {item.title}
+                </h3>
+              </div>
+              <p class="text-foreground-secondary text-[0.95rem] leading-7">{item.text}</p>
+            </article>
+          ))
+        }
+      </div>
+
+      <p data-reveal class="text-foreground-muted mx-auto mt-12 max-w-2xl text-center text-base leading-7">
+        Einzeln ist keines dieser Signale ein Grund, ein etabliertes System über den Haufen zu werfen.
+        In Kombination – und bei einem Betrieb, der wachsen will – schon.
+      </p>
+    </div>
+  </section>
+
+  <!-- CENTRIC VON INNEN (Autoritätsbaustein) -->
+  <section class="bg-surface-invert text-on-invert relative overflow-hidden py-24 lg:py-32">
+    <div class="bg-brand-500/10 pointer-events-none absolute -right-32 top-0 h-96 w-96 rounded-full blur-3xl" aria-hidden="true"></div>
+    <div class="container relative z-10 max-w-6xl">
+      <div class="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-16">
+        <div data-reveal="fade-right" class="lg:sticky lg:top-28">
+          <p class="text-brand-300 text-xs font-semibold tracking-[0.22em] uppercase">Aus erster Hand</p>
+          <h2
+            lang="de"
+            class="font-display mt-4 text-3xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-4xl"
+          >
+            Wir haben auch Centric von innen gesehen.
+          </h2>
+          <p class="text-on-invert-secondary mt-6 text-lg leading-8">
+            Nicht aus dem Prospekt: Wir haben eine Centric-Einführung in einem Handels- und
+            Versandunternehmen begleitet – Migration aus gewachsenen Host- und Informatica-Strukturen,
+            Datenbereinigung, Aufbereitung und Transformation in den neuen Standard.
+          </p>
+          <blockquote class="border-brand-300/60 mt-8 border-l-2 pl-5">
+            <p class="text-on-invert text-xl font-semibold leading-snug">
+              „Auch das große Standardprodukt kocht nur mit Wasser."
+            </p>
+            <p class="text-on-invert-secondary mt-3 text-base leading-7">
+              Genau deshalb raten wir nicht reflexhaft zu Individualsoftware – und nicht reflexhaft zum
+              Standard. Wir haben beide Seiten von innen erlebt und ordnen ehrlich ein, was bei euch trägt.
+            </p>
+          </blockquote>
+        </div>
+
+        <div data-reveal="fade-left" class="space-y-4">
+          {
+            centricLimits.map((item) => (
+              <article class="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur transition-colors duration-300 hover:border-white/20 sm:p-7">
+                <div class="flex items-start gap-4">
+                  <div class="border-brand-300/40 bg-brand-500/15 text-brand-200 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border">
+                    <Icon name={item.icon} size="md" />
+                  </div>
+                  <div>
+                    <h3 class="text-on-invert text-lg font-bold tracking-tight">{item.title}</h3>
+                    <p class="text-on-invert-secondary mt-2 text-[0.95rem] leading-7">{item.text}</p>
+                  </div>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ZWEI ANTWORTEN -->
+  <section class="bg-background-secondary border-border relative overflow-hidden border-y py-24 lg:py-32">
+    <div class="bg-grid-pattern pointer-events-none absolute inset-0 opacity-30 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]" aria-hidden="true"></div>
+    <div class="container relative z-10 max-w-6xl">
+      <header data-reveal class="mx-auto max-w-3xl text-center">
+        <div class="mx-auto flex max-w-md items-center gap-4">
+          <span class="bg-border h-px flex-1"></span>
+          <span class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold">
+            02
+          </span>
+          <span class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">
+            Zwei Wege
+          </span>
+          <span class="bg-border h-px flex-1"></span>
+        </div>
+        <h2 class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl">
+          Ablösen ist nicht immer die Antwort.
+        </h2>
+        <p class="text-foreground-secondary mt-6 text-lg leading-8">
+          Wer mit der Frage einer Ablösung kommt, kommt fast nie mit einem Technik-Argument, sondern mit
+          einem Geschäfts-Argument. Dann gibt es zwei ehrliche Wege.
+        </p>
+      </header>
+
+      <div data-reveal class="mt-16 grid gap-6 md:grid-cols-2 md:items-stretch md:gap-7">
+        <article class="border-border bg-card flex flex-col gap-4 rounded-2xl border p-7 shadow-sm sm:p-8">
+          <p class="text-foreground-muted font-mono text-xs font-semibold tracking-wider uppercase">
+            {twoAnswers.stay.label}
+          </p>
+          <h3 class="font-display text-foreground text-xl font-bold tracking-tight sm:text-2xl">
+            {twoAnswers.stay.title}
+          </h3>
+          <p class="text-foreground-secondary text-[0.95rem] leading-7">{twoAnswers.stay.text}</p>
+          <div class="text-foreground-muted mt-auto flex items-start gap-2 border-t border-border/60 pt-5 text-sm leading-6">
+            <Icon name="info" size="xs" class="text-brand-500 mt-1 shrink-0" />
+            <span>{twoAnswers.stay.note}</span>
+          </div>
+        </article>
+
+        <article class="border-brand-300 bg-card flex flex-col gap-4 rounded-2xl border-2 p-7 shadow-[0_20px_50px_-20px_rgba(99,102,241,0.35)] sm:p-8">
+          <p class="text-brand-600 font-mono text-xs font-semibold tracking-wider uppercase">
+            {twoAnswers.replace.label}
+          </p>
+          <h3 class="font-display text-foreground text-xl font-bold tracking-tight sm:text-2xl">
+            {twoAnswers.replace.title}
+          </h3>
+          <p class="text-foreground-secondary text-[0.95rem] leading-7">{twoAnswers.replace.text}</p>
+          <div class="text-foreground-muted mt-auto flex items-start gap-2 border-t border-border/60 pt-5 text-sm leading-6">
+            <Icon name="check-circle" size="xs" class="text-brand-500 mt-1 shrink-0" />
+            <span>{twoAnswers.replace.note}</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEIT-CASE: FKC -->
+  <section class="bg-background relative overflow-hidden py-24 lg:py-32">
+    <div class="bg-brand-300/10 pointer-events-none absolute -left-24 top-1/3 h-96 w-96 rounded-full blur-3xl" aria-hidden="true"></div>
+    <div class="container relative z-10 max-w-6xl">
+      <header data-reveal class="mx-auto max-w-3xl text-center">
+        <div class="mx-auto flex max-w-md items-center gap-4">
+          <span class="bg-border h-px flex-1"></span>
+          <span class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold">
+            03
+          </span>
+          <span class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">
+            In der Praxis
+          </span>
+          <span class="bg-border h-px flex-1"></span>
+        </div>
+        <h2 class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl">
+          Von der Standardsoftware zur eigenen Plattform.
+        </h2>
+      </header>
+
+      <a
+        href="/referenzen/fkc-consulting"
+        data-reveal
+        class="group mt-14 grid items-center gap-8 rounded-[2rem] border border-border bg-card p-6 shadow-[0_22px_55px_rgba(34,43,74,0.08)] transition-[transform,box-shadow] duration-500 hover:-translate-y-1 hover:shadow-[0_30px_70px_rgba(34,43,74,0.12)] sm:p-8 lg:grid-cols-[1.1fr_0.9fr]"
+      >
+        <div>
+          <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">FKC Consulting</p>
+          <h3 class="font-display text-foreground mt-3 text-2xl font-semibold leading-snug">
+            Standardsoftware, die operative Realität und Wachstum nicht mehr sauber abbildete.
+          </h3>
+          <p class="text-foreground-secondary mt-4 text-base leading-7">
+            Bestandsdaten aus einem proprietären System herausgelöst, die Migration geplant und eine
+            individuelle Lösung gebaut, die sich an den tatsächlichen Abläufen orientiert – von der
+            Angebots-Pipeline über die Kalkulation bis zur Rechnung.
+          </p>
+          <span class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand-600 transition-transform duration-300 group-hover:translate-x-1">
+            Den Case ansehen
+            <Icon name="arrow-right" size="sm" />
+          </span>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="overflow-hidden rounded-2xl border border-border shadow-sm">
+            <Picture
+              src={heroShotKanban}
+              alt="Angebots-Pipeline als Kanban-Board"
+              widths={[240, 360, 480]}
+              sizes="(max-width: 1024px) 45vw, 260px"
+              formats={['avif', 'webp']}
+              class="aspect-[4/3] w-full object-cover object-left-top"
+              loading="lazy"
+            />
+          </div>
+          <div class="mt-6 overflow-hidden rounded-2xl border border-border shadow-sm">
+            <Picture
+              src={heroShotCalc}
+              alt="Angebotskalkulation mit Deckungsbeitrag"
+              widths={[240, 360, 480]}
+              sizes="(max-width: 1024px) 45vw, 260px"
+              formats={['avif', 'webp']}
+              class="aspect-[4/3] w-full object-cover object-left-top"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ABLAUF -->
+  <section class="bg-background-secondary border-border relative overflow-hidden border-y py-24 lg:py-32">
+    <div class="bg-grid-pattern pointer-events-none absolute inset-0 opacity-30 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]" aria-hidden="true"></div>
+    <div class="container relative z-10 max-w-6xl">
+      <header data-reveal class="mx-auto max-w-3xl text-center">
+        <div class="mx-auto flex max-w-md items-center gap-4">
+          <span class="bg-border h-px flex-1"></span>
+          <span class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold">
+            04
+          </span>
+          <span class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">
+            So läuft die Ablösung
+          </span>
+          <span class="bg-border h-px flex-1"></span>
+        </div>
+        <h2 class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl">
+          Schrittweise. Risikoärmer als ein Komplettaustausch.
+        </h2>
+        <p class="text-foreground-secondary mt-6 text-lg leading-8">
+          Das ist weniger glamourös als ein Big-Bang – und für den Mittelstand meist der einzig gangbare
+          Weg, weil das Tagesgeschäft nicht stehenbleiben kann.
+        </p>
+      </header>
+
+      <div data-reveal class="mt-16 grid gap-5 md:grid-cols-2 md:gap-6 xl:grid-cols-4">
+        {
+          phases.map((phase, index) => (
+            <article
+              class:list={[
+                'relative flex flex-col rounded-2xl border p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg',
+                index === phases.length - 1
+                  ? 'border-brand-300 bg-card shadow-[0_22px_55px_rgba(34,43,74,0.08)]'
+                  : 'border-border bg-card',
+              ]}
+            >
+              <p class="text-brand-600 font-mono text-xs font-semibold tracking-wider">{phase.number}</p>
+              <h3 class="font-display text-foreground mt-2 text-lg font-semibold leading-snug">{phase.title}</h3>
+              <p class="text-foreground-secondary mt-3 text-sm leading-6">{phase.text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="bg-background relative overflow-hidden py-24 lg:py-32">
+    <div class="container relative z-10 max-w-4xl">
+      <header data-reveal class="mx-auto max-w-3xl text-center">
+        <div class="mx-auto flex max-w-md items-center gap-4">
+          <span class="bg-border h-px flex-1"></span>
+          <span class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold">
+            05
+          </span>
+          <span class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">
+            Häufige Fragen
+          </span>
+          <span class="bg-border h-px flex-1"></span>
+        </div>
+        <h2 class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl">
+          Was Entscheider vorab fragen.
+        </h2>
+      </header>
+
+      <div data-reveal class="mt-12 flex flex-col gap-4">
+        {
+          miniFaqs.map((item) => (
+            <details class="group border-border bg-card rounded-2xl border p-5 shadow-sm transition-shadow duration-300 open:shadow-lg sm:p-6">
+              <summary class="flex cursor-pointer list-none items-start gap-4 [&::-webkit-details-marker]:hidden">
+                <h3 class="font-display text-foreground flex-1 text-base font-bold tracking-tight sm:text-lg">
+                  {item.q}
+                </h3>
+                <Icon name="chevron-down" size="sm" class="text-foreground-muted mt-1 shrink-0 transition-transform duration-300 group-open:rotate-180" />
+              </summary>
+              <p class="text-foreground-secondary mt-4 border-t border-border/60 pt-4 text-[0.95rem] leading-7">
+                {item.a}
+              </p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="border-border bg-background-secondary border-t py-24">
+    <div class="container max-w-4xl">
+      <div data-reveal="zoom-in" class="border-border bg-card rounded-[2.25rem] border p-6 shadow-sm sm:p-8 lg:p-10">
+        <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <div>
+            <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Nächster Schritt</p>
+            <h2
+              lang="de"
+              class="font-display text-foreground mt-4 text-2xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-3xl lg:text-4xl"
+            >
+              Trägt eure Standardsoftware noch – oder kippt sie?
+            </h2>
+            <p class="text-foreground-secondary mt-6 text-lg leading-8">
+              30 Minuten, um eure Situation einzuordnen. Danach ist klar, ob sich ein strukturierter
+              Discovery-Workshop lohnt – oder ob ihr beim Bestand bleiben solltet. Ehrliche Einschätzung,
+              kein Vertriebsdruck.
+            </p>
+            <a href={workshopUrl} class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-brand-600 hover:text-brand-700 transition-colors">
+              Mehr zum Discovery-Workshop
+              <Icon name="arrow-right" size="sm" />
+            </a>
+          </div>
+          <div class="bg-background-secondary flex flex-wrap items-center gap-4 rounded-[1.5rem] p-5 sm:p-6">
+            <Button href={contactLinks.cal} target="_blank">
+              Erstgespräch buchen
+              <Icon name="arrow-up-right" size="sm" />
+            </Button>
+            <Button variant="link" href={contactUrl}>
+              Kontaktseite
+              <Icon name="arrow-right" size="sm" />
+            </Button>
+          </div>
+        </div>
+        <div class="border-border/60 mt-8 border-t pt-6">
+          <a href={einsatzplanungUrl} class="group text-foreground-secondary inline-flex items-center gap-2 text-sm leading-7">
+            <span>Eher Disposition und Einsatzplanung über Excel?</span>
+            <span class="text-brand-600 font-semibold underline decoration-brand-300/60 underline-offset-4 group-hover:text-brand-700 transition-colors">
+              Zur Einsatzplanung
+            </span>
+            <Icon name="arrow-right" size="xs" class="text-brand-500 transition-transform group-hover:translate-x-1" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</PageLayout>

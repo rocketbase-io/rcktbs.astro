@@ -50,6 +50,7 @@ const caseLogoKey: Record<string, string> = {
   statista: 'statista-logo',
   'statista-canva': 'statista-logo',
   'fkc-consulting': 'fkc_logo',
+  'schlosserei-diezinger': 'diezinger_logo',
   'stage-cml': 'stage_logo',
   'sam-vorteilsguru': 'sam',
   'mavox-winterdienst': 'mavox_logo',
@@ -83,7 +84,7 @@ const caseImages = {
   bonprix: bonprixCaseImage,
   statista: statistaCaseImage,
   'fkc-consulting': fkcCaseImage,
-  'metall-pro': schlossereiCaseImage,
+  'schlosserei-diezinger': schlossereiCaseImage,
   'statista-canva': statistaCanvaCaseImage,
   'stage-cml': stageCmlCaseImage,
   'sam-vorteilsguru': samVorteilsguruCaseImage,
@@ -100,6 +101,19 @@ const contextBlocks = [
   { label: 'Beitrag von RocketBase', text: item.approach },
   { label: 'Warum das relevant war', text: item.impact },
 ];
+
+// Optionale "Was jetzt läuft"-Sektion: konkrete Lösung + spürbarer Nutzen.
+// Wird nur gerendert, wenn der Case ein `solved`-Feld hat.
+const solvedItems = (item as { solved?: { title: string; benefit: string }[] }).solved ?? [];
+const hasSolved = solvedItems.length > 0;
+
+// Sektionsnummern laufen dynamisch durch: 01 Kontext, 02 Prozess sind fix.
+// Danach optional "Was jetzt läuft", dann optional Screenshots, dann Weitere Referenzen.
+const hasShots = Boolean(item.screenshots && item.screenshots.length > 0);
+const fmtNo = (n: number) => String(n).padStart(2, '0');
+const solvedNo = hasSolved ? fmtNo(3) : '';
+const screenshotsNo = fmtNo(3 + (hasSolved ? 1 : 0));
+const moreNo = fmtNo(3 + (hasSolved ? 1 : 0) + (hasShots ? 1 : 0));
 
 const resolvedScreenshots = await Promise.all(
   (item.screenshots ?? []).map(async (shot) => {
@@ -282,6 +296,43 @@ const resolvedScreenshots = await Promise.all(
     </div>
   </section>
 
+  <!-- Was jetzt läuft (optional) -->
+  {hasSolved && (
+    <section class="border-b border-border py-24 lg:py-32">
+      <div class="container max-w-6xl">
+        <header data-reveal class="mx-auto max-w-3xl text-center">
+          <div class="mx-auto flex max-w-md items-center gap-4">
+            <span class="h-px flex-1 bg-border"></span>
+            <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-brand-300 bg-card font-mono text-sm font-bold text-brand-600">
+              {solvedNo}
+            </span>
+            <span class="text-xs font-semibold uppercase tracking-[0.22em] text-foreground-muted">Was jetzt läuft</span>
+            <span class="h-px flex-1 bg-border"></span>
+          </div>
+          <h2 class="mt-8 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            <span class="whitespace-nowrap">Konkret&nbsp;gebaut –</span>
+            <span class="sm:block">und was es bringt.</span>
+          </h2>
+        </header>
+
+        <div class="mt-16 grid gap-5 md:grid-cols-2 md:gap-6">
+          {solvedItems.map((entry) => (
+            <article
+              class="hover-lift group flex gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-lg sm:p-7"
+              data-reveal
+            >
+              <Icon name="check-circle" size="md" class="mt-0.5 shrink-0 text-brand-500" />
+              <div>
+                <h3 class="font-display text-lg font-bold tracking-tight text-foreground">{entry.title}</h3>
+                <p class="mt-2 text-[0.95rem] leading-7 text-foreground-secondary">{entry.benefit}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
   <!-- Screenshots -->
   {resolvedScreenshots.length > 0 && (
     <section class="py-24 lg:py-32">
@@ -290,7 +341,7 @@ const resolvedScreenshots = await Promise.all(
           <div class="mx-auto flex max-w-md items-center gap-4">
             <span class="h-px flex-1 bg-border"></span>
             <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-brand-300 bg-card font-mono text-sm font-bold text-brand-600">
-              03
+              {screenshotsNo}
             </span>
             <span class="text-xs font-semibold uppercase tracking-[0.22em] text-foreground-muted">Einblicke</span>
             <span class="h-px flex-1 bg-border"></span>
@@ -580,7 +631,7 @@ const resolvedScreenshots = await Promise.all(
         <div class="mx-auto flex max-w-md items-center gap-4">
           <span class="h-px flex-1 bg-border"></span>
           <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-brand-300 bg-card font-mono text-sm font-bold text-brand-600">
-            {item.screenshots && item.screenshots.length > 0 ? '04' : '03'}
+            {moreNo}
           </span>
           <span class="text-xs font-semibold uppercase tracking-[0.22em] text-foreground-muted">Mehr Einblicke</span>
           <span class="h-px flex-1 bg-border"></span>
@@ -620,7 +671,7 @@ const resolvedScreenshots = await Promise.all(
           <div>
             <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Projekt besprechen</p>
             <h2 class="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              Wenn Ihr Vorhaben ähnliche Fragen aufwirft, sollten wir sprechen.
+              Wenn euer Vorhaben ähnliche Fragen aufwirft, sollten wir sprechen.
             </h2>
           </div>
           <div class="space-y-4 rounded-[1.5rem] bg-background-secondary p-6">

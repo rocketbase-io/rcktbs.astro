@@ -1,0 +1,455 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import { Picture } from 'astro:assets';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import FlowLines from '@/components/hero-backgrounds/FlowLines.astro';
+import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
+import { defaultLocale } from '@/i18n/config';
+import { getLocalizedPath } from '@/i18n/index';
+import { contactLinks } from '@/data/rocketbase';
+import { createServiceSchema, createFAQSchema } from '@/lib/schema';
+
+import metallBoard from '@/assets/references/metall-board.png';
+import mavoxMobile from '@/assets/references/mavox-winterdienst-mobile.png';
+
+const locale = defaultLocale;
+const contactUrl = getLocalizedPath('contact', locale);
+const workshopUrl = getLocalizedPath('discoveryWorkshop', locale);
+const standardsoftwareUrl = getLocalizedPath('standardsoftwareAbloesung', locale);
+
+const clientLogos = [
+  { key: 'diezinger_logo', name: 'Schlosserei Diezinger' },
+  { key: 'mavox_logo', name: 'MAVOX Winterdienst' },
+];
+
+// Die Kette, die bei Excel reißt – Auftrag bis Abrechnung.
+const chain = [
+  { step: 'Auftrag', text: 'Kommt rein – und landet je nach Person in Mail, Tabelle oder Zettel.' },
+  { step: 'Disposition', text: 'Wer kann wann? Verfügbarkeit, Qualifikation und Auslastung stecken in Köpfen.' },
+  { step: 'Einsatz', text: 'Draußen beim Kunden – ohne sauberen Draht zurück ins Büro.' },
+  { step: 'Erfassung', text: 'Zeiten, Material, Fotos: später aus dem Gedächtnis nachgetragen.' },
+  { step: 'Abrechnung', text: 'Aus losen Enden zusammengesucht – fehleranfällig und spät.' },
+];
+
+const painPoints = [
+  {
+    icon: 'table',
+    title: 'Die Planung lebt in Excel',
+    text: 'Wer wann an welchem Auftrag arbeitet, wird in gewachsenen Tabellen gepflegt. Es fehlt der eine zentrale Überblick – und mit dem Betrieb wird das Tabellen-System zunehmend unhandlich.',
+  },
+  {
+    icon: 'users',
+    title: 'Abwesenheiten kosten Zeit',
+    text: 'Krankheit, Urlaub, kurzfristiger Ausfall: Jede Änderung muss von Hand in die Planung gepflegt werden. Wer das übersieht, plant gegen die Realität.',
+  },
+  {
+    icon: 'map-pin',
+    title: 'Draußen und drinnen sind entkoppelt',
+    text: 'Die Mitarbeiter sind im Einsatz, das Büro plant separat. Was vor Ort passiert – Zeiten, Material, Nachweise – kommt verspätet und unvollständig zurück.',
+  },
+  {
+    icon: 'clock',
+    title: 'Der Aufwand wächst schneller als der Umsatz',
+    text: 'Mehr Aufträge heißt mehr manuelle Pflege an immer mehr Stellen. Irgendwann bindet die Steuerung mehr Kapazität, als das Wachstum einbringt.',
+  },
+];
+
+// Was eine individuelle Lösung gegenständlich anders macht.
+const capabilities = [
+  {
+    icon: 'layers',
+    title: 'Dynamischer Einsatz- und Auftragsflow',
+    text: 'Ein Kalender- und Aufgabenflow, der Aufträge, Mitarbeiter und Abteilungen zusammenbringt – statt fünf Tabellen, die niemand synchron hält.',
+  },
+  {
+    icon: 'users',
+    title: 'Abwesenheiten automatisch berücksichtigt',
+    text: 'Krankheit und Urlaub fließen direkt in die Planung. Wer nicht da ist, taucht nicht in der Disposition auf.',
+  },
+  {
+    icon: 'phone',
+    title: 'Mobil im Einsatz erfassen',
+    text: 'Mit dem Tablet vor Ort: Zeiten, Material und Foto-Nachweis direkt am Einsatz erfasst – nicht abends aus dem Gedächtnis.',
+  },
+  {
+    icon: 'shield',
+    title: 'Schnell bedienbar im Alltag',
+    text: 'Anmelden per Karte oder Chip, Scannen per Barcode – eigens dafür gebaut, damit die Bedienung im Alltag schnell genug ist und keiner sie umgeht.',
+  },
+];
+
+const cases = [
+  {
+    href: '/referenzen/schlosserei-diezinger',
+    client: 'Schlosserei Diezinger',
+    title: 'Einsatzplanung, die den Betrieb wirklich kennt',
+    text: 'Wer wann an was arbeitet, wer ausfällt, welche Aufträge laufen – lief vorher über Excel. Jetzt: ein lebendiger Plan mit Kalender und Aufgaben, Ansichten je nach Rolle, automatische Abwesenheiten, Anmelden per Karte.',
+    image: metallBoard,
+    alt: 'Farbige Einsatz- und Auftragsplanung als Board',
+  },
+  {
+    href: '/referenzen/mavox-winterdienst',
+    client: 'MAVOX Winterdienst',
+    title: 'Tourenplanung und mobile Einsatzerfassung',
+    text: 'Disposition im Büro, Erfassung draußen mit Foto-Nachweis: Tourenplanung und mobile App bringen Außendienst und Abrechnung zusammen – auch bei Nacht- und Wochenendeinsätzen.',
+    image: mavoxMobile,
+    alt: 'Mobile Außendienst-App mit Foto-Nachweis',
+  },
+];
+
+const seoTitle = 'Einsatzplanung & Disposition – raus aus Excel';
+const pageUrl = new URL(Astro.url.pathname, Astro.site).toString();
+
+const serviceSchema = createServiceSchema({
+  name: 'Einsatzplanung und Disposition',
+  description:
+    'Individuelle Lösung für Einsatz- und Auftragssteuerung: Disposition, mobile Einsatzerfassung und Abrechnung in einem System – statt gewachsener Excel-Welten. Für Handwerk, Facility und Außendienst.',
+  url: pageUrl,
+  serviceType: 'Individualsoftware für Einsatzplanung und Disposition',
+  areaServed: 'DE',
+});
+
+const miniFaqs = [
+  {
+    q: 'Ist das nicht mit Standard-Software günstiger gelöst?',
+    a: 'Für manche Betriebe ja. Standard-Tools für Disposition gibt es – sie passen, wenn euer Ablauf branchenüblich ist. Sobald eure Steuerung Besonderheiten hat (eigene Qualifikationslogik, spezielle Nachweise, gewachsene Touren), drängt der Standard euch wieder in Workarounds und eine Excel-Welt daneben. Genau dann lohnt eine Lösung, die euren Prozess nativ abbildet.',
+  },
+  {
+    q: 'Funktioniert das auch mobil im Außendienst?',
+    a: 'Ja – das ist meist der Kern. Die Mitarbeiter erfassen vor Ort mit dem Tablet: Zeiten, Material, Foto-Nachweis. Was draußen passiert, ist sofort im System, statt abends nachgetragen zu werden. Anmelden per Karte und Scannen per Barcode sorgen dafür, dass die Bedienung im Alltag schnell genug ist.',
+  },
+  {
+    q: 'Müssen wir unsere bestehenden Abläufe komplett umstellen?',
+    a: 'Nein. Wir nehmen im Discovery den realen Ablauf auf – Auftrag, Disposition, Einsatz, Erfassung, Abrechnung – und bauen die Lösung um euren Prozess herum, nicht umgekehrt. Die Umstellung passiert schrittweise, das Tagesgeschäft läuft weiter.',
+  },
+  {
+    q: 'Wir sind kein Handwerksbetrieb – passt das trotzdem?',
+    a: 'Vermutlich ja. Das Muster – Auftrag, Disposition, mobiler Einsatz, Erfassung, Abrechnung über Excel – findet sich in Facility-Services, Wartung, Montage und vielen Außendienst-Modellen genauso. Im Erstgespräch ordnen wir ein, ob euer Fall dazu passt.',
+  },
+];
+---
+
+<PageLayout
+  title={seoTitle}
+  description="Disposition, Einsatzplanung und Abrechnung laufen über gewachsene Excel-Welten? RocketBase baut die individuelle Lösung für Einsatzsteuerung und mobile Erfassung – für Handwerk, Facility und Außendienst."
+  lang={locale}
+  routeId="einsatzplanung"
+  extraSchemas={[
+    serviceSchema,
+    createFAQSchema(miniFaqs.map((f) => ({ question: f.q, answer: f.a }))),
+  ]}
+>
+  <!-- HERO -->
+  <section class="relative flex min-h-[60vh] items-center overflow-hidden py-24 sm:py-32">
+    <FlowLines />
+    <div
+      class="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,var(--color-background)_0%,transparent_75%)] opacity-70"
+      aria-hidden="true"
+    ></div>
+
+    <div class="container relative z-10 max-w-5xl text-center">
+      <p data-reveal="fade-down" class="text-brand-600 dark:text-brand-300 text-sm font-semibold tracking-[0.22em] uppercase">
+        Einsatzplanung & Disposition
+      </p>
+      <h1
+        data-reveal="fade-down"
+        lang="de"
+        class="font-display text-foreground mt-6 text-4xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-5xl lg:text-6xl"
+      >
+        Wenn die Steuerung des Betriebs
+        <span class="mt-2 block text-brand-500">
+          über Excel läuft.
+        </span>
+      </h1>
+      <p data-reveal class="text-foreground-secondary mx-auto mt-8 max-w-2xl text-lg leading-8 sm:text-xl">
+        Auftrag, Disposition, Einsatz, Erfassung, Abrechnung – die ganze Kette hängt in gewachsenen
+        Tabellen. RocketBase baut die Lösung, die euren <strong>realen Ablauf</strong> kennt: vom
+        <strong>Disponieren im Büro</strong> bis zur <strong>mobilen Erfassung</strong> beim Kunden.
+      </p>
+      <div data-reveal class="mt-10 flex flex-wrap items-center justify-center gap-4">
+        <Button size="lg" href={contactLinks.cal} target="_blank">
+          Erstgespräch buchen
+          <Icon name="arrow-up-right" size="sm" />
+        </Button>
+        <Button variant="link" href="#kette" class="text-foreground-secondary hover:text-foreground">
+          Wo es bei euch hakt
+          <Icon name="chevron-down" size="sm" />
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <ClientLogoStrip heading="Erfahrung aus Projekten mit" logos={clientLogos} variant="light" />
+
+  <!-- DIE KETTE -->
+  <section id="kette" class="bg-background relative overflow-hidden py-24 lg:py-32">
+    <div class="container relative z-10 max-w-6xl">
+      <header data-reveal class="mx-auto max-w-3xl text-center">
+        <div class="mx-auto flex max-w-md items-center gap-4">
+          <span class="bg-border h-px flex-1"></span>
+          <span class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold">
+            01
+          </span>
+          <span class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">
+            Die Prozesskette
+          </span>
+          <span class="bg-border h-px flex-1"></span>
+        </div>
+        <h2 class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl">
+          Fünf Schritte – und an jedem reißt der Excel-Faden.
+        </h2>
+        <p class="text-foreground-secondary mt-6 text-lg leading-8">
+          Der Prozess ist klar und wiederkehrend. Genau das macht ihn so dankbar: Jeder Schritt, der
+          heute einzeln und von Hand läuft, lässt sich mit dem nächsten verzahnen.
+        </p>
+      </header>
+
+      <ol data-reveal class="mt-16 grid gap-4 md:grid-cols-5">
+        {
+          chain.map((node, index) => (
+            <li class="border-border bg-card relative flex flex-col gap-3 rounded-2xl border p-5 shadow-sm">
+              <span class="text-brand-600 font-mono text-xs font-semibold tracking-wider">
+                0{index + 1}
+              </span>
+              <span class="font-display text-foreground text-base font-bold tracking-tight">{node.step}</span>
+              <span class="text-foreground-secondary text-sm leading-6">{node.text}</span>
+              {index < chain.length - 1 && (
+                <Icon
+                  name="arrow-right"
+                  size="sm"
+                  class="text-brand-300 absolute -right-3 top-1/2 z-10 hidden -translate-y-1/2 md:block"
+                />
+              )}
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- SCHMERZ -->
+  <section class="bg-background-secondary border-border relative overflow-hidden border-y py-24 lg:py-32">
+    <div class="bg-grid-pattern pointer-events-none absolute inset-0 opacity-30 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]" aria-hidden="true"></div>
+    <div class="container relative z-10 max-w-6xl">
+      <header data-reveal class="mx-auto max-w-3xl text-center">
+        <div class="mx-auto flex max-w-md items-center gap-4">
+          <span class="bg-border h-px flex-1"></span>
+          <span class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold">
+            02
+          </span>
+          <span class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">
+            Wo es weh tut
+          </span>
+          <span class="bg-border h-px flex-1"></span>
+        </div>
+        <h2 class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl">
+          Kommt euch das bekannt vor?
+        </h2>
+      </header>
+
+      <div data-reveal class="mt-16 grid gap-6 md:grid-cols-2 md:gap-7">
+        {
+          painPoints.map((item) => (
+            <article class="group border-border bg-card relative flex flex-col gap-4 rounded-2xl border p-7 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg sm:p-8">
+              <div class="flex items-start gap-4">
+                <div class="border-brand-300/70 bg-brand-500/5 text-brand-600 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border transition-colors duration-300 group-hover:bg-brand-500 group-hover:text-on-invert group-hover:border-brand-500">
+                  <Icon name={item.icon} size="md" />
+                </div>
+                <h3 class="font-display text-foreground mt-1 text-lg font-bold tracking-tight sm:text-xl">
+                  {item.title}
+                </h3>
+              </div>
+              <p class="text-foreground-secondary text-[0.95rem] leading-7">{item.text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- WAS WIR BAUEN -->
+  <section class="bg-background relative overflow-hidden py-24 lg:py-32">
+    <div class="bg-brand-300/10 pointer-events-none absolute -left-24 top-1/3 h-96 w-96 rounded-full blur-3xl" aria-hidden="true"></div>
+    <div class="container relative z-10 max-w-6xl">
+      <header data-reveal class="mx-auto max-w-3xl text-center">
+        <div class="mx-auto flex max-w-md items-center gap-4">
+          <span class="bg-border h-px flex-1"></span>
+          <span class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold">
+            03
+          </span>
+          <span class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">
+            Was wir bauen
+          </span>
+          <span class="bg-border h-px flex-1"></span>
+        </div>
+        <h2 class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl">
+          Eine Lösung, die im Alltag wirklich benutzt wird.
+        </h2>
+        <p class="text-foreground-secondary mt-6 text-lg leading-8">
+          Nicht noch ein Tool, an dem die Leute vorbeiarbeiten. Eine Lösung, die schnell genug ist für
+          Werkstatt, Tour und Baustelle – und die euren Ablauf kennt.
+        </p>
+      </header>
+
+      <div data-reveal class="mt-16 grid gap-6 md:grid-cols-2 md:gap-7">
+        {
+          capabilities.map((item) => (
+            <article class="group border-border bg-card relative flex flex-col gap-4 rounded-2xl border p-7 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg sm:p-8">
+              <div class="flex items-start gap-4">
+                <div class="border-brand-300/70 bg-brand-500/5 text-brand-600 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border transition-colors duration-300 group-hover:bg-brand-500 group-hover:text-on-invert group-hover:border-brand-500">
+                  <Icon name={item.icon} size="md" />
+                </div>
+                <h3 class="font-display text-foreground mt-1 text-lg font-bold tracking-tight sm:text-xl">
+                  {item.title}
+                </h3>
+              </div>
+              <p class="text-foreground-secondary text-[0.95rem] leading-7">{item.text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CASES -->
+  <section class="bg-background-secondary border-border relative overflow-hidden border-y py-24 lg:py-32">
+    <div class="bg-grid-pattern pointer-events-none absolute inset-0 opacity-30 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]" aria-hidden="true"></div>
+    <div class="container relative z-10 max-w-6xl">
+      <header data-reveal class="mx-auto max-w-3xl text-center">
+        <div class="mx-auto flex max-w-md items-center gap-4">
+          <span class="bg-border h-px flex-1"></span>
+          <span class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold">
+            04
+          </span>
+          <span class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">
+            In der Praxis
+          </span>
+          <span class="bg-border h-px flex-1"></span>
+        </div>
+        <h2 class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl">
+          Zwei Betriebe, die raus aus Excel sind.
+        </h2>
+      </header>
+
+      <div data-reveal class="mt-16 grid gap-6 lg:grid-cols-2 lg:gap-7">
+        {
+          cases.map((item) => (
+            <article class="group flex flex-col overflow-hidden rounded-[2rem] border border-border bg-card shadow-[0_22px_55px_rgba(34,43,74,0.08)] transition-[transform,box-shadow] duration-500 hover:-translate-y-1 hover:shadow-[0_30px_70px_rgba(34,43,74,0.12)]">
+              <a href={item.href} class="flex h-full flex-col">
+                <div class="overflow-hidden">
+                  <Picture
+                    src={item.image}
+                    alt={item.alt}
+                    widths={[360, 540, 720, 960]}
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    formats={['avif', 'webp']}
+                    class="aspect-[16/10] w-full object-cover object-left-top transition-transform duration-700 group-hover:scale-[1.04]"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="flex flex-1 flex-col p-6 lg:p-8">
+                  <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">{item.client}</p>
+                  <h3 class="font-display text-foreground mt-3 text-xl font-semibold leading-snug lg:text-2xl">
+                    {item.title}
+                  </h3>
+                  <p class="text-foreground-secondary mt-4 text-sm leading-7">{item.text}</p>
+                  <span class="mt-auto pt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand-600 transition-transform duration-300 group-hover:translate-x-1">
+                    Case ansehen
+                    <Icon name="arrow-right" size="sm" />
+                  </span>
+                </div>
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="bg-background relative overflow-hidden py-24 lg:py-32">
+    <div class="container relative z-10 max-w-4xl">
+      <header data-reveal class="mx-auto max-w-3xl text-center">
+        <div class="mx-auto flex max-w-md items-center gap-4">
+          <span class="bg-border h-px flex-1"></span>
+          <span class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold">
+            05
+          </span>
+          <span class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">
+            Häufige Fragen
+          </span>
+          <span class="bg-border h-px flex-1"></span>
+        </div>
+        <h2 class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl">
+          Was Betriebe vorab fragen.
+        </h2>
+      </header>
+
+      <div data-reveal class="mt-12 flex flex-col gap-4">
+        {
+          miniFaqs.map((item) => (
+            <details class="group border-border bg-card rounded-2xl border p-5 shadow-sm transition-shadow duration-300 open:shadow-lg sm:p-6">
+              <summary class="flex cursor-pointer list-none items-start gap-4 [&::-webkit-details-marker]:hidden">
+                <h3 class="font-display text-foreground flex-1 text-base font-bold tracking-tight sm:text-lg">
+                  {item.q}
+                </h3>
+                <Icon name="chevron-down" size="sm" class="text-foreground-muted mt-1 shrink-0 transition-transform duration-300 group-open:rotate-180" />
+              </summary>
+              <p class="text-foreground-secondary mt-4 border-t border-border/60 pt-4 text-[0.95rem] leading-7">
+                {item.a}
+              </p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="border-border bg-background-secondary border-t py-24">
+    <div class="container max-w-4xl">
+      <div data-reveal="zoom-in" class="border-border bg-card rounded-[2.25rem] border p-6 shadow-sm sm:p-8 lg:p-10">
+        <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <div>
+            <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Nächster Schritt</p>
+            <h2
+              lang="de"
+              class="font-display text-foreground mt-4 text-2xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-3xl lg:text-4xl"
+            >
+              Zeigt uns euren Ablauf – wir zeigen euch, wo Excel raus kann.
+            </h2>
+            <p class="text-foreground-secondary mt-6 text-lg leading-8">
+              30 Minuten, um eure Prozesskette einzuordnen. Danach wisst ihr, welche Schritte sich sinnvoll
+              verbinden lassen – und ob sich ein Discovery-Workshop lohnt. Ehrliche Einschätzung, kein
+              Vertriebsdruck.
+            </p>
+            <a href={workshopUrl} class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-brand-600 hover:text-brand-700 transition-colors">
+              Mehr zum Discovery-Workshop
+              <Icon name="arrow-right" size="sm" />
+            </a>
+          </div>
+          <div class="bg-background-secondary flex flex-wrap items-center gap-4 rounded-[1.5rem] p-5 sm:p-6">
+            <Button href={contactLinks.cal} target="_blank">
+              Erstgespräch buchen
+              <Icon name="arrow-up-right" size="sm" />
+            </Button>
+            <Button variant="link" href={contactUrl}>
+              Kontaktseite
+              <Icon name="arrow-right" size="sm" />
+            </Button>
+          </div>
+        </div>
+        <div class="border-border/60 mt-8 border-t pt-6">
+          <a href={standardsoftwareUrl} class="group text-foreground-secondary inline-flex items-center gap-2 text-sm leading-7">
+            <span>Eher eine teure Standardsoftware, die nicht mehr passt?</span>
+            <span class="text-brand-600 font-semibold underline decoration-brand-300/60 underline-offset-4 group-hover:text-brand-700 transition-colors">
+              Zur Standardsoftware-Ablösung
+            </span>
+            <Icon name="arrow-right" size="xs" class="text-brand-500 transition-transform group-hover:translate-x-1" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</PageLayout>
