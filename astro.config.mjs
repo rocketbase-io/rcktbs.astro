@@ -28,7 +28,8 @@ export default defineConfig({
           de: 'de',
         },
       },
-      filter: (page) => !/\/(impressum|datenschutz)\/?$/.test(page),
+      filter: (page) =>
+        !/\/(impressum|datenschutz)\/?$/.test(page) && !/\/f\//.test(page),
     }),
   ],
 
