@@ -19,6 +19,7 @@ const leadSchema = z.object({
 	answers: z.array(answerSchema).max(20),
 	utm: z.record(z.string(), z.string().max(500)).optional(),
 	page: z.string().max(2000).optional(),
+	eventId: z.string().max(100).optional(),
 	honeypot: z.string().max(0),
 });
 
@@ -33,6 +34,110 @@ const parseJson = (value: string, fallback: unknown) => {
 		return JSON.parse(value);
 	} catch {
 		return fallback;
+	}
+};
+
+// SHA-256-Hash (hex), wie von der Meta Conversions API für PII gefordert.
+const sha256 = async (value: string): Promise<string> => {
+	const bytes = new TextEncoder().encode(value);
+	const digest = await crypto.subtle.digest('SHA-256', bytes);
+	return Array.from(new Uint8Array(digest))
+		.map((b) => b.toString(16).padStart(2, '0'))
+		.join('');
+};
+
+// Meta verlangt Normalisierung (trim + lowercase) vor dem Hashen.
+const hashField = (value?: string) => {
+	const normalized = value?.trim().toLowerCase();
+	return normalized ? sha256(normalized) : undefined;
+};
+
+// Telefonnummer: nur Ziffern behalten (Meta-Empfehlung), dann hashen.
+const hashPhone = (value?: string) => {
+	const digits = value?.replace(/[^0-9]/g, '');
+	return digits ? sha256(digits) : undefined;
+};
+
+interface CapiInput {
+	pixelId: string;
+	token: string;
+	eventId?: string;
+	email: string;
+	phone?: string;
+	name: string;
+	fbp?: string;
+	fbc?: string;
+	fbclid?: string;
+	sourceUrl?: string;
+	clientIp?: string;
+	userAgent?: string;
+	receivedAt: string;
+	testEventCode?: string;
+}
+
+// Serverseitiges Lead-Event an die Meta Conversions API senden.
+// Läuft best-effort: Fehler dürfen die Lead-Verarbeitung nie blockieren.
+const sendMetaCapiLead = async (input: CapiInput): Promise<void> => {
+	const nameParts = input.name.trim().split(/\s+/);
+	const firstName = nameParts[0];
+	const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : undefined;
+
+	const [em, ph, fn, ln] = await Promise.all([
+		hashField(input.email),
+		hashPhone(input.phone),
+		hashField(firstName),
+		hashField(lastName),
+	]);
+
+	const userData: Record<string, unknown> = {};
+	if (em) userData.em = [em];
+	if (ph) userData.ph = [ph];
+	if (fn) userData.fn = [fn];
+	if (ln) userData.ln = [ln];
+	// Der fbc-Cookie hat Vorrang; sonst aus fbclid rekonstruieren.
+	const fbc =
+		input.fbc ||
+		(input.fbclid
+			? `fb.1.${Date.parse(input.receivedAt) || Date.now()}.${input.fbclid}`
+			: undefined);
+	if (input.fbp) userData.fbp = input.fbp;
+	if (fbc) userData.fbc = fbc;
+	if (input.clientIp) userData.client_ip_address = input.clientIp;
+	if (input.userAgent) userData.client_user_agent = input.userAgent;
+
+	const payload = {
+		data: [
+			{
+				event_name: 'Lead',
+				event_time: Math.floor((Date.parse(input.receivedAt) || Date.now()) / 1000),
+				event_id: input.eventId,
+				action_source: 'website',
+				event_source_url: input.sourceUrl,
+				user_data: userData,
+			},
+		],
+		...(input.testEventCode ? { test_event_code: input.testEventCode } : {}),
+	};
+
+	const controller = new AbortController();
+	const timeout = setTimeout(() => controller.abort(), 8000);
+	try {
+		const res = await fetch(
+			`https://graph.facebook.com/v21.0/${input.pixelId}/events?access_token=${encodeURIComponent(input.token)}`,
+			{
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(payload),
+				signal: controller.signal,
+			},
+		);
+		if (!res.ok) {
+			console.error('Meta CAPI error:', res.status, await res.text());
+		}
+	} catch (capiError) {
+		console.error('Meta CAPI request failed:', capiError);
+	} finally {
+		clearTimeout(timeout);
 	}
 };
 
@@ -53,6 +158,7 @@ export default async (request: Request, context: Context) => {
 			answers: parseJson(formData.get('answers')?.toString() || '[]', []),
 			utm: parseJson(formData.get('utm')?.toString() || '{}', {}),
 			page: formData.get('page')?.toString() || undefined,
+			eventId: formData.get('eventId')?.toString() || undefined,
 			honeypot: formData.get('honeypot')?.toString() || '',
 		};
 
@@ -102,6 +208,36 @@ export default async (request: Request, context: Context) => {
 			});
 		} catch (blobError) {
 			console.error('Blob store error:', blobError);
+		}
+
+		// Meta Conversions API - serverseitiges Lead-Event (best-effort).
+		// Nur senden, wenn Pixel-ID + Token konfiguriert sind. Die Attribution
+		// (_fbp/_fbc/fbclid) liefert das Frontend nur nach Marketing-Consent mit,
+		// sodass ohne Einwilligung keine Cookie-basierte Zuordnung stattfindet.
+		const metaPixelId = Netlify.env.get('META_PIXEL_ID');
+		const metaCapiToken = Netlify.env.get('META_CAPI_TOKEN');
+		if (metaPixelId && metaCapiToken) {
+			const attribution = lead.utm || {};
+			const clientIp =
+				request.headers.get('x-nf-client-connection-ip') ||
+				request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+				undefined;
+			await sendMetaCapiLead({
+				pixelId: metaPixelId,
+				token: metaCapiToken,
+				eventId: lead.eventId,
+				email: lead.email,
+				phone: lead.phone,
+				name: lead.name,
+				fbp: attribution._fbp,
+				fbc: attribution._fbc,
+				fbclid: attribution.fbclid,
+				sourceUrl: lead.page,
+				clientIp,
+				userAgent,
+				receivedAt,
+				testEventCode: Netlify.env.get('META_CAPI_TEST_EVENT_CODE'),
+			});
 		}
 
 		const plunkSecretKey = Netlify.env.get('PLUNK_SECRET_KEY');

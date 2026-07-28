@@ -7,12 +7,14 @@
  * Environment variables:
  * - PUBLIC_PLAUSIBLE_SCRIPT_ID: Plausible per-site script ID (e.g., pa-yhySJdsGHFMqpcbsczFVd) - cookieless, no consent needed
  * - PUBLIC_LINKEDIN_PARTNER_ID: LinkedIn Insight Tag partner ID - gated behind marketing consent
+ * - PUBLIC_META_PIXEL_ID: Meta (Facebook/Instagram) Pixel / Dataset ID - gated behind marketing consent
  * - PUBLIC_GA_MEASUREMENT_ID: Google Analytics 4 Measurement ID (e.g., G-XXXXXXXXXX)
  * - PUBLIC_GTM_ID: Google Tag Manager Container ID (e.g., GTM-XXXXXXX)
  */
 
 const plausibleScriptId = import.meta.env.PUBLIC_PLAUSIBLE_SCRIPT_ID;
 const linkedinPartnerId = import.meta.env.PUBLIC_LINKEDIN_PARTNER_ID;
+const metaPixelId = import.meta.env.PUBLIC_META_PIXEL_ID;
 const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 const gtmId = import.meta.env.PUBLIC_GTM_ID;
 ---
@@ -102,6 +104,55 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID;
     // Listen for consent updates
     window.addEventListener('consent-updated', function(e) {
       checkAndLoadLinkedIn(e.detail && e.detail.categories);
+    });
+  </script>
+)}
+
+{/* Meta Pixel (Facebook/Instagram) - loaded only after marketing consent is granted.
+    The base code buffers fbq() calls, so the FunnelQuiz can safely call
+    fbq('track', 'Lead', ...) even before the library finishes loading. */}
+{metaPixelId && (
+  <script is:inline define:vars={{ metaPixelId }}>
+    function loadMetaPixel() {
+      if (window.__metaPixelLoaded) return;
+      window.__metaPixelLoaded = true;
+
+      // Standard Meta Pixel bootstrap (stubs fbq until insight.js loads)
+      !(function (f, b, e, v, n, t, s) {
+        if (f.fbq) return;
+        n = f.fbq = function () {
+          n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+        };
+        if (!f._fbq) f._fbq = n;
+        n.push = n;
+        n.loaded = true;
+        n.version = '2.0';
+        n.queue = [];
+        t = b.createElement(e);
+        t.async = true;
+        t.src = v;
+        s = b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t, s);
+      })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+
+      window.fbq('init', metaPixelId);
+      window.fbq('track', 'PageView');
+    }
+
+    function checkAndLoadMeta(categories) {
+      if (categories && categories.marketing) {
+        loadMetaPixel();
+      }
+    }
+
+    // Returning visitor who already granted marketing consent
+    if (window.__consentState && window.__consentState.decided) {
+      checkAndLoadMeta(window.__consentState.categories);
+    }
+
+    // React to consent given/changed in this session
+    window.addEventListener('consent-updated', function (e) {
+      checkAndLoadMeta(e.detail && e.detail.categories);
     });
   </script>
 )}

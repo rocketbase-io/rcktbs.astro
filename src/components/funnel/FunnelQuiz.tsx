@@ -39,6 +39,18 @@ function pushEvent(event: string, params: Record<string, unknown> = {}) {
   w.dataLayer.push({ event, ...params });
 }
 
+// Feuert das Meta-Pixel-Lead-Event im Browser - aber nur, wenn der Pixel
+// nach Marketing-Consent geladen wurde (fbq existiert dann). Die eventID wird
+// mit dem serverseitigen CAPI-Event geteilt, damit Meta beide dedupliziert.
+function trackMetaLead(eventId: string) {
+  if (typeof window === 'undefined') return;
+  const w = window as unknown as {
+    fbq?: (...args: unknown[]) => void;
+  };
+  if (typeof w.fbq !== 'function') return;
+  w.fbq('track', 'Lead', {}, { eventID: eventId });
+}
+
 export function FunnelQuiz({
   funnel,
   questions,
@@ -149,6 +161,14 @@ export function FunnelQuiz({
     formData.set('funnel', funnel);
     formData.set('page', window.location.href);
 
+    // Geteilte Event-ID für Browser-Pixel + serverseitige Conversions-API.
+    // Meta nutzt sie, um das doppelt gemeldete Lead-Event zu deduplizieren.
+    const eventId =
+      typeof crypto !== 'undefined' && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `lead-${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+    formData.set('eventId', eventId);
+
     // Meta-Pixel-Cookies erst beim Absenden lesen - sie existieren nur nach Consent
     const attribution = { ...utmRef.current };
     const fbp = readCookie('_fbp');
@@ -173,6 +193,8 @@ export function FunnelQuiz({
           problem: answers[questions[0]?.id]?.optionId,
           impact: answers[questions[1]?.id]?.optionId,
         });
+        // Browser-Pixel-Lead mit derselben eventId wie das CAPI-Event (Dedup)
+        trackMetaLead(eventId);
         scrollToCard();
       } else {
         const errors = data.errors
