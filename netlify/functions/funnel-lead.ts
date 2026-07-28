@@ -131,8 +131,9 @@ const sendMetaCapiLead = async (input: CapiInput): Promise<void> => {
 				signal: controller.signal,
 			},
 		);
-		// TEMP DEBUG - loggt auch den Erfolgsfall; nach dem Test wieder entfernen
-		console.log('Meta CAPI response:', res.status, await res.text());
+		if (!res.ok) {
+			console.error('Meta CAPI error:', res.status, await res.text());
+		}
 	} catch (capiError) {
 		console.error('Meta CAPI request failed:', capiError);
 	} finally {
@@ -215,13 +216,6 @@ export default async (request: Request, context: Context) => {
 		// sodass ohne Einwilligung keine Cookie-basierte Zuordnung stattfindet.
 		const metaPixelId = Netlify.env.get('META_PIXEL_ID');
 		const metaCapiToken = Netlify.env.get('META_CAPI_TOKEN');
-		// TEMP DEBUG - nach erfolgreichem CAPI-Test wieder entfernen
-		console.log('CAPI check:', {
-			hasPixelId: Boolean(metaPixelId),
-			hasToken: Boolean(metaCapiToken),
-			hasTestCode: Boolean(Netlify.env.get('META_CAPI_TEST_EVENT_CODE')),
-			eventId: lead.eventId,
-		});
 		if (metaPixelId && metaCapiToken) {
 			const attribution = lead.utm || {};
 			const clientIp =
