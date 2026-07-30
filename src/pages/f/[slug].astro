@@ -97,6 +97,58 @@ const clientLogos = [
   <!-- TRUST: Client-Logos -->
   <ClientLogoStrip heading="Erfahrung aus Projekten mit" logos={clientLogos} variant="light" />
 
+  <!-- TRUST-VIDEO (Screencast aus echten Projekten) – zeigt Platzhalter, solange kein src gesetzt -->
+  {
+    funnel.trustVideo && false && (
+      <section class="py-14 lg:py-20">
+        <div class="container max-w-4xl">
+          <header class="mx-auto max-w-2xl text-center">
+            <h2 class="font-display text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
+              {funnel.trustVideo.heading}
+            </h2>
+            {funnel.trustVideo.text && (
+              <p class="text-foreground-secondary mx-auto mt-4 max-w-xl text-base leading-7">
+                {funnel.trustVideo.text}
+              </p>
+            )}
+          </header>
+
+          <div class="mt-8 overflow-hidden rounded-2xl border border-border shadow-lg">
+            {funnel.trustVideo.src ? (
+              <video
+                class="aspect-video w-full bg-black"
+                controls
+                preload="metadata"
+                poster={funnel.trustVideo.poster}
+              >
+                <source src={funnel.trustVideo.src} type="video/mp4" />
+              </video>
+            ) : (
+              <div class="bg-background-secondary relative flex aspect-video w-full items-center justify-center">
+                <div
+                  class="bg-grid-pattern pointer-events-none absolute inset-0 opacity-20"
+                  aria-hidden="true"
+                />
+                <div class="relative flex flex-col items-center gap-3 text-center">
+                  <div class="border-brand-300/70 bg-brand-500/10 text-brand-600 flex h-16 w-16 items-center justify-center rounded-full border">
+                    <Icon name="monitor" size="md" />
+                  </div>
+                  <p class="text-foreground-muted font-mono text-xs font-semibold tracking-[0.22em] uppercase">
+                    Video folgt
+                  </p>
+                  <p class="text-foreground-secondary max-w-sm text-sm leading-6">
+                    Hier kommt ein kurzer Screencast aus echten Projekten – Platzhalter, bis das
+                    Video fertig geschnitten ist.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
   <!-- DETAILS / VERTIEFUNG (pro Anzeigen-Variante) -->
   <section class="bg-background-secondary border-border relative overflow-hidden border-y py-16 lg:py-24">
     <div
@@ -145,11 +197,11 @@ const clientLogos = [
   <section class="py-16 lg:py-24">
     <div class="container max-w-3xl text-center">
       <h2 class="font-display text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
-        Zwei Fragen. Zwei Minuten. Klarheit.
+        Ein paar Fragen. Ein kurzer Call. Klarheit.
       </h2>
       <p class="text-foreground-secondary mx-auto mt-4 max-w-xl text-base leading-7">
-        Startet die kurze Analyse und bekommt eine ehrliche Ersteinschätzung - kostenlos und
-        unverbindlich.
+        Beantwortet ein paar Fragen zu eurer Situation – dann besprechen wir sie gemeinsam in einem
+        30-Minuten-Call und ihr bekommt eine ehrliche Einschätzung. Kostenlos und unverbindlich.
       </p>
       <a
         href="#quiz"

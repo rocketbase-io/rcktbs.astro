@@ -54,6 +54,18 @@ export interface FunnelDefinition {
   };
   /** Ablauf-Schritte für Vertrauen ("was passiert nach dem Absenden?") */
   steps: FunnelStep[];
+  /**
+   * Optionales Trust-/Vorstell-Video (Screencast aus echten Projekten). Solange `src` fehlt,
+   * zeigt die Seite einen sichtbaren Platzhalter, damit die Sektion schon steht.
+   */
+  trustVideo?: {
+    heading: string;
+    text?: string;
+    /** MP4/WebM-URL des fertigen Screencasts. Fehlt sie, wird der Platzhalter angezeigt. */
+    src?: string;
+    /** Optionales Vorschaubild (Poster). */
+    poster?: string;
+  };
   questions: FunnelQuizQuestion[];
   contact: {
     heading: string;
@@ -68,65 +80,156 @@ export interface FunnelDefinition {
 }
 
 /**
- * Geteilte Quiz-Fragen der Software-Analyse-Funnels.
- * Frage 2 lässt den Interessenten sein Budget indirekt selbst einordnen.
+ * Geteilte Impact-Frage (Frage 2) aller Funnels – angle-neutral. Lässt den Interessenten sein
+ * Schmerz-/Budgetniveau selbst einordnen, ohne direkt nach Budget zu fragen.
  */
-export const analyseQuestions: FunnelQuizQuestion[] = [
-  {
-    id: 'problem',
-    question: 'Was ist aktuell euer größtes Problem?',
-    hint: 'Wählt aus, was am ehesten zutrifft – es zählt der Bauch, nicht die perfekte Antwort.',
-    options: [
-      {
-        id: 'handarbeit',
-        label: 'Zu viel Handarbeit & Excel',
-        description: 'Daten werden mehrfach gepflegt, Abläufe laufen über Listen und Zuruf.',
-      },
-      {
-        id: 'altsystem',
-        label: 'Ein Altsystem bremst uns',
-        description: 'Die gewachsene Lösung passt nicht mehr zu den heutigen Prozessen.',
-      },
-      {
-        id: 'schnittstellen',
-        label: 'Systeme sprechen nicht miteinander',
-        description: 'Insellösungen, doppelte Datenpflege, fehlende Schnittstellen.',
-      },
-      {
-        id: 'abhaengigkeit',
-        label: 'Abhängigkeit von Personen oder Dienstleistern',
-        description: 'Kritisches Wissen steckt in einzelnen Köpfen oder bei einem externen Partner.',
-      },
-      {
-        id: 'unklar',
-        label: 'Schwer zu sagen – es hakt an vielen Stellen',
-        description: 'Genau dafür ist eine strukturierte Analyse da.',
-      },
-      {
-        id: 'sonstiges',
-        label: 'Etwas anderes',
-        allowText: true,
-        textPlaceholder: 'Beschreibt euer Problem in ein, zwei Sätzen …',
-      },
-    ],
-  },
-  {
-    id: 'impact',
-    question: 'Was kostet es euch, wenn das die nächsten 6–12 Monate ungelöst bleibt?',
-    hint: 'Grobe Schätzung reicht: Mehraufwand, entgangene Aufträge, gebremstes Wachstum.',
-    options: [
-      { id: 'lt10', label: 'Unter 10.000 €' },
-      { id: '10-50', label: '10.000 – 50.000 €' },
-      { id: '50-250', label: '50.000 – 250.000 €' },
-      { id: 'gt250', label: 'Über 250.000 €' },
-      {
-        id: 'wachstum',
-        label: 'Schwer zu beziffern',
-        description: 'Es bremst vor allem unser Wachstum und die nächsten Schritte.',
-      },
-    ],
-  },
-];
+export const impactQuestion: FunnelQuizQuestion = {
+  id: 'impact',
+  question: 'Was kostet es euch, wenn das die nächsten 6–12 Monate so bleibt?',
+  hint: 'Grobe Schätzung reicht: Mehraufwand, entgangene Aufträge, gebremstes Wachstum.',
+  options: [
+    { id: 'lt10', label: 'Unter 10.000 €' },
+    { id: '10-50', label: '10.000 – 50.000 €' },
+    { id: '50-250', label: '50.000 – 250.000 €' },
+    { id: 'gt250', label: 'Über 250.000 €' },
+    {
+      id: 'wachstum',
+      label: 'Schwer zu beziffern',
+      description: 'Es bremst vor allem unser Wachstum und die nächsten Schritte.',
+    },
+  ],
+};
+
+/**
+ * Frage 1 je Angle. Statt nach dem "Problem" (konfrontativ) zu fragen, erfassen wir den IST-Zustand
+ * der Softwarelandschaft bzw. den angle-spezifischen Einstieg – gibt fürs Erstgespräch das
+ * wertvollste Bild, ohne viele Fragen zu stellen. Branche/Größe kommt ohnehin von der Website.
+ */
+
+// Angle 1 (Live-Zahlen / Software-Analyse): Wie ist die Softwarelandschaft aufgestellt?
+const landscapeQuestion: FunnelQuizQuestion = {
+  id: 'landscape',
+  question: 'Wie ist eure Software heute aufgestellt?',
+  hint: 'Grobe Einordnung reicht – es geht nur um ein erstes Bild.',
+  options: [
+    {
+      id: 'standard',
+      label: 'Standardsoftware von der Stange',
+      description: 'Gekaufte Tools, die wir weitgehend so nutzen, wie sie sind.',
+    },
+    {
+      id: 'gewachsen',
+      label: 'Gewachsen & zusammengestückelt',
+      description: 'Viele Einzeltools, Excel, historisch entstanden.',
+    },
+    {
+      id: 'angepasst',
+      label: 'Teils individuell angepasst',
+      description: 'Standardsoftware, aber mit eigenen Anpassungen und Schnittstellen.',
+    },
+    {
+      id: 'eigen',
+      label: 'Eigenentwicklung / Altsystem',
+      description: 'Etwas Eigenes, das langsam in die Jahre kommt.',
+    },
+    {
+      id: 'unklar',
+      label: 'Ehrlich gesagt unübersichtlich',
+      description: 'Wir wissen selbst nicht genau, was alles im Einsatz ist.',
+    },
+    {
+      id: 'sonstiges',
+      label: 'Etwas anderes',
+      allowText: true,
+      textPlaceholder: 'Beschreibt eure Software-Situation in ein, zwei Sätzen …',
+    },
+  ],
+};
+
+// Angle 2 (Zeitfresser): Wo verliert das Team die meiste Zeit?
+const timeQuestion: FunnelQuizQuestion = {
+  id: 'timesink',
+  question: 'Wo verliert euer Team am meisten Zeit?',
+  hint: 'Wählt, was am ehesten zutrifft – es zählt der Bauch.',
+  options: [
+    {
+      id: 'daten',
+      label: 'Daten übertragen & pflegen',
+      description: 'Dieselben Infos landen mehrfach in verschiedenen Tools.',
+    },
+    {
+      id: 'reporting',
+      label: 'Reportings & Auswertungen',
+      description: 'Zahlen werden mühsam von Hand zusammengesucht.',
+    },
+    {
+      id: 'kommunikation',
+      label: 'E-Mails, Termine & Nachfassen',
+      description: 'Viel Abstimmung, Follow-ups, Koordination von Hand.',
+    },
+    {
+      id: 'dokumentation',
+      label: 'Angebote & Dokumentation',
+      description: 'Wiederkehrende Dokumente immer wieder neu erstellen.',
+    },
+    {
+      id: 'ueberall',
+      label: 'Ehrlich gesagt überall etwas',
+      description: 'Es summiert sich an vielen kleinen Stellen.',
+    },
+    {
+      id: 'sonstiges',
+      label: 'Etwas anderes',
+      allowText: true,
+      textPlaceholder: 'Beschreibt euren größten Zeitfresser in ein, zwei Sätzen …',
+    },
+  ],
+};
+
+// Angle 3 (Lizenz / Eigene Software): Was stört an der aktuellen Software?
+const softwareFitQuestion: FunnelQuizQuestion = {
+  id: 'fit',
+  question: 'Was stört euch an eurer aktuellen Software am meisten?',
+  hint: 'Wählt, was am ehesten zutrifft.',
+  options: [
+    {
+      id: 'kosten',
+      label: 'Laufende Lizenz-/Abokosten',
+      description: 'Monat für Monat zahlen – und es hört nie auf.',
+    },
+    {
+      id: 'passt-nicht',
+      label: 'Passt nur zur Hälfte zu uns',
+      description: 'Wir arbeiten um die Software herum statt umgekehrt.',
+    },
+    {
+      id: 'zu-viele',
+      label: 'Zu viele Tools nebeneinander',
+      description: 'Mehrere Abos, die nicht richtig zusammenspielen.',
+    },
+    {
+      id: 'abhaengig',
+      label: 'Abhängigkeit vom Anbieter',
+      description: 'Preise, Funktionen, Roadmap – alles fremdbestimmt.',
+    },
+    {
+      id: 'unklar',
+      label: 'Schwer zu sagen – vieles',
+      description: 'Es passt an mehreren Stellen nicht so richtig.',
+    },
+    {
+      id: 'sonstiges',
+      label: 'Etwas anderes',
+      allowText: true,
+      textPlaceholder: 'Beschreibt in ein, zwei Sätzen, was euch stört …',
+    },
+  ],
+};
+
+/** Fragen-Decks je Angle: angle-spezifische Frage 1 + geteilte Impact-Frage 2. */
+export const analyseQuestions: FunnelQuizQuestion[] = [landscapeQuestion, impactQuestion];
+export const zeitfresserQuestions: FunnelQuizQuestion[] = [timeQuestion, impactQuestion];
+export const eigeneSoftwareQuestions: FunnelQuizQuestion[] = [softwareFitQuestion, impactQuestion];
 
 export const funnels: FunnelDefinition[] = [
   {
@@ -139,7 +242,7 @@ export const funnels: FunnelDefinition[] = [
     hero: {
       eyebrow: 'Software-Analyse',
       headline: 'Wo verliert eure Softwarelandschaft Geld?',
-      headlineAccent: 'Findet es in 2 Minuten heraus.',
+      headlineAccent: 'Findet es heraus – im persönlichen Gespräch.',
       subline:
         'Zwei kurze Fragen, eure Kontaktdaten – und ihr bekommt eine ehrliche Ersteinschätzung von einem Softwarearchitekten mit über 15 Jahren Praxis. Kein Verkaufsgespräch, keine Massenmail.',
     },
@@ -173,30 +276,261 @@ export const funnels: FunnelDefinition[] = [
     steps: [
       {
         icon: 'check-circle',
-        title: 'Quiz beantworten',
-        text: 'Zwei Fragen, unter zwei Minuten – direkt hier auf der Seite.',
+        title: 'Formular ausfüllen',
+        text: 'Ein paar kurze Fragen zu eurer Situation – direkt hier auf der Seite, in zwei Minuten.',
       },
       {
         icon: 'file-text',
-        title: 'Ersteinschätzung erhalten',
-        text: 'Wir melden uns werktags innerhalb von 24 Stunden mit einer ehrlichen ersten Einordnung.',
+        title: 'Terminvorschlag von mir',
+        text: 'Ich melde mich werktags persönlich mit einem Vorschlag für einen 30-Minuten-Call.',
       },
       {
         icon: 'users',
-        title: 'Optional: Vorabgespräch',
-        text: 'Wenn es passt, sprechen wir 30 Minuten unverbindlich über die nächsten Schritte.',
+        title: 'Einschätzung im Gespräch',
+        text: 'Im Call schauen wir uns eure Situation gemeinsam an – und ihr bekommt eine ehrliche Einschätzung vom Entwickler, nicht vom Vertriebler.',
       },
     ],
+    trustVideo: {
+      heading: 'Ein Einblick in das, was wir bauen',
+      text: 'Ein kurzer Ausschnitt aus echten Projekten – damit ihr seht, wie individuelle Software für Betriebe wie euren aussieht.',
+    },
     questions: analyseQuestions,
     contact: {
       heading: 'Wohin dürfen wir die Ersteinschätzung schicken?',
-      text: 'Wir melden uns werktags innerhalb von 24 Stunden persönlich – kein Newsletter, keine Weitergabe eurer Daten.',
+      text: 'Ich melde mich werktags persönlich, um einen kurzen Call zu vereinbaren – kein Newsletter, keine Weitergabe eurer Daten.',
     },
     success: {
       heading: 'Danke – eure Angaben sind angekommen.',
-      text: 'Wir schauen uns eure Antworten an und melden uns werktags innerhalb von 24 Stunden mit einer ersten Einschätzung.',
+      text: 'Ich schaue mir eure Antworten an und melde mich werktags, um einen 30-Minuten-Call zu vereinbaren. Wenn ihr wollt, bucht ihr direkt einen Termin:',
       calUrl: 'https://cal.com/rocketbase-marten/discovery-vorabgesprach',
-      calLabel: 'Direkt 30-Minuten-Gespräch buchen',
+      calLabel: 'Direkt 30-Minuten-Call buchen',
+    },
+  },
+  {
+    // Message-Match-Variante für die Reel-Ads (Dialog- & Zeitverzug-Hook).
+    // Gleiche Fragen/Ablauf wie software-analyse, aber Hero + Details greifen den
+    // Video-Hook auf: "Zahlen live statt Wochen alt / Frage → sofort Antwort".
+    slug: 'live-zahlen',
+    meta: {
+      title: 'Live-Zahlen statt Wochen alt: Software-Analyse in 2 Minuten',
+      description:
+        'Eure aktuellsten Betriebszahlen sind Wochen alt? Beantwortet zwei kurze Fragen und erhaltet eine ehrliche Ersteinschätzung, wie ihr eure Zahlen live bekommt.',
+    },
+    hero: {
+      eyebrow: 'Software-Analyse',
+      headline: 'Wie läuft das Jahr – und wo landet ihr?',
+      headlineAccent: 'Klärt es im persönlichen Gespräch.',
+      subline:
+        'Wenn ihr die aktuellen Zahlen erst zusammensuchen müsst und die Prognose Tage dauert, verliert ihr täglich Überblick. Beantwortet zwei kurze Fragen und bekommt eine ehrliche Ersteinschätzung von einem Softwarearchitekten mit über 15 Jahren Praxis. Kein Verkaufsgespräch, keine Massenmail.',
+    },
+    details: {
+      heading: 'Was passiert, wenn Zahlen nicht live sind',
+      intro:
+        'Nicht die große Fehlentscheidung kostet – sondern die vielen kleinen, die man trifft, weil die Zahlen gerade nicht griffbereit sind.',
+      blocks: [
+        {
+          icon: 'clock',
+          title: 'Entscheidungen auf Basis alter Zahlen',
+          text: 'Wenn die aktuellste Auswertung Wochen zurückliegt, steuert ihr den Betrieb im Rückspiegel statt in Echtzeit.',
+        },
+        {
+          icon: 'share',
+          title: 'Zahlen in fünf Systemen verstreut',
+          text: 'Buchhaltung, Excel, ERP, CRM, Zeiterfassung – jede Frage nach dem Stand wird zur Suchaufgabe statt zu einer Antwort.',
+        },
+        {
+          icon: 'layers',
+          title: 'Manuelles Zusammensuchen bindet Köpfe',
+          text: 'Statt Kennzahlen automatisch zu sehen, verbringt jemand Stunden mit Exporten, Copy-Paste und Abgleich.',
+        },
+        {
+          icon: 'zap',
+          title: 'Reaktion statt Vorsprung',
+          text: 'Wer seine Marge, Auslastung und Liquidität live sieht, reagiert früher – wer wartet, reagiert zu spät.',
+        },
+      ],
+    },
+    steps: [
+      {
+        icon: 'check-circle',
+        title: 'Formular ausfüllen',
+        text: 'Ein paar kurze Fragen zu eurer Situation – direkt hier auf der Seite, in zwei Minuten.',
+      },
+      {
+        icon: 'file-text',
+        title: 'Terminvorschlag von mir',
+        text: 'Ich melde mich werktags persönlich mit einem Vorschlag für einen 30-Minuten-Call.',
+      },
+      {
+        icon: 'users',
+        title: 'Einschätzung im Gespräch',
+        text: 'Im Call schauen wir uns eure Situation gemeinsam an – und ihr bekommt eine ehrliche Einschätzung vom Entwickler, nicht vom Vertriebler.',
+      },
+    ],
+    trustVideo: {
+      heading: 'Ein Einblick in das, was wir bauen',
+      text: 'Ein kurzer Ausschnitt aus echten Projekten – damit ihr seht, wie individuelle Software für Betriebe wie euren aussieht.',
+    },
+    questions: analyseQuestions,
+    contact: {
+      heading: 'Wohin dürfen wir die Ersteinschätzung schicken?',
+      text: 'Ich melde mich werktags persönlich, um einen kurzen Call zu vereinbaren – kein Newsletter, keine Weitergabe eurer Daten.',
+    },
+    success: {
+      heading: 'Danke – eure Angaben sind angekommen.',
+      text: 'Ich schaue mir eure Antworten an und melde mich werktags, um einen 30-Minuten-Call zu vereinbaren. Wenn ihr wollt, bucht ihr direkt einen Termin:',
+      calUrl: 'https://cal.com/rocketbase-marten/discovery-vorabgesprach',
+      calLabel: 'Direkt 30-Minuten-Call buchen',
+    },
+  },
+  {
+    // ── ANGLE 2 — Zeitfresser / KI-Entlastung ──────────────────────────────────────────────────
+    slug: 'zeitfresser',
+    meta: {
+      title: 'Zeitfresser finden: Wo euer Team unnötig Zeit verliert',
+      description:
+        'Beantwortet zwei kurze Fragen und erhaltet eine ehrliche Ersteinschätzung, wo euer Team Zeit an Routine verliert – und wo Automatisierung und gezielte KI wirklich helfen.',
+    },
+    hero: {
+      eyebrow: 'Zeitfresser-Analyse',
+      headline: 'Wofür bezahlt ihr euer Team eigentlich?',
+      headlineAccent: 'Findet die Zeitfresser – gemeinsam im Gespräch.',
+      subline:
+        'Wenn ein wachsender Teil der Arbeitszeit in Routine, Datenpflege und Nachfassen fließt, bremst das euer Wachstum. Beantwortet zwei kurze Fragen und bekommt eine ehrliche Ersteinschätzung, wo Automatisierung und gezielte KI euch spürbar entlasten. Kein Verkaufsgespräch, keine Massenmail.',
+    },
+    details: {
+      heading: 'Wo Fleißarbeit euer Wachstum bremst',
+      intro:
+        'Nicht die eine große Aufgabe kostet – sondern die vielen kleinen, wiederkehrenden, die niemand hinterfragt.',
+      blocks: [
+        {
+          icon: 'clock',
+          title: 'Routine, die sich Jahr für Jahr summiert',
+          text: 'Termine planen, Daten übertragen, Reportings bauen – Aufgaben, die wachsen, aber keinen Mehrwert schaffen.',
+        },
+        {
+          icon: 'share',
+          title: 'Dieselben Daten, mehrfach gepflegt',
+          text: 'Infos werden in mehrere Tools kopiert – jede Minute dafür fehlt an anderer Stelle.',
+        },
+        {
+          icon: 'zap',
+          title: 'Weniger Zeit fürs Wesentliche',
+          text: 'Je mehr Fleißarbeit, desto weniger Kapazität für Kundenbetreuung und Vertrieb – genau das, was Umsatz bringt.',
+        },
+        {
+          icon: 'layers',
+          title: 'Automatisierung & KI – gezielt eingesetzt',
+          text: 'Nicht als Selbstzweck, sondern dort, wo sie echte Stunden zurückgibt und die Arbeit besser macht.',
+        },
+      ],
+    },
+    steps: [
+      {
+        icon: 'check-circle',
+        title: 'Formular ausfüllen',
+        text: 'Ein paar kurze Fragen zu eurer Situation – direkt hier auf der Seite, in zwei Minuten.',
+      },
+      {
+        icon: 'file-text',
+        title: 'Terminvorschlag von mir',
+        text: 'Ich melde mich werktags persönlich mit einem Vorschlag für einen 30-Minuten-Call.',
+      },
+      {
+        icon: 'users',
+        title: 'Einschätzung im Gespräch',
+        text: 'Im Call schauen wir uns eure Situation gemeinsam an – und ihr bekommt eine ehrliche Einschätzung vom Entwickler, nicht vom Vertriebler.',
+      },
+    ],
+    trustVideo: {
+      heading: 'Ein Einblick in das, was wir bauen',
+      text: 'Ein kurzer Ausschnitt aus echten Projekten – damit ihr seht, wie Automatisierung im Alltag aussieht.',
+    },
+    questions: zeitfresserQuestions,
+    contact: {
+      heading: 'Wohin dürfen wir die Ersteinschätzung schicken?',
+      text: 'Ich melde mich werktags persönlich, um einen kurzen Call zu vereinbaren – kein Newsletter, keine Weitergabe eurer Daten.',
+    },
+    success: {
+      heading: 'Danke – eure Angaben sind angekommen.',
+      text: 'Ich schaue mir eure Antworten an und melde mich werktags, um einen 30-Minuten-Call zu vereinbaren. Wenn ihr wollt, bucht ihr direkt einen Termin:',
+      calUrl: 'https://cal.com/rocketbase-marten/discovery-vorabgesprach',
+      calLabel: 'Direkt 30-Minuten-Call buchen',
+    },
+  },
+  {
+    // ── ANGLE 3 — Lizenz-Revival / Eigene Software ─────────────────────────────────────────────
+    slug: 'eigene-software',
+    meta: {
+      title: 'Eigene Software statt Abo: Rechnet euren Fall in 2 Minuten',
+      description:
+        'Ihr zahlt Monat für Monat für Software von der Stange, die nur zur Hälfte passt? Beantwortet zwei kurze Fragen und erhaltet eine ehrliche Ersteinschätzung, ob sich eine eigene Lösung für euch rechnet.',
+    },
+    hero: {
+      eyebrow: 'Software-Rechnung',
+      headline: 'Fünf Abos – und keins passt richtig?',
+      headlineAccent: 'Rechnen wir euren Fall gemeinsam durch.',
+      subline:
+        'Standardsoftware kostet Monat für Monat – und ihr arbeitet trotzdem um sie herum. Beantwortet zwei kurze Fragen und bekommt eine ehrliche Ersteinschätzung, ob sich eine eigene, auf euren Prozess zugeschnittene Lösung für euch rechnet. Kein Verkaufsgespräch, keine Massenmail.',
+    },
+    details: {
+      heading: 'Warum sich der Blick auf eine eigene Lösung lohnt',
+      intro:
+        'Standardsoftware hat ihre Grenzen. Mit Schnittstellen, eigenen Tools und gezielter KI lässt sich vieles besser lösen – zugeschnitten statt Einheitsbrei.',
+      blocks: [
+        {
+          icon: 'zap',
+          title: 'Laufende Kosten, die nie enden',
+          text: 'Abos summieren sich Jahr für Jahr – ohne dass euch am Ende etwas gehört, das zu euch passt.',
+        },
+        {
+          icon: 'layers',
+          title: 'Prozesse, die um die Software gebaut sind',
+          text: 'Ihr passt euch der Software an, statt umgekehrt – das kostet täglich Zeit und Nerven.',
+        },
+        {
+          icon: 'share',
+          title: 'Zu viele Tools, die nicht zusammenspielen',
+          text: 'Mehrere Abos, doppelte Datenpflege, fehlende Schnittstellen – Standard eben.',
+        },
+        {
+          icon: 'shield',
+          title: 'Zugeschnitten statt fremdbestimmt',
+          text: 'Eine Lösung genau um euren Prozess gebaut – mit vollem Nutzungsrecht und ohne Abo-Tretmühle.',
+        },
+      ],
+    },
+    steps: [
+      {
+        icon: 'check-circle',
+        title: 'Formular ausfüllen',
+        text: 'Ein paar kurze Fragen zu eurer Situation – direkt hier auf der Seite, in zwei Minuten.',
+      },
+      {
+        icon: 'file-text',
+        title: 'Terminvorschlag von mir',
+        text: 'Ich melde mich werktags persönlich mit einem Vorschlag für einen 30-Minuten-Call.',
+      },
+      {
+        icon: 'users',
+        title: 'Einschätzung im Gespräch',
+        text: 'Im Call schauen wir uns eure Situation gemeinsam an – und ihr bekommt eine ehrliche Einschätzung vom Entwickler, nicht vom Vertriebler.',
+      },
+    ],
+    trustVideo: {
+      heading: 'Ein Einblick in das, was wir bauen',
+      text: 'Ein kurzer Ausschnitt aus echten Projekten – damit ihr seht, wie eine eigene, zugeschnittene Lösung aussieht.',
+    },
+    questions: eigeneSoftwareQuestions,
+    contact: {
+      heading: 'Wohin dürfen wir die Ersteinschätzung schicken?',
+      text: 'Ich melde mich werktags persönlich, um einen kurzen Call zu vereinbaren – kein Newsletter, keine Weitergabe eurer Daten.',
+    },
+    success: {
+      heading: 'Danke – eure Angaben sind angekommen.',
+      text: 'Ich schaue mir eure Antworten an und melde mich werktags, um einen 30-Minuten-Call zu vereinbaren. Wenn ihr wollt, bucht ihr direkt einen Termin:',
+      calUrl: 'https://cal.com/rocketbase-marten/discovery-vorabgesprach',
+      calLabel: 'Direkt 30-Minuten-Call buchen',
     },
   },
 ];

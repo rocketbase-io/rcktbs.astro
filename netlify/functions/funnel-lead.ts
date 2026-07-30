@@ -260,6 +260,24 @@ export default async (request: Request, context: Context) => {
 						.join('<br />')}</p>`
 				: '';
 
+			// Herkunft prominent oben: welcher Angle/Funnel + (falls gesetzt) welche Kampagne/Anzeige.
+			const FUNNEL_LABELS: Record<string, string> = {
+				'software-analyse': 'Angle 1 · Live-Zahlen / Software-Analyse',
+				'live-zahlen': 'Angle 1 · Live-Zahlen',
+				zeitfresser: 'Angle 2 · Zeitfresser / KI',
+				'eigene-software': 'Angle 3 · Lizenz / Eigene Software',
+			};
+			const utm = lead.utm || {};
+			const angleLabel = FUNNEL_LABELS[lead.funnel] || lead.funnel;
+			const campaignBits = [utm.utm_campaign, utm.utm_content, utm.utm_source]
+				.filter(Boolean)
+				.join(' · ');
+			const originHtml = `
+				<div style="background:#f0f4ff;border:1px solid #c7d2fe;border-radius:8px;padding:12px 16px;margin-bottom:16px">
+					<strong>Kam über:</strong> ${angleLabel}
+					${campaignBits ? `<br /><strong>Kampagne/Anzeige:</strong> ${campaignBits}` : ''}
+				</div>`;
+
 			const controller = new AbortController();
 			const timeout = setTimeout(() => controller.abort(), 8000);
 
@@ -275,6 +293,7 @@ export default async (request: Request, context: Context) => {
 						from: 'kontakt@rocketbase.io',
 						subject: `Funnel-Lead (${lead.funnel}): ${lead.company}`,
 						body: `
+              ${originHtml}
               <p><strong>Firma:</strong> ${lead.company}</p>
               <p><strong>Name:</strong> ${lead.name}</p>
               <p><strong>E-Mail:</strong> ${lead.email}</p>
