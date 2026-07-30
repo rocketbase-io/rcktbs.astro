@@ -45,6 +45,16 @@ const year = new Date().getFullYear();
         © {year} {siteConfig.name}
       </p>
       <nav class="flex items-center gap-6">
+        <!-- Einziger Weg zur Hauptseite: bewusst nur im Footer und in neuem Tab,
+             damit der Funnel oben ablenkungsfrei bleibt und offen stehen bleibt. -->
+        <a
+          href="/"
+          target="_blank"
+          rel="noopener"
+          class="text-foreground-muted hover:text-foreground text-sm transition-colors"
+        >
+          Über RocketBase
+        </a>
         <a href="/impressum" class="text-foreground-muted hover:text-foreground text-sm transition-colors">
           Impressum
         </a>
