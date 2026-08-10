@@ -4,6 +4,13 @@ import { cn } from '@/lib/cn';
 import { buttonVariants } from '@/components/ui/form/Button/button.variants';
 import { Input } from '@/components/ui/form/Input/Input';
 import type { FunnelQuizQuestion } from '@/data/funnels';
+import {
+  ergaenzeMetaCookies,
+  erzeugeEventId,
+  pushEvent,
+  sammleAttribution,
+  trackMetaLead,
+} from '@/lib/leadTracking';
 
 interface FunnelQuizProps {
   funnel: string;
@@ -20,35 +27,6 @@ interface QuizAnswer {
   optionId: string;
   answer: string;
   detail?: string;
-}
-
-const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'] as const;
-
-// Click-IDs der Ad-Plattformen - Basis für spätere server-seitige Conversion-APIs
-const CLICK_ID_KEYS = ['fbclid', 'gclid', 'msclkid', 'li_fat_id', 'ttclid'] as const;
-
-function readCookie(name: string): string | undefined {
-  const match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
-  return match ? decodeURIComponent(match[1]) : undefined;
-}
-
-function pushEvent(event: string, params: Record<string, unknown> = {}) {
-  if (typeof window === 'undefined') return;
-  const w = window as unknown as { dataLayer?: Record<string, unknown>[] };
-  w.dataLayer = w.dataLayer || [];
-  w.dataLayer.push({ event, ...params });
-}
-
-// Feuert das Meta-Pixel-Lead-Event im Browser - aber nur, wenn der Pixel
-// nach Marketing-Consent geladen wurde (fbq existiert dann). Die eventID wird
-// mit dem serverseitigen CAPI-Event geteilt, damit Meta beide dedupliziert.
-function trackMetaLead(eventId: string) {
-  if (typeof window === 'undefined') return;
-  const w = window as unknown as {
-    fbq?: (...args: unknown[]) => void;
-  };
-  if (typeof w.fbq !== 'function') return;
-  w.fbq('track', 'Lead', {}, { eventID: eventId });
 }
 
 export function FunnelQuiz({
@@ -77,14 +55,7 @@ export function FunnelQuiz({
   const currentQuestion = contactStep ? null : questions[step];
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const utm: Record<string, string> = {};
-    for (const key of [...UTM_KEYS, ...CLICK_ID_KEYS]) {
-      const value = params.get(key);
-      if (value) utm[key] = value;
-    }
-    if (document.referrer) utm.referrer = document.referrer;
-    utmRef.current = utm;
+    utmRef.current = sammleAttribution();
   }, []);
 
   function trackStart() {
@@ -161,20 +132,10 @@ export function FunnelQuiz({
     formData.set('funnel', funnel);
     formData.set('page', window.location.href);
 
-    // Geteilte Event-ID für Browser-Pixel + serverseitige Conversions-API.
-    // Meta nutzt sie, um das doppelt gemeldete Lead-Event zu deduplizieren.
-    const eventId =
-      typeof crypto !== 'undefined' && crypto.randomUUID
-        ? crypto.randomUUID()
-        : `lead-${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+    const eventId = erzeugeEventId();
     formData.set('eventId', eventId);
 
-    // Meta-Pixel-Cookies erst beim Absenden lesen - sie existieren nur nach Consent
-    const attribution = { ...utmRef.current };
-    const fbp = readCookie('_fbp');
-    const fbc = readCookie('_fbc');
-    if (fbp) attribution._fbp = fbp;
-    if (fbc) attribution._fbc = fbc;
+    const attribution = ergaenzeMetaCookies(utmRef.current);
 
     formData.set(
       'answers',

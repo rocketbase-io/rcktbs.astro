@@ -13,9 +13,15 @@ import siteConfig from '@/config/site.config';
 interface Props {
   title: string;
   description: string;
+  /**
+   * Kurzzeile rechts im Header. Default passt zu den Anzeigen-Funnels (/f/);
+   * der Brief-Kanal (/b/) setzt eine eigene, weil dort keine Ersteinschätzung
+   * angeboten wird.
+   */
+  headerNote?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, headerNote = 'Kostenlose Ersteinschätzung' } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
@@ -32,7 +38,7 @@ const year = new Date().getFullYear();
         fetchpriority="high"
       />
       <span class="text-foreground-muted hidden text-xs font-semibold tracking-[0.18em] uppercase sm:block">
-        Kostenlose Ersteinschätzung
+        {headerNote}
       </span>
     </div>
   </header>

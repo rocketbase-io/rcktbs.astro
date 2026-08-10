@@ -20,6 +20,16 @@ const leadSchema = z.object({
 	utm: z.record(z.string(), z.string().max(500)).optional(),
 	page: z.string().max(2000).optional(),
 	eventId: z.string().max(100).optional(),
+	/**
+	 * Kennung des versendeten Briefs (Brief-Kanal /b/). Kommt als `?r=` an der
+	 * Landingpage an und wird nur durchgereicht — die Zuordnung Kennung → Firma
+	 * liegt ausschliesslich im lokalen Sales-Backend, nicht hier.
+	 *
+	 * Bewusst ein eigenes Feld statt eines Eintrags in `utm`: Die Brief-ID ist
+	 * kein Kampagnen-Parameter, und im utm-Record waere sie in Mail und Blob
+	 * schwer auffindbar.
+	 */
+	letterRef: z.string().max(50).optional(),
 	honeypot: z.string().max(0),
 });
 
@@ -159,6 +169,7 @@ export default async (request: Request, context: Context) => {
 			utm: parseJson(formData.get('utm')?.toString() || '{}', {}),
 			page: formData.get('page')?.toString() || undefined,
 			eventId: formData.get('eventId')?.toString() || undefined,
+			letterRef: formData.get('letterRef')?.toString() || undefined,
 			honeypot: formData.get('honeypot')?.toString() || '',
 		};
 
@@ -202,6 +213,7 @@ export default async (request: Request, context: Context) => {
 				phone: lead.phone,
 				answers: lead.answers,
 				attribution: lead.utm,
+				letterRef: lead.letterRef,
 				page: lead.page,
 				geo,
 				userAgent,
@@ -266,6 +278,8 @@ export default async (request: Request, context: Context) => {
 				'live-zahlen': 'Angle 1 · Live-Zahlen',
 				zeitfresser: 'Angle 2 · Zeitfresser / KI',
 				'eigene-software': 'Angle 3 · Lizenz / Eigene Software',
+				// Brief-Kanal (/b/) — eine Variante pro Branchencluster.
+				'brief-fertigung': 'Brief · Fertigung & Handwerk',
 			};
 			const utm = lead.utm || {};
 			const angleLabel = FUNNEL_LABELS[lead.funnel] || lead.funnel;
@@ -275,6 +289,7 @@ export default async (request: Request, context: Context) => {
 			const originHtml = `
 				<div style="background:#f0f4ff;border:1px solid #c7d2fe;border-radius:8px;padding:12px 16px;margin-bottom:16px">
 					<strong>Kam über:</strong> ${angleLabel}
+					${lead.letterRef ? `<br /><strong>Brief-Kennung:</strong> <code>${lead.letterRef}</code>` : ''}
 					${campaignBits ? `<br /><strong>Kampagne/Anzeige:</strong> ${campaignBits}` : ''}
 				</div>`;
 

@@ -1,0 +1,223 @@
+---
+/**
+ * Landingpage des Brief-Kanals (/b/[slug]).
+ *
+ * Ziel des QR-Codes auf dem postalisch versendeten Anschreiben. Eine Seite pro
+ * Branchencluster — definiert in src/data/briefLandings.ts.
+ *
+ * Bewusst KEINE Personalisierung pro Empfänger: Die Brief-Kennung hängt als
+ * `?r=` an der URL, wird aber nur getrackt und nie aufgelöst. Wer den Brief
+ * aufhebt und scannt, hat die höchste Hürde bereits genommen — und Firmenname
+ * plus Logo nochmal auf der Seite können nach Überwachung wirken, wenn niemand
+ * um Kontakt gebeten hat.
+ *
+ * Getrennt von /f/[slug] (Anzeigen): dort Quiz-Einstieg und Du-Form, hier ein
+ * vorqualifizierter Leser, der gesiezt wird. Ein gemeinsames Template hätte
+ * `if (kanal === 'brief')` durch jede Textzeile gezogen.
+ */
+import { Picture } from 'astro:assets';
+import FunnelLayout from '@/layouts/FunnelLayout.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import Blueprint from '@/components/hero-backgrounds/Blueprint.astro';
+import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
+import { BriefKontakt } from '@/components/brief/BriefKontakt';
+import { BriefTermin } from '@/components/brief/BriefTermin';
+import { briefLandings } from '@/data/briefLandings';
+import { cases, additionalCases } from '@/data/rocketbase';
+import { caseTeaserImages } from '@/features/references/caseImages';
+
+export function getStaticPaths() {
+  return briefLandings.map((landing) => ({
+    params: { slug: landing.slug },
+    props: { landing },
+  }));
+}
+
+const { landing } = Astro.props;
+
+// Referenztexte kommen aus rocketbase.ts — die Variante wählt nur die Slugs.
+// So bleibt der Inhalt an einer Stelle gepflegt und driftet nicht gegen die
+// Website-Referenzen ab.
+const alleCases = [...cases, ...additionalCases];
+const referenzen = landing.referenzen.slugs
+  .map((slug) => alleCases.find((c) => c.slug === slug))
+  .filter((c): c is (typeof alleCases)[number] => Boolean(c));
+
+const clientLogos = [
+  { key: 'bonprix_logo', name: 'bonprix' },
+  { key: 'statista-logo', name: 'Statista' },
+  { key: 'stage_logo', name: 'Stage Entertainment' },
+  { key: 'fkc_logo', name: 'FKC Consulting' },
+  { key: 'mavox_logo', name: 'MAVOX Winterdienst' },
+  { key: 'sam', name: 'Smart Active Media' },
+];
+---
+
+<FunnelLayout
+  title={landing.meta.title}
+  description={landing.meta.description}
+  headerNote="Sie haben Post von uns"
+>
+  <!-- HERO -->
+  <section class="relative overflow-hidden pt-12 pb-14 sm:pt-16 lg:pt-20">
+    <Blueprint />
+    <div
+      class="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,var(--color-background)_0%,transparent_75%)] opacity-70"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="relative z-10 container max-w-3xl text-center">
+      <p
+        class="text-brand-600 dark:text-brand-300 text-sm font-semibold tracking-[0.22em] uppercase"
+      >
+        {landing.hero.eyebrow}
+      </p>
+      <h1
+        lang="de"
+        class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-4xl lg:text-5xl"
+      >
+        {landing.hero.headline}
+        <span class="text-brand-500 mt-2 block">{landing.hero.headlineAccent}</span>
+      </h1>
+      <p
+        class="text-foreground-secondary mx-auto mt-6 max-w-2xl text-base leading-7 sm:text-lg sm:leading-8"
+      >
+        {landing.hero.subline}
+      </p>
+    </div>
+  </section>
+
+  <!-- VIDEO: zeigt einen sichtbaren Platzhalter, solange kein src gesetzt ist -->
+  <section class="pt-4 pb-14 lg:pt-8 lg:pb-20">
+    <div class="container max-w-4xl">
+      <header class="mx-auto max-w-2xl text-center">
+        <h2 class="font-display text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
+          {landing.video.heading}
+        </h2>
+        {
+          landing.video.text && (
+            <p class="text-foreground-secondary mx-auto mt-4 max-w-xl text-base leading-7">
+              {landing.video.text}
+            </p>
+          )
+        }
+      </header>
+
+      <div class="border-border mt-8 overflow-hidden rounded-2xl border shadow-lg">
+        {
+          landing.video.src ? (
+            <video
+              class="aspect-video w-full bg-black"
+              controls
+              preload="metadata"
+              poster={landing.video.poster}
+            >
+              <source src={landing.video.src} type="video/mp4" />
+            </video>
+          ) : (
+            <div class="bg-background-secondary relative flex aspect-video w-full items-center justify-center">
+              <div
+                class="bg-grid-pattern pointer-events-none absolute inset-0 opacity-20"
+                aria-hidden="true"
+              />
+              <div class="relative flex flex-col items-center gap-3 text-center">
+                <div class="border-brand-300/70 bg-brand-500/10 text-brand-600 flex h-16 w-16 items-center justify-center rounded-full border">
+                  <Icon name="monitor" size="md" />
+                </div>
+                <p class="text-foreground-muted font-mono text-xs font-semibold tracking-[0.22em] uppercase">
+                  Video folgt
+                </p>
+                <p class="text-foreground-secondary max-w-sm text-sm leading-6">
+                  Hier kommt eine kurze Vorstellung: wie wir arbeiten und wie die Lösungen
+                  aussehen.
+                </p>
+              </div>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST: direkt nach dem Video, solange die Aufmerksamkeit oben ist -->
+  <ClientLogoStrip
+    heading="Für diese Häuser haben wir gebaut"
+    logos={clientLogos}
+    variant="light"
+  />
+
+  <!-- TERMIN (Primärweg) — steht vor den Referenzen: Wer nach dem Video
+       überzeugt ist, soll buchen können, ohne erst weiterscrollen zu müssen. -->
+  <section class="py-16 lg:py-20">
+    <div class="container max-w-3xl">
+      <BriefTermin
+        client:load
+        calUrl={landing.termin.calUrl}
+        calLabel={landing.termin.calLabel}
+        heading={landing.termin.heading}
+        text={landing.termin.text}
+      />
+    </div>
+  </section>
+
+  <!-- REFERENZEN: dieselben Projekte wie im Brief. Nach der Buchung, als
+       Vertiefung für alle, die noch mehr sehen wollen. -->
+  <section class="bg-background-secondary border-border border-y py-16 lg:py-20">
+    <div class="container max-w-5xl">
+      <header class="mx-auto max-w-2xl text-center">
+        <h2 class="font-display text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
+          {landing.referenzen.heading}
+        </h2>
+        {
+          landing.referenzen.intro && (
+            <p class="text-foreground-secondary mx-auto mt-4 text-base leading-7">
+              {landing.referenzen.intro}
+            </p>
+          )
+        }
+      </header>
+
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          referenzen.map((ref) => (
+            <article class="border-border bg-card flex flex-col overflow-hidden rounded-2xl border shadow-sm">
+              {caseTeaserImages[ref.slug] && (
+                <Picture
+                  src={caseTeaserImages[ref.slug]!}
+                  formats={['avif', 'webp']}
+                  alt={`${ref.client} — ${ref.title}`}
+                  class="aspect-[16/10] w-full object-cover"
+                  widths={[400, 800]}
+                  sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 90vw"
+                  loading="lazy"
+                />
+              )}
+              <div class="flex flex-1 flex-col p-5">
+                <p class="text-brand-600 dark:text-brand-300 text-xs font-semibold tracking-[0.18em] uppercase">
+                  {ref.client}
+                </p>
+                <h3 class="font-display text-foreground mt-2 text-base leading-snug font-bold">
+                  {ref.title}
+                </h3>
+                <p class="text-foreground-secondary mt-3 text-sm leading-6">{ref.kicker}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- KONTAKT (Fallback für alle, die erst schreiben wollen) -->
+  <section class="py-14 lg:py-16">
+    <div class="container max-w-2xl">
+      <BriefKontakt
+        client:load
+        funnel={`brief-${landing.slug}`}
+        kontakt={landing.kontakt}
+        erfolg={landing.erfolg}
+      />
+    </div>
+  </section>
+</FunnelLayout>
