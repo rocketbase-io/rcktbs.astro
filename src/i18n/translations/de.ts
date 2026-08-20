@@ -56,9 +56,9 @@ export const de = {
 
   contact: {
     meta: {
-      title: 'Kontakt - direkt mit Marten Prieß sprechen',
+      title: 'Kontakt: Erstgespräch zu Individualsoftware',
       description:
-        'Sprechen Sie direkt mit RocketBase über Prozesse, individuelle Software und den nächsten sinnvollen Digitalisierungsschritt.',
+        'Kostenloses 30-Minuten-Erstgespräch zu Individualsoftware, Standardsoftware-Ablösung und Prozessdigitalisierung – ohne Vertriebskette, direkt mit Marten Prieß. Raum Hamburg und bundesweit remote.',
     },
     hero: {
       badge: 'Direkter Kontakt',
@@ -101,11 +101,11 @@ export const de = {
   },
 
   blog: {
-    title: 'Blog: Praxis-Einblicke zu Software & Prozessen',
+    title: 'Individualsoftware & Prozesse: Praxisberichte',
     description:
-      'Einblicke aus echten Projekten: Produktentwicklung, Prozessoptimierung, Plattformen und der Weg vom Tool-Wildwuchs zur belastbaren Steuerung.',
+      'Standardsoftware am Limit, Tool-Wildwuchs, Reporting aus Excel, Legacy-Hosting: Praxisbeiträge aus echten Ablöse- und Digitalisierungsprojekten im Mittelstand.',
     descriptionHtml:
-      'Einblicke aus echten Projekten: <strong>Produktentwicklung</strong>, <strong>Prozessoptimierung</strong>, Plattformen und der Weg vom Tool-Wildwuchs zur belastbaren Steuerung.',
+      'Einblicke aus echten Projekten: <strong>Standardsoftware-Ablösung</strong>, <strong>Prozessoptimierung</strong>, Reporting und der Weg vom Tool-Wildwuchs zur belastbaren Steuerung.',
     allPosts: 'Alle Beiträge',
     featured: 'Empfohlen',
     noPosts: 'Noch keine Beiträge vorhanden.',

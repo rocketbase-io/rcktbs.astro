@@ -34,7 +34,7 @@ const { lang } = Astro.params;
 const { post } = Astro.props;
 
 if (!lang || !isValidLocale(lang)) {
-  return Astro.redirect('/blog');
+  return Astro.redirect('/blog/');
 }
 
 const locale = lang as Locale;

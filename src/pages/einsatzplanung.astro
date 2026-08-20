@@ -81,7 +81,7 @@ const capabilities = [
 
 const cases = [
   {
-    href: '/referenzen/schlosserei-diezinger',
+    href: '/referenzen/schlosserei-diezinger/',
     client: 'Schlosserei Diezinger',
     title: 'Einsatzplanung, die den Betrieb wirklich kennt',
     text: 'Wer wann an was arbeitet, wer ausfällt, welche Aufträge laufen – lief vorher über Excel. Jetzt: ein lebendiger Plan mit Kalender und Aufgaben, Ansichten je nach Rolle, automatische Abwesenheiten, Anmelden per Karte.',
@@ -89,7 +89,7 @@ const cases = [
     alt: 'Farbige Einsatz- und Auftragsplanung als Board',
   },
   {
-    href: '/referenzen/mavox-winterdienst',
+    href: '/referenzen/mavox-winterdienst/',
     client: 'MAVOX Winterdienst',
     title: 'Tourenplanung und mobile Einsatzerfassung',
     text: 'Disposition im Büro, Erfassung draußen mit Foto-Nachweis: Tourenplanung und mobile App bringen Außendienst und Abrechnung zusammen – auch bei Nacht- und Wochenendeinsätzen.',
@@ -98,15 +98,15 @@ const cases = [
   },
 ];
 
-const seoTitle = 'Einsatzplanung & Disposition – raus aus Excel';
+const seoTitle = 'Einsatzplanung & grafischer Leitstand';
 const pageUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
 const serviceSchema = createServiceSchema({
   name: 'Einsatzplanung und Disposition',
   description:
-    'Individuelle Lösung für Einsatz- und Auftragssteuerung: Disposition, mobile Einsatzerfassung und Abrechnung in einem System – statt gewachsener Excel-Welten. Für Handwerk, Facility und Außendienst.',
+    'Individuelle Lösung für Einsatz- und Auftragssteuerung: grafischer Leitstand, Tourenplanung, mobile Einsatzerfassung und Abrechnung in einem System – statt gewachsener Excel-Welten. Für Handwerk, Facility, Außendienst und Logistik.',
   url: pageUrl,
-  serviceType: 'Individualsoftware für Einsatzplanung und Disposition',
+  serviceType: 'Individualsoftware für Einsatzplanung, Disposition und grafischen Leitstand',
   areaServed: 'DE',
 });
 
@@ -124,15 +124,19 @@ const miniFaqs = [
     a: 'Nein. Wir nehmen im Discovery den realen Ablauf auf – Auftrag, Disposition, Einsatz, Erfassung, Abrechnung – und bauen die Lösung um euren Prozess herum, nicht umgekehrt. Die Umstellung passiert schrittweise, das Tagesgeschäft läuft weiter.',
   },
   {
+    q: 'Bekommen wir einen grafischen Leitstand für die Planung?',
+    a: 'Ja. Die Planung läuft über eine grafische Plantafel: Mitarbeiter und Ressourcen als Zeilen, der Zeitraum als Achse, Einsätze per Drag-and-drop verschiebbar. Verfügbarkeit, Qualifikation, Abwesenheiten und Auslastung sind direkt sichtbar, statt in Nebentabellen zu stecken. Anders als bei einem Standard-Leitstand bilden wir eure Planungsregeln ab – nicht die eines fremden Branchenmodells.',
+  },
+  {
     q: 'Wir sind kein Handwerksbetrieb – passt das trotzdem?',
-    a: 'Vermutlich ja. Das Muster – Auftrag, Disposition, mobiler Einsatz, Erfassung, Abrechnung über Excel – findet sich in Facility-Services, Wartung, Montage und vielen Außendienst-Modellen genauso. Im Erstgespräch ordnen wir ein, ob euer Fall dazu passt.',
+    a: 'Vermutlich ja. Das Muster – Auftrag, Disposition, mobiler Einsatz, Erfassung, Abrechnung über Excel – findet sich in Facility-Services, Wartung, Montage, Transport und Logistik sowie vielen Außendienst-Modellen genauso. Im Erstgespräch ordnen wir ein, ob euer Fall dazu passt.',
   },
 ];
 ---
 
 <PageLayout
   title={seoTitle}
-  description="Disposition, Einsatzplanung und Abrechnung laufen über gewachsene Excel-Welten? RocketBase baut die individuelle Lösung für Einsatzsteuerung und mobile Erfassung – für Handwerk, Facility und Außendienst."
+  description="Disposition, Einsatzplanung und Abrechnung laufen über gewachsene Excel-Welten? RocketBase baut den grafischen Leitstand und die mobile Einsatzerfassung als individuelle Lösung – für Handwerk, Facility, Außendienst und Logistik."
   lang={locale}
   routeId="einsatzplanung"
   extraSchemas={[

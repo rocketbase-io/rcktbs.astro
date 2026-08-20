@@ -55,10 +55,10 @@ const t = useTranslations(locale);
 // Prefer the generated OG composite (hero image + branded overlay) over the raw hero.
 // Falls back to the raw image.src only if the generated route is unavailable.
 // Blog OGs render as JPEG (photographic hero) — extension matches the real format.
-const ogImage = `/og${Astro.url.pathname}.jpg`;
+const ogImage = `/og${Astro.url.pathname.replace(/\/$/, '')}.jpg`;
 
 // Build breadcrumbs with locale-aware URLs
-const blogUrl = locale === defaultLocale ? '/blog' : `/${locale}/blog`;
+const blogUrl = locale === defaultLocale ? '/blog/' : `/${locale}/blog/`;
 const homeUrl = locale === defaultLocale ? '/' : `/${locale}`;
 
 const breadcrumbs = [
@@ -83,6 +83,7 @@ const blogPostingSchema = createBlogPostSchema({
   datePublished: publishedAt,
   dateModified: updatedAt,
   author: { name: author, url: siteConfig.url },
+  keywords: tags,
 });
 
 const breadcrumbSchema = createBreadcrumbSchema([

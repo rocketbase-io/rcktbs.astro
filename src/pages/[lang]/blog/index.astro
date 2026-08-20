@@ -22,7 +22,7 @@ export function getStaticPaths() {
 const { lang } = Astro.params;
 
 if (!lang || !isValidLocale(lang)) {
-  return Astro.redirect('/blog');
+  return Astro.redirect('/blog/');
 }
 
 const locale = lang as Locale;
@@ -48,7 +48,7 @@ const regularPosts = nonFeaturedPosts.length > 0 ? nonFeaturedPosts : posts;
 const getPostUrl = (postId: string) => {
   // Remove locale prefix from id (e.g., "es/bienvenido-a-velocity" -> "bienvenido-a-velocity")
   const slug = postId.replace(`${locale}/`, '');
-  return `/${locale}/blog/${slug}`;
+  return `/${locale}/blog/${slug}/`;
 };
 ---
 

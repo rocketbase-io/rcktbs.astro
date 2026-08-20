@@ -34,7 +34,7 @@ const servicesUrl = getLocalizedPath('services', locale);
 const contactUrl = getLocalizedPath('contact', locale);
 const missionUrl = getLocalizedPath('mission', locale);
 const workshopUrl = getLocalizedPath('discoveryWorkshop', locale);
-const referencesUrl = '/referenzen';
+const referencesUrl = '/referenzen/';
 const workUrl = getLocalizedPath('work', locale);
 const standardsoftwareUrl = getLocalizedPath('standardsoftwareAbloesung', locale);
 const einsatzplanungUrl = getLocalizedPath('einsatzplanung', locale);
@@ -130,7 +130,7 @@ const testimonialItems = allCases
     };
   });
 
-const getReferenceUrl = (slug: string) => `${referencesUrl}/${slug}`;
+const getReferenceUrl = (slug: string) => `${referencesUrl}${slug}/`;
 
 const featuredBlogPosts = (
   await getCollection('blog', ({ data }) => {
@@ -140,7 +140,7 @@ const featuredBlogPosts = (
   .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
   .slice(0, 2);
 
-const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`, '')}`;
+const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/', '') + '/';
 ---
 
 <LandingLayout
@@ -781,7 +781,7 @@ const getBlogPostUrl = (postId: string) => `/blog/${postId.replace(`${locale}/`,
             </h2>
           </div>
           <a
-            href="/blog"
+            href="/blog/"
             class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 hover:text-brand-500 dark:text-brand-400 dark:hover:text-brand-300 transition-colors"
           >
             Alle Beiträge

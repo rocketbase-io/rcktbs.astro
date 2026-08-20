@@ -34,7 +34,7 @@ export function FunnelQuiz({
   questions,
   contact,
   success,
-  privacyUrl = '/datenschutz',
+  privacyUrl = '/datenschutz/',
   endpoint = '/api/funnel-lead',
 }: FunnelQuizProps) {
   // Schritte: 0..questions.length-1 = Fragen, questions.length = Kontakt

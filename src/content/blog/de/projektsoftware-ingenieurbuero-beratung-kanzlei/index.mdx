@@ -1,0 +1,222 @@
+---
+title: "Wenn die Projektsoftware nicht mehr mitwächst"
+seoTitle: "Projektsoftware für Ingenieurbüros & Beratungen"
+description: "Ingenieurbüros, Beratungen und Kanzleien nutzen dieselben Projektsysteme - und stoßen an dieselben Grenzen. Vier Signale, dass die Software bremst."
+publishedAt: 2026-08-20
+author: "Marten Prieß"
+image: "./hero.png"
+imageAlt: "Astronaut über Pläne und Unterlagen an einem Arbeitstisch gebeugt"
+tags: ["projektsoftware", "ingenieurbuero", "beratung", "kanzlei", "standardsoftware", "individualsoftware"]
+featured: true
+draft: false
+locale: de
+cta:
+  eyebrow: "Nächster Schritt"
+  headline: "Trägt Ihre Projektsoftware noch - oder tragen Sie sie?"
+  body: "30 Minuten, um Ihre konkrete Situation einzuordnen: Wo die Grenze verläuft, was sich im Bestand noch lohnt und ab wann eine Ablösung wirtschaftlich wird."
+---
+
+import Button from '@/components/ui/form/Button/Button.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import Figure from '@/components/blog/Figure.astro';
+import Screencast from '@/components/blog/Screencast.astro';
+import ProzessDriftDiagramm from '@/components/blog/diagrams/ProzessDriftDiagramm.astro';
+import { contactLinks } from '@/data/rocketbase';
+
+Ein Ingenieurbüro mit 40 Mitarbeitern, eine Unternehmensberatung mit 25, eine mittelgroße Kanzlei: Auf den ersten Blick drei verschiedene Welten. Schaut man auf die Software, mit der sie ihr Kerngeschäft steuern, sind es dieselben Systeme - und dieselben Beschwerden.
+
+Das ist kein Zufall. Alle drei verkaufen im Kern dasselbe: **qualifizierte Zeit**. Und damit haben sie denselben Kernprozess - Auftrag kalkulieren, Stunden erfassen, Projektfortschritt verfolgen, fakturieren. Genau für diesen Prozess gibt es einen etablierten Markt an Projekt- und Kanzleisoftware, und genau dort taucht ein wiederkehrendes Muster auf: Die Software, die das Geschäft tragen sollte, bindet irgendwann mehr Kapazität, als sie freisetzt.
+
+Dieser Artikel beschreibt, woran man diesen Punkt erkennt - und was die realistischen Optionen sind.
+
+## Warum es ausgerechnet diese Branchen trifft
+
+<div className="not-prose my-10 grid gap-4 md:grid-cols-3" data-reveal="fade-up">
+  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+    <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">01</p>
+    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Zeit ist das Produkt</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Wenn abrechenbare Stunden der Umsatz sind, schlägt jede Stunde, die ins Pflegen und Nacharbeiten der Software fließt, direkt auf die Marge. In Betrieben mit Produkt- oder Warengeschäft fällt derselbe Aufwand kaum auf - hier ist er unmittelbar teuer.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+    <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">02</p>
+    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Die Kalkulation ist der Unterschied</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Wie ein Haus seine Leistung schneidet, bepreist und kalkuliert, ist selten Branchenstandard - es ist über Jahre gewachsen und oft der eigentliche Wettbewerbsvorteil. Standardsoftware bildet den Durchschnitt ab, nicht diese Kanten.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+    <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">03</p>
+    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Wachstum verändert den Prozess</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Neue Leistungsarten, ein zweiter Standort, Retainer statt Einzelaufträge, Festpreise neben Zeithonorar: Das Geschäftsmodell entwickelt sich weiter, das Datenmodell der Software bleibt, wie es 2015 gedacht war.</p>
+  </div>
+</div>
+
+Die Systeme selbst sind dabei nicht das Problem. Sie sind für einen breiten Markt gebaut und lösen für viele Häuser reale Probleme - oft jahrelang gut. Die Frage ist eine andere: **Ab wann arbeitet ein Haus nicht mehr mit dem System, sondern dagegen?**
+
+<ProzessDriftDiagramm />
+
+## Vier Signale, dass die Grenze erreicht ist
+
+In Gesprächen mit projektgetriebenen Häusern kommen praktisch immer dieselben vier Punkte - und selten als Technik-Argument, fast immer als Geschäfts-Argument.
+
+<div className="not-prose my-10 grid gap-4 sm:grid-cols-2" data-reveal="fade-up">
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-center gap-2">
+      <span className="text-brand-600"><Icon name="alert-circle" size="sm" /></span>
+      <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Signal 1</p>
+    </div>
+    <p className="font-display text-foreground mt-2 text-base font-semibold leading-snug">Die Excel-Welt daneben</p>
+    <p className="text-foreground-secondary mt-2 text-sm leading-6">Die eigentliche Kalkulation passiert in einer Tabelle, das Ergebnis wird ins System übertragen. Das System ist zur Ablage geworden, nicht zum Werkzeug. Wer die Tabelle gebaut hat, ist meist genau eine Person.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-center gap-2">
+      <span className="text-brand-600"><Icon name="trending-down" size="sm" /></span>
+      <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Signal 2</p>
+    </div>
+    <p className="font-display text-foreground mt-2 text-base font-semibold leading-snug">Projektmarge erst im Nachhinein</p>
+    <p className="text-foreground-secondary mt-2 text-sm leading-6">Ob ein Projekt profitabel war, steht Wochen nach Abschluss fest - und auch dann nur ungefähr. Während der Laufzeit gegenzusteuern ist damit unmöglich; die Zahl kommt, wenn sie niemandem mehr hilft.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-center gap-2">
+      <span className="text-brand-600"><Icon name="users" size="sm" /></span>
+      <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Signal 3</p>
+    </div>
+    <p className="font-display text-foreground mt-2 text-base font-semibold leading-snug">Wissen hängt an Köpfen</p>
+    <p className="text-foreground-secondary mt-2 text-sm leading-6">Neue Kolleginnen brauchen Monate, bis sie das System richtig bedienen - weil die Regeln nicht im System stehen, sondern in den Ausnahmen, die man kennen muss. Urlaub der falschen Person legt Abläufe lahm.</p>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-center gap-2">
+      <span className="text-brand-600"><Icon name="shield" size="sm" /></span>
+      <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Signal 4</p>
+    </div>
+    <p className="font-display text-foreground mt-2 text-base font-semibold leading-snug">Updates werden verschoben</p>
+    <p className="text-foreground-secondary mt-2 text-sm leading-6">Jedes größere Release ist ein Risiko, weil unklar ist, ob die eigenen Anpassungen es überstehen. Wer Updates aus Vorsicht verschleppt, betreibt faktisch Legacy-Software - und zahlt weiterhin Lizenzen dafür.</p>
+  </div>
+</div>
+
+Ein einzelnes Signal ist normal und kein Grund zu handeln. Kritisch wird es, wenn drei oder vier davon gleichzeitig zutreffen und schon länger bestehen: Dann ist die Grenze nicht nahe, sondern überschritten.
+
+<aside className="not-prose my-8" data-reveal="fade-up">
+  <div className="rounded-2xl border border-brand-200 bg-brand-50/60 p-6 dark:border-brand-800 dark:bg-brand-900/15 sm:p-7">
+    <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
+      <div className="flex-1">
+        <p className="font-display text-foreground text-lg font-semibold leading-snug sm:text-xl">Drei oder vier Signale treffen bei Ihnen zu?</p>
+        <p className="text-foreground-secondary mt-1.5 text-sm leading-6">30 Minuten, um einzuordnen, ob sich eine Ablösung für Ihr Haus rechnet - oder ob der Bestand noch trägt.</p>
+      </div>
+      <div className="shrink-0">
+        <Button href={contactLinks.cal} target="_blank"><span>Mit Marten sprechen</span><Icon name="arrow-up-right" size="sm" /></Button>
+      </div>
+    </div>
+  </div>
+</aside>
+
+## Ein konkreter Fall aus der Beratung
+
+Bei [FKC Consulting](/referenzen/fkc-consulting/) lag genau diese Konstellation vor. Eine etablierte Standardsoftware sollte das Beratungsgeschäft tragen, wurde aber binnen weniger Jahre eher zur Last: Der eigene Angebots- und Projektprozess passte nur über Umwege hinein, das Team fing immer mehr von Hand auf, und für Steuerung und Prognosen fehlten die Auswertungen im nötigen Detail.
+
+Der entscheidende Konstruktionsfehler saß tiefer als in der Bedienung. **Angebot und Durchführung waren im Standard so miteinander verwoben, dass sich Plan und Ergebnis kaum noch gegenüberstellen ließen.** Damit fällt die wichtigste Steuerungsfrage eines projektgetriebenen Hauses weg: Haben wir das geliefert, was wir kalkuliert haben - und wo genau sind wir davon abgewichen?
+
+<Figure
+  alt="Vertriebs-Pipeline als Kanban-Board mit Angeboten in Spalten nach Status"
+  caption="Der Vertrieb als Board statt als Liste: Jedes Angebot ist sichtbar, samt Status und Wert - die Grundlage dafür, Plan und Ergebnis später überhaupt vergleichen zu können."
+  source="Beispielansicht aus einer RocketBase-Lösung"
+  todo="Screenshot: Sales-Pipeline als Kanban-Board in der Demo-Instanz. Sichtbar sein sollten mehrere Spalten mit Status und Angebotswerten. Format 16:9."
+/>
+
+<div className="not-prose my-10 grid gap-4 md:grid-cols-2 md:items-stretch" data-reveal="fade-up">
+  <div className="rounded-2xl border border-border bg-background-secondary p-6 sm:p-7">
+    <p className="text-foreground-muted font-mono text-xs font-semibold tracking-wider">Vorher</p>
+    <p className="font-display text-foreground mt-2 text-xl font-semibold leading-snug">Ein System für alle</p>
+    <p className="text-foreground-secondary mt-4 text-sm leading-6">Technisch sauber gebaut, aber als Lösung für jeden Zuschnitt gedacht. Die eigenen, entscheidenden Strukturen fanden darin keinen Platz - und wurden an den Rändern nachgebaut.</p>
+  </div>
+  <div className="rounded-2xl border border-brand-300 bg-card p-6 shadow-[0_22px_55px_rgba(34,43,74,0.08)] dark:border-brand-800 sm:p-7">
+    <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">Nachher</p>
+    <p className="font-display text-foreground mt-2 text-xl font-semibold leading-snug">Der reale Prozess als Grundlage</p>
+    <p className="text-foreground-secondary mt-4 text-sm leading-6">Vertrieb als Kanban-Board, automatische Angebotskalkulation, integrierte Terminplanung, Rechnung mit direktem Versand - und Angebot und Durchführung sauber getrennt, damit Plan und Ergebnis auswertbar bleiben.</p>
+  </div>
+</div>
+
+Wichtig an diesem Fall ist weniger die Technik als die Reihenfolge: Aufgenommen wurde **der reale Prozess, nicht die bestehende Systemlandschaft**. Erst danach wurden Datenmigration und Anwendung geplant. Bestandsdaten aus proprietären Strukturen wurden herausgelöst, bereinigt und übernommen - die Historie blieb nutzbar.
+
+Das Muster dahinter ist übertragbar: Ein Ingenieurbüro rechnet über Leistungsphasen statt über Beratungstage, eine Kanzlei über Gegenstandswerte und Zeithonorare. Die Fachlogik unterscheidet sich - die strukturelle Frage ist identisch.
+
+## Die realistischen Optionen
+
+Zwischen "alles bleibt" und "alles neu" liegen mehr Möglichkeiten, als in solchen Diskussionen meist auf den Tisch kommen:
+
+<div className="not-prose my-10 flex flex-col gap-4" data-reveal="fade-up">
+  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+    <div className="flex items-start gap-3">
+      <span className="text-brand-500 mt-1 shrink-0"><Icon name="settings" size="sm" /></span>
+      <div>
+        <p className="font-display text-foreground text-base font-semibold leading-snug">Im Bestand aufräumen</p>
+        <p className="text-foreground-secondary mt-2 text-sm leading-6">Workarounds konsolidieren, ein externes Auswertungswerkzeug anbinden, Prozesse verschlanken. Sinnvoll, wenn die Kernlogik grundsätzlich passt und nur die Ränder ausgefranst sind - deutlich günstiger als jede Ablösung.</p>
+      </div>
+    </div>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+    <div className="flex items-start gap-3">
+      <span className="text-brand-500 mt-1 shrink-0"><Icon name="layers" size="sm" /></span>
+      <div>
+        <p className="font-display text-foreground text-base font-semibold leading-snug">Den Kern herauslösen, den Rest im Standard lassen</p>
+        <p className="text-foreground-secondary mt-2 text-sm leading-6">Buchhaltung, Lohn und klassisches CRM bleiben, wo sie sind. Individuell wird nur, was den Unterschied macht: Kalkulation, Projektsteuerung, Auswertung. Der häufigste sinnvolle Schnitt - und der mit dem besten Verhältnis von Aufwand zu Wirkung.</p>
+      </div>
+    </div>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+    <div className="flex items-start gap-3">
+      <span className="text-brand-500 mt-1 shrink-0"><Icon name="box" size="sm" /></span>
+      <div>
+        <p className="font-display text-foreground text-base font-semibold leading-snug">Vollständig ablösen</p>
+        <p className="text-foreground-secondary mt-2 text-sm leading-6">Angebracht, wenn der Kernprozess durchgehend nicht passt und die Datenhaltung selbst im Weg steht. Läuft nie als Big Bang, sondern im Parallelbetrieb - das Tagesgeschäft kann nicht stehenbleiben.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+Wie so eine Ablösung schrittweise abläuft - von der Bestandsaufnahme über den Schnitt bis zur Abschaltung - haben wir auf der Seite [Standardsoftware ablösen](/standardsoftware-abloesung/) zusammengefasst. Warum dieses Muster nicht auf Professional Services beschränkt ist, beschreibt der Artikel zu den [Grenzen der Branchensoftware](/blog/standardsoftware-vertec-centric-grenzen/).
+
+## Wann Sie beim Bestand bleiben sollten
+
+Damit dieser Artikel nicht als Plädoyer für Individualentwicklung missverstanden wird - es gibt klare Fälle, in denen eine Ablösung die falsche Entscheidung wäre:
+
+<div className="not-prose my-10 grid gap-4 sm:grid-cols-2" data-reveal="fade-up">
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-start gap-3">
+      <span className="text-brand-500 mt-1 shrink-0"><Icon name="check" size="xs" /></span>
+      <p className="text-foreground-secondary text-sm leading-6"><strong className="text-foreground">Ihr Prozess ist branchenüblich.</strong> Wenn Sie kalkulieren wie alle anderen auch, bildet ein ausgereiftes Produkt das gut ab.</p>
+    </div>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-start gap-3">
+      <span className="text-brand-500 mt-1 shrink-0"><Icon name="check" size="xs" /></span>
+      <p className="text-foreground-secondary text-sm leading-6"><strong className="text-foreground">Der Schmerz ist Bedienung, nicht Struktur.</strong> Eine unbeliebte Oberfläche ist ein Schulungs- und Konfigurationsthema, kein Ablösegrund.</p>
+    </div>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-start gap-3">
+      <span className="text-brand-500 mt-1 shrink-0"><Icon name="check" size="xs" /></span>
+      <p className="text-foreground-secondary text-sm leading-6"><strong className="text-foreground">Eine Umstrukturierung steht an.</strong> Wer im nächsten Jahr fusioniert oder das Leistungsmodell umbaut, sollte den Prozess erst klären - dann die Software.</p>
+    </div>
+  </div>
+  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+    <div className="flex items-start gap-3">
+      <span className="text-brand-500 mt-1 shrink-0"><Icon name="check" size="xs" /></span>
+      <p className="text-foreground-secondary text-sm leading-6"><strong className="text-foreground">Es fehlt eine interne Ansprechperson.</strong> Ohne jemanden, der den eigenen Prozess verbindlich entscheiden kann, wird jedes Projekt zäh - unabhängig vom Dienstleister.</p>
+    </div>
+  </div>
+</div>
+
+In diesen Fällen sagen wir das im Erstgespräch auch so. Ein Ablöseprojekt, das aus Frust statt aus Rechnung startet, wird selten gut.
+
+<Screencast
+  src="/screencasts/kalkulation-vs-realitaet.mp4"
+  poster="/screencasts/kalkulation-vs-realitaet.jpg"
+  ratio="16/9"
+  caption="Vom Angebot in die Auswertung: Was kalkuliert wurde und was tatsächlich angefallen ist, steht im selben System nebeneinander."
+  todo="Aufnehmen in der Demo-Instanz: Ein abgeschlossenes Projekt öffnen und zeigen, wo kalkulierte und tatsächliche Stunden bzw. Deckungsbeitrag gegenübergestellt werden. 20-30 Sekunden, ohne Ton."
+/>
+
+## Der Punkt, an dem sich die Rechnung dreht
+
+Am Ende ist es eine wirtschaftliche Frage, keine technische. Interessant ist nicht, was die Lizenz kostet, sondern **was der Umgang mit dem System an Kapazität bindet**: die Stunden für manuelles Auffangen, die verschleppten Auswertungen, die Einarbeitungszeit, die Projekte, deren Marge zu spät sichtbar wird.
+
+In projektgetriebenen Häusern ist genau diese Kapazität das Produkt. Sobald die Software mehr davon bindet, als sie freisetzt, ist die Grenze überschritten - unabhängig davon, wie gut das System auf dem Papier ist.

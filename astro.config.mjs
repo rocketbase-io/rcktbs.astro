@@ -9,6 +9,12 @@ export default defineConfig({
 
   site: process.env.SITE_URL || 'https://rocketbase.io',
 
+  // Kanonische URL-Form ist MIT Trailing Slash (so werden Canonicals und Sitemap
+  // erzeugt). Ohne diese Einstellung indexiert Google beide Varianten getrennt –
+  // in der Search Console tauchten /standardsoftware-abloesung und
+  // /standardsoftware-abloesung/ als zwei Seiten mit geteilten Signalen auf.
+  trailingSlash: 'always',
+
   // i18n configuration
   i18n: {
     defaultLocale: 'de',

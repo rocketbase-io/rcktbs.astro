@@ -59,3 +59,6 @@ package-lock.json
 # Internal docs
 southwell-astro-boilerplate-docs.md
 southwell-astro-boilerplate-prd.md
+
+# Search-Console-Exporte (lokale Arbeitsdaten)
+gsc-daten/

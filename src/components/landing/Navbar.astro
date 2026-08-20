@@ -101,7 +101,7 @@ const featuredReferences = cases
               <div class="rounded-2xl border border-border bg-background p-3 shadow-[0_24px_60px_rgba(22,28,44,0.14)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.6)]">
                 {featuredReferences.map((ref) => (
                   <a
-                    href={`${referencesPath}/${ref.slug}`}
+                    href={`${referencesPath}${ref.slug}/`}
                     class="flex gap-3 rounded-xl p-2.5 transition-colors hover:bg-secondary"
                     role="menuitem"
                   >
@@ -157,7 +157,7 @@ const featuredReferences = cases
               <div class="rounded-2xl border border-border bg-background p-3 shadow-[0_24px_60px_rgba(22,28,44,0.14)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.6)]">
                 {featuredBlogPosts.map((post) => (
                   <a
-                    href={`${blogPath}/${post.slug}`}
+                    href={`${blogPath}${post.slug}/`}
                     class="flex gap-3 rounded-xl p-2.5 transition-colors hover:bg-secondary"
                     role="menuitem"
                   >
@@ -239,7 +239,7 @@ const featuredReferences = cases
           <div class="mt-3 space-y-2 border-l-2 border-border pl-3">
             {featuredReferences.map((ref) => (
               <a
-                href={`${referencesPath}/${ref.slug}`}
+                href={`${referencesPath}${ref.slug}/`}
                 class="flex gap-3 rounded-lg p-2 transition-colors hover:bg-secondary"
               >
                 <div class="h-11 w-11 shrink-0 overflow-hidden rounded-md">
@@ -278,7 +278,7 @@ const featuredReferences = cases
           <div class="mt-3 space-y-2 border-l-2 border-border pl-3">
             {featuredBlogPosts.map((post) => (
               <a
-                href={`${blogPath}/${post.slug}`}
+                href={`${blogPath}${post.slug}/`}
                 class="flex gap-3 rounded-lg p-2 transition-colors hover:bg-secondary"
               >
                 <div class="h-11 w-11 shrink-0 overflow-hidden rounded-md">

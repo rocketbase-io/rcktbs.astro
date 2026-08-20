@@ -124,6 +124,11 @@ if (extraSchemas) {
     <!-- Alternate language links for SEO (uses translated URLs when routeId provided) -->
     <Hreflang routeId={routeId} />
 
+    <!-- Feed- und LLM-Autodiscovery: RSS für Reader und Suchagenten,
+         llms.txt als kompakte Inhaltsübersicht für Sprachmodelle. -->
+    <link rel="alternate" type="application/rss+xml" title={`${siteConfig.name} Blog`} href="/rss.xml" />
+    <link rel="alternate" type="text/plain" title="LLM-Inhaltsübersicht" href="/llms.txt" />
+
     <!-- JSON-LD Structured Data -->
     <JsonLd schema={schemas} />
 

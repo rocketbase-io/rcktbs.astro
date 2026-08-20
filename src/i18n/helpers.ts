@@ -28,13 +28,16 @@ export function getLocalizedPath(routeId: RouteId, locale: Locale): string {
   const route = routes[routeId];
   const slug = route[locale];
 
+  // Immer mit Trailing Slash: astro.config.mjs steht auf trailingSlash: 'always',
+  // damit Canonicals und Sitemap eindeutig sind. Interne Links muessen dieselbe
+  // Form nutzen, sonst laeuft jeder Nav-Klick ueber einen 301-Redirect.
   // For default locale, no prefix needed
   if (locale === defaultLocale) {
-    return slug ? `/${slug}` : '/';
+    return slug ? `/${slug}/` : '/';
   }
 
   // For other locales, add prefix
-  return slug ? `/${locale}/${slug}` : `/${locale}`;
+  return slug ? `/${locale}/${slug}/` : `/${locale}/`;
 }
 
 /**

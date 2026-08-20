@@ -42,9 +42,9 @@ const getPostUrl = (postId: string) => {
   const slug = postId.replace(`${locale}/`, '');
   // Default locale doesn't have prefix
   if (locale === defaultLocale) {
-    return `/blog/${slug}`;
+    return `/blog/${slug}/`;
   }
-  return `/${locale}/blog/${slug}`;
+  return `/${locale}/blog/${slug}/`;
 };
 ---
 

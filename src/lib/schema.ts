@@ -36,6 +36,10 @@ export function createOrganizationSchema(): WithContext<Organization> {
     logo: `${siteConfig.url}/favicon.svg`,
     email: siteConfig.email,
     sameAs: siteConfig.socialLinks,
+    areaServed: [
+      { '@type': 'Country', name: 'Deutschland' },
+      { '@type': 'AdministrativeArea', name: 'Metropolregion Hamburg' },
+    ],
     address: siteConfig.address
       ? {
           '@type': 'PostalAddress',
@@ -70,6 +74,8 @@ export function createBlogPostSchema(post: {
   datePublished: Date;
   dateModified?: Date;
   author: { name: string; url?: string };
+  keywords?: string[];
+  wordCount?: number;
 }): WithContext<BlogPosting> {
   return {
     '@context': 'https://schema.org',
@@ -97,6 +103,12 @@ export function createBlogPostSchema(post: {
       '@type': 'WebPage',
       '@id': post.url,
     },
+    // Sprache und freie Zugänglichkeit explizit auszeichnen: KI-Suchagenten
+    // nutzen beides, um Relevanz und Zitierbarkeit einzuschätzen.
+    inLanguage: 'de-DE',
+    isAccessibleForFree: true,
+    ...(post.keywords?.length ? { keywords: post.keywords.join(', ') } : {}),
+    ...(post.wordCount ? { wordCount: post.wordCount } : {}),
   };
 }
 
@@ -180,7 +192,20 @@ export function createProfessionalServiceSchema(params: {
     logo: `${siteConfig.url}/favicon.svg`,
     email: siteConfig.email,
     telephone: siteConfig.phone,
-    areaServed: 'DE',
+    // Konkrete Regionen zusaetzlich zu 'DE': Der Sitz liegt in der Metropolregion
+    // Hamburg, gearbeitet wird bundesweit remote. Beides explizit auszeichnen,
+    // damit regionale B2B-Suchen die Seite ueberhaupt in Betracht ziehen.
+    areaServed: [
+      { '@type': 'Country', name: 'Deutschland' },
+      { '@type': 'City', name: 'Hamburg' },
+      { '@type': 'AdministrativeArea', name: 'Metropolregion Hamburg' },
+      { '@type': 'AdministrativeArea', name: 'Niedersachsen' },
+    ],
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: 53.3583,
+      longitude: 10.2119,
+    },
     sameAs: siteConfig.socialLinks,
     address: siteConfig.address
       ? {
