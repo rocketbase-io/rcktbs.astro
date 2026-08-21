@@ -406,7 +406,7 @@ export const funnels: FunnelDefinition[] = [
         {
           icon: 'clock',
           title: 'Routine, die sich Jahr für Jahr summiert',
-          text: 'Termine planen, Daten übertragen, Reportings bauen – Aufgaben, die wachsen, aber keinen Mehrwert schaffen.',
+          text: 'Termine planen, Daten übertragen, Reportings bauen. Aufgaben, die mitwachsen und trotzdem niemandem etwas bringen.',
         },
         {
           icon: 'share',

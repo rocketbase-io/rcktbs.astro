@@ -1,8 +1,9 @@
 ---
 title: "Warum Softwareprojekte aus dem Ruder laufen"
 seoTitle: "Scope Creep in Softwareprojekten"
-description: "Scope Creep entsteht selten durch Unvernunft, sondern durch fehlende Klärung am Anfang. Vier Muster aus echten Projekten - und was tatsächlich dagegen hilft."
+description: "Scope Creep entsteht selten durch Unvernunft. Drei von vier Ursachen sind Erkenntnisgewinn, kein Fehlverhalten. Vier Muster aus echten Projekten und was dagegen hilft."
 publishedAt: 2026-08-20
+updatedAt: 2026-08-21
 author: "Marten Prieß"
 image: "./hero.png"
 imageAlt: "Astronaut arbeitet weiter, während sich Kisten und Dokumente um ihn stapeln"
@@ -11,9 +12,8 @@ featured: false
 draft: false
 locale: de
 cta:
-  eyebrow: "Nächster Schritt"
-  headline: "Steht bei Ihnen ein Vorhaben an, das niemand sauber schätzen kann?"
-  body: "30 Minuten, um zu sortieren, was wirklich feststeht und was noch Annahme ist - und ob sich ein strukturierter Discovery-Schritt für Sie lohnt."
+  headline: "Ein Vorhaben, das niemand sauber schätzen kann?"
+  body: "Lasst uns sortieren, was feststeht und was noch Annahme ist. Meist zeigt sich in einer halben Stunde, ob ein Discovery-Schritt sich lohnt."
 ---
 
 import Button from '@/components/ui/form/Button/Button.astro';
@@ -21,60 +21,97 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import KlaerungskostenDiagramm from '@/components/blog/diagrams/KlaerungskostenDiagramm.astro';
 import { contactLinks } from '@/data/rocketbase';
 
-Kaum jemand startet ein Softwareprojekt mit dem Vorsatz, den Umfang später auszuweiten. Trotzdem passiert es in fast jedem Vorhaben - und meist nicht, weil jemand unvernünftig wäre, sondern weil am Anfang Dinge unklar blieben, die zu diesem Zeitpunkt niemand klären konnte.
+Niemand startet ein Softwareprojekt mit dem Vorsatz, den Umfang später auszuweiten. Es passiert trotzdem, in fast jedem Vorhaben.
 
-"Scope Creep" klingt dabei nach einem Disziplinproblem: Der Kunde will immer mehr, der Dienstleister sagt nicht Nein. In der Praxis ist es fast immer ein **Erkenntnisproblem**. Erst während der Umsetzung wird sichtbar, was das eigentliche Vorhaben war.
+"Scope Creep" klingt nach einem Disziplinproblem: Der Kunde will immer mehr, der Dienstleister sagt nicht Nein. In unseren Projekten war es das selten. Meistens blieben am Anfang Dinge unklar, die zu diesem Zeitpunkt schlicht niemand klären konnte. Erst während der Umsetzung wird sichtbar, was das eigentliche Vorhaben war. Dann steht es plötzlich als Mehraufwand im Raum, obwohl es die ganze Zeit dazugehörte.
 
-Dieser Artikel beschreibt vier Muster, wie es dazu kommt - und was in unseren Projekten tatsächlich dagegen geholfen hat.
+Vier Muster tauchen dabei immer wieder auf.
 
 ## Die vier Muster
 
 <div className="not-prose my-10 grid gap-4 sm:grid-cols-2" data-reveal="fade-up">
-  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+  <div className="border-border bg-background-secondary rounded-2xl border p-5">
     <div className="flex items-center gap-2">
-      <span className="text-brand-600"><Icon name="eye" size="sm" /></span>
+      <span className="text-brand-600">
+        <Icon name="eye" size="sm" />
+      </span>
       <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Muster 1</p>
     </div>
-    <p className="font-display text-foreground mt-2 text-base font-semibold leading-snug">Der unsichtbare Sonderfall</p>
-    <p className="text-foreground-secondary mt-2 text-sm leading-6">Der Prozess wird beschrieben, wie er gedacht ist - nicht wie er läuft. Die siebzehn Ausnahmen, die eine Kollegin seit Jahren von Hand abfängt, tauchen erst auf, wenn die Software sie nicht abbilden kann.</p>
+    <p className="font-display text-foreground mt-2 text-base leading-snug font-semibold">
+      Der unsichtbare Sonderfall
+    </p>
+    <p className="text-foreground-secondary mt-2 text-sm leading-6">
+      Beschrieben wird der Prozess, wie er gedacht ist. Die siebzehn Ausnahmen, die eine Kollegin
+      seit Jahren von Hand abfängt, tauchen erst auf, wenn die Software sie nicht abbilden kann. Sie
+      standen in keiner Anforderungsliste, weil sie für alle Beteiligten längst normal waren.
+    </p>
   </div>
-  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+  <div className="border-border bg-background-secondary rounded-2xl border p-5">
     <div className="flex items-center gap-2">
-      <span className="text-brand-600"><Icon name="users" size="sm" /></span>
+      <span className="text-brand-600">
+        <Icon name="users" size="sm" />
+      </span>
       <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Muster 2</p>
     </div>
-    <p className="font-display text-foreground mt-2 text-base font-semibold leading-snug">Die späte Fachabteilung</p>
-    <p className="text-foreground-secondary mt-2 text-sm leading-6">Spezifiziert wird mit der Leitungsebene, benutzt wird von der Fachabteilung. Wenn die zum ersten Mal beim Abnahmetermin im Raum sitzt, kommen die entscheidenden Einwände zum teuersten Zeitpunkt.</p>
+    <p className="font-display text-foreground mt-2 text-base leading-snug font-semibold">
+      Die späte Fachabteilung
+    </p>
+    <p className="text-foreground-secondary mt-2 text-sm leading-6">
+      Spezifiziert wird mit der Leitung, benutzt wird von der Fachabteilung. Sitzt die zum ersten
+      Mal beim Abnahmetermin im Raum, kommen die Einwände zum teuersten Zeitpunkt.
+    </p>
   </div>
-  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+  <div className="border-border bg-background-secondary rounded-2xl border p-5">
     <div className="flex items-center gap-2">
-      <span className="text-brand-600"><Icon name="database" size="sm" /></span>
+      <span className="text-brand-600">
+        <Icon name="database" size="sm" />
+      </span>
       <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Muster 3</p>
     </div>
-    <p className="font-display text-foreground mt-2 text-base font-semibold leading-snug">Die Altdaten</p>
-    <p className="text-foreground-secondary mt-2 text-sm leading-6">Der zuverlässigste Kostentreiber überhaupt. Bestandsdaten sind fast nie so sauber wie angenommen: Dubletten, Felder mit doppelter Bedeutung, historische Sonderlogiken. Das merkt man bei der Migration - nicht bei der Schätzung.</p>
+    <p className="font-display text-foreground mt-2 text-base leading-snug font-semibold">
+      Die Altdaten
+    </p>
+    <p className="text-foreground-secondary mt-2 text-sm leading-6">
+      Der zuverlässigste Kostentreiber überhaupt. Bestandsdaten sind nie so sauber wie angenommen:
+      Dubletten, Felder mit doppelter Bedeutung, eine Spalte, in der seit 2014 zwei verschiedene
+      Dinge stehen. Auffallen tut das bei der Migration, nicht bei der Schätzung.
+    </p>
   </div>
-  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+  <div className="border-border bg-background-secondary rounded-2xl border p-5">
     <div className="flex items-center gap-2">
-      <span className="text-brand-600"><Icon name="layers" size="sm" /></span>
+      <span className="text-brand-600">
+        <Icon name="layers" size="sm" />
+      </span>
       <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Muster 4</p>
     </div>
-    <p className="font-display text-foreground mt-2 text-base font-semibold leading-snug">Der Appetit beim Essen</p>
-    <p className="text-foreground-secondary mt-2 text-sm leading-6">Sobald etwas Funktionierendes da ist, entstehen neue Ideen - oft gute. Das ist kein Fehler, sondern ein Zeichen, dass das Projekt wirkt. Zum Problem wird es nur, wenn dafür kein Verfahren existiert.</p>
+    <p className="font-display text-foreground mt-2 text-base leading-snug font-semibold">
+      Der Appetit beim Essen
+    </p>
+    <p className="text-foreground-secondary mt-2 text-sm leading-6">
+      Sobald etwas Funktionierendes da ist, entstehen neue Ideen. Oft gute. Zum Problem werden sie
+      erst, wenn es kein Verfahren gibt, sie zu entscheiden.
+    </p>
   </div>
 </div>
 
-Bemerkenswert daran: **Drei der vier Muster sind Erkenntnisgewinn, kein Fehlverhalten.** Wer sie als Disziplinproblem behandelt, bekämpft das falsche Problem - und erzeugt ein Klima, in dem Leute Bedenken lieber für sich behalten.
+Drei dieser vier Muster sind **Erkenntnisgewinn, kein Fehlverhalten**. Wer sie als Disziplinproblem behandelt, bekämpft das falsche Problem. Schlimmer noch: Es entsteht ein Klima, in dem Leute Bedenken lieber für sich behalten, weil jeder Einwand als Sonderwunsch gilt.
 
 <aside className="not-prose my-8" data-reveal="fade-up">
-  <div className="rounded-2xl border border-brand-200 bg-brand-50/60 p-6 dark:border-brand-800 dark:bg-brand-900/15 sm:p-7">
+  <div className="border-brand-200 bg-brand-50/60 dark:border-brand-800 dark:bg-brand-900/15 rounded-2xl border p-6 sm:p-7">
     <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
       <div className="flex-1">
-        <p className="font-display text-foreground text-lg font-semibold leading-snug sm:text-xl">Kommt Ihnen eines der Muster bekannt vor?</p>
-        <p className="text-foreground-secondary mt-1.5 text-sm leading-6">30 Minuten, um Ihr Vorhaben zu sortieren: Was steht wirklich fest, was ist noch Annahme?</p>
+        <p className="font-display text-foreground text-lg leading-snug font-semibold sm:text-xl">
+          Kommt euch eines der Muster bekannt vor?
+        </p>
+        <p className="text-foreground-secondary mt-1.5 text-sm leading-6">
+          Eine halbe Stunde reicht meist, um zu sortieren: Was steht fest, was ist noch Annahme?
+        </p>
       </div>
       <div className="shrink-0">
-        <Button href={contactLinks.cal} target="_blank"><span>Mit Marten sprechen</span><Icon name="arrow-up-right" size="sm" /></Button>
+        <Button href={contactLinks.cal} target="_blank">
+          <span>Mit Marten sprechen</span>
+          <Icon name="arrow-up-right" size="sm" />
+        </Button>
       </div>
     </div>
   </div>
@@ -84,59 +121,105 @@ Bemerkenswert daran: **Drei der vier Muster sind Erkenntnisgewinn, kein Fehlverh
 
 ## Warum der Festpreis das Problem nicht löst
 
-Die naheliegende Reaktion ist, das Risiko vertraglich abzugeben: Festpreis, klarer Leistungsumfang, alles Weitere kostet extra. Das funktioniert - aber anders, als die meisten erwarten.
+Die naheliegende Reaktion: das Risiko vertraglich abgeben. Festpreis, klarer Leistungsumfang, alles Weitere kostet extra. Das funktioniert auch. Nur anders, als die meisten erwarten.
 
 <div className="not-prose my-10 grid gap-4 md:grid-cols-2 md:items-stretch" data-reveal="fade-up">
-  <div className="rounded-2xl border border-border bg-background-secondary p-6 sm:p-7">
-    <p className="text-foreground-muted font-mono text-xs font-semibold tracking-wider">Erwartung</p>
-    <p className="font-display text-foreground mt-2 text-xl font-semibold leading-snug">Der Festpreis begrenzt das Risiko</p>
-    <p className="text-foreground-secondary mt-4 text-sm leading-6">Der Dienstleister trägt die Unsicherheit, der Kunde hat Planungssicherheit. Was mehr wird, wird nachbeauftragt.</p>
+  <div className="border-border bg-background-secondary rounded-2xl border p-6 sm:p-7">
+    <p className="text-foreground-muted font-mono text-xs font-semibold tracking-wider">
+      Erwartung
+    </p>
+    <p className="font-display text-foreground mt-2 text-xl leading-snug font-semibold">
+      Der Festpreis begrenzt das Risiko
+    </p>
+    <p className="text-foreground-secondary mt-4 text-sm leading-6">
+      Der Dienstleister trägt die Unsicherheit, der Kunde hat Planungssicherheit. Was mehr wird,
+      wird nachbeauftragt.
+    </p>
   </div>
-  <div className="rounded-2xl border border-border bg-background-secondary p-6 sm:p-7">
+  <div className="border-border bg-background-secondary rounded-2xl border p-6 sm:p-7">
     <p className="text-foreground-muted font-mono text-xs font-semibold tracking-wider">Realität</p>
-    <p className="font-display text-foreground mt-2 text-xl font-semibold leading-snug">Der Festpreis verlagert es</p>
-    <p className="text-foreground-secondary mt-4 text-sm leading-6">Unsicherheit wird eingepreist - Sie zahlen den Risikoaufschlag auch dann, wenn das Risiko nicht eintritt. Und bei jeder Unklarheit steht die Frage im Raum, ob sie im Umfang enthalten war. Das kostet Vertrauen, genau wenn man es braucht.</p>
+    <p className="font-display text-foreground mt-2 text-xl leading-snug font-semibold">
+      Der Festpreis verlagert es
+    </p>
+    <p className="text-foreground-secondary mt-4 text-sm leading-6">
+      Unsicherheit wird eingepreist. Ihr zahlt den Risikoaufschlag auch dann, wenn das Risiko nie
+      eintritt. Und bei jeder Unklarheit steht im Raum, ob sie im Umfang enthalten war. Diese
+      Diskussion kostet Vertrauen, genau in dem Moment, in dem beide Seiten es brauchen.
+    </p>
   </div>
 </div>
 
-Ein Festpreis ist sinnvoll, **wenn das Vorhaben klar umrissen ist**. Er ist ein schlechtes Werkzeug, um Unklarheit zu bewältigen - denn er zwingt beide Seiten, so zu tun, als wäre alles bekannt. Die ehrlichere Reihenfolge ist: erst klären, dann festpreisen. Nicht: festpreisen, um sich das Klären zu sparen.
+Ein Festpreis ist ein gutes Werkzeug, **wenn das Vorhaben klar umrissen ist**. Gegen Unklarheit hilft er nicht, weil er beide Seiten zwingt, so zu tun, als wäre alles bekannt.
+
+Die ehrlichere Reihenfolge: erst klären, dann festpreisen.
 
 ## Was tatsächlich hilft
 
 <div className="not-prose my-10 flex flex-col gap-4" data-reveal="fade-up">
-  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+  <div className="border-border bg-background-secondary rounded-2xl border p-6">
     <div className="flex items-start gap-3">
-      <span className="text-brand-500 mt-1 shrink-0"><Icon name="search" size="sm" /></span>
+      <span className="text-brand-500 mt-1 shrink-0">
+        <Icon name="search" size="sm" />
+      </span>
       <div>
-        <p className="font-display text-foreground text-base font-semibold leading-snug">Den Prozess aufnehmen, nicht die Wunschliste</p>
-        <p className="text-foreground-secondary mt-2 text-sm leading-6">Nicht fragen, was die Software können soll, sondern zusehen, wie heute gearbeitet wird. Die Sonderfälle stehen in keiner Anforderungsliste - sie zeigen sich, wenn jemand seinen Ablauf vorführt und dabei dreimal sagt: "und hier machen wir das immer noch von Hand".</p>
+        <p className="font-display text-foreground text-base leading-snug font-semibold">
+          Den Prozess aufnehmen, nicht die Wunschliste
+        </p>
+        <p className="text-foreground-secondary mt-2 text-sm leading-6">
+          Schaut zu, wie heute gearbeitet wird, statt zu fragen, was die Software können soll. Die
+          Sonderfälle stehen in keiner Anforderungsliste. Sie zeigen sich, wenn jemand seinen Ablauf
+          vorführt und dabei dreimal sagt: "und hier machen wir das immer noch von Hand".
+        </p>
       </div>
     </div>
   </div>
-  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+  <div className="border-border bg-background-secondary rounded-2xl border p-6">
     <div className="flex items-start gap-3">
-      <span className="text-brand-500 mt-1 shrink-0"><Icon name="database" size="sm" /></span>
+      <span className="text-brand-500 mt-1 shrink-0">
+        <Icon name="database" size="sm" />
+      </span>
       <div>
-        <p className="font-display text-foreground text-base font-semibold leading-snug">Früh in die echten Daten schauen</p>
-        <p className="text-foreground-secondary mt-2 text-sm leading-6">Ein Blick in den realen Bestand - nicht ins Schema, sondern in die Werte - deckt in wenigen Stunden auf, was sonst Wochen später als Überraschung auftaucht. Der billigste Erkenntnisgewinn im ganzen Projekt.</p>
+        <p className="font-display text-foreground text-base leading-snug font-semibold">
+          Früh in die echten Daten schauen
+        </p>
+        <p className="text-foreground-secondary mt-2 text-sm leading-6">
+          Ein Blick in die echten Werte, nicht ins Schema. Zwei Stunden hier ersparen regelmäßig
+          zwei Wochen später. Der billigste Erkenntnisgewinn im ganzen Projekt.
+        </p>
       </div>
     </div>
   </div>
-  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+  <div className="border-border bg-background-secondary rounded-2xl border p-6">
     <div className="flex items-start gap-3">
-      <span className="text-brand-500 mt-1 shrink-0"><Icon name="users" size="sm" /></span>
+      <span className="text-brand-500 mt-1 shrink-0">
+        <Icon name="users" size="sm" />
+      </span>
       <div>
-        <p className="font-display text-foreground text-base font-semibold leading-snug">Die Fachanwender von Anfang an dabei</p>
-        <p className="text-foreground-secondary mt-2 text-sm leading-6">Bei der Plattform für <a href="/referenzen/statista/">Statista</a> war genau das der Hebel: Die Redaktion saß früh mit am Tisch, nicht erst zur Abnahme. Ein gewachsenes Kernsystem konnte abgelöst werden, ohne dass die Fachabteilung ihren Alltag verlor.</p>
+        <p className="font-display text-foreground text-base leading-snug font-semibold">
+          Die Fachanwender von Anfang an dabei
+        </p>
+        <p className="text-foreground-secondary mt-2 text-sm leading-6">
+          Bei der Plattform für <a href="/referenzen/statista/">Statista</a> war das der Hebel: Die
+          Redaktion saß ab dem ersten Workshop mit am Tisch. Ein über Jahre gewachsenes Kernsystem
+          ließ sich ablösen, ohne dass die Fachabteilung ihren Alltag verlor.
+        </p>
       </div>
     </div>
   </div>
-  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+  <div className="border-border bg-background-secondary rounded-2xl border p-6">
     <div className="flex items-start gap-3">
-      <span className="text-brand-500 mt-1 shrink-0"><Icon name="check-circle" size="sm" /></span>
+      <span className="text-brand-500 mt-1 shrink-0">
+        <Icon name="check-circle" size="sm" />
+      </span>
       <div>
-        <p className="font-display text-foreground text-base font-semibold leading-snug">Ein Verfahren für neue Ideen - statt eines Verbots</p>
-        <p className="text-foreground-secondary mt-2 text-sm leading-6">Gute Ideen während des Projekts sind ein Qualitätssignal. Sie brauchen keinen Riegel, sondern einen Ort: eine Liste, die regelmäßig priorisiert wird, mit einer klaren Entscheidung - jetzt, später oder gar nicht. Was entschieden ist, verschwindet aus den Statusrunden.</p>
+        <p className="font-display text-foreground text-base leading-snug font-semibold">
+          Ein Verfahren für neue Ideen
+        </p>
+        <p className="text-foreground-secondary mt-2 text-sm leading-6">
+          Gute Ideen während des Projekts sind ein Qualitätssignal. Sie brauchen einen Ort: eine
+          Liste, die regelmäßig durchgegangen wird, mit einer Entscheidung am Ende. Jetzt, später
+          oder gar nicht. Was entschieden ist, verschwindet aus den Statusrunden.
+        </p>
       </div>
     </div>
   </div>
@@ -144,12 +227,14 @@ Ein Festpreis ist sinnvoll, **wenn das Vorhaben klar umrissen ist**. Er ist ein 
 
 ## Der pragmatische Zuschnitt
 
-In der Praxis hat sich ein zweistufiges Vorgehen bewährt: **ein kleiner, klar begrenzter Klärungsschritt vor der eigentlichen Umsetzung.** Prozess aufnehmen, Daten sichten, Schnitt festlegen, Aufwand schätzen. Das Ergebnis ist eine belastbare Grundlage - und bei Bedarf ein Festpreis, der diesen Namen verdient, weil er auf Fakten beruht statt auf Annahmen.
+Bewährt hat sich ein zweistufiges Vorgehen: **ein kleiner, klar begrenzter Klärungsschritt vor der Umsetzung.** Prozess aufnehmen, Daten sichten, Schnitt festlegen, Aufwand schätzen. Danach steht eine Grundlage, die trägt, und bei Bedarf ein Festpreis, der auf Fakten beruht statt auf Annahmen.
 
-Der angenehme Nebeneffekt: Manchmal ist das Ergebnis eines solchen Schritts, dass das große Projekt gar nicht nötig ist. Wir hatten Fälle, in denen ein Bruchteil des ursprünglich Angedachten den eigentlichen Schmerz gelöst hat. Genau dafür ist der [Discovery-Workshop](/discovery-workshop/) gedacht.
+Manchmal kommt dabei heraus, dass das große Projekt gar nicht nötig ist. Wir hatten mehrere Fälle, in denen ein Bruchteil des ursprünglich Angedachten den eigentlichen Schmerz gelöst hat. Für genau diesen Schritt gibt es bei uns den [Discovery-Workshop](/discovery-workshop/).
 
-Wie wir Projekte generell zuschneiden, beschreibt die Seite zur [Arbeitsweise](/arbeitsweise/). Und wenn der Auslöser ein System ist, das nicht mehr mitwächst, lohnt der Artikel über die [Grenzen der Branchensoftware](/blog/standardsoftware-vertec-centric-grenzen/).
+Wie wir Projekte insgesamt zuschneiden, steht auf der Seite zur [Arbeitsweise](/arbeitsweise/). Wenn der Auslöser ein System ist, das nicht mehr mitwächst, passt eher der Artikel über die [Grenzen der Branchensoftware](/blog/standardsoftware-vertec-centric-grenzen/).
 
-## Was bleibt
+## Ein gesundes Projekt tut früh weh
 
-Scope Creep verschwindet nicht durch strengere Verträge. Er verschwindet, wenn die Unsicherheit **früh und billig** aufgelöst wird, statt spät und teuer. Ein Projekt, in dem nach drei Wochen unangenehme Wahrheiten auf dem Tisch liegen, ist ein gesundes Projekt. Eines, in dem alles glatt läuft, bis es das nicht mehr tut, ist meist nur eines, in dem noch niemand nachgesehen hat.
+Gegen Scope Creep helfen strengere Verträge wenig. Was hilft, ist Unsicherheit **früh und billig** aufzulösen statt spät und teuer.
+
+Ein Projekt, in dem nach drei Wochen unangenehme Wahrheiten auf dem Tisch liegen, läuft gut. Eines, in dem alles glatt geht, bis es das plötzlich nicht mehr tut, ist meistens eines, in dem noch niemand nachgesehen hat.

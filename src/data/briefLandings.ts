@@ -7,7 +7,7 @@
  * | | /f/ (Anzeigen) | /b/ (Brief) |
  * |---|---|---|
  * | Einstieg | Quiz, dann Kontakt | Video → Referenzen → Termin |
- * | Ansprache | Du | Sie |
+ * | Ansprache | Ihr/euch | Sie |
  * | Vorwissen | keins, kalter Klick | hat gerade einen Brief gelesen |
  *
  * Ein gemeinsamer Typ hätte `questions` als Pflichtfeld (die Brief-Seite hat

@@ -51,7 +51,7 @@ const env = import.meta.env;
 const siteConfig: SiteConfig = {
   name: 'RocketBase',
   description:
-    'Digitalpartner für individuelle Software, Prozessoptimierung und nachhaltige Plattformen mit direkter Begleitung durch Marten Prieß.',
+    'Individuelle Unternehmenssoftware für den Mittelstand. Von der Prozessanalyse bis zum Betrieb, direkt mit Marten Prieß.',
   url: env.SITE_URL || env.PUBLIC_SITE_URL || 'https://rocketbase.io',
   ogImage: '/og-default.png',
   author: 'Marten Prieß',

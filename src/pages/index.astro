@@ -59,7 +59,7 @@ const featuredCases: FeaturedCase[] = featuredSlugs
 
 // Bewusst die Stärken, die NICHT schon im Marten-Block stehen (direkte
 // Zusammenarbeit / Team sind dort abgedeckt): Konzernniveau, Open-Source-
-// Pragmatismus und zukunftssichere Übergabe.
+// Pragmatismus und übergebbare Architektur.
 const topStrengths = [strengths[1], strengths[3], strengths[4]];
 
 // "Wofür wir gerufen werden" – genau zwei benannte Situationen, jede führt auf
@@ -145,7 +145,7 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
 
 <LandingLayout
   title="Individualsoftware, die euch trägt – statt ausbremst"
-  description="Wenn Standardsoftware wie Vertec oder Centric oder eine gewachsene Excel-Welt das Wachstum bremst: RocketBase baut die individuelle Lösung, die zum echten Prozess passt - direkt mit Marten Prieß."
+  description="Wenn Standardsoftware wie Vertec oder Centric bremst oder das Geschäft über Excel läuft: individuelle Software, die zum echten Prozess passt. Direkt mit Marten Prieß."
   includeOrgSchema
   lang={locale}
   routeId="home"
@@ -250,7 +250,7 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
           <span class="text-brand-500">in denen man uns dazuholt.</span>
         </h2>
         <p class="text-foreground-secondary mt-6 text-lg leading-8">
-          Ihr führt einen Betrieb, der läuft – und merkt an einer konkreten Stelle, dass die Software
+          Ihr führt einen Betrieb, der läuft, und merkt an einer konkreten Stelle, dass die Software
           den nächsten Schritt nicht mehr trägt. Meistens ist es eine von zwei Geschichten:
         </p>
       </div>
@@ -302,7 +302,7 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
           <Icon name="arrow-up-right" size="sm" />
         </Button>
         <p class="text-foreground-muted text-sm leading-7">
-          Nicht eindeutig zuzuordnen? Ein Gespräch, ehrliche Einschätzung, kein Vertriebsdruck.
+          Passt nichts davon genau? Dann sprecht mit uns, wir sagen ehrlich, was wir sehen.
         </p>
       </div>
     </div>
@@ -339,13 +339,13 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
           Diplom-Wirtschaftsinformatiker
         </p>
         <p class="text-foreground-secondary mt-6 text-lg leading-8">
-          Kein Body-Leasing, keine verlängerte Werkbank. Ihr arbeitet direkt mit dem Gründer – und einem
-          eingespielten Team fester Entwicklerinnen und Entwickler im Rücken. Einer, der zuhört, die
-          beiläufigen Ideen im Gespräch aufgreift und den besseren Prozess vorschlägt, wenn er einen sieht.
+          Ihr arbeitet direkt mit dem Gründer, im Rücken ein festes Team aus Entwicklerinnen und
+          Entwicklern. Einer, der zuhört, die beiläufige Idee im Gespräch aufgreift und den besseren
+          Prozess vorschlägt, wenn er einen sieht.
         </p>
         <p class="text-foreground-secondary mt-5 hidden text-lg leading-8 sm:block">
-          Erfahrung aus Konzernprojekten, Produktentwicklung und Mittelstandsvorhaben fließt so in jedes
-          Projekt ein – ohne aufgeblähte Kommunikation, mit weniger Übergaben und schnelleren Entscheidungen.
+          Was in Konzernprojekten bei bonprix und Statista funktioniert hat, landet so direkt in
+          eurem Projekt. Mit kurzen Wegen statt Abstimmungsschleifen.
         </p>
         <div data-reveal class="mt-8 flex flex-wrap gap-4">
           <Button href={contactLinks.cal} target="_blank">
@@ -439,8 +439,8 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
                   <span class="mt-2 block whitespace-nowrap text-brand-500">Mehr Geschwindigkeit.</span>
                 </h2>
                 <p class="text-foreground-secondary mt-6 max-w-3xl text-lg leading-8">
-                  Wir zeigen dir konkret, wie moderne Softwareentwicklung heute funktioniert und warum
-                  klassische Ansätze Projekte unnötig ausbremsen.
+                  Wir zeigen euch, wie Softwareentwicklung heute abläuft und wo klassische Ansätze
+                  Projekte ausbremsen.
                 </p>
               </div>
 
@@ -592,8 +592,8 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
           <span class="mt-2 block text-brand-500">mit möglichst wenig Reibung.</span>
         </h2>
         <p class="text-foreground-secondary mt-6 text-lg leading-8">
-          RocketBase verbindet Prozessverständnis, technische Architektur und Delivery. Dadurch
-          entstehen weniger Übergaben und schneller belastbare Entscheidungen.
+          Beratung, Architektur und Umsetzung liegen bei uns in einer Hand. Das spart Übergaben,
+          und Entscheidungen fallen schneller.
         </p>
         <div class="text-foreground-muted mt-8 text-sm leading-7">
           Discovery · Konzeption · Individualsoftware · Integration · Betrieb
@@ -816,7 +816,7 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
         </h2>
         <p class="text-on-invert-secondary mt-6 text-lg leading-8">
           Projekte gelingen, wenn das Wichtigste zuerst kommt und jeder Schritt auf dem vorigen
-          aufbaut – ohne teure Überraschungen unterwegs. Genau so arbeiten wir.
+          aufbaut. Genau so arbeiten wir.
         </p>
       </div>
 
@@ -914,9 +914,8 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
             <span class="text-brand-500">die wirklich zu eurem Unternehmen passt.</span>
           </h2>
           <p class="text-foreground-secondary mt-6 max-w-3xl text-lg leading-8">
-            Wenn Prozesse inzwischen mehr bremsen als tragen, lohnt ein strukturierter Blick.
-            RocketBase hilft bei der Einordnung, priorisiert sinnvolle Schritte und setzt tragfähige
-            Lösungen anschließend mit um.
+            Wenn Prozesse mehr bremsen als tragen, lohnt ein strukturierter Blick von außen. Wir
+            ordnen ein, was zuerst drankommt, und bauen die Lösung anschließend mit euch.
           </p>
         </div>
 

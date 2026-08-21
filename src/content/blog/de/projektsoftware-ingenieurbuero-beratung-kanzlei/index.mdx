@@ -3,17 +3,25 @@ title: "Wenn die Projektsoftware nicht mehr mitwächst"
 seoTitle: "Projektsoftware für Ingenieurbüros & Beratungen"
 description: "Ingenieurbüros, Beratungen und Kanzleien nutzen dieselben Projektsysteme - und stoßen an dieselben Grenzen. Vier Signale, dass die Software bremst."
 publishedAt: 2026-08-20
+updatedAt: 2026-08-21
 author: "Marten Prieß"
 image: "./hero.png"
 imageAlt: "Astronaut über Pläne und Unterlagen an einem Arbeitstisch gebeugt"
-tags: ["projektsoftware", "ingenieurbuero", "beratung", "kanzlei", "standardsoftware", "individualsoftware"]
+tags:
+  [
+    'projektsoftware',
+    'ingenieurbuero',
+    'beratung',
+    'kanzlei',
+    'standardsoftware',
+    'individualsoftware',
+  ]
 featured: true
 draft: false
 locale: de
 cta:
-  eyebrow: "Nächster Schritt"
-  headline: "Trägt Ihre Projektsoftware noch - oder tragen Sie sie?"
-  body: "30 Minuten, um Ihre konkrete Situation einzuordnen: Wo die Grenze verläuft, was sich im Bestand noch lohnt und ab wann eine Ablösung wirtschaftlich wird."
+  headline: "Trägt eure Projektsoftware noch, oder tragt ihr sie?"
+  body: "Im Gespräch ordnen wir ein, wo bei euch die Grenze verläuft, was sich im Bestand noch lohnt und ab wann eine Ablösung wirtschaftlich wird."
 ---
 
 import Button from '@/components/ui/form/Button/Button.astro';
@@ -25,84 +33,139 @@ import { contactLinks } from '@/data/rocketbase';
 
 Ein Ingenieurbüro mit 40 Mitarbeitern, eine Unternehmensberatung mit 25, eine mittelgroße Kanzlei: Auf den ersten Blick drei verschiedene Welten. Schaut man auf die Software, mit der sie ihr Kerngeschäft steuern, sind es dieselben Systeme - und dieselben Beschwerden.
 
-Das ist kein Zufall. Alle drei verkaufen im Kern dasselbe: **qualifizierte Zeit**. Und damit haben sie denselben Kernprozess - Auftrag kalkulieren, Stunden erfassen, Projektfortschritt verfolgen, fakturieren. Genau für diesen Prozess gibt es einen etablierten Markt an Projekt- und Kanzleisoftware, und genau dort taucht ein wiederkehrendes Muster auf: Die Software, die das Geschäft tragen sollte, bindet irgendwann mehr Kapazität, als sie freisetzt.
-
-Dieser Artikel beschreibt, woran man diesen Punkt erkennt - und was die realistischen Optionen sind.
+Das ist kein Zufall. Alle drei verkaufen im Kern dasselbe: **qualifizierte Zeit**. Und damit haben sie denselben Kernprozess - Auftrag kalkulieren, Stunden erfassen, Projektfortschritt verfolgen, fakturieren. Für diesen Prozess gibt es einen etablierten Markt an Projekt- und Kanzleisoftware. Und dort taucht ein wiederkehrendes Muster auf: Die Software, die das Geschäft tragen sollte, bindet irgendwann mehr Kapazität, als sie freisetzt.
 
 ## Warum es ausgerechnet diese Branchen trifft
 
 <div className="not-prose my-10 grid gap-4 md:grid-cols-3" data-reveal="fade-up">
-  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+  <div className="border-border bg-background-secondary rounded-2xl border p-6">
     <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">01</p>
-    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Zeit ist das Produkt</p>
-    <p className="text-foreground-secondary mt-3 text-sm leading-6">Wenn abrechenbare Stunden der Umsatz sind, schlägt jede Stunde, die ins Pflegen und Nacharbeiten der Software fließt, direkt auf die Marge. In Betrieben mit Produkt- oder Warengeschäft fällt derselbe Aufwand kaum auf - hier ist er unmittelbar teuer.</p>
+    <p className="font-display text-foreground mt-2 text-lg leading-snug font-semibold">
+      Zeit ist das Produkt
+    </p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">
+      Wenn abrechenbare Stunden der Umsatz sind, schlägt jede Stunde Softwarepflege direkt auf die
+      Marge. In einem Warengeschäft verschwindet derselbe Aufwand im Gemeinkostenblock. Hier ist er
+      sofort sichtbar teuer.
+    </p>
   </div>
-  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+  <div className="border-border bg-background-secondary rounded-2xl border p-6">
     <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">02</p>
-    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Die Kalkulation ist der Unterschied</p>
-    <p className="text-foreground-secondary mt-3 text-sm leading-6">Wie ein Haus seine Leistung schneidet, bepreist und kalkuliert, ist selten Branchenstandard - es ist über Jahre gewachsen und oft der eigentliche Wettbewerbsvorteil. Standardsoftware bildet den Durchschnitt ab, nicht diese Kanten.</p>
+    <p className="font-display text-foreground mt-2 text-lg leading-snug font-semibold">
+      Die Kalkulation ist der Unterschied
+    </p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">
+      Wie ein Haus seine Leistung schneidet und bepreist, ist über Jahre gewachsen und oft der
+      eigentliche Wettbewerbsvorteil. Standardsoftware bildet den Branchendurchschnitt ab. Genau
+      diese Kanten fallen dabei weg.
+    </p>
   </div>
-  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+  <div className="border-border bg-background-secondary rounded-2xl border p-6">
     <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">03</p>
-    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Wachstum verändert den Prozess</p>
-    <p className="text-foreground-secondary mt-3 text-sm leading-6">Neue Leistungsarten, ein zweiter Standort, Retainer statt Einzelaufträge, Festpreise neben Zeithonorar: Das Geschäftsmodell entwickelt sich weiter, das Datenmodell der Software bleibt, wie es 2015 gedacht war.</p>
+    <p className="font-display text-foreground mt-2 text-lg leading-snug font-semibold">
+      Wachstum verändert den Prozess
+    </p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">
+      Neue Leistungsarten, ein zweiter Standort, Retainer statt Einzelaufträge, Festpreise neben
+      Zeithonorar: Das Geschäftsmodell entwickelt sich weiter, das Datenmodell der Software bleibt,
+      wie es 2015 gedacht war.
+    </p>
   </div>
 </div>
 
-Die Systeme selbst sind dabei nicht das Problem. Sie sind für einen breiten Markt gebaut und lösen für viele Häuser reale Probleme - oft jahrelang gut. Die Frage ist eine andere: **Ab wann arbeitet ein Haus nicht mehr mit dem System, sondern dagegen?**
+Die Systeme selbst sind gut. Sie sind für einen breiten Markt gebaut und tragen viele Häuser jahrelang. Interessant ist der Kipppunkt: **Ab wann arbeitet ein Haus gegen sein System statt damit?**
 
 <ProzessDriftDiagramm />
 
 ## Vier Signale, dass die Grenze erreicht ist
 
-In Gesprächen mit projektgetriebenen Häusern kommen praktisch immer dieselben vier Punkte - und selten als Technik-Argument, fast immer als Geschäfts-Argument.
+In Gesprächen mit projektgetriebenen Häusern kommen fast immer dieselben vier Punkte. Und zwar als Geschäfts-Argument, selten als technisches.
 
 <div className="not-prose my-10 grid gap-4 sm:grid-cols-2" data-reveal="fade-up">
-  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+  <div className="border-border bg-background-secondary rounded-2xl border p-5">
     <div className="flex items-center gap-2">
-      <span className="text-brand-600"><Icon name="alert-circle" size="sm" /></span>
+      <span className="text-brand-600">
+        <Icon name="alert-circle" size="sm" />
+      </span>
       <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Signal 1</p>
     </div>
-    <p className="font-display text-foreground mt-2 text-base font-semibold leading-snug">Die Excel-Welt daneben</p>
-    <p className="text-foreground-secondary mt-2 text-sm leading-6">Die eigentliche Kalkulation passiert in einer Tabelle, das Ergebnis wird ins System übertragen. Das System ist zur Ablage geworden, nicht zum Werkzeug. Wer die Tabelle gebaut hat, ist meist genau eine Person.</p>
+    <p className="font-display text-foreground mt-2 text-base leading-snug font-semibold">
+      Die Excel-Welt daneben
+    </p>
+    <p className="text-foreground-secondary mt-2 text-sm leading-6">
+      Die eigentliche Kalkulation passiert in einer Tabelle, das Ergebnis wird ins System
+      übertragen. Das System ist zur Ablage geworden, nicht zum Werkzeug. Wer die Tabelle gebaut
+      hat, ist meist genau eine Person.
+    </p>
   </div>
-  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+  <div className="border-border bg-background-secondary rounded-2xl border p-5">
     <div className="flex items-center gap-2">
-      <span className="text-brand-600"><Icon name="trending-down" size="sm" /></span>
+      <span className="text-brand-600">
+        <Icon name="trending-down" size="sm" />
+      </span>
       <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Signal 2</p>
     </div>
-    <p className="font-display text-foreground mt-2 text-base font-semibold leading-snug">Projektmarge erst im Nachhinein</p>
-    <p className="text-foreground-secondary mt-2 text-sm leading-6">Ob ein Projekt profitabel war, steht Wochen nach Abschluss fest - und auch dann nur ungefähr. Während der Laufzeit gegenzusteuern ist damit unmöglich; die Zahl kommt, wenn sie niemandem mehr hilft.</p>
+    <p className="font-display text-foreground mt-2 text-base leading-snug font-semibold">
+      Projektmarge erst im Nachhinein
+    </p>
+    <p className="text-foreground-secondary mt-2 text-sm leading-6">
+      Ob ein Projekt profitabel war, zeigt sich Wochen nach Abschluss, und auch dann nur ungefähr.
+      Die Zahl kommt zu einem Zeitpunkt, an dem sich nichts mehr steuern lässt.
+    </p>
   </div>
-  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+  <div className="border-border bg-background-secondary rounded-2xl border p-5">
     <div className="flex items-center gap-2">
-      <span className="text-brand-600"><Icon name="users" size="sm" /></span>
+      <span className="text-brand-600">
+        <Icon name="users" size="sm" />
+      </span>
       <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Signal 3</p>
     </div>
-    <p className="font-display text-foreground mt-2 text-base font-semibold leading-snug">Wissen hängt an Köpfen</p>
-    <p className="text-foreground-secondary mt-2 text-sm leading-6">Neue Kolleginnen brauchen Monate, bis sie das System richtig bedienen - weil die Regeln nicht im System stehen, sondern in den Ausnahmen, die man kennen muss. Urlaub der falschen Person legt Abläufe lahm.</p>
+    <p className="font-display text-foreground mt-2 text-base leading-snug font-semibold">
+      Wissen hängt an Köpfen
+    </p>
+    <p className="text-foreground-secondary mt-2 text-sm leading-6">
+      Neue Kolleginnen brauchen Monate, bis sie das System sicher bedienen. Die eigentlichen Regeln
+      stehen in Ausnahmen, die man kennen muss. Der Urlaub einer bestimmten Person legt dann Abläufe
+      still.
+    </p>
   </div>
-  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+  <div className="border-border bg-background-secondary rounded-2xl border p-5">
     <div className="flex items-center gap-2">
-      <span className="text-brand-600"><Icon name="shield" size="sm" /></span>
+      <span className="text-brand-600">
+        <Icon name="shield" size="sm" />
+      </span>
       <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Signal 4</p>
     </div>
-    <p className="font-display text-foreground mt-2 text-base font-semibold leading-snug">Updates werden verschoben</p>
-    <p className="text-foreground-secondary mt-2 text-sm leading-6">Jedes größere Release ist ein Risiko, weil unklar ist, ob die eigenen Anpassungen es überstehen. Wer Updates aus Vorsicht verschleppt, betreibt faktisch Legacy-Software - und zahlt weiterhin Lizenzen dafür.</p>
+    <p className="font-display text-foreground mt-2 text-base leading-snug font-semibold">
+      Updates werden verschoben
+    </p>
+    <p className="text-foreground-secondary mt-2 text-sm leading-6">
+      Jedes größere Release ist ein Risiko, weil unklar ist, ob die eigenen Anpassungen es
+      überstehen. Wer Updates aus Vorsicht verschleppt, betreibt faktisch Legacy-Software - und
+      zahlt weiterhin Lizenzen dafür.
+    </p>
   </div>
 </div>
 
-Ein einzelnes Signal ist normal und kein Grund zu handeln. Kritisch wird es, wenn drei oder vier davon gleichzeitig zutreffen und schon länger bestehen: Dann ist die Grenze nicht nahe, sondern überschritten.
+Ein einzelnes Signal ist normal. Kritisch wird es, wenn drei oder vier gleichzeitig zutreffen und das seit Längerem so ist. Dann liegt die Grenze bereits hinter euch.
 
 <aside className="not-prose my-8" data-reveal="fade-up">
-  <div className="rounded-2xl border border-brand-200 bg-brand-50/60 p-6 dark:border-brand-800 dark:bg-brand-900/15 sm:p-7">
+  <div className="border-brand-200 bg-brand-50/60 dark:border-brand-800 dark:bg-brand-900/15 rounded-2xl border p-6 sm:p-7">
     <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
       <div className="flex-1">
-        <p className="font-display text-foreground text-lg font-semibold leading-snug sm:text-xl">Drei oder vier Signale treffen bei Ihnen zu?</p>
-        <p className="text-foreground-secondary mt-1.5 text-sm leading-6">30 Minuten, um einzuordnen, ob sich eine Ablösung für Ihr Haus rechnet - oder ob der Bestand noch trägt.</p>
+        <p className="font-display text-foreground text-lg leading-snug font-semibold sm:text-xl">
+          Treffen drei oder vier Signale bei euch zu?
+        </p>
+        <p className="text-foreground-secondary mt-1.5 text-sm leading-6">
+          In einer halben Stunde lässt sich einordnen, ob eine Ablösung sich rechnet oder der
+          Bestand noch trägt.
+        </p>
       </div>
       <div className="shrink-0">
-        <Button href={contactLinks.cal} target="_blank"><span>Mit Marten sprechen</span><Icon name="arrow-up-right" size="sm" /></Button>
+        <Button href={contactLinks.cal} target="_blank">
+          <span>Mit Marten sprechen</span>
+          <Icon name="arrow-up-right" size="sm" />
+        </Button>
       </div>
     </div>
   </div>
@@ -122,15 +185,26 @@ Der entscheidende Konstruktionsfehler saß tiefer als in der Bedienung. **Angebo
 />
 
 <div className="not-prose my-10 grid gap-4 md:grid-cols-2 md:items-stretch" data-reveal="fade-up">
-  <div className="rounded-2xl border border-border bg-background-secondary p-6 sm:p-7">
+  <div className="border-border bg-background-secondary rounded-2xl border p-6 sm:p-7">
     <p className="text-foreground-muted font-mono text-xs font-semibold tracking-wider">Vorher</p>
-    <p className="font-display text-foreground mt-2 text-xl font-semibold leading-snug">Ein System für alle</p>
-    <p className="text-foreground-secondary mt-4 text-sm leading-6">Technisch sauber gebaut, aber als Lösung für jeden Zuschnitt gedacht. Die eigenen, entscheidenden Strukturen fanden darin keinen Platz - und wurden an den Rändern nachgebaut.</p>
+    <p className="font-display text-foreground mt-2 text-xl leading-snug font-semibold">
+      Ein System für alle
+    </p>
+    <p className="text-foreground-secondary mt-4 text-sm leading-6">
+      Technisch sauber gebaut, aber als Lösung für jeden Zuschnitt gedacht. Die eigenen,
+      entscheidenden Strukturen fanden darin keinen Platz - und wurden an den Rändern nachgebaut.
+    </p>
   </div>
-  <div className="rounded-2xl border border-brand-300 bg-card p-6 shadow-[0_22px_55px_rgba(34,43,74,0.08)] dark:border-brand-800 sm:p-7">
+  <div className="border-brand-300 bg-card dark:border-brand-800 rounded-2xl border p-6 shadow-[0_22px_55px_rgba(34,43,74,0.08)] sm:p-7">
     <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">Nachher</p>
-    <p className="font-display text-foreground mt-2 text-xl font-semibold leading-snug">Der reale Prozess als Grundlage</p>
-    <p className="text-foreground-secondary mt-4 text-sm leading-6">Vertrieb als Kanban-Board, automatische Angebotskalkulation, integrierte Terminplanung, Rechnung mit direktem Versand - und Angebot und Durchführung sauber getrennt, damit Plan und Ergebnis auswertbar bleiben.</p>
+    <p className="font-display text-foreground mt-2 text-xl leading-snug font-semibold">
+      Der reale Prozess als Grundlage
+    </p>
+    <p className="text-foreground-secondary mt-4 text-sm leading-6">
+      Vertrieb als Kanban-Board, automatische Angebotskalkulation, integrierte Terminplanung,
+      Rechnung mit direktem Versand - und Angebot und Durchführung sauber getrennt, damit Plan und
+      Ergebnis auswertbar bleiben.
+    </p>
   </div>
 </div>
 
@@ -140,72 +214,118 @@ Das Muster dahinter ist übertragbar: Ein Ingenieurbüro rechnet über Leistungs
 
 ## Die realistischen Optionen
 
-Zwischen "alles bleibt" und "alles neu" liegen mehr Möglichkeiten, als in solchen Diskussionen meist auf den Tisch kommen:
+Zwischen "alles bleibt" und "alles neu" liegen drei Wege, die in solchen Diskussionen selten alle auf den Tisch kommen:
 
 <div className="not-prose my-10 flex flex-col gap-4" data-reveal="fade-up">
-  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+  <div className="border-border bg-background-secondary rounded-2xl border p-6">
     <div className="flex items-start gap-3">
-      <span className="text-brand-500 mt-1 shrink-0"><Icon name="settings" size="sm" /></span>
+      <span className="text-brand-500 mt-1 shrink-0">
+        <Icon name="settings" size="sm" />
+      </span>
       <div>
-        <p className="font-display text-foreground text-base font-semibold leading-snug">Im Bestand aufräumen</p>
-        <p className="text-foreground-secondary mt-2 text-sm leading-6">Workarounds konsolidieren, ein externes Auswertungswerkzeug anbinden, Prozesse verschlanken. Sinnvoll, wenn die Kernlogik grundsätzlich passt und nur die Ränder ausgefranst sind - deutlich günstiger als jede Ablösung.</p>
+        <p className="font-display text-foreground text-base leading-snug font-semibold">
+          Im Bestand aufräumen
+        </p>
+        <p className="text-foreground-secondary mt-2 text-sm leading-6">
+          Workarounds konsolidieren, ein Auswertungswerkzeug anbinden, Prozesse verschlanken. Das
+          passt, solange die Kernlogik trägt und nur die Ränder ausgefranst sind. Und es kostet
+          einen Bruchteil einer Ablösung.
+        </p>
       </div>
     </div>
   </div>
-  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+  <div className="border-border bg-background-secondary rounded-2xl border p-6">
     <div className="flex items-start gap-3">
-      <span className="text-brand-500 mt-1 shrink-0"><Icon name="layers" size="sm" /></span>
+      <span className="text-brand-500 mt-1 shrink-0">
+        <Icon name="layers" size="sm" />
+      </span>
       <div>
-        <p className="font-display text-foreground text-base font-semibold leading-snug">Den Kern herauslösen, den Rest im Standard lassen</p>
-        <p className="text-foreground-secondary mt-2 text-sm leading-6">Buchhaltung, Lohn und klassisches CRM bleiben, wo sie sind. Individuell wird nur, was den Unterschied macht: Kalkulation, Projektsteuerung, Auswertung. Der häufigste sinnvolle Schnitt - und der mit dem besten Verhältnis von Aufwand zu Wirkung.</p>
+        <p className="font-display text-foreground text-base leading-snug font-semibold">
+          Den Kern herauslösen, den Rest im Standard lassen
+        </p>
+        <p className="text-foreground-secondary mt-2 text-sm leading-6">
+          Buchhaltung, Lohn und klassisches CRM bleiben, wo sie sind. Individuell wird nur, was den
+          Unterschied macht: Kalkulation, Projektsteuerung, Auswertung. Das ist der Schnitt, den wir
+          am häufigsten empfehlen, weil Aufwand und Wirkung hier am besten zueinander passen.
+        </p>
       </div>
     </div>
   </div>
-  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+  <div className="border-border bg-background-secondary rounded-2xl border p-6">
     <div className="flex items-start gap-3">
-      <span className="text-brand-500 mt-1 shrink-0"><Icon name="box" size="sm" /></span>
+      <span className="text-brand-500 mt-1 shrink-0">
+        <Icon name="box" size="sm" />
+      </span>
       <div>
-        <p className="font-display text-foreground text-base font-semibold leading-snug">Vollständig ablösen</p>
-        <p className="text-foreground-secondary mt-2 text-sm leading-6">Angebracht, wenn der Kernprozess durchgehend nicht passt und die Datenhaltung selbst im Weg steht. Läuft nie als Big Bang, sondern im Parallelbetrieb - das Tagesgeschäft kann nicht stehenbleiben.</p>
+        <p className="font-display text-foreground text-base leading-snug font-semibold">
+          Vollständig ablösen
+        </p>
+        <p className="text-foreground-secondary mt-2 text-sm leading-6">
+          Angebracht, wenn der Kernprozess durchgehend klemmt und schon die Datenhaltung im Weg
+          steht. Immer im Parallelbetrieb, weil das Tagesgeschäft weiterlaufen muss.
+        </p>
       </div>
     </div>
   </div>
 </div>
 
-Wie so eine Ablösung schrittweise abläuft - von der Bestandsaufnahme über den Schnitt bis zur Abschaltung - haben wir auf der Seite [Standardsoftware ablösen](/standardsoftware-abloesung/) zusammengefasst. Warum dieses Muster nicht auf Professional Services beschränkt ist, beschreibt der Artikel zu den [Grenzen der Branchensoftware](/blog/standardsoftware-vertec-centric-grenzen/).
+Wie so eine Ablösung schrittweise abläuft, von der Bestandsaufnahme über den Schnitt bis zur Abschaltung, steht auf der Seite [Standardsoftware ablösen](/standardsoftware-abloesung/). Dass dasselbe Muster auch außerhalb von Professional Services auftritt, zeigt der Artikel zu den [Grenzen der Branchensoftware](/blog/standardsoftware-vertec-centric-grenzen/).
 
-## Wann Sie beim Bestand bleiben sollten
+## Wann ihr beim Bestand bleiben solltet
 
-Damit dieser Artikel nicht als Plädoyer für Individualentwicklung missverstanden wird - es gibt klare Fälle, in denen eine Ablösung die falsche Entscheidung wäre:
+In vier Konstellationen raten wir von einer Ablösung ab:
 
 <div className="not-prose my-10 grid gap-4 sm:grid-cols-2" data-reveal="fade-up">
-  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+  <div className="border-border bg-background-secondary rounded-2xl border p-5">
     <div className="flex items-start gap-3">
-      <span className="text-brand-500 mt-1 shrink-0"><Icon name="check" size="xs" /></span>
-      <p className="text-foreground-secondary text-sm leading-6"><strong className="text-foreground">Ihr Prozess ist branchenüblich.</strong> Wenn Sie kalkulieren wie alle anderen auch, bildet ein ausgereiftes Produkt das gut ab.</p>
+      <span className="text-brand-500 mt-1 shrink-0">
+        <Icon name="check" size="xs" />
+      </span>
+      <p className="text-foreground-secondary text-sm leading-6">
+        <strong className="text-foreground">Euer Prozess ist branchenüblich.</strong> Wer kalkuliert
+        wie alle anderen, fährt mit einem ausgereiften Produkt besser.
+      </p>
     </div>
   </div>
-  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+  <div className="border-border bg-background-secondary rounded-2xl border p-5">
     <div className="flex items-start gap-3">
-      <span className="text-brand-500 mt-1 shrink-0"><Icon name="check" size="xs" /></span>
-      <p className="text-foreground-secondary text-sm leading-6"><strong className="text-foreground">Der Schmerz ist Bedienung, nicht Struktur.</strong> Eine unbeliebte Oberfläche ist ein Schulungs- und Konfigurationsthema, kein Ablösegrund.</p>
+      <span className="text-brand-500 mt-1 shrink-0">
+        <Icon name="check" size="xs" />
+      </span>
+      <p className="text-foreground-secondary text-sm leading-6">
+        <strong className="text-foreground">Der Schmerz sitzt in der Bedienung.</strong> Eine
+        unbeliebte Oberfläche ist ein Schulungs- und Konfigurationsthema. Dafür löst man keine
+        Software ab.
+      </p>
     </div>
   </div>
-  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+  <div className="border-border bg-background-secondary rounded-2xl border p-5">
     <div className="flex items-start gap-3">
-      <span className="text-brand-500 mt-1 shrink-0"><Icon name="check" size="xs" /></span>
-      <p className="text-foreground-secondary text-sm leading-6"><strong className="text-foreground">Eine Umstrukturierung steht an.</strong> Wer im nächsten Jahr fusioniert oder das Leistungsmodell umbaut, sollte den Prozess erst klären - dann die Software.</p>
+      <span className="text-brand-500 mt-1 shrink-0">
+        <Icon name="check" size="xs" />
+      </span>
+      <p className="text-foreground-secondary text-sm leading-6">
+        <strong className="text-foreground">Eine Umstrukturierung steht an.</strong> Wer im nächsten
+        Jahr fusioniert oder sein Leistungsmodell umbaut, klärt erst den Prozess und dann die
+        Software.
+      </p>
     </div>
   </div>
-  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+  <div className="border-border bg-background-secondary rounded-2xl border p-5">
     <div className="flex items-start gap-3">
-      <span className="text-brand-500 mt-1 shrink-0"><Icon name="check" size="xs" /></span>
-      <p className="text-foreground-secondary text-sm leading-6"><strong className="text-foreground">Es fehlt eine interne Ansprechperson.</strong> Ohne jemanden, der den eigenen Prozess verbindlich entscheiden kann, wird jedes Projekt zäh - unabhängig vom Dienstleister.</p>
+      <span className="text-brand-500 mt-1 shrink-0">
+        <Icon name="check" size="xs" />
+      </span>
+      <p className="text-foreground-secondary text-sm leading-6">
+        <strong className="text-foreground">Es fehlt eine interne Ansprechperson.</strong> Es
+        braucht jemanden, der den eigenen Prozess verbindlich entscheiden darf. Ohne diese Rolle
+        wird jedes Projekt zäh, egal mit welchem Dienstleister.
+      </p>
     </div>
   </div>
 </div>
 
-In diesen Fällen sagen wir das im Erstgespräch auch so. Ein Ablöseprojekt, das aus Frust statt aus Rechnung startet, wird selten gut.
+Wir sagen das im Erstgespräch auch so. Ein Ablöseprojekt, das aus Frust startet statt aus einer Rechnung, wird selten gut.
 
 <Screencast
   src="/screencasts/kalkulation-vs-realitaet.mp4"
@@ -217,6 +337,6 @@ In diesen Fällen sagen wir das im Erstgespräch auch so. Ein Ablöseprojekt, da
 
 ## Der Punkt, an dem sich die Rechnung dreht
 
-Am Ende ist es eine wirtschaftliche Frage, keine technische. Interessant ist nicht, was die Lizenz kostet, sondern **was der Umgang mit dem System an Kapazität bindet**: die Stunden für manuelles Auffangen, die verschleppten Auswertungen, die Einarbeitungszeit, die Projekte, deren Marge zu spät sichtbar wird.
+Am Ende entscheidet die Wirtschaftlichkeit, nicht die Technik. Die Lizenzkosten sind dabei die kleinere Zahl. Es geht darum, **was der Umgang mit dem System an Kapazität bindet**: Stunden für manuelles Auffangen, verschleppte Auswertungen, lange Einarbeitung, Projekte, deren Marge zu spät sichtbar wird.
 
-In projektgetriebenen Häusern ist genau diese Kapazität das Produkt. Sobald die Software mehr davon bindet, als sie freisetzt, ist die Grenze überschritten - unabhängig davon, wie gut das System auf dem Papier ist.
+In projektgetriebenen Häusern ist genau diese Kapazität das Produkt. Sobald die Software mehr davon bindet als freisetzt, ist die Grenze überschritten. Wie gut das System auf dem Papier dasteht, spielt dann keine Rolle mehr.

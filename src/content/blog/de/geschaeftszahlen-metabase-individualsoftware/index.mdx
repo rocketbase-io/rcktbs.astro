@@ -1,8 +1,9 @@
 ---
-title: "Wenn Reporting zum Monatsprojekt wird - und wie es besser geht"
-seoTitle: "Reporting in Minuten statt Wochen"
-description: "Warum Standardsoftware oft keine belastbare Entscheidungsgrundlage liefert - und wie die Kombination aus maßgeschneiderter Anwendung und Metabase Auswertungen in Minuten statt Wochen ermöglicht."
+title: "Wenn der Monatsabschluss zum Projekt wird"
+seoTitle: "Reporting mit Metabase statt Excel-Monatsprojekt"
+description: "Warum Standardsoftware selten belastbare Zahlen liefert und wie eine individuelle Anwendung zusammen mit Metabase aus dem Monatsprojekt eine Auswertung in Minuten macht."
 publishedAt: 2026-04-23
+updatedAt: 2026-08-21
 author: "Marten Prieß"
 image: "./hero.png"
 imageAlt: "Von verstreuten Zahlen zu einem einheitlichen Steuerungs-Dashboard"
@@ -11,28 +12,27 @@ featured: true
 draft: false
 locale: de
 cta:
-  eyebrow: "Nächster Schritt"
-  headline: "30 Minuten, die Ihren Monatsabschluss verändern können."
-  body: "Wenn Ihr Monatsabschluss heute Projektcharakter hat oder strategische Entscheidungen regelmäßig auf Bauchgefühl statt Zahlen basieren - lassen Sie uns 30 Minuten darüber sprechen."
+  headline: "Hat euer Monatsabschluss Projektcharakter?"
+  body: "Dann lasst uns darüber sprechen. Auch wenn strategische Entscheidungen bei euch regelmäßig auf Bauchgefühl statt auf Zahlen beruhen."
 ---
 
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import { contactLinks } from '@/data/rocketbase';
 
-Eine der konsistentesten Beobachtungen aus unseren Projekten: Die größte unausgesprochene Frustration in mittelständischen Geschäftsführungen ist nicht die Software selbst, sondern das, was sie beim Blick auf die eigenen Zahlen nicht liefert.
+Die größte unausgesprochene Frustration in mittelständischen Geschäftsführungen betrifft selten die Software selbst. Sie betrifft das, was beim Blick auf die eigenen Zahlen fehlt.
 
-Konkret meinen wir das Muster, bei dem die monatliche oder quartalsweise Auswertung zur Projektarbeit wird: Daten aus drei Systemen werden exportiert, in Excel zusammengeführt, händisch abgeglichen, in ein Reporting-Template übertragen, Diskrepanzen geklärt, und am Ende steht ein PDF, das - wenn es gut läuft - zwei bis drei Wochen nach dem eigentlichen Betrachtungszeitraum verfügbar ist. Bis dahin hat sich die Lage im Unternehmen längst weiterentwickelt.
+Gemeint ist das Muster, bei dem die Monats- oder Quartalsauswertung zur Projektarbeit wird. Daten aus drei Systemen exportieren, in Excel zusammenführen, händisch abgleichen, ins Reporting-Template übertragen, Diskrepanzen klären. Am Ende steht ein PDF, das im guten Fall zwei bis drei Wochen nach dem Betrachtungszeitraum vorliegt.
 
-Dieser Artikel beschreibt, warum das strukturell passiert, wie eine Kombination aus individueller Kernanwendung und Open-Source-Reporting das Problem löst und warum das wirtschaftlich sinnvoller ist, als es auf den ersten Blick wirkt.
+Bis dahin hat sich die Lage im Unternehmen weiterentwickelt.
 
 ## Warum Standardsoftware selten saubere Zahlen liefert
 
-Es geht in diesem Abschnitt nicht darum, Standardsoftware schlechtzureden. Es geht darum zu verstehen, warum Reporting aus einem Standardsystem strukturell an Grenzen stößt, sobald ein Unternehmen spezifische Geschäftsfragen beantworten will.
+Standardsoftware ist hier nicht der Schuldige. Interessant ist, warum Reporting aus einem Standardsystem an Grenzen stößt, sobald jemand spezifische Geschäftsfragen stellt. Das hat drei Ursachen, und keine davon lässt sich durch besseres Reporting-Tooling beheben.
 
-### Das Datenmodell passt nicht zu Ihrer Geschäftslogik
+### Das Datenmodell passt nicht zu eurer Geschäftslogik
 
-Ein Standardsystem bildet Geschäftsvorfälle in einer generischen Struktur ab. Ein Auftrag, eine Position, ein Kunde, ein Zahlungsvorgang. Auf dieser Basis lassen sich die klassischen Kennzahlen sauber ausweisen - Umsatz, offene Posten, Auftragseingang.
+Ein Standardsystem bildet Geschäftsvorfälle generisch ab: ein Auftrag, eine Position, ein Kunde, ein Zahlungsvorgang. Für die klassischen Kennzahlen reicht das gut aus, also Umsatz, offene Posten, Auftragseingang.
 
 Die Fragen, die wirklich interessant sind, sehen anders aus:
 
@@ -55,17 +55,17 @@ Die Fragen, die wirklich interessant sind, sehen anders aus:
   </div>
 </div>
 
-Diese Fragen setzen ein Datenmodell voraus, das Ihr spezifisches Geschäft kennt - nicht das generische Geschäft einer beliebigen Branche. Standardsoftware kann das nur über Custom-Felder oder externe Auswertungen abbilden. Beides erzeugt genau die Brüche, die das Reporting so mühsam machen.
+Solche Fragen setzen ein Datenmodell voraus, das euer Geschäft kennt statt das einer beliebigen Branche. Standardsoftware löst das über Custom-Felder oder externe Auswertungen. Beides erzeugt genau die Brüche, die das Reporting mühsam machen.
 
 ### Die Auswertungsschicht ist der Engpass
 
-Selbst wenn das Datenmodell grundsätzlich tragen würde: Die Reporting-Funktionen in Standardsoftware sind oft der älteste Teil des Systems. Starre Report-Definitionen, begrenzte Filter, keine sinnvolle Verknüpfung mehrerer Datenquellen, Export-Formate, die keine Pivotierung erlauben.
+Selbst wenn das Datenmodell tragen würde: Die Reporting-Funktionen sind in Standardsoftware oft der älteste Teil des Systems. Starre Report-Definitionen, begrenzte Filter, keine brauchbare Verknüpfung mehrerer Quellen, Exportformate, aus denen sich keine Pivot-Tabelle bauen lässt.
 
-Viele Unternehmen behelfen sich mit Excel als Auswertungsschicht. Das funktioniert für Momentaufnahmen, skaliert aber nicht. Die Person, die das Master-Template pflegt, wird zum Single Point of Failure. Versionen verzweigen sich. Bei Datenänderungen muss alles manuell nachgezogen werden.
+Viele behelfen sich mit Excel als Reporting-Schicht. Für eine Momentaufnahme reicht das. Auf Dauer wird die Person, die das Master-Template pflegt, zum Single Point of Failure, Versionen verzweigen sich, und jede Datenänderung muss von Hand nachgezogen werden.
 
 ### Daten leben in mehreren Systemen
 
-In der Realität liegen die Daten, die eine Geschäftsführung braucht, fast nie in einem System allein. Umsätze im ERP, Pipeline im CRM, Kosten in der Buchhaltung, Projektzeiten in einem Zeiterfassungstool, Marketingkosten in HubSpot, Hosting in einer Lieferantenrechnung. Jede dieser Datenquellen hat eigene Definitionen, eigene Stammdatenschlüssel, eigene Zeitstempel.
+Die Daten, die eine Geschäftsführung braucht, liegen fast nie in einem einzigen System. Umsätze im ERP, Pipeline im CRM, Kosten in der Buchhaltung, Projektzeiten in der Zeiterfassung, Marketingkosten in HubSpot, Hosting auf einer Lieferantenrechnung. Jede Quelle bringt eigene Definitionen mit, eigene Stammdatenschlüssel, eigene Zeitstempel.
 
 Die Zusammenführung ist der eigentliche Aufwand. Und sie ist selten einmalig - jeden Monat neu.
 
@@ -105,8 +105,8 @@ Die Zusammenführung ist der eigentliche Aufwand. Und sie ist selten einmalig - 
   <div className="rounded-2xl border border-brand-200 bg-brand-50/60 p-6 dark:border-brand-800 dark:bg-brand-900/15 sm:p-7">
     <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
       <div className="flex-1">
-        <p className="font-display text-foreground text-lg font-semibold leading-snug sm:text-xl">Kommt Ihnen das bekannt vor?</p>
-        <p className="text-foreground-secondary mt-1.5 text-sm leading-6">30 Minuten Erstgespräch. Wir klären, ob sich ein strukturierter Umbau für Sie lohnt.</p>
+        <p className="font-display text-foreground text-lg font-semibold leading-snug sm:text-xl">Kommt euch das bekannt vor?</p>
+        <p className="text-foreground-secondary mt-1.5 text-sm leading-6">Im Erstgespräch klären wir, ob sich ein strukturierter Umbau für euch lohnt.</p>
       </div>
       <div className="shrink-0">
         <Button href={contactLinks.cal} target="_blank" rel="noopener"><span>Mit Marten sprechen</span><Icon name="arrow-up-right" size="sm" /></Button>
@@ -117,13 +117,13 @@ Die Zusammenführung ist der eigentliche Aufwand. Und sie ist selten einmalig - 
 
 ## Der Ansatz: Kernlogik individuell, Auswertung mit erprobten Open-Source-Bausteinen
 
-Der Weg, den wir in mehreren Projekten gegangen sind, kombiniert zwei Bausteine, die oft getrennt gedacht werden:
+In mehreren Projekten haben wir zwei Bausteine kombiniert, die meist getrennt gedacht werden:
 
 **Baustein 1 - eine individuelle Kernanwendung**, die genau die Geschäftsprozesse abbildet, die das Unternehmen ausmachen. Das Datenmodell ist auf die spezifischen Fragen des Hauses zugeschnitten, nicht generisch. Die Anwendung wird zur einzigen Quelle der Wahrheit für ihren Scope.
 
-**Baustein 2 - Metabase als Reporting-Layer**. Metabase ist eine Open-Source-Plattform für Business Intelligence, die direkt auf eine Datenbank aufsetzt und sowohl Self-Service-Auswertungen als auch fertig konfigurierte Dashboards ermöglicht. Nutzer mit einem mittleren Verständnis für Daten kommen ohne SQL aus, technisch versierte Nutzer können beliebig tief gehen.
+**Baustein 2 - Metabase als Reporting-Layer**. Metabase ist eine Open-Source-Plattform für Business Intelligence. Sie setzt direkt auf der Datenbank auf und liefert sowohl fertige Dashboards als auch Self-Service-Auswertungen. Wer mit Daten umgehen kann, kommt ohne SQL aus. Wer SQL kann, geht so tief wie nötig.
 
-Die Kombination ist aus einem einfachen Grund stark: Wenn das Datenmodell sauber ist - weil Sie es selbst auf Ihr Geschäft zugeschnitten haben - wird Reporting trivial. Die Zeit, die in einem typischen Reporting-Projekt auf Datenaufbereitung entfällt, entfällt in dieser Konstellation komplett. Metabase macht aus einem guten Datenmodell in Stunden das, wofür klassische BI-Projekte Monate brauchen.
+Die Kombination wirkt aus einem einfachen Grund: Ist das Datenmodell sauber, weil ihr es selbst auf euer Geschäft zugeschnitten habt, wird Reporting zur Nebensache. Der Aufwand, der in klassischen BI-Projekten in die Datenaufbereitung fließt, fällt hier weg. Metabase liefert dann in Stunden, wofür solche Projekte sonst Monate brauchen.
 
 <figure className="not-prose my-12" data-reveal="fade-up">
   <div className="grid gap-4 md:grid-cols-2 md:items-stretch">
@@ -172,7 +172,7 @@ Die Kombination ist aus einem einfachen Grund stark: Wenn das Datenmodell sauber
           </span>
           <div>
             <p className="text-foreground text-sm font-semibold">Individuelle Kernanwendung</p>
-            <p className="text-foreground-muted text-xs">Datenmodell auf Ihr Geschäft zugeschnitten</p>
+            <p className="text-foreground-muted text-xs">Datenmodell auf euer Geschäft zugeschnitten</p>
           </div>
         </div>
         <div className="flex justify-center text-brand-500">
@@ -197,19 +197,21 @@ Die Kombination ist aus einem einfachen Grund stark: Wenn das Datenmodell sauber
 
 ## Was das in der Praxis heißt
 
-Ein Beispiel aus einem realen Projekt: Ein mittelständisches Unternehmen im Professional-Services-Umfeld hatte seine Projektabrechnung und Kapazitätsplanung über Jahre in einer Standardlösung plus Excel gefahren. Die zentralen Fragen - welche Projekte sind profitabel, welche Kundensegmente tragen das Geschäft, welche Auslastung läuft wo - waren zwar irgendwo in den Daten enthalten, aber nur über mehrtägige manuelle Auswertungen zugänglich.
+Ein Beispiel aus einem echten Projekt. Ein mittelständisches Unternehmen im Professional-Services-Umfeld fuhr Projektabrechnung und Kapazitätsplanung über Jahre mit einer Standardlösung plus Excel. Die zentralen Fragen steckten irgendwo in den Daten: welche Projekte profitabel sind, welche Kundensegmente das Geschäft tragen, wo wie viel Auslastung liegt. Herausholen ließ sich das nur über mehrtägige manuelle Auswertungen.
 
 Der Umbau lief in drei Schritten:
 
-**Schritt 1 - Datenmodell neu entworfen.** Gemeinsam mit der Geschäftsführung und den Projektverantwortlichen haben wir das Datenmodell so geschnitten, dass die eigentlich interessanten Dimensionen - Kundensegment, Projekttyp, Leistungsart, interne vs. externe Aufwände - nativ abgebildet sind. Nicht als Custom-Feld, sondern als tragende Struktur. Parallel dazu: neue Oberflächen und Arbeitsabläufe, die das Datenmodell im Alltag tragen - damit das Team die saubere Struktur nicht pflegen *muss*, sondern sie *nebenbei* entsteht.
+**Schritt 1 - Datenmodell neu entworfen.** Mit der Geschäftsführung und den Projektverantwortlichen haben wir das Modell so geschnitten, dass die interessanten Dimensionen direkt darin stecken: Kundensegment, Projekttyp, Leistungsart, interne und externe Aufwände. Als tragende Struktur, nicht als Custom-Feld. Dazu kamen Oberflächen und Arbeitsabläufe, in denen diese Struktur *nebenbei* entsteht, statt vom Team gepflegt werden zu müssen.
 
-**Schritt 2 - Altdaten migriert.** Die historischen Daten aus der bisherigen Standardlösung wurden mit aufgenommen. Das war bewusst - nicht um das alte System zu konservieren, sondern damit vom ersten Tag an Trendauswertungen über mehrere Jahre möglich sind. Ohne Historie wäre ein neues System ein Jahr lang blind.
+**Schritt 2 - Altdaten migriert.** Die Historie aus der bisherigen Standardlösung kam mit. Das war eine bewusste Entscheidung: Nur so sind vom ersten Tag an Trendauswertungen über mehrere Jahre möglich. Ohne Historie bleibt ein neues System ein Jahr lang blind.
 
-**Schritt 3 - Metabase angebunden.** Die Geschäftsführung bekam einen Satz von Dashboards: Deckungsbeitrag pro Kundensegment, Projekt-Profitabilität im Zeitverlauf, Auslastung pro Team, Cashflow-Prognose auf Basis der Pipeline. Keine Folienpräsentation mit aufbereiteten Zahlen - ein Dashboard, das sich jederzeit live abfragen lässt.
+**Schritt 3 - Metabase angebunden.** Die Geschäftsführung bekam Dashboards für Deckungsbeitrag pro Kundensegment, Projekt-Profitabilität im Zeitverlauf, Auslastung pro Team und eine Cashflow-Prognose auf Basis der Pipeline. Jederzeit live abrufbar, statt einmal im Monat als Foliensatz.
 
-Was bemerkenswert ist an diesem dritten Schritt: Er war der kleinste. Wenn das Datenmodell einmal sauber steht und die Arbeitsabläufe es mit tragen, kommt Reporting praktisch geschenkt. Neue Fragen, die morgen auftauchen, sind eine Abfrage von Stunden - nicht ein Projekt von Wochen.
+Der dritte Schritt war der kleinste. Steht das Datenmodell sauber und tragen die Arbeitsabläufe es mit, kommt Reporting fast geschenkt. Eine neue Reporting-Frage kostet dann Stunden statt Wochen.
 
-Das Ergebnis: Die monatliche Auswertung, die vorher mehrere Personen zusammengezogen hat, wird nicht mehr gemacht. Nicht weil sie weggefallen ist - sondern weil sie dauerhaft live verfügbar ist und niemand mehr eine punktuelle Zusammenstellung braucht. Und die Organisation hat damit etwas, das über das ursprüngliche Problem hinausgeht: eine Basis, auf der sich neue Fragestellungen, Experimente und Perspektiven ausprobieren lassen, ohne dass jedes Mal ein neues IT-Projekt nötig wird.
+Die monatliche Auswertung, an der vorher mehrere Leute saßen, gibt es heute nicht mehr. Sie ist dauerhaft live verfügbar, und damit braucht niemand mehr eine punktuelle Zusammenstellung.
+
+Geblieben ist etwas, das über das ursprüngliche Problem hinausgeht: eine Basis, auf der sich neue Fragen ausprobieren lassen, ohne dass daraus jedes Mal ein IT-Projekt wird.
 
 <figure className="not-prose my-12" data-reveal="fade-up">
   <div className="grid gap-4 md:grid-cols-[1fr_auto_1fr] md:items-stretch">
@@ -232,13 +234,13 @@ Das Ergebnis: Die monatliche Auswertung, die vorher mehrere Personen zusammengez
 
 ## Warum wir uns nicht mit Tooling aufhalten
 
-Wir hätten das gleiche Projekt auch mit einem proprietären BI-Tool machen können. Es gibt ausgereifte kommerzielle Lösungen in diesem Bereich, und sie haben ihre Berechtigung. In fast allen Projekten entscheiden wir uns trotzdem für Metabase oder vergleichbare Open-Source-Alternativen. Drei Gründe:
+Dasselbe Projekt wäre mit einem proprietären BI-Tool ebenfalls machbar gewesen. Die kommerziellen Lösungen sind ausgereift und haben ihre Berechtigung. Trotzdem fällt unsere Wahl fast immer auf Metabase oder eine vergleichbare Open-Source-Alternative. Drei Gründe:
 
 <div className="not-prose my-10 grid gap-4 md:grid-cols-3" data-reveal="fade-up">
   <div className="rounded-2xl border border-border bg-background-secondary p-6">
     <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">01</p>
     <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Fokus auf das eigentliche Problem</p>
-    <p className="text-foreground-secondary mt-3 text-sm leading-6">Die Tool-Auswahl ist nicht der Engpass - das Datenmodell ist es. Ein gutes Open-Source-Tool ist in zwei Tagen aufgesetzt. Wer Monate in BI-Lizenzvergleiche steckt, hat den falschen Hebel gedrückt.</p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">Der Engpass ist das Datenmodell, nicht die Tool-Auswahl. Ein gutes Open-Source-Tool steht in zwei Tagen. Wer Monate in BI-Lizenzvergleiche steckt, arbeitet am falschen Hebel.</p>
   </div>
   <div className="rounded-2xl border border-border bg-background-secondary p-6">
     <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">02</p>

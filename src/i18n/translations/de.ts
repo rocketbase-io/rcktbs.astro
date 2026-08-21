@@ -2,7 +2,7 @@ export const de = {
   site: {
     name: 'RocketBase',
     description:
-      'Digitalpartner für individuelle Software, Prozessoptimierung und nachhaltige Plattformen mit direkter Begleitung durch Marten Prieß.',
+      'Individuelle Unternehmenssoftware für den Mittelstand. Von der Prozessanalyse bis zum Betrieb, direkt mit Marten Prieß.',
   },
 
   nav: {
@@ -62,26 +62,26 @@ export const de = {
     },
     hero: {
       badge: 'Direkter Kontakt',
-      title: 'Lassen Sie uns',
-      titleHighlight: 'über Ihr Vorhaben sprechen.',
+      title: 'Sprechen wir',
+      titleHighlight: 'über euer Vorhaben.',
       description:
-        'Kein klassischer Vertrieb, kein Agentur-Pingpong. Sie sprechen direkt mit Marten Prieß über Ziele, Prozesse und die sinnvollste nächste Ausbaustufe.',
+        'Ihr sprecht direkt mit Marten Prieß: über eure Ziele, eure Prozesse und den nächsten sinnvollen Schritt. Ein Gespräch, kein Vertriebstermin.',
     },
     form: {
       title: 'Projekt anfragen',
       name: 'Name',
-      namePlaceholder: 'Ihr Name',
+      namePlaceholder: 'Euer Name',
       email: 'E-Mail',
       emailPlaceholder: 'name@unternehmen.de',
       subject: 'Thema',
       subjectPlaceholder: 'Worum geht es?',
       message: 'Nachricht',
       messagePlaceholder:
-        'Beschreiben Sie Ihr Vorhaben, bestehende Systeme oder Engpässe im Prozess...',
+        'Worum geht es? Bestehende Systeme, Engpässe im Ablauf, ein konkretes Vorhaben...',
       submit: 'Nachricht senden',
       sending: 'Wird gesendet...',
       success: 'Nachricht erfolgreich gesendet. Wir melden uns zeitnah zurück.',
-      error: 'Die Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut.',
+      error: 'Die Nachricht kam nicht durch. Bitte noch einmal versuchen.',
     },
     info: {
       title: 'Direkte Wege zu RocketBase',
