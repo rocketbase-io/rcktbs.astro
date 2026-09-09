@@ -12,7 +12,7 @@ import { defaultLocale } from '@/i18n/config';
 import { getLocalizedPath } from '@/i18n/index';
 import { getReadingTime } from '@/lib/utils';
 import founderImage from '@/assets/rocketbase/founder-marten-priess.jpg';
-import statistaCaseImage from '@/assets/references/teaser-statista.jpeg';
+import stageCaseImage from '@/assets/references/teaser-stage-cml.jpeg';
 import fkcCaseImage from '@/assets/references/teaser-fkc.jpeg';
 import schlossereiCaseImage from '@/assets/references/teaser-schlosserei.jpeg';
 import toolsBefore from '@/assets/work/tools-before.png';
@@ -24,7 +24,6 @@ import {
   additionalCases,
   contactLinks,
   discoveryOffer,
-  processSteps,
   serviceAreas,
   strengths,
 } from '@/data/rocketbase';
@@ -41,16 +40,53 @@ const einsatzplanungUrl = getLocalizedPath('einsatzplanung', locale);
 
 type FeaturedCase = (typeof cases)[number] & { image?: ImageMetadata };
 
+// Die Angebotstreppe: jede Stufe hat einen Preis und ein Ergebnis, und jede
+// Stufe bepreist die nächste. Nur hier auf der Startseite — /leistungen nutzt
+// weiter die allgemeinen processSteps.
+const ladderSteps = [
+  {
+    title: 'Erstgespräch',
+    price: 'kostenlos',
+    description:
+      '30 Minuten direkt mit Marten Prieß. Wir hören zu und sagen ehrlich, ob sich ein nächster Schritt lohnt – und welcher.',
+  },
+  {
+    title: 'Discovery-Workshop',
+    price: '2.400 €',
+    description:
+      'Ein Tag mit euren Keyusern. Am Ende steht ein Dokument mit einer Empfehlung und einem Kostenrahmen – es gehört euch, auch ohne Folgeauftrag.',
+  },
+  {
+    title: 'Konzeptphase',
+    price: 'Festpreis, steht im Workshop-Dokument',
+    description:
+      'Mockups der Kernabläufe, Datenmodell und ein Festpreisangebot für die Umsetzung. Danach wisst ihr auf den Euro, was die Lösung kostet.',
+  },
+  {
+    title: 'Umsetzung',
+    price: 'Festpreis',
+    description:
+      'In Wochen, wo wir auf laufenden Bausteinen aus unseren Projekten aufsetzen. Individuell, wo euer Prozess besonders ist.',
+  },
+  {
+    title: 'Betrieb',
+    price: 'monatliche Pauschale, kündbar',
+    description:
+      'Hosting in Deutschland, Backups, Monitoring, Weiterentwicklung. Die Software gehört euch – ihr zahlt für den Betrieb, nicht für die Nutzung.',
+  },
+];
+
 const caseImageMap: Record<string, ImageMetadata> = {
-  statista: statistaCaseImage,
+  'stage-cml': stageCaseImage,
   'fkc-consulting': fkcCaseImage,
   'schlosserei-diezinger': schlossereiCaseImage,
 };
 
-// Startseiten-Auswahl, konsistent mit Nav-Dropdown und Referenz-Übersicht:
-// FKC (Standardsoftware-Ablösung, Hauptfokus), Statista (Konzern-Track-Record)
-// und Schlosserei Diezinger (Einsatzplanung im Mittelstand).
-const featuredSlugs = ['fkc-consulting', 'statista', 'schlosserei-diezinger'];
+// Startseiten-Auswahl: drei Fälle, in denen sich ein Mittelständler wiederfindet —
+// FKC (Standardsoftware-Ablösung, Hauptfokus), Schlosserei Diezinger
+// (Einsatzplanung) und Stage (Zahlen raus aus Excel). Statista und bonprix
+// stehen bewusst im Gründer-Block als Herkunft, nicht hier als Vergleichsfall.
+const featuredSlugs = ['fkc-consulting', 'schlosserei-diezinger', 'stage-cml'];
 const caseBySlug = new Map([...cases, ...additionalCases].map((c) => [c.slug, c]));
 const featuredCases: FeaturedCase[] = featuredSlugs
   .map((slug) => caseBySlug.get(slug))
@@ -172,13 +208,14 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
           Insellösungen verbinden · Prozesse bauen · Weiterdenken
         </p>
         <h1 class="hero-landing-title font-display text-foreground mt-5 text-4xl font-bold tracking-tight max-[760px]:mt-4 max-[760px]:text-[2.15rem] sm:text-5xl">
-          <span class="block sm:whitespace-nowrap">Eure Software sollte euch tragen –</span>
-          <span class="mt-2 block text-brand-500">nicht ausbremsen.</span>
+          <span class="block sm:whitespace-nowrap">Software für Betriebe,</span>
+          <span class="mt-2 block text-brand-500">die nicht in Standardlösungen passen.</span>
         </h1>
 
         <p class="hero-landing-intro text-foreground-secondary mt-6 text-lg leading-8 max-[760px]:mt-5 max-[760px]:text-base max-[760px]:leading-7">
-          Software, die zu euren Abläufen passt – nicht umgekehrt. Gebaut für den Prozess, mit dem ihr
-          wirklich arbeitet, nicht für den, den ein Standard vorgibt.
+          Wenn Vertec oder Centric am Limit ist oder der Betrieb über Excel läuft: Wir bauen die
+          Anwendung, die zu euren Abläufen passt. Der erste Schritt ist ein Tag mit euren Keyusern –
+          am Ende steht ein Dokument mit einer klaren Empfehlung, und es gehört euch.
         </p>
 
         <div data-reveal class="hero-landing-actions mt-8 flex flex-wrap items-center gap-4 max-[760px]:mt-6 max-[760px]:gap-3">
@@ -648,8 +685,8 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
         </h2>
         <p class="text-foreground-secondary mt-6 text-lg leading-8">
           Drei Beispiele dafür, wie RocketBase in sehr unterschiedlichen Ausgangslagen arbeitet:
-          bei Konzernstrukturen, gewachsenen Kernsystemen und dem Schritt von Standardsoftware zu
-          einer individuellen Lösung.
+          Standardsoftware abgelöst, Einsatzplanung aus Excel geholt, Budgetsteuerung auf einen
+          belastbaren Prozess gestellt.
         </p>
       </div>
 
@@ -809,20 +846,20 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
   <section class="border-border bg-surface-invert text-on-invert border-b py-28 lg:py-36">
     <div class="container grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
       <div data-reveal="fade-right" class="lg:sticky lg:top-28">
-        <p class="text-brand-300 text-sm font-semibold tracking-[0.22em] uppercase">Projektverlauf</p>
+        <p class="text-brand-300 text-sm font-semibold tracking-[0.22em] uppercase">So startet ihr</p>
         <h2 class="font-display mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
           Kein Blindflug.
-          <span class="mt-2 block text-brand-200">Ein klarer Weg von Analyse bis Betrieb.</span>
+          <span class="mt-2 block text-brand-200">Jede Stufe hat einen Preis und ein Ergebnis.</span>
         </h2>
         <p class="text-on-invert-secondary mt-6 text-lg leading-8">
-          Projekte gelingen, wenn das Wichtigste zuerst kommt und jeder Schritt auf dem vorigen
-          aufbaut. Genau so arbeiten wir.
+          Niemand gibt hier blind Budget frei: Jede Stufe liefert etwas, das für sich stehen kann,
+          und nennt den Preis der nächsten. Aussteigen geht nach jeder – das Ergebnis behaltet ihr.
         </p>
       </div>
 
       <div class="space-y-5">
         {
-          processSteps.map((step, index) => (
+          ladderSteps.map((step, index) => (
             <article
               data-reveal="fade-left"
               class="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur sm:rounded-[2rem] sm:p-7"
@@ -830,7 +867,12 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
               <div class="flex items-center gap-4 sm:grid sm:gap-5 md:grid-cols-[72px_1fr] md:items-start">
                 <div class="text-brand-300 shrink-0 text-sm font-semibold">0{index + 1}</div>
                 <div>
-                  <h3 class="text-on-invert text-lg font-semibold sm:text-2xl">{step.title}</h3>
+                  <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                    <h3 class="text-on-invert text-lg font-semibold sm:text-2xl">{step.title}</h3>
+                    <span class="text-brand-200 text-xs font-semibold tracking-wide uppercase sm:text-sm">
+                      {step.price}
+                    </span>
+                  </div>
                   <p class="text-on-invert-secondary mt-3 hidden text-base leading-7 sm:block">{step.description}</p>
                 </div>
               </div>

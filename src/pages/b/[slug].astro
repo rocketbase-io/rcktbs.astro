@@ -88,7 +88,10 @@ const clientLogos = [
     </div>
   </section>
 
-  <!-- VIDEO: zeigt einen sichtbaren Platzhalter, solange kein src gesetzt ist -->
+  <!-- VIDEO: erscheint erst, wenn ein src gesetzt ist. Kein Platzhalter in
+       Produktion - Brief-Empfänger sollen keine Baustelle sehen; die Sektion
+       kommt automatisch, sobald die Datei in briefLandings.ts eingetragen ist. -->
+  {landing.video.src && (
   <section class="pt-4 pb-14 lg:pt-8 lg:pb-20">
     <div class="container max-w-4xl">
       <header class="mx-auto max-w-2xl text-center">
@@ -139,6 +142,7 @@ const clientLogos = [
       </div>
     </div>
   </section>
+  )}
 
   <!-- TRUST: direkt nach dem Video, solange die Aufmerksamkeit oben ist -->
   <ClientLogoStrip

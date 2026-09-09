@@ -27,6 +27,8 @@ cta:
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Figure from '@/components/blog/Figure.astro';
+import cockpitUmsatzPlanIst from '@/assets/blog/cockpit-umsatz-plan-ist.png';
+import pipelineKanban from '@/assets/blog/pipeline-kanban.png';
 import Screencast from '@/components/blog/Screencast.astro';
 import ProzessDriftDiagramm from '@/components/blog/diagrams/ProzessDriftDiagramm.astro';
 import { contactLinks } from '@/data/rocketbase';
@@ -178,10 +180,10 @@ Bei [FKC Consulting](/referenzen/fkc-consulting/) lag genau diese Konstellation 
 Der entscheidende Konstruktionsfehler saß tiefer als in der Bedienung. **Angebot und Durchführung waren im Standard so miteinander verwoben, dass sich Plan und Ergebnis kaum noch gegenüberstellen ließen.** Damit fällt die wichtigste Steuerungsfrage eines projektgetriebenen Hauses weg: Haben wir das geliefert, was wir kalkuliert haben - und wo genau sind wir davon abgewichen?
 
 <Figure
-  alt="Vertriebs-Pipeline als Kanban-Board mit Angeboten in Spalten nach Status"
-  caption="Der Vertrieb als Board statt als Liste: Jedes Angebot ist sichtbar, samt Status und Wert - die Grundlage dafür, Plan und Ergebnis später überhaupt vergleichen zu können."
+  src={pipelineKanban}
+  alt="Vertriebs-Pipeline als Kanban-Board mit Angeboten in Spalten nach Status, je Spalte Stunden- und Vertragswertsummen"
+  caption="Der Vertrieb als Board statt als Liste: Jedes Angebot ist sichtbar, samt Status und Wert, jede Spalte summiert Stunden und Vertragswert - die Grundlage dafür, Plan und Ergebnis später überhaupt vergleichen zu können."
   source="Beispielansicht aus einer RocketBase-Lösung"
-  todo="Screenshot: Sales-Pipeline als Kanban-Board in der Demo-Instanz. Sichtbar sein sollten mehrere Spalten mit Status und Angebotswerten. Format 16:9."
 />
 
 <div className="not-prose my-10 grid gap-4 md:grid-cols-2 md:items-stretch" data-reveal="fade-up">
@@ -327,12 +329,11 @@ In vier Konstellationen raten wir von einer Ablösung ab:
 
 Wir sagen das im Erstgespräch auch so. Ein Ablöseprojekt, das aus Frust startet statt aus einer Rechnung, wird selten gut.
 
-<Screencast
-  src="/screencasts/kalkulation-vs-realitaet.mp4"
-  poster="/screencasts/kalkulation-vs-realitaet.jpg"
-  ratio="16/9"
-  caption="Vom Angebot in die Auswertung: Was kalkuliert wurde und was tatsächlich angefallen ist, steht im selben System nebeneinander."
-  todo="Aufnehmen in der Demo-Instanz: Ein abgeschlossenes Projekt öffnen und zeigen, wo kalkulierte und tatsächliche Stunden bzw. Deckungsbeitrag gegenübergestellt werden. 20-30 Sekunden, ohne Ton."
+<Figure
+  src={cockpitUmsatzPlanIst}
+  alt="Geschäftsführer-Cockpit mit Umsatz, Deckungsbeitrag, Auslastung und einer Umsatzentwicklung, die Ist, Plan und Prognose aus Angeboten übereinanderlegt"
+  caption="Vom Angebot in die Auswertung: Umsatz, Deckungsbeitrag und Auslastung stehen live im Cockpit, und die Umsatzentwicklung legt Ist, Plan und die Prognose aus laufenden Angeboten übereinander - die Marge wartet nicht auf den Monatsabschluss."
+  source="Beispielansicht aus einer RocketBase-Lösung"
 />
 
 ## Der Punkt, an dem sich die Rechnung dreht

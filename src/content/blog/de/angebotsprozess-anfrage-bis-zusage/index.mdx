@@ -19,6 +19,8 @@ cta:
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Figure from '@/components/blog/Figure.astro';
+import angebotKalkulation from '@/assets/blog/angebot-kalkulation.png';
+import anfrageAntworten from '@/assets/blog/anfrage-antworten-vorgang.png';
 import Screencast from '@/components/blog/Screencast.astro';
 import AngebotsprozessDiagramm from '@/components/blog/diagrams/AngebotsprozessDiagramm.astro';
 import { contactLinks } from '@/data/rocketbase';
@@ -362,21 +364,13 @@ Die drei Punkte oben - navigierbar, aktuell, direkt annehmbar - beschreiben ein 
   </div>
 </div>
 
-<Screencast
-  src="/screencasts/angebot-optionen-waehlen.mp4"
-  poster="/screencasts/angebot-optionen-waehlen.jpg"
-  ratio="16/9"
-  caption="Optionale Positionen an- und abwählen: Die Summe aktualisiert sich sofort, ohne dass ein neues Dokument nötig wird."
-  todo="Aufnehmen in der Demo-Instanz: Digitales Angebot öffnen, zwei optionale Positionen abwählen, eine wieder dazu - sichtbar ist, wie sich die Gesamtsumme live mitändert. 15-25 Sekunden, ohne Ton."
-/>
-
 Den größten Hebel hat allerdings etwas, das **vor** dem Angebot passiert.
 
-<Figure
-  alt="Strukturierter Fragenkatalog, den ein Interessent vor dem Angebot ausfüllt"
-  caption="Der Fragenkatalog vor der Kalkulation: Was den Aufwand bestimmt, wird abgefragt, bevor jemand rechnet - und steht danach am Vorgang, statt in einem Mailverlauf zu liegen."
-  source="Beispielansicht aus einer RocketBase-Lösung"
-  todo="Screenshot: Der Fragenkatalog, den ein Interessent ausfüllt - mit einigen ausgefüllten Feldern, damit erkennbar ist, welche Art von Angaben abgefragt wird. Format 16:9."
+<Screencast
+  src="/screencasts/anfrage-fragenkatalog.mp4"
+  poster="/screencasts/anfrage-fragenkatalog.png"
+  ratio="16/9"
+  caption="Der Fragenkatalog vor der Kalkulation: Was den Aufwand bestimmt, wird abgefragt, bevor jemand rechnet - und die Angaben rechnen sich beim Ausfüllen direkt in Betreuungsstunden um."
 />
 
 ### Erst fragen, dann rechnen
@@ -412,6 +406,13 @@ Ein vorgeschalteter Fragebogen dreht die Reihenfolge um. Bevor kalkuliert wird, 
     </p>
   </div>
 </div>
+
+<Figure
+  src={anfrageAntworten}
+  alt="Anfrage-Vorgang mit den strukturiert eingegangenen Antworten aus dem Fragenkatalog"
+  caption="Die Firmen-Seite derselben Anfrage: Die Antworten liegen strukturiert am Vorgang - dieselben Angaben, die der Interessent eingetragen hat, statt in einem Mailverlauf."
+  source="Beispielansicht aus einer RocketBase-Lösung"
+/>
 
 Der zweite Effekt ist der unterschätzte: **Vorqualifizierung filtert.** Nicht jede Anfrage verdient ein durchkalkuliertes Angebot. Wer früh sieht, dass Budget, Umfang oder Zeitrahmen nicht zusammenpassen, spart sich die teuerste Form von Vertriebsarbeit - die für einen Auftrag, den es nie gab.
 
@@ -554,21 +555,21 @@ Praktisch läuft das so: Anfragen kommen über Formular oder Postfach herein und
 Die Angebotskalkulation zieht Mitarbeiter und Aufwände automatisch ein, samt Deckungsbeitrag. Daraus entsteht ein Angebot, das beim Kunden als gestaltete Webseite ankommt statt als Anhang. Der Empfänger navigiert durch die Abschnitte, wählt Optionen ab oder dazu, gibt Rückmeldung und sagt zu. Aus denselben Daten entsteht parallel die PDF-Fassung für die Akte, und am Ende geht die Rechnung aus demselben System heraus.
 
 <Figure
+  src={angebotKalkulation}
   alt="Angebotskalkulation mit Vertragswert, Deckungsbeitrag, Bausteinen und kalkulierten Stunden je Position"
-  caption="Die Kalkulation liegt am Angebot selbst: Vertragswert und Deckungsbeitrag stehen neben dem, was im Auftrag hinterlegt ist - inklusive Stunden, Fahrzeiten und Aufwand je Baustein."
+  caption="Die Kalkulation liegt am Angebot selbst: Vertragswert und Deckungsbeitrag stehen neben dem, was im Auftrag hinterlegt ist - inklusive Stunden, Fahrzeiten, Aufwand je Baustein und einer optionalen Position, die der Kunde selbst wählt."
   source="Beispielansicht aus einer RocketBase-Lösung"
-  todo="Screenshot: Angebotskalkulation in der Demo-Instanz. Sichtbar sein sollten Vertragswert, Deckungsbeitrag in Prozent und Euro sowie die Bausteine mit kalkulierten Stunden. Format 16:9, Browserfenster ohne Lesezeichenleiste."
 />
 
 Im Kopfbereich steht außerdem, was ein Dokument nie liefern konnte: **Anzahl der Ansichten
 und wann das Angebot zuletzt geöffnet wurde.** Aus dem blinden Nachfassen wird damit eine
 Entscheidung auf Grundlage von Information.
 
-<Figure
-  alt="Digitales Angebot in der Kundenansicht mit Navigation, personalisierter Anrede und Schaltfläche zum Annehmen"
-  caption="Dieselben Daten in der Kundenansicht: links die Navigation durch Leistungsumfang, Laufzeit, Budgetierung und Auftragsbestätigung, oben rechts das direkte Annehmen - und weiterhin eine Druckansicht für die Ablage."
-  source="Beispielansicht aus einer RocketBase-Lösung"
-  todo="Screenshot: Dasselbe Angebot in der Kundenansicht. Sichtbar sein sollten die Abschnittsnavigation links, die Kopfzeile mit Empfänger und die Schaltflächen zum Annehmen und Drucken. Format 16:9."
+<Screencast
+  src="/screencasts/angebot-posteingang.mp4"
+  poster="/screencasts/angebot-posteingang.png"
+  ratio="16/9"
+  caption="Vom Posteingang zur Zusage: Das Angebot kommt als Link statt als PDF-Anhang - der Kunde öffnet die Seite aus der Mail, navigiert durch die Abschnitte und nimmt direkt an. Die Druckansicht für die Ablage bleibt."
 />
 
 Entscheidend war dabei eine strukturelle Frage, keine gestalterische: **Angebot und Durchführung sind sauber getrennt**, damit sich Kalkulation und Realität später vergleichen lassen. Genau daran scheitern viele gewachsene Systeme, mehr dazu im Artikel über [Projektsoftware, die nicht mehr mitwächst](/blog/projektsoftware-ingenieurbuero-beratung-kanzlei/).

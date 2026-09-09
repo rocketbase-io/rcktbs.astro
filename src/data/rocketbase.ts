@@ -174,8 +174,9 @@ const casesRaw = [
       'Eine etablierte Standardsoftware sollte das Beratungsgeschäft tragen, wurde aber binnen weniger Jahre eher zur Last als zur Entlastung. Der eigene Angebots- und Projektprozess passte nur über Umwege hinein, das Team musste immer mehr von Hand auffangen, und für Steuerung und Prognosen fehlten die Auswertungen im nötigen Detail. Gleichzeitig steckten wertvolle Bestandsdaten in Strukturen, die sauber herausgelöst werden mussten.',
     approach:
       'RocketBase arbeitete sich in das Bestandssystem ein und nahm den realen Prozess auf – nicht die Systemlandschaft. Auf dieser Basis wurde die Datenmigration geplant, Bestandsdaten bereinigt und übernommen, und eine individuelle Anwendung gebaut, die das tatsächliche Beratungsmodell abbildet: vom Vertrieb als Kanban-Board über die automatische Angebotskalkulation und die integrierte Terminplanung bis zur Rechnung mit direktem Versand – Angebot und Durchführung sauber getrennt, damit Plan und Ergebnis auswertbar bleiben.',
+    // TODO: Vorher/Nachher-Zahlen ergänzen (Minuten pro Angebot, Angebote pro Monat).
     impact:
-      'Ein Muster, das viele inhabergeführte Beratungen kennen: Die Standardsoftware, die entlasten sollte, bindet am Ende Personal, statt es freizusetzen. Weil Beratungszeit das Produkt ist, schlägt jede Stunde, die ins Auffangen statt in Kundenarbeit fließt, direkt auf die Marge. Relevant für jedes projektgetriebene Haus, dessen Software mehr verwaltet als trägt.',
+      'Ein Muster, das viele inhabergeführte Beratungen kennen: Die Standardsoftware, die entlasten sollte, bindet am Ende Personal, statt es freizusetzen. Weil Beratungszeit das Produkt ist, schlägt jede Stunde, die ins Auffangen statt in Kundenarbeit fließt, direkt auf die Marge. Der zweite Effekt zeigt sich beim Kunden. FKC hat die eigenen Wettbewerber verglichen: Alle verschicken Angebote als Word oder PDF und klären Rückfragen per Mail. FKC schickt heute eine Web-Seite, auf der der Kunde Optionen an- und abwählt und die Summe mitläuft, holt fehlende Angaben über ein vorbefülltes Formular und sieht, wann das Angebot geöffnet wurde. Relevant für jedes projektgetriebene Haus, dessen Software mehr verwaltet als trägt.',
     processFocus:
       'Der Kernprozess der Beratung: vom Angebot über die Projektdurchführung bis zur Rechnung. Im Standard waren Angebot und Durchführung so verwoben, dass sich Plan und Ergebnis kaum noch gegenüberstellen ließen.',
     outcomes: [
@@ -202,7 +203,16 @@ const casesRaw = [
       {
         title: 'Angebote, die etwas hermachen',
         benefit:
-          'Eine ansprechende Präsentation, die beim Kunden den Unterschied macht – aus demselben System.',
+          'Eine Web-Seite mit auf- und zuklappbaren Optionen und mitlaufender Summe, während der Wettbewerb PDFs schickt – aus demselben System.',
+      },
+      {
+        title: 'Rückfragen über ein vorbefülltes Formular',
+        benefit:
+          'Fehlende Angaben trägt der Kunde selbst nach, auf einer Seite, die schon weiß, worum es geht.',
+      },
+      {
+        title: 'Sehen, wann das Angebot geöffnet wurde',
+        benefit: 'Nachfassen zum richtigen Zeitpunkt statt auf Verdacht.',
       },
       {
         title: 'Termine direkt im Projekt',
@@ -543,14 +553,15 @@ export const processSteps = [
 
 export const discoveryOffer = {
   title: 'Discovery-Workshop',
-  subtitle: 'Ein Beratungstermin, an dessen Ende ihr ein Dokument in der Hand haltet.',
+  subtitle: 'Ein Tag, ein Dokument, eine Entscheidung.',
   description:
-    'Wir sitzen mit euren Keyusern zusammen, nehmen die dringendsten Baustellen auf und entwerfen ein Zielbild für die erste Ausbaustufe. Das Ergebnis gehört euch, auch wenn ihr danach mit jemand anderem weiterarbeitet.',
+    'Wir sitzen mit euren Keyusern zusammen, nehmen die dringendsten Baustellen auf und entwerfen ein Zielbild für die erste Ausbaustufe. Am Ende steht eine Empfehlung mit Kostenrahmen: ausbauen, ablösen oder so lassen. Ein Tag, 2.400 €, und das Dokument gehört euch, auch wenn ihr danach mit jemand anderem weiterarbeitet.',
   deliverables: [
     'Bestandsaufnahme der dringendsten Engpässe',
     'Quickwins, die sich kurzfristig umsetzen lassen',
     'Zielbild für die erste Ausbaustufe',
     'Mockups oder Prozessskizzen für die Kernabläufe',
+    'Eine Empfehlung mit Kostenrahmen: ausbauen, ablösen oder so lassen',
   ],
 };
 

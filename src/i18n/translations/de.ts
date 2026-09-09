@@ -18,6 +18,9 @@ export const de = {
     work: 'Wie wir arbeiten',
     mission: 'Mission',
     references: 'Referenzen',
+    discoveryWorkshop: 'Workshop & Preise',
+    standardsoftwareAbloesung: 'Standardsoftware ablösen',
+    einsatzplanung: 'Einsatzplanung',
   },
 
   common: {

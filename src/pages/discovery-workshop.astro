@@ -47,36 +47,24 @@ const deliverables = [
   },
   {
     icon: 'file-text',
-    title: 'Eine Entscheidungsgrundlage, die euch gehört',
-    text: 'Schriftliche Zusammenfassung mit Handlungsempfehlungen und priorisierten nächsten Schritten. Geeignet für interne Weichenstellungen, Aufsichtsrat oder die Weiterarbeit mit uns.',
+    title: 'Eine Entscheidung, die euch gehört',
+    text: 'Schriftliche Zusammenfassung mit einer klaren Empfehlung: ausbauen, ablösen oder so lassen, jeweils mit Kostenrahmen und priorisierten nächsten Schritten. Geeignet für interne Weichenstellungen, Aufsichtsrat oder die Weiterarbeit mit uns.',
   },
 ];
 
 const formats = [
   {
-    name: 'Kompakt',
-    duration: '½ Tag',
-    sessions: '1× 3-Stunden-Termin',
-    price: '1.200 €',
-    summary: 'Fokus auf einen konkreten Prozess oder eine klar umrissene Fragestellung.',
-    includes: [
-      'Ein 3-Stunden-Termin (remote, hybrid oder vor Ort)',
-      'Ein zentrales Prozessdiagramm + Mockup-Skizzen',
-      'Schriftliche Ausarbeitung mit Handlungsempfehlungen',
-    ],
-    fit: 'Wenn ihr ein konkretes Problem vor Augen habt und schnell Klarheit über den nächsten Schritt wollt.',
-  },
-  {
     name: 'Standard',
     duration: '1 Tag',
     sessions: '2× 3-Stunden-Termine',
     price: '2.400 €',
-    summary: 'Der häufigste Einstieg - ausreichend Zeit für mehrere Prozesse und Stakeholder-Sicht.',
+    summary: 'Der Einstieg: ein Tag, ein Dokument, eine Entscheidung - mit Zeit für mehrere Prozesse und Stakeholder-Sicht.',
     includes: [
       'Zwei 3-Stunden-Termine (wahlweise an einem Tag oder auf zwei Tage verteilt)',
       'Stakeholder-Interviews und Keyuser-Gespräche',
+      'Abläufe, eingesetzte Tools und Systembrüche, aufgenommen aus Gesprächen und Bildschirm-Demos',
       'Prozessbilder + Datenflüsse + Oberflächen-Entwürfe',
-      'Schriftliche Ausarbeitung mit Handlungsempfehlungen',
+      'Schriftliche Ausarbeitung mit Handlungsempfehlungen und Kostenrahmen',
     ],
     fit: 'Wenn mehrere Abläufe zusammenspielen und ihr eine belastbare Grundlage für weitreichende Entscheidungen braucht.',
     featured: true,
@@ -86,14 +74,29 @@ const formats = [
     duration: '2 Tage',
     sessions: '4× 3-Stunden-Termine',
     price: '4.500 €',
-    summary: 'Tiefenanalyse mit mehr Interviews, mehr Detail und einem erweiterten Ergebnisdokument.',
+    summary: 'Tiefenanalyse mit mehr Interviews, mehr Detail und dem Einstieg in die Systeme selbst statt nur des Blicks auf sie.',
     includes: [
       'Vier 3-Stunden-Termine (wahlweise verteilt über bis zu vier Tage)',
       'Erweiterte Stakeholder- und Keyuser-Runde',
+      'Einstieg in die Datenstrukturen der Umsysteme (Vertec, ERP, Excel-Welten): Felder, Exporte, Datenqualität, Migrierbarkeit',
       'Mehrere Prozessbilder, Datenmodelle und Mockup-Strecken für verschiedene Abläufe',
-      'Ausführliches Dokument inkl. Handlungsempfehlungen und Roadmap-Vorschlag',
+      'Ausführliches Dokument inkl. Handlungsempfehlungen, Roadmap-Vorschlag und Kostenrahmen je Ausbaustufe',
     ],
     fit: 'Wenn eine Altsystem-Ablösung, mehrere Abteilungen oder verschachtelte Integrationen im Raum stehen - und ein oberflächlicher Blick nicht reicht.',
+  },
+  {
+    name: 'Individuell',
+    duration: 'nach Zuschnitt',
+    sessions: 'Termine über mehrere Wochen',
+    price: 'nach Vorgespräch',
+    summary: 'Für Vorhaben, die über zwei Tage hinausgehen: mehrere Abteilungen, mehrere Standorte oder eine Ablösung mit vielen Beteiligten.',
+    includes: [
+      'Zuschnitt und Festpreis legen wir im Vorbereitungstermin fest',
+      'Interviews und Workshop-Termine je Bereich, verteilt über mehrere Wochen',
+      'Prozessbilder, Datenmodelle und Mockup-Strecken je Bereich',
+      'Auf Wunsch direkt als Konzeptphase: Mockups, Datenmodell und Festpreisangebot für die Umsetzung',
+    ],
+    fit: 'Wenn absehbar ist, dass es größer wird - und ihr trotzdem mit einer bezahlten, klar umrissenen Analyse statt mit einem Blankoscheck starten wollt.',
   },
 ];
 
@@ -101,29 +104,23 @@ const processSteps = [
   {
     number: '01',
     icon: 'monitor',
-    title: 'Vorbereitungstermin',
-    text: '30-minütiger Online-Termin zur Ausgangslage und Erwartungshaltung. Wir klären gemeinsam, was im Workshop adressiert werden soll.',
+    title: 'Vorbereitung',
+    text: 'Etwa 30 Minuten online zur Ausgangslage: Wir klären, was der Workshop adressieren soll. Danach bekommt ihr Agenda und eine kurze Liste mit Fragen oder benötigten Unterlagen - der Workshop startet beim Kern.',
   },
   {
     number: '02',
-    icon: 'book',
-    title: 'Vorbereitung',
-    text: 'Wir erstellen eine Agenda passend zum Vorbereitungstermin und senden eine kurze Liste mit Fragen oder benötigten Unterlagen - damit der Workshop beim Kern startet.',
-  },
-  {
-    number: '03',
     icon: 'users',
     title: 'Workshop',
     text: 'Remote, hybrid oder bei euch vor Ort. Prozesse aufnehmen, Engpässe identifizieren, erste Lösungsskizzen entwickeln.',
   },
   {
-    number: '04',
+    number: '03',
     icon: 'layers',
     title: 'Nachbereitung',
     text: 'Wir erstellen Prozessbilder, Datenflüsse, Oberflächen-Entwürfe und die schriftliche Zusammenfassung mit Handlungsempfehlungen.',
   },
   {
-    number: '05',
+    number: '04',
     icon: 'check-circle',
     title: 'Übergabe',
     text: 'Review-Termin mit Durchsprache der Ergebnisse. Danach gehört das Dokument euch - ohne Bindung.',
@@ -145,11 +142,6 @@ const workshopServiceSchema = createServiceSchema({
   serviceType: 'Software-Discovery und Prozessanalyse',
   areaServed: 'DE',
   offers: [
-    {
-      name: 'Kompakt',
-      price: '1200',
-      description: '½ Tag, 1× 3-Stunden-Termin – Fokus auf einen konkreten Prozess oder eine klar umrissene Fragestellung.',
-    },
     {
       name: 'Standard',
       price: '2400',
@@ -173,8 +165,16 @@ const miniFaqs = [
     a: 'Ja, uneingeschränkt. Das Ergebnis gehört euch und eignet sich als Arbeitsgrundlage für interne Planung oder die Zusammenarbeit mit uns. Der Workshop legt keinen finalen Projektpreis fest - er zeigt, was vorhanden ist, wo die Engpässe liegen und wie eine Lösung aussehen könnte. Daraus lässt sich nach Themen-Priorisierung ein Paketpreis oder eine Range schnüren, die man dann auch mit anderen Angeboten vergleichen könnte.',
   },
   {
+    q: 'Standard oder Vertieft - woran mache ich das fest?',
+    a: 'An der Tiefe, nicht an der Firmengröße. Standard nimmt Abläufe, eingesetzte Tools und Systembrüche aus Gesprächen und Bildschirm-Demos auf - das reicht, um zu verstehen, zu priorisieren und eine Richtung mit Kostenrahmen festzulegen. Vertieft steigt zusätzlich in die Datenstrukturen der Umsysteme ein: Welche Felder gibt es in Vertec oder dem ERP, was lässt sich sauber exportieren, wie gut sind die Bestandsdaten, was davon ist migrierbar? Faustregel: Geht es ums Einordnen, wählt Standard. Steht eine Ablösung oder Migration im Raum, bei der Bestandsdaten übernommen werden sollen, wählt Vertieft - dort entscheidet die Datenqualität über den Projektpreis.',
+  },
+  {
     q: 'Vor Ort, remote oder hybrid?',
     a: 'Ihr entscheidet. Wir empfehlen, sich mindestens einmal in Präsenz zu sehen, wenn Distanz und Aufwand es zulassen - das hebt die Gesprächsqualität spürbar. Für die Anfahrt legen wir eine Pauschale fest (Kilometergeld und anteilig Fahrtzeit), damit Aufwand und Kosten im Rahmen bleiben und für beide Seiten planbar sind. Die Anfahrt wird nicht von den Workshop-Stunden abgezogen.',
+  },
+  {
+    q: 'Bei uns läuft schon eine Anwendung, der wir nicht ganz trauen. Passt der Workshop dafür?',
+    a: 'Dafür gibt es die technische Variante: den Code-Check. Ein Tag im Standard-Format, aber statt Prozessaufnahme schauen wir in Code, Zugriffe, Datenhaltung und Betrieb einer bestehenden Anwendung, egal ob sie ein Dienstleister, ein ehemaliger Kollege oder ihr selbst mit KI-Werkzeugen gebaut habt. Geprüft wird entlang OWASP ASVS, am Ende steht eine schriftliche Empfehlung: betreiben, härten oder neu aufsetzen. Ein Penetrationstest ist das nicht; wenn ihr einen braucht, sagen wir das im Dokument. Sprecht uns im Erstgespräch darauf an.',
   },
   {
     q: 'Was, wenn wir uns danach gegen eine Zusammenarbeit entscheiden?',
@@ -185,7 +185,7 @@ const miniFaqs = [
 
 <PageLayout
   title="Discovery-Workshop für Entscheider"
-  description="Strukturierter Außenblick auf Prozesse und Systemlandschaft: Datenflüsse, Mockups und eine priorisierte Handlungsempfehlung. Ab 1.200 €."
+  description="Strukturierter Außenblick auf Prozesse und Systemlandschaft: Datenflüsse, Mockups und eine priorisierte Handlungsempfehlung. Ein Tag, ein Dokument, eine Entscheidung - 2.400 €."
   lang={locale}
   routeId="discoveryWorkshop"
   extraSchemas={[
@@ -225,9 +225,10 @@ const miniFaqs = [
         class="text-foreground-secondary mx-auto mt-8 max-w-2xl text-lg leading-8 sm:text-xl"
       >
         Bevor Budget in eine Lösung fließt, solltet ihr wissen, wo ihr wirklich steht. Wir nehmen
-        eure Prozesse auf, legen die <strong>echten Engpässe</strong> offen und liefern eine
-        <strong>Entscheidungsgrundlage</strong>, mit der euer Team weiterarbeiten kann. Von jemandem,
-        der viele Systemlandschaften in Konzern und Mittelstand von innen kennt.
+        eure Prozesse auf und legen offen, wo <strong>Lücken, Doppelarbeit und ungenutzte
+        Automatisierung</strong> stecken. Ein Blick von außen, der systemisch denkt und den Finger
+        in die Wunde legt - und die <strong>Lösung gemeinsam mit euch erarbeitet</strong>. Von
+        jemandem, der viele Systemlandschaften in Konzern und Mittelstand von innen kennt.
       </p>
       <div
         data-reveal
@@ -281,8 +282,8 @@ const miniFaqs = [
           Danach wisst ihr, was zu tun ist - und was es ungefähr kostet.
         </h2>
         <p class="text-foreground-secondary mt-6 text-lg leading-8">
-          Am Ende stehen Dokumente, mit denen Fachbereich, IT und Geschäftsführung
-          gleichermaßen arbeiten können.
+          Ein Tag, ein Dokument, eine Entscheidung. Am Ende stehen Unterlagen, mit denen
+          Fachbereich, IT und Geschäftsführung gleichermaßen arbeiten können.
         </p>
       </header>
 
@@ -339,18 +340,18 @@ const miniFaqs = [
         <h2
           class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl"
         >
-          Fünf Schritte, keine Überraschungen.
+          Vier Schritte, keine Überraschungen.
         </h2>
       </header>
 
       <!-- Icon-Timeline (Desktop) -->
       <div
         data-reveal
-        class="relative mt-16 hidden md:block"
+        class="relative mx-auto mt-16 hidden max-w-4xl md:block"
         aria-hidden="true"
       >
-        <div class="bg-border/60 absolute left-[8%] right-[8%] top-8 h-px"></div>
-        <ol class="relative grid grid-cols-5 gap-4">
+        <div class="bg-border/60 absolute left-[12%] right-[12%] top-8 h-px"></div>
+        <ol class="relative grid grid-cols-4 gap-4">
           {
             processSteps.map((step) => (
               <li class="flex flex-col items-center text-center">
@@ -372,7 +373,7 @@ const miniFaqs = [
       <!-- Detail-Cards -->
       <div
         data-reveal
-        class="mt-12 grid gap-5 md:mt-16 md:grid-cols-2 md:gap-6 lg:grid-cols-3"
+        class="mt-12 grid gap-5 md:mt-16 md:grid-cols-2 md:gap-6"
       >
         {
           processSteps.map((step) => (
@@ -518,7 +519,7 @@ const miniFaqs = [
         <h2
           class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl"
         >
-          Drei Formate, klar bepreist.
+          Zwei Formate mit Festpreis. Eins nach Maß.
         </h2>
         <p class="text-foreground-secondary mt-6 text-lg leading-8">
           Alle Preise zzgl. USt. Anreise- und Reisezeitkosten werden bei
