@@ -2,27 +2,32 @@ export const strengths = [
   {
     title: 'Direkte Zusammenarbeit mit Marten Prieß',
     description:
-      'Ihr arbeitet nicht primär mit Vertrieb oder Projektweitergaben, sondern direkt mit dem Gründer von RocketBase, der fachliche, technische und strukturelle Entscheidungen mitträgt.',
+      'Ihr sprecht mit dem Gründer von RocketBase. Er sitzt in den Workshops, trifft die Architekturentscheidungen mit und bleibt euer Ansprechpartner, wenn es später hakt.',
   },
   {
     title: 'Konzernniveau für den Mittelstand',
     description:
-      'Erfahrungen aus Projekten mit bonprix und Statista fließen in Lösungen ein, die ambitionierte mittelständische Unternehmen tatsächlich betreiben und weiterentwickeln können.',
+      'Sechs Jahre bonprix, mehrere Jahre Statista: Was dort an Architektur funktioniert, bauen wir in einer Größe, die ihr auch ohne eigene IT-Abteilung betreiben könnt.',
   },
   {
     title: 'Team statt Einzelkämpfer',
     description:
-      'RocketBase arbeitet als eingespieltes kleines Team mit klarer Kommunikation, schlanken Prozessen und hoher Verbindlichkeit.',
+      'Hinter dem Gründer steht ein eingespieltes kleines Team. Für jeden Projektbereich kennen sich mindestens zwei Leute aus, auch in der Urlaubszeit.',
   },
   {
     title: 'Pragmatisch mit Open Source',
     description:
-      'Nicht alles wird neu gebaut. Wir integrieren bewährte Bausteine und entwickeln nur dort individuell, wo euer Prozess echten Vorsprung braucht.',
+      'Für Reporting nehmen wir Metabase, für Auth einen bewährten Baustein. Selbst gebaut wird da, wo euer Prozess anders ist als der aller anderen.',
   },
   {
-    title: 'Zukunftssichere Übergabe',
+    title: 'Auch die alten Daten',
     description:
-      'Saubere Architektur, dokumentierbare Lösungen und bewährte Standards sorgen dafür, dass ihr nicht in unnötige Abhängigkeiten geratet.',
+      'In Vertec lagen drei Jahre, Projekte und Rechnungen davor in älteren Systemen. Wir haben sie eingelesen: über 20 Jahre Kundenhistorie, und damit erstmals ein Bild davon, was eine Kundenbeziehung über ihre Laufzeit wert ist.',
+  },
+  {
+    title: 'Direkt, mit Widerspruch',
+    description:
+      'Ihr schreibt in einen Channel, in dem die Leute sitzen, die es bauen. Und ihr hört es, wenn eine Anforderung in die falsche Richtung läuft, statt sie einfach umgesetzt zu bekommen.',
   },
 ];
 
@@ -30,41 +35,41 @@ export const serviceAreas = [
   {
     title: 'Discovery & Prozessanalyse',
     description:
-      'Wir verstehen Ziele, Engpässe, Medienbrüche und bestehende Systeme, bevor wir über Umsetzung sprechen.',
+      'Bevor wir über Umsetzung reden, schauen wir uns an, wie bei euch tatsächlich gearbeitet wird. Nicht wie es im Handbuch steht.',
     bullets: [
-      'Aufnahme des Zielprozesses',
-      'Priorisierung von Schwachstellen und Potenzialen',
-      'Machbare Lösungsrichtungen statt PowerPoint-Strategie',
+      'Aufnahme des Prozesses, wie er wirklich läuft',
+      'Priorisierung: was schmerzt, was kann warten',
+      'Lösungsrichtungen, die sich umsetzen lassen',
     ],
   },
   {
     title: 'Konzeption & UX',
     description:
-      'Geschäftslogik, Nutzerführung und UI werden gemeinsam gedacht, damit Fachlichkeit und Bedienbarkeit zusammenpassen.',
+      'Fachlogik und Bedienung entstehen zusammen. Eine Anwendung, die fachlich stimmt, aber niemand gern benutzt, wird umgangen.',
     bullets: [
-      'Informationsarchitektur und Prozessdesign',
-      'Mockups für kritische Abläufe',
-      'Schnitt zwischen Fachbereich und Technik',
+      'Datenmodell und Prozessdesign',
+      'Klickbare Mockups für die kritischen Abläufe',
+      'Übersetzung zwischen Fachbereich und Technik',
     ],
   },
   {
     title: 'Individualsoftware & Integration',
     description:
-      'Wir bauen Plattformen, Portale und interne Werkzeuge, die mit euren Prozessen wachsen und sich sauber in bestehende Systeme einfügen.',
+      'Plattformen, Portale und interne Werkzeuge, die mit euren Prozessen wachsen und sich in das einfügen, was ihr schon habt.',
     bullets: [
       'Webbasierte Individualsoftware',
-      'Migration aus Standard- oder Altsystemen',
-      'Schnittstellen zu ERP, PIM, CRM, BI und Drittsystemen',
+      'Migration aus Standard- oder Altsystemen, inklusive Datenbereinigung',
+      'Schnittstellen zu ERP, PIM, CRM und BI',
     ],
   },
   {
     title: 'Betrieb & Weiterentwicklung',
     description:
-      'Nach dem Go-live bleibt RocketBase technischer Ansprechpartner für Qualität, Betrieb und die nächsten sinnvollen Ausbaustufen.',
+      'Nach dem Go-live sind wir weiter da. Die meisten unserer Projekte laufen seit Jahren und werden Stück für Stück ausgebaut.',
     bullets: [
-      'Qualitätssicherung und Monitoring',
-      'Iterative Weiterentwicklung',
-      'Dokumentation und übergebbare Architektur',
+      'Monitoring und Qualitätssicherung',
+      'Weiterentwicklung in kleinen Schritten',
+      'Dokumentation, mit der auch andere weiterarbeiten können',
     ],
   },
 ];
@@ -75,26 +80,25 @@ const casesRaw = [
     client: 'bonprix',
     title: 'PLM/PIM-Neubau mit internationaler Teamintegration',
     description:
-      'RocketBase wirkte an der Neuentwicklung einer komplexen Produktdaten-Plattform mit, übernahm technische Führung und verband Hamburger Delivery mit einem indischen Entwicklungsteam.',
+      'Neubau einer Produktdaten-Plattform bei bonprix: RocketBase übernahm die technische Führung und brachte die Hamburger Delivery mit einem indischen Entwicklungsteam zusammen.',
     navTeaser: 'PLM/PIM-Plattform für den Konzernalltag.',
     kicker:
-      'Komplexe Produktlogik, internationale Zusammenarbeit und technische Führung in einem zentralen Konzernprojekt.',
+      'Ein Monolith, aufgeteilt in Microservices. Über mehrere Jahre, mit Teams auf zwei Kontinenten.',
     highlights: [
       'Technische Führung und Teamaufbau über mehrere Jahre',
-      'Integration eines verteilten, internationalen Setups',
-      'Hohe fachliche und technische Komplexität im Produktdatenmodell',
+      'Aufteilung eines Monolithen in Microservices',
+      'Delivery zwischen Hamburg und einem indischen Entwicklungsteam',
     ],
     challenge:
-      'Das Projekt verband anspruchsvolle Produktdatenlogik mit der Aufgabe, ein verteiltes Setup zwischen verschiedenen Teams und Kulturen produktiv zusammenzuführen.',
+      'Ein Produktdatenmodell mit jahrelang gewachsener Logik sollte neu gebaut werden. Gleichzeitig arbeiteten Teams in Hamburg und Indien daran, mit allem, was das an Zeitverschiebung, Sprache und unterschiedlichen Arbeitsweisen mitbringt.',
     approach:
-      'RocketBase übernahm nicht nur Entwicklungsarbeit, sondern half dabei, Zusammenarbeit, Workshops und operative Abläufe so zu strukturieren, dass das Projekt in der Delivery tragfähig blieb.',
+      'RocketBase schrieb Code und strukturierte daneben die Zusammenarbeit: Workshops, Übergaben, Zuständigkeiten. In einem verteilten Setup entscheidet das oft mehr über die Delivery als die Architektur.',
     impact:
-      'Ein Konzernprojekt, in dem Teams über zwei Kontinente an einem komplexen Produktdatensystem arbeiteten – und am Ende reibungslos zusammenspielten. Relevant überall dort, wo verteilte Teams und gewachsene Datenmodelle aufeinandertreffen.',
+      'Aus dem Monolithen wurden Microservices, und die Teams über zwei Kontinente spielten am Ende zusammen. Das Muster passt überall, wo ein gewachsenes Datenmodell und verteilte Teams gleichzeitig zu handhaben sind.',
     processFocus: 'Pflege und Abstimmung von Produktdaten über mehrere Teams und Standorte hinweg.',
     outcomes: [
-      'Weniger Reibung zwischen beteiligten Teams und Zuständigkeiten',
-      'Mehr Klarheit in Übergaben, Zusammenarbeit und Entscheidungswegen',
-      'Bessere Grundlage, um Komplexität im Produktdatenprozess kontrolliert zu skalieren',
+      'Klare Übergaben und Zuständigkeiten zwischen den Standorten',
+      'Eine Architektur, die sich in Teilen weiterentwickeln lässt statt im Ganzen',
     ],
     services: [
       'Technische Führung',
@@ -119,27 +123,26 @@ const casesRaw = [
     client: 'Statista',
     title: 'Neue Content-Plattform statt gewachsener Altsysteme',
     description:
-      'Gemeinsam mit Statista entstand eine moderne Plattform zur Pflege von Statistiken und Inhalten, inklusive Migration, Parallelbetrieb und neuer Redaktionsoberflächen.',
+      'Eine neue Plattform für die Pflege von Statistiken und Inhalten bei Statista, inklusive Migration, Parallelbetrieb und neuer Redaktionsoberflächen.',
     navTeaser: 'Redaktionsplattform für Statistik-Inhalte.',
-    kicker:
-      'Modernisierung einer zentralen Plattform mit Fokus auf redaktionelle Prozesse, Datenpflege und schrittweise Ablösung gewachsener Strukturen.',
+    kicker: 'Ein Altsystem ablösen, während die Redaktion jeden Tag damit arbeitet.',
     highlights: [
-      'Modernisierung einer kritischen Kernanwendung',
-      'Spring-Boot-Backend und React-Oberflächen',
-      'Frühe Einbindung von Fachanwendern für hohe Akzeptanz',
+      'Ablösung einer kritischen Kernanwendung im laufenden Betrieb',
+      'Spring-Boot-Backend, React-Oberflächen',
+      'Fachanwender von Anfang an mit am Tisch',
     ],
     challenge:
-      'Bestehende Redaktions- und Pflegeprozesse waren durch gewachsene Strukturen geprägt. Die Aufgabe war, eine belastbare neue Plattform aufzubauen, ohne die reale Arbeit der Fachanwender aus dem Blick zu verlieren.',
+      'Die Redaktion pflegte Statistiken und Inhalte in einem über Jahre gewachsenen System. Es sollte ersetzt werden, ohne dass die tägliche Arbeit stehen bleibt und ohne dass die Redakteure ihre eingespielten Abläufe verlieren.',
     approach:
-      'RocketBase verband Architektur, Produktdenken und enge Zusammenarbeit mit Anwendern, um eine moderne Pflegeumgebung mit besserem Prozesszuschnitt und klarerer technischer Basis zu schaffen.',
+      'Statt zuerst die Architektur zu entwerfen, saß RocketBase bei den Redakteuren und schaute zu, wie sie arbeiten. Was dabei auffiel, prägte den Zuschnitt der neuen Oberflächen. Migration und Parallelbetrieb liefen so, dass beide Systeme eine Zeit lang nebeneinander standen.',
     impact:
-      'Ein gewachsenes Kernsystem wurde abgelöst, ohne dass die Redaktion ihren Alltag verlor – weil die Fachanwender von Anfang an mit am Tisch saßen. Das Muster passt überall, wo ein zentrales Altsystem modernisiert werden soll, ohne den laufenden Betrieb auszubremsen.',
+      'Das Altsystem ist abgelöst, die Redaktion hat ihren Alltag behalten. Das lag daran, dass die Fachanwender vom ersten Workshop an dabei waren und nicht erst beim Abnahmetermin.',
     processFocus:
       'Pflege, Strukturierung und Veröffentlichung von Statistik- und Content-Daten in redaktionellen Abläufen.',
     outcomes: [
-      'Weniger Umwege und manuelle Reibung in der redaktionellen Pflege',
-      'Mehr Zeit für inhaltlich wichtige Arbeit statt Systemkompromisse',
-      'Eine modernere Grundlage für Weiterentwicklung und künftiges Wachstum',
+      'Weniger Umwege und Handarbeit in der redaktionellen Pflege',
+      'Mehr Zeit für Inhalte statt für Systemkompromisse',
+      'Eine Basis, die sich weiterentwickeln lässt',
     ],
     services: [
       'Plattformmodernisierung',
@@ -175,16 +178,18 @@ const casesRaw = [
     challenge:
       'Eine etablierte Standardsoftware sollte das Beratungsgeschäft tragen, wurde aber binnen weniger Jahre eher zur Last als zur Entlastung. Der eigene Angebots- und Projektprozess passte nur über Umwege hinein, das Team musste immer mehr von Hand auffangen, und für Steuerung und Prognosen fehlten die Auswertungen im nötigen Detail. Gleichzeitig steckten wertvolle Bestandsdaten in Strukturen, die sauber herausgelöst werden mussten.',
     approach:
-      'RocketBase arbeitete sich in das Bestandssystem ein und nahm den realen Prozess auf – nicht die Systemlandschaft. Auf dieser Basis wurde die Datenmigration geplant, Bestandsdaten bereinigt und übernommen, und eine individuelle Anwendung gebaut, die das tatsächliche Beratungsmodell abbildet: vom Vertrieb als Kanban-Board über die automatische Angebotskalkulation und die integrierte Terminplanung bis zur Rechnung mit direktem Versand – Angebot und Durchführung sauber getrennt, damit Plan und Ergebnis auswertbar bleiben.',
+      'RocketBase arbeitete sich in das Bestandssystem ein und nahm den realen Prozess auf – nicht die Systemlandschaft. Auf dieser Basis wurde die Datenmigration geplant. In Vertec lagen nur die letzten drei Jahre; Projekte und Rechnungen davor steckten in älteren Systemen. Beides wurde eingelesen und bereinigt, sodass heute über 20 Jahre Kundenhistorie in einer Anwendung liegen. Darauf aufbauend entstand eine individuelle Anwendung, die das tatsächliche Beratungsmodell abbildet: vom Vertrieb als Kanban-Board über die automatische Angebotskalkulation und die integrierte Terminplanung bis zur Rechnung mit direktem Versand – Angebot und Durchführung sauber getrennt, damit Plan und Ergebnis auswertbar bleiben.',
+    // TODO: Vorher/Nachher-Zahlen ergänzen (Minuten pro Angebot, Angebote pro Monat).
     impact:
-      'Ein Muster, das viele inhabergeführte Beratungen kennen: Die Standardsoftware, die entlasten sollte, bindet am Ende Personal, statt es freizusetzen. Weil Beratungszeit das Produkt ist, schlägt jede Stunde, die ins Auffangen statt in Kundenarbeit fließt, direkt auf die Marge. Relevant für jedes projektgetriebene Haus, dessen Software mehr verwaltet als trägt.',
+      'Ein Muster, das viele inhabergeführte Beratungen kennen: Die Standardsoftware, die entlasten sollte, bindet am Ende Personal, statt es freizusetzen. Weil Beratungszeit das Produkt ist, schlägt jede Stunde, die ins Auffangen statt in Kundenarbeit fließt, direkt auf die Marge. Der zweite Effekt zeigt sich beim Kunden. FKC hat die eigenen Wettbewerber verglichen: Alle verschicken Angebote als Word oder PDF und klären Rückfragen per Mail. FKC schickt heute eine Web-Seite, auf der der Kunde Optionen an- und abwählt und die Summe mitläuft, holt fehlende Angaben über ein vorbefülltes Formular und sieht, wann das Angebot geöffnet wurde. Relevant für jedes projektgetriebene Haus, dessen Software mehr verwaltet als trägt.',
     processFocus:
       'Der Kernprozess der Beratung: vom Angebot über die Projektdurchführung bis zur Rechnung. Im Standard waren Angebot und Durchführung so verwoben, dass sich Plan und Ergebnis kaum noch gegenüberstellen ließen.',
     outcomes: [
-      'Der reale Angebots- und Projektprozess steht im System – nicht im Kopf einzelner Schlüsselpersonen',
+      'Über 20 Jahre Projekt- und Rechnungshistorie zusammengeführt, Grundlage für einen Customer Lifetime Value, den es vorher nicht gab',
+      'Der reale Angebots- und Projektprozess steht im System, für alle nachvollziehbar',
       'Weniger Handarbeit im Tagesgeschäft, weil Vertrieb, Kalkulation und Rechnung ineinandergreifen',
       'Kalkulation und Deckungsbeitrag direkt am Prozess statt nachgelagert zusammengesucht',
-      'Belastbare Basis, um das Geschäft ohne Systemgrenzen weiterzuentwickeln',
+      'Eine Basis, auf der sich das Geschäft weiterentwickeln lässt',
     ],
     services: [
       'Ablösung angepasster Standardsoftware (Vertec)',
@@ -198,11 +203,22 @@ const casesRaw = [
       },
       {
         title: 'Angebot rechnet sich selbst',
-        benefit: 'Mitarbeiter und Aufwände fließen automatisch in die Kalkulation, samt Deckungsbeitrag.',
+        benefit:
+          'Mitarbeiter und Aufwände fließen automatisch in die Kalkulation, samt Deckungsbeitrag.',
       },
       {
         title: 'Angebote, die etwas hermachen',
-        benefit: 'Eine ansprechende Präsentation, die beim Kunden den Unterschied macht – aus demselben System.',
+        benefit:
+          'Eine Web-Seite mit auf- und zuklappbaren Optionen und mitlaufender Summe, während der Wettbewerb PDFs schickt – aus demselben System.',
+      },
+      {
+        title: 'Rückfragen über ein vorbefülltes Formular',
+        benefit:
+          'Fehlende Angaben trägt der Kunde selbst nach, auf einer Seite, die schon weiß, worum es geht.',
+      },
+      {
+        title: 'Sehen, wann das Angebot geöffnet wurde',
+        benefit: 'Nachfassen zum richtigen Zeitpunkt statt auf Verdacht.',
       },
       {
         title: 'Termine direkt im Projekt',
@@ -210,11 +226,12 @@ const casesRaw = [
       },
       {
         title: 'Rechnung raus per Klick',
-        benefit: 'Versand direkt aus dem System – ohne Umweg über ein einzeln geöffnetes Mailfenster.',
+        benefit: 'Versand direkt aus dem System, mit einem Klick beim fertigen Beleg.',
       },
       {
         title: 'Plan gegen Ergebnis auswertbar',
-        benefit: 'Angebot und Durchführung sauber getrennt – Kalkulation und Realität endlich vergleichbar.',
+        benefit:
+          'Angebot und Durchführung sauber getrennt – Kalkulation und Realität endlich vergleichbar.',
       },
     ],
     screenshots: [
@@ -258,27 +275,33 @@ const casesRaw = [
     solved: [
       {
         title: 'Planung über mehrere Wochen',
-        benefit: 'Auslastung und freie Kapazitäten auf einen Blick – statt Ausdrucke und Behelfslösungen für den Blick nach vorn.',
+        benefit:
+          'Auslastung und freie Kapazitäten auf einen Blick – statt Ausdrucke und Behelfslösungen für den Blick nach vorn.',
       },
       {
         title: 'Abwesenheiten automatisch berücksichtigt',
-        benefit: 'Urlaub, Krankheit und Berufsschule fließen direkt in die Planung – wer nicht da ist, taucht gar nicht erst als verplanbar auf.',
+        benefit:
+          'Urlaub, Krankheit und Berufsschule fließen direkt in die Planung – wer nicht da ist, taucht gar nicht erst als verplanbar auf.',
       },
       {
         title: 'Aufträge flexibel aufteilen',
-        benefit: 'Ein Auftrag lässt sich auf mehrere Mitarbeiter und über mehrere Tage splitten und gezielt steuern.',
+        benefit:
+          'Ein Auftrag lässt sich auf mehrere Mitarbeiter und über mehrere Tage splitten und gezielt steuern.',
       },
       {
         title: 'Wareneingang sauber protokolliert',
-        benefit: 'Teilelieferungen werden direkt im Tool erfasst – jederzeit nachvollziehbar, was wann angekommen ist.',
+        benefit:
+          'Teilelieferungen werden direkt im Tool erfasst – jederzeit nachvollziehbar, was wann angekommen ist.',
       },
       {
         title: 'Jeder sieht, was er braucht',
-        benefit: 'Werkstatt, Planung und Leitung bekommen je ein eigenes, auf ihre Rolle zugeschnittenes Dashboard – keine Suche nach den relevanten Infos.',
+        benefit:
+          'Werkstatt, Planung und Leitung bekommen je ein eigenes Dashboard, auf dem das Wichtige direkt oben steht.',
       },
       {
         title: 'Anmeldung per Personalkarte',
-        benefit: 'Login am Werkstatt-Terminal mit der Karte, die jeder ohnehin dabei hat – schnell genug für den Alltag.',
+        benefit:
+          'Login am Werkstatt-Terminal mit der Karte, die jeder ohnehin dabei hat – schnell genug für den Alltag.',
       },
     ],
     screenshots: [
@@ -294,7 +317,7 @@ const casesRaw = [
 // die Referenz-Übersicht zeigt sie in genau dieser Folge). bonprix bewusst zuletzt.
 const caseOrder = ['fkc-consulting', 'statista', 'schlosserei-diezinger', 'bonprix'];
 export const cases = [...casesRaw].sort(
-  (a, b) => caseOrder.indexOf(a.slug) - caseOrder.indexOf(b.slug),
+  (a, b) => caseOrder.indexOf(a.slug) - caseOrder.indexOf(b.slug)
 );
 
 export const additionalCases = [
@@ -304,8 +327,7 @@ export const additionalCases = [
     title: 'Statista-Daten direkt in Canva nutzbar',
     description:
       'RocketBase entwickelte die Statista-App für das Canva-Ökosystem, über die Nutzerinnen und Nutzer geprüfte Statistiken direkt in ihre Designs und Präsentationen einbinden können – samt neu entwickeltem Image-Service für Preview-Grafiken.',
-    kicker:
-      'Statistische Inhalte erreichen Nutzer dort, wo sie ohnehin gestalten – eingebettet statt nachgelagert.',
+    kicker: 'Statistiken landen dort, wo die Präsentation ohnehin entsteht.',
     highlights: [
       'Pilot-App in der Alpha-Phase einer neuen Canva-Schnittstelle',
       'Eigenständiger Image-Service für On-the-fly-Previews',
@@ -314,9 +336,9 @@ export const additionalCases = [
     challenge:
       'Statista suchte einen Weg, Inhalte außerhalb der eigenen Plattform dort verfügbar zu machen, wo Anwender sie direkt weiterverarbeiten. Die neue Canva-Datenintegration war noch in der Alpha, inklusive offener technischer Fragen zu Preview-Bildern und Authentifizierung.',
     approach:
-      'RocketBase begleitete Konzeption, Organisation und Umsetzung: Integration in das Canva SDK, Abstimmung mit dem Canva-Team und Aufbau eines eigenen Image-Services inklusive Betriebsinfrastruktur auf AWS.',
+      'Wir übernahmen Konzeption und Umsetzung: Integration ins Canva SDK, direkte Abstimmung mit dem Canva-Team und ein eigener Image-Service samt Betriebsinfrastruktur auf AWS. Weil die Schnittstelle noch Alpha war, änderten sich Vorgaben teilweise während der Entwicklung.',
     impact:
-      'Statista erschloss sich einen neuen Kanal: geprüfte Inhalte landen direkt dort, wo Nutzer ohnehin gestalten. Relevant für alle, die ihre Daten oder Inhalte in fremde Plattformen bringen wollen, statt darauf zu warten, dass Kunden zu ihnen kommen.',
+      'Statista hat einen neuen Kanal: Die Inhalte sind da, wo die Nutzer arbeiten. Interessant für jeden, der Daten in fremde Plattformen bringen will, statt zu warten, dass Kunden auf die eigene Seite kommen.',
     processFocus:
       'Bereitstellung und Integration statistischer Daten in fremde Gestaltungsumgebungen über geprüfte Schnittstellen.',
     outcomes: [
@@ -348,8 +370,7 @@ export const additionalCases = [
     title: 'Budgetplanung raus aus Excel, rein in einen belastbaren Prozess',
     description:
       'RocketBase überführte die Excel-gestützte Budgetplanung von Stage Entertainment in eine datenbankbasierte Plattform mit Validierung, nächtlichem Abgleich zur Buchhaltung und sauberen Reportings.',
-    kicker:
-      'Planung, die nicht mehr an einzelnen Tabellen hängt – und Zahlen, die sich mit der Buchhaltung decken.',
+    kicker: 'Eine Planung, die in der Datenbank liegt. Und Zahlen, die zur Buchhaltung passen.',
     highlights: [
       'Ablösung gewachsener Excel-Modelle durch eine zentrale Plattform',
       'Automatisierter nächtlicher Abgleich mit dem Buchhaltungssystem',
@@ -358,11 +379,10 @@ export const additionalCases = [
     challenge:
       'Die Budgetplanung lief auf komplexen, gewachsenen Excel-Modellen. Das System skalierte nicht mehr, parallele Arbeit war fehleranfällig und eine saubere Verbindung zur Buchhaltung fehlte.',
     approach:
-      'RocketBase transformierte die bestehenden Modelle in eine datenbankgestützte Plattform, ergänzte Validierungs- und Prüfmechanismen und etablierte einen nächtlichen Abgleichslauf zwischen Planung und Buchhaltungssystem.',
+      'Wir überführten die bestehenden Modelle in eine datenbankgestützte Plattform, bauten Validierungen ein und richteten einen nächtlichen Abgleich zwischen Planung und Buchhaltungssystem ein. Die Fachleute planen weiter nach derselben Logik wie vorher, nur ohne die Tabellen.',
     impact:
-      'Aus fehleranfälligen Excel-Modellen wurde eine Planung, auf deren Zahlen sich Stage verlassen kann – ohne dass die Fachleute ihr gewohntes Arbeiten verloren. Das Muster passt überall, wo gewachsene Tabellen an ihre Grenzen stoßen.',
-    processFocus:
-      'Finanzplanung, Reporting und Abgleich mit dem Buchhaltungssystem.',
+      'Die Zahlen stimmen jetzt mit der Buchhaltung überein, und der Monatsabschluss dauert kürzer. Als Stage später das Buchhaltungssystem wechselte, überstand die Plattform das ohne Neubau.',
+    processFocus: 'Finanzplanung, Reporting und Abgleich mit dem Buchhaltungssystem.',
     outcomes: [
       'Spürbar weniger unentdeckte Fehlbuchungen im laufenden Betrieb',
       'Deutlich kürzere Wege im Monatsabschluss durch automatisiertes Reporting',
@@ -392,8 +412,7 @@ export const additionalCases = [
     title: 'Gutscheinportal, das sich in fremde Checkouts einbettet',
     description:
       'Für Smart Active Media baute RocketBase ein Gutscheinportal, das per JavaScript in Partner-Websites und Checkouts eingebunden wird und Leads aus Käufen und Gewinnspielen weiterverwertet.',
-    kicker:
-      'Ein eingebettetes Produkt, das zuverlässig in fremden Umgebungen läuft – und dort Conversions generiert.',
+    kicker: 'Ein Produkt, das in fremden Shops läuft, über die man keine Kontrolle hat.',
     highlights: [
       'Einbettung per JavaScript in Partner-Shops und Landingpages',
       'Hohe Last stabil betrieben, fünfstellige Impressions pro Tag',
@@ -405,8 +424,7 @@ export const additionalCases = [
       'RocketBase begleitete Konzept und Wettbewerbsanalyse, setzte Frontend und Backend um und betrieb den Dienst auf einer Infrastruktur, die für hochfrequentierte Einbindungen ausgelegt ist.',
     impact:
       'Aus einer Startup-Idee wurde ein Produkt, das zuverlässig in fremden Shops läuft und auch bei hoher Last nicht wegbricht. Relevant für alle, die ein Produkt bei Partnern einbinden wollen, ohne dass es bei Andrang ausfällt.',
-    processFocus:
-      'Leadverwertung über eingebettete Gutscheinflächen in Partner-Websites.',
+    processFocus: 'Leadverwertung über eingebettete Gutscheinflächen in Partner-Websites.',
     outcomes: [
       'Belastbares Produkt mit hoher Verfügbarkeit ab Go-live',
       'Skalierbarer Betrieb bei fünfstelligen Impressions pro Tag',
@@ -449,8 +467,7 @@ export const additionalCases = [
       'RocketBase analysierte und migrierte das Bestandssystem, baute ein neues Backend für Routen, Objekte und Mitarbeiter und entwickelte eine hybride App, die offline arbeitet und später synchronisiert.',
     impact:
       'Der Außendienst erfasst seine Einsätze jetzt direkt vor Ort – auch mit Handschuhen und ohne Netz, mit späterer Synchronisierung. Schluss mit dem Nachtragen am Abend. Relevant für jeden Betrieb, dessen Leute draußen arbeiten und drinnen abrechnen.',
-    processFocus:
-      'Einsatzplanung, Tourenführung und Leistungserfassung im mobilen Außendienst.',
+    processFocus: 'Einsatzplanung, Tourenführung und Leistungserfassung im mobilen Außendienst.',
     outcomes: [
       'Weniger manuelle Nacharbeit durch direkte Erfassung im Einsatz',
       'Transparenz über Touren, Einsätze und Objekte in Echtzeit',
@@ -491,8 +508,7 @@ export const additionalCases = [
       'RocketBase analysierte die Modelle und Abläufe, portierte sie in eine Plattform mit bekannten Excel-Bedienmustern und ergänzte Prüfmechanismen, Versionierung und Freigabeprozesse.',
     impact:
       'Das Controlling plant jetzt gemeinsam an denselben Zahlen – ohne Formel-Chaos und ohne sich gegenseitig die Tabelle zu überschreiben, und trotzdem so vertraut wie in Excel. Relevant überall, wo mehrere Leute parallel an gewachsenen Planungstabellen arbeiten.',
-    processFocus:
-      'VK- und Sortimentsmengenplanung im Controlling bei bonprix.',
+    processFocus: 'VK- und Sortimentsmengenplanung im Controlling bei bonprix.',
     outcomes: [
       'Gemeinsame Arbeit an Plänen ohne Formelverluste und Versionschaos',
       'Verlässliche Referenzwerte für Folgeplanungen durch klare Versionsstände',
@@ -522,43 +538,44 @@ export const processSteps = [
   {
     title: 'Verstehen',
     description:
-      'Wir analysieren Prozess, Rollen, Systeme und Engpässe, bevor Aufwand in falsche Richtungen läuft.',
+      'Wir schauen uns an, wie ihr arbeitet: Rollen, Systeme, die Stellen wo es klemmt. Bevor Budget in die falsche Richtung läuft.',
   },
   {
     title: 'Priorisieren',
     description:
-      'Wir schärfen, wo Individualsoftware sinnvoll ist und wo vorhandene Bausteine oder Open Source schneller zum Ziel führen.',
+      'Nicht alles muss gebaut werden. Wir trennen, wo sich Eigenentwicklung lohnt und wo ein fertiger Baustein schneller ans Ziel bringt.',
   },
   {
     title: 'Umsetzen',
     description:
-      'Konzeption, Architektur und Delivery bleiben eng verzahnt. Das reduziert Reibung und hält Entscheidungen nachvollziehbar.',
+      'Konzept, Architektur und Entwicklung bleiben in einer Hand. Ihr müsst Entscheidungen nicht zwischen mehreren Parteien übersetzen.',
   },
   {
     title: 'Weiterentwickeln',
     description:
-      'Nach dem Start optimieren wir gemeinsam weiter, statt eine Lösung nach dem Go-live sich selbst zu überlassen.',
+      'Der Go-live ist der Anfang. Die meisten unserer Projekte laufen seit Jahren und wachsen in kleinen Schritten weiter.',
   },
 ];
 
 export const discoveryOffer = {
   title: 'Discovery-Workshop',
-  subtitle: 'Ein kompakter Beratungstermin mit greifbarem Ergebnis – statt unverbindlicher Sales-Folien.',
+  subtitle: 'Ein Tag, ein Dokument, eine Entscheidung.',
   description:
-    'Gemeinsam mit euren Keyusern nehmen wir die dringendsten Baustellen auf, identifizieren Quickwins und entwerfen ein Zielbild für die erste Ausbaustufe – inklusive Mockups, mit denen ihr intern sofort weiterarbeiten könnt.',
+    'Wir sitzen mit euren Keyusern zusammen, nehmen die dringendsten Baustellen auf und entwerfen ein Zielbild für die erste Ausbaustufe. Am Ende steht eine Empfehlung mit Kostenrahmen: ausbauen, ablösen oder so lassen. Ein Tag, 2.400 €, und das Dokument gehört euch, auch wenn ihr danach mit jemand anderem weiterarbeitet.',
   deliverables: [
-    'Bestandsaufnahme der dringendsten Baustellen und Engpässe',
-    'Identifizierte Quickwins, die kurzfristig Wirkung entfalten',
-    'Zielbild für die erste Entwicklungs-Ausbaustufe',
-    'Konkrete Mockups oder Prozessskizzen für die Kernabläufe',
+    'Bestandsaufnahme der dringendsten Engpässe',
+    'Quickwins, die sich kurzfristig umsetzen lassen',
+    'Zielbild für die erste Ausbaustufe',
+    'Mockups oder Prozessskizzen für die Kernabläufe',
+    'Eine Empfehlung mit Kostenrahmen: ausbauen, ablösen oder so lassen',
   ],
 };
 
 export const teamPrinciples = [
-  'Remote arbeitendes Team mit Kolleginnen und Kollegen in Nord- und Süddeutschland',
-  'Regelmäßiger Austausch plus Offsites für konzentrierte Zusammenarbeit',
-  'Schlanke Kommunikation statt künstlichem Agentur-Overhead',
-  'Optimierte interne Prozesse und KI-gestützte Arbeitsweise für mehr Wirksamkeit',
+  'Remote arbeitendes Team, verteilt über Nord- und Süddeutschland',
+  'Regelmäßige Offsites, weil manches am selben Tisch schneller geht',
+  'Kurze Wege statt Agentur-Overhead',
+  'KI da eingesetzt, wo sie Arbeit spart, nicht als Selbstzweck',
 ];
 
 /**
@@ -572,7 +589,7 @@ export const missionClaim = {
   eyebrow: 'Unsere Mission',
   headline: 'Wir bauen nicht einfach Software.',
   highlight: 'Wir denken Prozesse weiter.',
-  lead: '<strong>Acht Haltungen</strong>, wie und warum wir bei RocketBase arbeiten. Kein Leitbild fürs Schönwetter - das hier sind die <strong>Prinzipien</strong>, an denen wir uns in jedem Projekt tatsächlich messen lassen.',
+  lead: '<strong>Acht Haltungen</strong>, wie und warum wir bei RocketBase arbeiten. Kein Leitbild fürs Schönwetter, sondern die <strong>Prinzipien</strong>, an denen ihr uns im Projekt messen könnt.',
 };
 
 export const missionSections = [
@@ -593,8 +610,7 @@ export const missionSections = [
       { year: '2016', label: 'RocketBase · bonprix, statista, klingel u.a.' },
       { year: 'heute', label: 'Plattformen, die in 5+ Jahren noch tragen' },
     ],
-    body:
-      'Wir bringen Erfahrung aus komplexen Softwareprojekten mit – von Konzernstrukturen bis hin zu individuell gewachsenen Mittelstandsprozessen. Diese Erfahrung nutzen wir nicht, um Standardlösungen zu verkaufen, sondern um fundierte Entscheidungen zu treffen. Verantwortung bedeutet für uns: Architektur, Technologie und Umsetzung so zu wählen, dass sie auch in zwei, fünf oder zehn Jahren noch tragen.',
+    body: 'Über fünfzehn Jahre in Softwareprojekten, vom Konzern bis zum gewachsenen Mittelstandsprozess. Diese Erfahrung nutzen wir für Entscheidungen, nicht für Verkaufsargumente. Praktisch heißt das: Wir wählen Architektur und Technologie so, dass sie auch in zehn Jahren noch tragen. Auch dann, wenn jemand anderes das Projekt übernommen hat.',
   },
   {
     id: 'beratung',
@@ -608,12 +624,23 @@ export const missionSections = [
     ],
     visual: 'flow' as const,
     flow: [
-      { kicker: 'Heute', title: 'Ist-Prozess', text: 'Gewachsen, dokumentiert oder in Köpfen verteilt.' },
-      { kicker: 'Reibung', title: 'Engpässe sichtbar machen', text: 'Wo Übergaben, Medienbrüche und Workarounds Tempo kosten.' },
-      { kicker: 'Morgen', title: 'Zielbild', text: 'Ein Prozess, der das Geschäft trägt – nicht umgekehrt.' },
+      {
+        kicker: 'Heute',
+        title: 'Ist-Prozess',
+        text: 'Gewachsen, dokumentiert oder in Köpfen verteilt.',
+      },
+      {
+        kicker: 'Reibung',
+        title: 'Engpässe sichtbar machen',
+        text: 'Wo Übergaben, Medienbrüche und Workarounds Tempo kosten.',
+      },
+      {
+        kicker: 'Morgen',
+        title: 'Zielbild',
+        text: 'Ein Prozess, der das Geschäft trägt – nicht umgekehrt.',
+      },
     ],
-    body:
-      'Unsere Stärke liegt nicht nur in der Entwicklung. Wir verstehen, wie Unternehmen arbeiten – und wo es hakt. Gemeinsam analysieren wir Prozesse, identifizieren Engpässe und denken Lösungen weiter. Erst wenn klar ist, welches Problem wirklich gelöst werden muss, beginnt die technische Umsetzung.',
+    body: 'Bevor eine Zeile Code entsteht, muss klar sein, welches Problem sie löst. Wir setzen uns mit den Leuten zusammen, die den Prozess täglich fahren, und schauen, wo er hakt. Oft stellt sich dabei heraus, dass die ursprüngliche Anforderung gar nicht der eigentliche Engpass war.',
   },
   {
     id: 'team',
@@ -646,8 +673,7 @@ export const missionSections = [
         ],
       },
     },
-    body:
-      'Bei uns sprecht ihr nicht zuerst mit Vertrieb – und später mit jemand anderem, der es umsetzt. Beratung, Konzeption und Umsetzung liegen eng zusammen. Das reduziert Reibung, verhindert Missverständnisse und sorgt dafür, dass das, was geplant wird, auch genau so gebaut wird.',
+    body: 'Ihr sprecht mit den Leuten, die das Projekt auch bauen. Wer euch etwas zusagt, setzt es anschließend selbst um. Beratung, Konzept und Umsetzung sitzen am selben Tisch, deshalb wird gebaut, was besprochen wurde.',
   },
   {
     id: 'systeme',
@@ -666,8 +692,7 @@ export const missionSections = [
       { label: 'Skalierung', icon: 'trending-up' },
       { label: 'Neue Mitarbeiter', icon: 'users' },
     ],
-    body:
-      'Wir entwickeln Software nicht isoliert, sondern als Teil eures Unternehmens. Ziel ist es, Prozesse so abzubilden und zu optimieren, dass euer Unternehmen wachsen kann – ohne dass Komplexität explodiert. Gute Systeme sorgen dafür, dass neue Kollegen schneller produktiv werden und Wissen nicht verloren geht.',
+    body: 'Software ist Teil eures Unternehmens, nicht ein Projekt daneben. Wir bilden Prozesse so ab, dass ihr wachsen könnt, ohne dass die Komplexität mitwächst. Ein gutes System merkt man daran, dass neue Kollegen schneller produktiv werden und das Wissen im System steht statt in einzelnen Köpfen.',
   },
   {
     id: 'pragmatismus',
@@ -681,15 +706,44 @@ export const missionSections = [
     ],
     visual: 'modules' as const,
     modules: [
-      { title: 'Bewährter Baustein', subtitle: 'Open Source · ERP · CRM · BI', tone: 'muted' as const, icon: 'database' },
-      { title: 'Bewährter Baustein', subtitle: 'Auth · Storage · Search', tone: 'muted' as const, icon: 'shield' },
-      { title: 'Individuelle Logik', subtitle: 'Genau dort, wo Vorsprung entsteht', tone: 'brand' as const, icon: 'sparkles' },
-      { title: 'Bewährter Baustein', subtitle: 'Monitoring · Logging · CI', tone: 'muted' as const, icon: 'monitor' },
-      { title: 'Individuelle Logik', subtitle: 'Eure Geschäftsregeln, euer Vorteil', tone: 'brand' as const, icon: 'zap' },
-      { title: 'Bewährter Baustein', subtitle: 'PIM · DAM · Mailing', tone: 'muted' as const, icon: 'box' },
+      {
+        title: 'Bewährter Baustein',
+        subtitle: 'Open Source · ERP · CRM · BI',
+        tone: 'muted' as const,
+        icon: 'database',
+      },
+      {
+        title: 'Bewährter Baustein',
+        subtitle: 'Auth · Storage · Search',
+        tone: 'muted' as const,
+        icon: 'shield',
+      },
+      {
+        title: 'Individuelle Logik',
+        subtitle: 'Genau dort, wo Vorsprung entsteht',
+        tone: 'brand' as const,
+        icon: 'sparkles',
+      },
+      {
+        title: 'Bewährter Baustein',
+        subtitle: 'Monitoring · Logging · CI',
+        tone: 'muted' as const,
+        icon: 'monitor',
+      },
+      {
+        title: 'Individuelle Logik',
+        subtitle: 'Eure Geschäftsregeln, euer Vorteil',
+        tone: 'brand' as const,
+        icon: 'zap',
+      },
+      {
+        title: 'Bewährter Baustein',
+        subtitle: 'PIM · DAM · Mailing',
+        tone: 'muted' as const,
+        icon: 'box',
+      },
     ],
-    body:
-      'Wir glauben nicht daran, alles neu zu erfinden. Stattdessen kombinieren wir bewährte Lösungen mit individueller Entwicklung. Open Source ist für uns kein Trend, sondern ein Werkzeug – genauso wie proprietäre Systeme. Entscheidend ist, was für euer Problem die beste Lösung ist.',
+    body: 'Nicht alles muss neu gebaut werden. Für Reporting nehmen wir Metabase, für andere Bausteine das, was sich bewährt hat. Open Source ist dabei ein Werkzeug wie jedes andere, genauso wie proprietäre Systeme. Was zu eurem Problem passt, entscheidet, nicht die Technologiepräferenz.',
   },
   {
     id: 'qualitaet',
@@ -705,10 +759,14 @@ export const missionSections = [
     layers: [
       { kicker: '01', title: 'Mockup', text: 'Konzept und Entscheidung im Bild.', icon: 'palette' },
       { kicker: '02', title: 'Code', text: 'Sauber, getestet, KI-unterstützt.', icon: 'code' },
-      { kicker: '03', title: 'Betrieb', text: 'Monitoring, Security, Performance.', icon: 'monitor' },
+      {
+        kicker: '03',
+        title: 'Betrieb',
+        text: 'Monitoring, Security, Performance.',
+        icon: 'monitor',
+      },
     ],
-    body:
-      'Wir nutzen moderne Werkzeuge, inklusive KI, um effizienter zu arbeiten. Gleichzeitig glauben wir fest daran, dass gute Software mehr ist als schnell geschriebener Code. Themen wie Sicherheit, Performance, Wartbarkeit und Datenanalyse sind keine Nachgedanken, sondern Teil der Architektur von Anfang an.',
+    body: 'KI beschleunigt bei uns einiges, aber schnell geschriebener Code ist noch keine gute Software. Sicherheit, Performance und Wartbarkeit gehören in die Architektur, nicht in eine Nacharbeitsphase. Was hinterher nachgerüstet wird, kostet regelmäßig mehr als der ursprüngliche Bau.',
   },
   {
     id: 'augenhoehe',
@@ -725,28 +783,26 @@ export const missionSections = [
       a: { label: 'Kunde', sub: 'Domäne, Markt, Realität' },
       b: { label: 'RocketBase', sub: 'Prozess, Architektur, Delivery' },
     },
-    body:
-      'Wir verstehen uns nicht als externer Dienstleister, sondern als Partner. Gute Lösungen entstehen im Dialog – deshalb arbeiten wir bewusst in kleinen, fokussierten Teams direkt mit unseren Kunden zusammen. Weniger Übergaben, schnellere Entscheidungen, eine gemeinsame Verantwortung für das Ergebnis.',
+    body: 'Gute Lösungen entstehen im Gespräch, nicht im Ticketsystem. Deshalb arbeiten wir in kleinen Teams direkt mit euch: weniger Übergaben, schnellere Entscheidungen. Und jemand, der widerspricht, wenn eine Anforderung in die falsche Richtung läuft.',
   },
   {
-    id: 'zukunft',
+    id: 'schnittstellen',
     number: '08',
-    eyebrow: 'Verantwortung',
-    title: 'Zukunftssicherheit mitgedacht',
+    eyebrow: 'Anschlussfähigkeit',
+    title: 'API-first gebaut',
     keyFacts: [
-      { label: 'Saubere Dokumentation und nachvollziehbare Architektur' },
-      { label: 'Unabhängigkeit von einzelnen Personen oder Systemen' },
-      { label: 'Optionale Exit- und Fallback-Strategien' },
+      { label: 'Dokumentierte Schnittstellen für jeden Kernprozess' },
+      { label: 'Automatisierungen über n8n, Make oder eigene Skripte' },
+      { label: 'KI-Modelle anbinden, ohne dass wir etwas freischalten' },
     ],
     visual: 'safety' as const,
     safety: [
-      { label: 'Architektur-Dokumentation', icon: 'file-text' },
-      { label: 'Übergebbarer Code', icon: 'code' },
-      { label: 'Offene Standards & Daten', icon: 'globe' },
-      { label: 'Fallback-Pfade', icon: 'shield' },
+      { label: 'Dokumentierte API', icon: 'book' },
+      { label: 'Anbindung an eure Systeme', icon: 'globe' },
+      { label: 'Automatisierung per n8n', icon: 'zap' },
+      { label: 'Zugang für eigene Skripte', icon: 'terminal' },
     ],
-    body:
-      'Software ist eine langfristige Investition. Deshalb achten wir darauf, dass Lösungen nachvollziehbar, wartbar und übergebbar bleiben. Unser Ziel ist es, dass ihr jederzeit die Kontrolle behaltet – unabhängig von einzelnen Technologien oder Partnern.',
+    body: 'Jede Anwendung, die wir bauen, hat eine dokumentierte Schnittstelle. Damit hängt ihr sie an eure übrigen Systeme, baut Automatisierungen in n8n oder Make, oder lasst ein KI-Modell darauf arbeiten – ohne dass wir dafür etwas freischalten müssen. Was ihr damit anstellt, entscheidet ihr.',
   },
 ];
 

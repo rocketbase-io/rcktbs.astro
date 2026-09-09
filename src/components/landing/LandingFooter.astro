@@ -10,6 +10,7 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import { type Locale, getLocaleFromPath } from '@/i18n/config';
 import { useTranslations, getLocalizedPath } from '@/i18n/index';
 import { contactLinks } from '@/data/rocketbase';
+import siteConfig from '@/config/site.config';
 
 interface Props {
   locale?: Locale;
@@ -37,8 +38,8 @@ const socialLinks = [
 ];
 
 const legalLinks = [
-  { label: 'Impressum', href: '/impressum' },
-  { label: 'Datenschutz', href: '/datenschutz' },
+  { label: 'Impressum', href: '/impressum/' },
+  { label: 'Datenschutz', href: '/datenschutz/' },
 ];
 
 const year = new Date().getFullYear();
@@ -123,6 +124,15 @@ const year = new Date().getFullYear();
           >
             Erstgespräch buchen
           </a>
+          <!-- Sichtbare NAP-Angabe (Name/Adresse/Telefon) auf jeder Seite:
+               zusammen mit dem Organization-Schema das Standardsignal fuer
+               regionale B2B-Suchen. -->
+          <address class="mt-1 text-sm not-italic leading-6 text-foreground-muted">
+            {siteConfig.name}<br />
+            {siteConfig.address?.street}<br />
+            {siteConfig.address?.zip} {siteConfig.address?.city}<br />
+            <span class="text-foreground-subtle">Metropolregion Hamburg – bundesweit remote</span>
+          </address>
         </div>
       </div>
 

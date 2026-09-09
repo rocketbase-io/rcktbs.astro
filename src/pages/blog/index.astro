@@ -33,7 +33,7 @@ const otherPosts = [...remainingFeatured, ...nonFeatured];
 
 const getPostUrl = (postId: string) => {
   const slug = postId.replace(`${locale}/`, '');
-  return `/blog/${slug}`;
+  return `/blog/${slug}/`;
 };
 ---
 

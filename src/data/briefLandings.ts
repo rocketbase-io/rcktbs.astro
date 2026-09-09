@@ -7,7 +7,7 @@
  * | | /f/ (Anzeigen) | /b/ (Brief) |
  * |---|---|---|
  * | Einstieg | Quiz, dann Kontakt | Video → Referenzen → Termin |
- * | Ansprache | Du | Sie |
+ * | Ansprache | Ihr/euch | Sie |
  * | Vorwissen | keins, kalter Klick | hat gerade einen Brief gelesen |
  *
  * Ein gemeinsamer Typ hätte `questions` als Pflichtfeld (die Brief-Seite hat
@@ -126,6 +126,45 @@ export const briefLandings: BriefLandingDefinition[] = [
     termin: {
       heading: 'Suchen Sie sich einen Termin aus',
       text: '30 Minuten mit Marten Prieß — ohne Präsentation. Wir schauen uns an, wo bei Ihnen im Ablauf Zeit liegen bleibt, und Sie bekommen eine ehrliche Einschätzung, ob sich da etwas lohnt.',
+      calUrl: CAL_URL,
+      calLabel: '30-Minuten-Gespräch buchen',
+    },
+    kontakt: {
+      heading: 'Lieber erst schreiben?',
+      text: 'Hinterlassen Sie Ihre Kontaktdaten — Marten Prieß meldet sich werktags persönlich. Kein Newsletter, keine Weitergabe Ihrer Daten.',
+    },
+    erfolg: {
+      heading: 'Danke, Ihre Nachricht ist angekommen.',
+      text: 'Marten Prieß meldet sich werktags bei Ihnen.',
+    },
+  },
+  {
+    slug: 'beratung',
+    meta: {
+      title: 'Software für Beratungen und Ingenieurbüros — RocketBase',
+      description:
+        'Anfrage, Angebot, Projekt und Rechnung in einem System, gebaut für eine Unternehmensberatung, die aus Vertec herausgewachsen war. Kurz gezeigt, was wir gebaut haben.',
+    },
+    hero: {
+      eyebrow: 'Sie haben Post von uns bekommen',
+      headline: 'Was sieht Ihr Kunde, wenn er',
+      headlineAccent: 'ein Angebot von Ihnen bekommt?',
+      subline:
+        'Für eine Unternehmensberatung haben wir Vertec durch eine eigene Plattform ersetzt: Vertrieb als Kanban-Board, Angebote, die sich selbst durchrechnen, eine Angebotsseite, auf der der Kunde Optionen wählt und die Summe mitläuft, Rechnung per Klick. Das Muster trifft Ingenieurbüros, Beratungen und Kanzleien gleichermaßen: Projektzeit ist das Produkt, und jede Stunde im Systemumweg fehlt auf der Rechnung.',
+    },
+    video: {
+      heading: 'So sieht das bei uns aus',
+      text: 'Marten Prieß zeigt in wenigen Minuten die Strecke von der Anfrage bis zur Rechnung aus einem laufenden Projekt — keine Folien, echte Oberflächen.',
+    },
+    referenzen: {
+      heading: 'Aus vergleichbaren Häusern',
+      intro:
+        'Das Projekt aus dem Brief, dazu zwei weitere, in denen Planung und Zahlen aus Excel in einen belastbaren Prozess gewandert sind.',
+      slugs: ['fkc-consulting', 'stage-cml', 'statista'],
+    },
+    termin: {
+      heading: 'Suchen Sie sich einen Termin aus',
+      text: '30 Minuten mit Marten Prieß — ohne Präsentation. Wir schauen uns an, wie bei Ihnen ein Angebot entsteht und wo dabei Zeit liegen bleibt. Lohnt sich der nächste Schritt, sagen wir das: ein Tag bei Ihnen, ein Dokument mit Empfehlung und Kostenrahmen, 2.400 Euro, und das Dokument gehört Ihnen. Lohnt er sich nicht, sagen wir das auch.',
       calUrl: CAL_URL,
       calLabel: '30-Minuten-Gespräch buchen',
     },

@@ -227,7 +227,44 @@ const softwareFitQuestion: FunnelQuizQuestion = {
 };
 
 /** Fragen-Decks je Angle: angle-spezifische Frage 1 + geteilte Impact-Frage 2. */
+// Angle 4 (Code-Check): Wer hat die bestehende Anwendung gebaut? Der Ausgangspunkt sagt mehr
+// über die typischen Lücken als jede Technikfrage – und vermeidet, dass sich jemand rechtfertigen muss.
+const builderQuestion: FunnelQuizQuestion = {
+  id: 'builder',
+  question: 'Wer hat die Anwendung gebaut, um die es geht?',
+  hint: 'Grobe Einordnung reicht – es geht um den Ausgangspunkt, nicht um Schuld.',
+  options: [
+    {
+      id: 'ki-selbst',
+      label: 'Wir selbst, mit KI-Werkzeugen',
+      description: 'Lovable, Cursor, Claude, ChatGPT: Es läuft, aber geprüft hat es noch niemand.',
+    },
+    {
+      id: 'freelancer',
+      label: 'Freelancer oder Agentur',
+      description: 'Extern gebaut, die Übergabe war dünn oder der Kontakt ist inzwischen weg.',
+    },
+    {
+      id: 'ehemalig',
+      label: 'Ein ehemaliger Kollege',
+      description: 'Im Haus entstanden, heute kennt sich niemand mehr darin aus.',
+    },
+    {
+      id: 'gewachsen',
+      label: 'Über Jahre gewachsen',
+      description: 'Mehrere Hände, mehrere Phasen, kaum Dokumentation.',
+    },
+    {
+      id: 'sonstiges',
+      label: 'Anders',
+      allowText: true,
+      textPlaceholder: 'Beschreibt in ein, zwei Sätzen, worum es geht …',
+    },
+  ],
+};
+
 export const analyseQuestions: FunnelQuizQuestion[] = [landscapeQuestion, impactQuestion];
+export const codeCheckQuestions: FunnelQuizQuestion[] = [builderQuestion, impactQuestion];
 export const zeitfresserQuestions: FunnelQuizQuestion[] = [timeQuestion, impactQuestion];
 export const eigeneSoftwareQuestions: FunnelQuizQuestion[] = [softwareFitQuestion, impactQuestion];
 
@@ -406,7 +443,7 @@ export const funnels: FunnelDefinition[] = [
         {
           icon: 'clock',
           title: 'Routine, die sich Jahr für Jahr summiert',
-          text: 'Termine planen, Daten übertragen, Reportings bauen – Aufgaben, die wachsen, aber keinen Mehrwert schaffen.',
+          text: 'Termine planen, Daten übertragen, Reportings bauen. Aufgaben, die mitwachsen und trotzdem niemandem etwas bringen.',
         },
         {
           icon: 'share',
@@ -522,6 +559,80 @@ export const funnels: FunnelDefinition[] = [
       text: 'Ein kurzer Ausschnitt aus echten Projekten – damit ihr seht, wie eine eigene, zugeschnittene Lösung aussieht.',
     },
     questions: eigeneSoftwareQuestions,
+    contact: {
+      heading: 'Wohin dürfen wir die Ersteinschätzung schicken?',
+      text: 'Ich melde mich werktags persönlich, um einen kurzen Call zu vereinbaren – kein Newsletter, keine Weitergabe eurer Daten.',
+    },
+    success: {
+      heading: 'Danke – eure Angaben sind angekommen.',
+      text: 'Ich schaue mir eure Antworten an und melde mich werktags, um einen 30-Minuten-Call zu vereinbaren. Wenn ihr wollt, bucht ihr direkt einen Termin:',
+      calUrl: 'https://cal.com/rocketbase-marten/discovery-vorabgesprach',
+      calLabel: 'Direkt 30-Minuten-Call buchen',
+    },
+  },
+  {
+    slug: 'code-check',
+    meta: {
+      title: 'Code-Check: Läuft bei euch eine Anwendung, der ihr nicht ganz traut?',
+      description:
+        'Zwei kurze Fragen und ihr bekommt eine ehrliche Ersteinschätzung, ob eure KI-gebaute oder übernommene Anwendung sicher zu betreiben ist.',
+    },
+    hero: {
+      eyebrow: 'Code-Check',
+      headline: 'Läuft bei euch eine Anwendung, der ihr nicht ganz traut?',
+      headlineAccent: 'Wir sagen euch, ob ihr sie betreiben könnt.',
+      subline:
+        'Zwei kurze Fragen, eure Kontaktdaten – und ihr bekommt eine ehrliche Ersteinschätzung von einem Softwarearchitekten, der seit 15 Jahren Systeme abnimmt und selbst täglich KI-generierten Code prüft. Kein Verkaufsgespräch, keine Massenmail.',
+    },
+    details: {
+      heading: 'Was ein Code-Check prüft',
+      intro:
+        'KI-Werkzeuge liefern Code, der funktioniert, solange sich alle benehmen. Die Lücken sitzen an Stellen, die im Tagesgeschäft nie auffallen.',
+      blocks: [
+        {
+          icon: 'shield',
+          title: 'Wer darf was sehen',
+          text: 'Kann Nutzer A den Datensatz von Nutzer B öffnen, wenn er die Nummer in der Adresszeile ändert? Diese eine Frage entscheidet bei den meisten KI-gebauten Anwendungen über alles.',
+        },
+        {
+          icon: 'code',
+          title: 'Schlüssel und Zugänge',
+          text: 'API-Keys im Frontend, Datenbank-Regeln auf „offen“, Passwörter im Repository. Wir gehen die Stellen durch, an denen Werkzeuge gern abkürzen.',
+        },
+        {
+          icon: 'layers',
+          title: 'Betrieb und Weiterbau',
+          text: 'Backups, Updates, Monitoring, wem der Hosting-Account gehört. Was passiert, wenn morgen jemand weiterbauen muss oder etwas ausfällt?',
+        },
+        {
+          icon: 'file-text',
+          title: 'Ein Dokument mit Empfehlung',
+          text: 'Geprüft entlang OWASP ASVS, priorisiert nach Risiko, am Ende eine von drei Antworten: betreiben, härten oder neu aufsetzen. Das Dokument gehört euch. Ein Penetrationstest ist der Check nicht; wenn ihr einen braucht, steht das drin.',
+        },
+      ],
+    },
+    steps: [
+      {
+        icon: 'check-circle',
+        title: 'Formular ausfüllen',
+        text: 'Zwei kurze Fragen zur Anwendung – direkt hier auf der Seite, in zwei Minuten.',
+      },
+      {
+        icon: 'file-text',
+        title: 'Terminvorschlag von mir',
+        text: 'Ich melde mich werktags persönlich mit einem Vorschlag für einen 30-Minuten-Call.',
+      },
+      {
+        icon: 'users',
+        title: 'Einschätzung im Gespräch',
+        text: 'Im Call klären wir, um welche Anwendung es geht und ob ein Code-Check der richtige Schritt ist – Einschätzung vom Architekten, nicht vom Vertriebler.',
+      },
+    ],
+    trustVideo: {
+      heading: 'Wie wir Code lesen',
+      text: 'Ein kurzer Ausschnitt, wie so eine Durchsicht abläuft und wie das Ergebnisdokument am Ende aussieht.',
+    },
+    questions: codeCheckQuestions,
     contact: {
       heading: 'Wohin dürfen wir die Ersteinschätzung schicken?',
       text: 'Ich melde mich werktags persönlich, um einen kurzen Call zu vereinbaren – kein Newsletter, keine Weitergabe eurer Daten.',

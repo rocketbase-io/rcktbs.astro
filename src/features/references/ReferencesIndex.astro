@@ -53,8 +53,8 @@ const teaserCaptions: Record<string, string> = {
 ---
 
 <PageLayout
-  title="Referenzen"
-  description="Ausgewählte Referenzen von RocketBase mit mehr Hintergrund zu Ausgangslage, Vorgehen und Projektrahmen."
+  title="Referenzen: Individualsoftware-Projekte"
+  description="Projekte mit Ausgangslage, Vorgehen und Ergebnis: Vertec-Ablösung in einer Beratung, Excel-Planung in einer Schlosserei, Produktdaten bei bonprix, Redaktion bei Statista."
   lang={locale}
   routeId="references"
 >
@@ -65,9 +65,9 @@ const teaserCaptions: Record<string, string> = {
         Ausgewählte Projekte mit mehr Hintergrund.
       </h1>
       <p class="mt-6 text-lg leading-8 text-foreground-secondary">
-        Die Referenzen zeigen nicht nur, was RocketBase gebaut hat, sondern auch in welchem
-        Kontext die Zusammenarbeit stattgefunden hat: Konzernumfeld, Modernisierung gewachsener
-        Systeme oder der Schritt von Standardsoftware zu einer individuellen Lösung.
+        Zu jedem Projekt steht hier, was gebaut wurde und in welchem Kontext: Konzernumfeld,
+        Modernisierung gewachsener Systeme oder der Schritt von Standardsoftware zu einer
+        individuellen Lösung.
       </p>
     </div>
   </section>
@@ -84,7 +84,7 @@ const teaserCaptions: Record<string, string> = {
           ]}
         >
           <a
-            href={`/referenzen/${item.slug}`}
+            href={`/referenzen/${item.slug}/`}
             class:list={[
               'group block',
               idx % 2 === 1 && 'lg:col-start-2 lg:row-start-1',
@@ -127,7 +127,7 @@ const teaserCaptions: Record<string, string> = {
             ]}
           >
             <h2 class="font-display text-3xl font-bold tracking-tight text-foreground">
-              <a href={`/referenzen/${item.slug}`}>{item.title}</a>
+              <a href={`/referenzen/${item.slug}/`}>{item.title}</a>
             </h2>
             {logoMap[caseLogoKey[item.slug] ?? ''] ? (
               <img
@@ -163,7 +163,7 @@ const teaserCaptions: Record<string, string> = {
             </div>
 
             <div class="mt-8">
-              <a href={`/referenzen/${item.slug}`} class="text-sm font-semibold text-brand-600 transition-colors hover:text-brand-500">
+              <a href={`/referenzen/${item.slug}/`} class="text-sm font-semibold text-brand-600 transition-colors hover:text-brand-500">
                 Mehr Hintergründe ansehen
               </a>
             </div>
@@ -191,7 +191,7 @@ const teaserCaptions: Record<string, string> = {
           {additionalCases.map((item) => (
             <li>
               <a
-                href={`/referenzen/${item.slug}`}
+                href={`/referenzen/${item.slug}/`}
                 class="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-[transform,border-color,box-shadow] duration-200 will-change-transform [backface-visibility:hidden] hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-sm"
               >
                 {item.slug in caseImages && (
@@ -246,7 +246,7 @@ const teaserCaptions: Record<string, string> = {
           Erstgespräch buchen
           <Icon name="arrow-up-right" size="sm" />
         </Button>
-        <Button variant="outline" href="/kontakt">
+        <Button variant="outline" href="/kontakt/">
           Kontakt
         </Button>
       </div>

@@ -59,3 +59,10 @@ package-lock.json
 # Internal docs
 southwell-astro-boilerplate-docs.md
 southwell-astro-boilerplate-prd.md
+
+# Search-Console-Exporte (lokale Arbeitsdaten)
+gsc-daten/
+
+# Rohmaterial für Screencasts bleibt lokal (Quelle liegt außerhalb, Encodes in public/screencasts/)
+/*.mp4
+/*.mov

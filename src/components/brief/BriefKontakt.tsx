@@ -38,7 +38,7 @@ export function BriefKontakt({
   funnel,
   kontakt,
   erfolg,
-  privacyUrl = '/datenschutz',
+  privacyUrl = '/datenschutz/',
   endpoint = '/api/funnel-lead',
 }: BriefKontaktProps) {
   const [submitting, setSubmitting] = useState(false);

@@ -64,7 +64,7 @@ export const routes = {
   // Blog section
   blog: {
     de: 'blog',
-    nav: { show: true, order: 5, label: 'nav.blog' },
+    nav: { show: true, order: 6, label: 'nav.blog' },
   },
 
   // Components showcase
@@ -82,28 +82,28 @@ export const routes = {
   // How we work
   work: {
     de: 'arbeitsweise',
-    nav: { show: true, order: 2, label: 'nav.work' },
+    nav: { show: true, order: 3, label: 'nav.work' },
   },
 
   // Referenzen / Case studies
   references: {
     de: 'referenzen',
-    nav: { show: true, order: 3, label: 'nav.references' },
+    nav: { show: true, order: 4, label: 'nav.references' },
   },
 
   // Mission / Haltung
   mission: {
     de: 'mission',
-    nav: { show: true, order: 4, label: 'nav.mission' },
+    nav: { show: true, order: 5, label: 'nav.mission' },
   },
 
-  // Discovery-Workshop (not in main nav - linked from footer and inline)
+  // Discovery-Workshop: einzige Seite mit Preisen, deshalb direkt in der Hauptnavigation
   discoveryWorkshop: {
     de: 'discovery-workshop',
-    nav: { show: false, order: 50, label: 'nav.discoveryWorkshop' },
+    nav: { show: true, order: 2, label: 'nav.discoveryWorkshop' },
   },
 
-  // Schmerz-Einstiege (Sub-Landingpages - not in main nav, linked from home + inline)
+  // Schmerz-Einstiege (Sub-Landingpages - nicht als Top-Level-Eintrag, aber im Leistungen-Dropdown der Navbar)
   standardsoftwareAbloesung: {
     de: 'standardsoftware-abloesung',
     nav: { show: false, order: 51, label: 'nav.standardsoftwareAbloesung' },

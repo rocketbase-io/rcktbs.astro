@@ -2,7 +2,7 @@ export const de = {
   site: {
     name: 'RocketBase',
     description:
-      'Digitalpartner für individuelle Software, Prozessoptimierung und nachhaltige Plattformen mit direkter Begleitung durch Marten Prieß.',
+      'Individuelle Unternehmenssoftware für den Mittelstand. Von der Prozessanalyse bis zum Betrieb, direkt mit Marten Prieß.',
   },
 
   nav: {
@@ -18,6 +18,9 @@ export const de = {
     work: 'Wie wir arbeiten',
     mission: 'Mission',
     references: 'Referenzen',
+    discoveryWorkshop: 'Workshop & Preise',
+    standardsoftwareAbloesung: 'Standardsoftware ablösen',
+    einsatzplanung: 'Einsatzplanung',
   },
 
   common: {
@@ -56,32 +59,32 @@ export const de = {
 
   contact: {
     meta: {
-      title: 'Kontakt - direkt mit Marten Prieß sprechen',
+      title: 'Kontakt: Erstgespräch zu Individualsoftware',
       description:
-        'Sprechen Sie direkt mit RocketBase über Prozesse, individuelle Software und den nächsten sinnvollen Digitalisierungsschritt.',
+        'Kostenloses 30-Minuten-Erstgespräch zu Individualsoftware, Standardsoftware-Ablösung und Prozessdigitalisierung – ohne Vertriebskette, direkt mit Marten Prieß. Raum Hamburg und bundesweit remote.',
     },
     hero: {
       badge: 'Direkter Kontakt',
-      title: 'Lassen Sie uns',
-      titleHighlight: 'über Ihr Vorhaben sprechen.',
+      title: 'Sprechen wir',
+      titleHighlight: 'über euer Vorhaben.',
       description:
-        'Kein klassischer Vertrieb, kein Agentur-Pingpong. Sie sprechen direkt mit Marten Prieß über Ziele, Prozesse und die sinnvollste nächste Ausbaustufe.',
+        'Ihr sprecht direkt mit Marten Prieß: über eure Ziele, eure Prozesse und den nächsten sinnvollen Schritt. Ein Gespräch, kein Vertriebstermin.',
     },
     form: {
       title: 'Projekt anfragen',
       name: 'Name',
-      namePlaceholder: 'Ihr Name',
+      namePlaceholder: 'Euer Name',
       email: 'E-Mail',
       emailPlaceholder: 'name@unternehmen.de',
       subject: 'Thema',
       subjectPlaceholder: 'Worum geht es?',
       message: 'Nachricht',
       messagePlaceholder:
-        'Beschreiben Sie Ihr Vorhaben, bestehende Systeme oder Engpässe im Prozess...',
+        'Worum geht es? Bestehende Systeme, Engpässe im Ablauf, ein konkretes Vorhaben...',
       submit: 'Nachricht senden',
       sending: 'Wird gesendet...',
       success: 'Nachricht erfolgreich gesendet. Wir melden uns zeitnah zurück.',
-      error: 'Die Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es erneut.',
+      error: 'Die Nachricht kam nicht durch. Bitte noch einmal versuchen.',
     },
     info: {
       title: 'Direkte Wege zu RocketBase',
@@ -101,11 +104,11 @@ export const de = {
   },
 
   blog: {
-    title: 'Blog: Praxis-Einblicke zu Software & Prozessen',
+    title: 'Individualsoftware & Prozesse: Praxisberichte',
     description:
-      'Einblicke aus echten Projekten: Produktentwicklung, Prozessoptimierung, Plattformen und der Weg vom Tool-Wildwuchs zur belastbaren Steuerung.',
+      'Standardsoftware am Limit, Tool-Wildwuchs, Reporting aus Excel, Legacy-Hosting: Praxisbeiträge aus echten Ablöse- und Digitalisierungsprojekten im Mittelstand.',
     descriptionHtml:
-      'Einblicke aus echten Projekten: <strong>Produktentwicklung</strong>, <strong>Prozessoptimierung</strong>, Plattformen und der Weg vom Tool-Wildwuchs zur belastbaren Steuerung.',
+      'Einblicke aus echten Projekten: <strong>Standardsoftware-Ablösung</strong>, <strong>Prozessoptimierung</strong>, Reporting und der Weg vom Tool-Wildwuchs zur belastbaren Steuerung.',
     allPosts: 'Alle Beiträge',
     featured: 'Empfohlen',
     noPosts: 'Noch keine Beiträge vorhanden.',

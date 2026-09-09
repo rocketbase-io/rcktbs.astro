@@ -35,6 +35,31 @@ const homePath = getLocalizedPath('home', locale);
 const ctaLink = getLocalizedPath('contact', locale);
 const referencesPath = getLocalizedPath('references', locale);
 const blogPath = getLocalizedPath('blog', locale);
+const servicesPath = getLocalizedPath('services', locale);
+
+// Leistungen-Dropdown: die beiden Schmerz-Einstiege und der bepreiste Workshop.
+// Die Seiten bleiben in routes.ts auf show:false, damit sie nicht zusätzlich
+// als Top-Level-Einträge erscheinen.
+const serviceLinks = [
+  {
+    href: getLocalizedPath('standardsoftwareAbloesung', locale),
+    icon: 'layers',
+    title: t('nav.standardsoftwareAbloesung'),
+    text: 'Wenn Vertec, Centric oder ein gewachsenes System das Wachstum bremst.',
+  },
+  {
+    href: getLocalizedPath('einsatzplanung', locale),
+    icon: 'users',
+    title: t('nav.einsatzplanung'),
+    text: 'Disposition, Einsatz und Abrechnung raus aus Excel, rein in einen Leitstand.',
+  },
+  {
+    href: getLocalizedPath('discoveryWorkshop', locale),
+    icon: 'file-text',
+    title: 'Discovery-Workshop',
+    text: 'Ein Tag, ein Dokument, eine Entscheidung. 2.400 €, das Ergebnis gehört euch.',
+  },
+] as const;
 
 const blogPosts = await getCollection('blog', ({ data }) => {
   return data.locale === locale && (import.meta.env.PROD ? data.draft !== true : true);
@@ -78,7 +103,55 @@ const featuredReferences = cases
 
     <div class="hidden items-center gap-6 lg:flex">
       {navRoutes.map(({ routeId, label }) => (
-        routeId === 'references' ? (
+        routeId === 'services' ? (
+          <div class="relative" data-nav-dropdown>
+            <button
+              type="button"
+              class="inline-flex items-center gap-1 text-sm font-medium text-foreground-muted hover:text-foreground transition-colors"
+              aria-expanded="false"
+              aria-haspopup="true"
+              data-nav-dropdown-trigger
+            >
+              {t(label as any)}
+              <svg class="h-3.5 w-3.5 transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-nav-dropdown-chevron>
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </button>
+
+            <div
+              class="absolute left-0 top-full z-50 hidden w-[26rem] pt-3 before:absolute before:inset-x-0 before:-top-2 before:h-5 before:content-[''] before:block"
+              data-nav-dropdown-panel
+              role="menu"
+            >
+              <div class="rounded-2xl border border-border bg-background p-3 shadow-[0_24px_60px_rgba(22,28,44,0.14)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.6)]">
+                {serviceLinks.map((item) => (
+                  <a
+                    href={item.href}
+                    class="flex gap-3 rounded-xl p-2.5 transition-colors hover:bg-secondary"
+                    role="menuitem"
+                  >
+                    <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg border border-brand-300/70 bg-brand-500/5 text-brand-600">
+                      <Icon name={item.icon} size="md" />
+                    </div>
+                    <div class="min-w-0 flex-1">
+                      <p class="text-sm font-semibold text-foreground">{item.title}</p>
+                      <p class="mt-1 text-xs leading-5 text-foreground-muted line-clamp-2">{item.text}</p>
+                    </div>
+                  </a>
+                ))}
+
+                <a
+                  href={servicesPath}
+                  class="mt-1 flex items-center justify-between rounded-xl border-t border-border px-3 py-3 text-sm font-semibold text-brand-600 hover:text-brand-500"
+                  role="menuitem"
+                >
+                  Alle Leistungen ansehen
+                  <Icon name="arrow-right" size="xs" />
+                </a>
+              </div>
+            </div>
+          </div>
+        ) : routeId === 'references' ? (
           <div class="relative" data-nav-dropdown>
             <button
               type="button"
@@ -101,7 +174,7 @@ const featuredReferences = cases
               <div class="rounded-2xl border border-border bg-background p-3 shadow-[0_24px_60px_rgba(22,28,44,0.14)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.6)]">
                 {featuredReferences.map((ref) => (
                   <a
-                    href={`${referencesPath}/${ref.slug}`}
+                    href={`${referencesPath}${ref.slug}/`}
                     class="flex gap-3 rounded-xl p-2.5 transition-colors hover:bg-secondary"
                     role="menuitem"
                   >
@@ -157,7 +230,7 @@ const featuredReferences = cases
               <div class="rounded-2xl border border-border bg-background p-3 shadow-[0_24px_60px_rgba(22,28,44,0.14)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.6)]">
                 {featuredBlogPosts.map((post) => (
                   <a
-                    href={`${blogPath}/${post.slug}`}
+                    href={`${blogPath}${post.slug}/`}
                     class="flex gap-3 rounded-xl p-2.5 transition-colors hover:bg-secondary"
                     role="menuitem"
                   >
@@ -228,7 +301,38 @@ const featuredReferences = cases
 
   <div id="mobile-menu" class="hidden absolute top-16 left-0 w-full bg-background border-b border-border p-6 lg:hidden flex-col gap-4 shadow-lg">
     {navRoutes.map(({ routeId, label }) => (
-      routeId === 'references' ? (
+      routeId === 'services' ? (
+        <details class="group" data-mobile-accordion>
+          <summary class="flex cursor-pointer items-center justify-between list-none text-base font-medium text-foreground-secondary hover:text-foreground transition-colors [&::-webkit-details-marker]:hidden">
+            <span>{t(label as any)}</span>
+            <svg class="h-4 w-4 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </summary>
+          <div class="mt-3 space-y-2 border-l-2 border-border pl-3">
+            {serviceLinks.map((item) => (
+              <a
+                href={item.href}
+                class="flex gap-3 rounded-lg p-2 transition-colors hover:bg-secondary"
+              >
+                <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-brand-300/70 bg-brand-500/5 text-brand-600">
+                  <Icon name={item.icon} size="sm" />
+                </div>
+                <div class="min-w-0 flex-1">
+                  <p class="text-sm font-semibold text-foreground">{item.title}</p>
+                  <p class="mt-0.5 text-xs leading-5 text-foreground-muted line-clamp-1">{item.text}</p>
+                </div>
+              </a>
+            ))}
+            <a
+              href={servicesPath}
+              class="block rounded-lg p-2 text-sm font-semibold text-brand-600 hover:text-brand-500"
+            >
+              Alle Leistungen ansehen →
+            </a>
+          </div>
+        </details>
+      ) : routeId === 'references' ? (
         <details class="group" data-mobile-accordion>
           <summary class="flex cursor-pointer items-center justify-between list-none text-base font-medium text-foreground-secondary hover:text-foreground transition-colors [&::-webkit-details-marker]:hidden">
             <span>{t(label as any)}</span>
@@ -239,7 +343,7 @@ const featuredReferences = cases
           <div class="mt-3 space-y-2 border-l-2 border-border pl-3">
             {featuredReferences.map((ref) => (
               <a
-                href={`${referencesPath}/${ref.slug}`}
+                href={`${referencesPath}${ref.slug}/`}
                 class="flex gap-3 rounded-lg p-2 transition-colors hover:bg-secondary"
               >
                 <div class="h-11 w-11 shrink-0 overflow-hidden rounded-md">
@@ -278,7 +382,7 @@ const featuredReferences = cases
           <div class="mt-3 space-y-2 border-l-2 border-border pl-3">
             {featuredBlogPosts.map((post) => (
               <a
-                href={`${blogPath}/${post.slug}`}
+                href={`${blogPath}${post.slug}/`}
                 class="flex gap-3 rounded-lg p-2 transition-colors hover:bg-secondary"
               >
                 <div class="h-11 w-11 shrink-0 overflow-hidden rounded-md">

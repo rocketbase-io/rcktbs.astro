@@ -3,6 +3,16 @@
 Anzeigen-Landingpages mit Quiz + Lead-Erfassung unter `/f/[slug]`.
 Erste Seite: **`/f/software-analyse`**
 
+Varianten (Stand August 2026):
+
+| Slug | Angle | Frage 1 |
+| --- | --- | --- |
+| `/f/software-analyse` | Wo verliert die Softwarelandschaft Geld? | `landscapeQuestion` |
+| `/f/live-zahlen` | Reporting / Live-Zahlen | `landscapeQuestion` |
+| `/f/zeitfresser` | Zeitfresser / Entlastung | `timeQuestion` |
+| `/f/eigene-software` | Lizenz-Revival / eigene Software | `softwareFitQuestion` |
+| `/f/code-check` | Code-Check für KI-gebaute oder übernommene Anwendungen | `builderQuestion` |
+
 ## Architektur (fertig)
 
 | Baustein | Datei |

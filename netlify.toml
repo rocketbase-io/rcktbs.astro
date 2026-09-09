@@ -30,47 +30,74 @@
 # Legacy rocketbase.io URL redirects (301)
 [[redirects]]
   from = "/imprint"
-  to = "/impressum"
+  to = "/impressum/"
   status = 301
 
 [[redirects]]
   from = "/privacy"
-  to = "/datenschutz"
+  to = "/datenschutz/"
   status = 301
 
 [[redirects]]
   from = "/contact"
-  to = "/kontakt"
+  to = "/kontakt/"
   status = 301
 
 [[redirects]]
   from = "/services"
-  to = "/leistungen"
+  to = "/leistungen/"
   status = 301
 
 [[redirects]]
   from = "/work"
-  to = "/arbeitsweise"
+  to = "/arbeitsweise/"
   status = 301
 
 [[redirects]]
   from = "/leistungen/*"
-  to = "/leistungen"
+  to = "/leistungen/"
   status = 301
 
 [[redirects]]
   from = "/referenzen/bonprix-pim"
-  to = "/referenzen/bonprix"
+  to = "/referenzen/bonprix/"
   status = 301
 
 [[redirects]]
   from = "/referenzen/statista-numera"
-  to = "/referenzen/statista"
+  to = "/referenzen/statista/"
   status = 301
 
 [[redirects]]
   from = "/referenzen/metall-pro"
-  to = "/referenzen/schlosserei-diezinger"
+  to = "/referenzen/schlosserei-diezinger/"
+  status = 301
+
+# Alte, weiterhin indexierte URLs aus der Search Console (Pos. 3,2 bzw. 3,1) -
+# ohne Trailing Slash ergaenzt, damit beide Varianten sauber weiterleiten.
+[[redirects]]
+  from = "/imprint/"
+  to = "/impressum/"
+  status = 301
+
+[[redirects]]
+  from = "/privacy/"
+  to = "/datenschutz/"
+  status = 301
+
+[[redirects]]
+  from = "/contact/"
+  to = "/kontakt/"
+  status = 301
+
+[[redirects]]
+  from = "/services/"
+  to = "/leistungen/"
+  status = 301
+
+[[redirects]]
+  from = "/work/"
+  to = "/arbeitsweise/"
   status = 301
 
 # Catch-all: unknown routes redirect to landing page
