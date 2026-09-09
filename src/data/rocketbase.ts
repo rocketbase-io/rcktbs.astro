@@ -20,9 +20,14 @@ export const strengths = [
       'Für Reporting nehmen wir Metabase, für Auth einen bewährten Baustein. Selbst gebaut wird da, wo euer Prozess anders ist als der aller anderen.',
   },
   {
-    title: 'Übergebbar gebaut',
+    title: 'Auch die alten Daten',
     description:
-      'Gängige Technologien, dokumentierte Architektur, euer Code. Wenn ihr das Projekt eines Tages jemand anderem gebt, findet der sich zurecht.',
+      'In Vertec lagen drei Jahre, Projekte und Rechnungen davor in älteren Systemen. Wir haben sie eingelesen: über 20 Jahre Kundenhistorie, und damit erstmals ein Bild davon, was eine Kundenbeziehung über ihre Laufzeit wert ist.',
+  },
+  {
+    title: 'Direkt, mit Widerspruch',
+    description:
+      'Ihr schreibt in einen Channel, in dem die Leute sitzen, die es bauen. Und ihr hört es, wenn eine Anforderung in die falsche Richtung läuft, statt sie einfach umgesetzt zu bekommen.',
   },
 ];
 
@@ -173,13 +178,14 @@ const casesRaw = [
     challenge:
       'Eine etablierte Standardsoftware sollte das Beratungsgeschäft tragen, wurde aber binnen weniger Jahre eher zur Last als zur Entlastung. Der eigene Angebots- und Projektprozess passte nur über Umwege hinein, das Team musste immer mehr von Hand auffangen, und für Steuerung und Prognosen fehlten die Auswertungen im nötigen Detail. Gleichzeitig steckten wertvolle Bestandsdaten in Strukturen, die sauber herausgelöst werden mussten.',
     approach:
-      'RocketBase arbeitete sich in das Bestandssystem ein und nahm den realen Prozess auf – nicht die Systemlandschaft. Auf dieser Basis wurde die Datenmigration geplant, Bestandsdaten bereinigt und übernommen, und eine individuelle Anwendung gebaut, die das tatsächliche Beratungsmodell abbildet: vom Vertrieb als Kanban-Board über die automatische Angebotskalkulation und die integrierte Terminplanung bis zur Rechnung mit direktem Versand – Angebot und Durchführung sauber getrennt, damit Plan und Ergebnis auswertbar bleiben.',
+      'RocketBase arbeitete sich in das Bestandssystem ein und nahm den realen Prozess auf – nicht die Systemlandschaft. Auf dieser Basis wurde die Datenmigration geplant. In Vertec lagen nur die letzten drei Jahre; Projekte und Rechnungen davor steckten in älteren Systemen. Beides wurde eingelesen und bereinigt, sodass heute über 20 Jahre Kundenhistorie in einer Anwendung liegen. Darauf aufbauend entstand eine individuelle Anwendung, die das tatsächliche Beratungsmodell abbildet: vom Vertrieb als Kanban-Board über die automatische Angebotskalkulation und die integrierte Terminplanung bis zur Rechnung mit direktem Versand – Angebot und Durchführung sauber getrennt, damit Plan und Ergebnis auswertbar bleiben.',
     // TODO: Vorher/Nachher-Zahlen ergänzen (Minuten pro Angebot, Angebote pro Monat).
     impact:
       'Ein Muster, das viele inhabergeführte Beratungen kennen: Die Standardsoftware, die entlasten sollte, bindet am Ende Personal, statt es freizusetzen. Weil Beratungszeit das Produkt ist, schlägt jede Stunde, die ins Auffangen statt in Kundenarbeit fließt, direkt auf die Marge. Der zweite Effekt zeigt sich beim Kunden. FKC hat die eigenen Wettbewerber verglichen: Alle verschicken Angebote als Word oder PDF und klären Rückfragen per Mail. FKC schickt heute eine Web-Seite, auf der der Kunde Optionen an- und abwählt und die Summe mitläuft, holt fehlende Angaben über ein vorbefülltes Formular und sieht, wann das Angebot geöffnet wurde. Relevant für jedes projektgetriebene Haus, dessen Software mehr verwaltet als trägt.',
     processFocus:
       'Der Kernprozess der Beratung: vom Angebot über die Projektdurchführung bis zur Rechnung. Im Standard waren Angebot und Durchführung so verwoben, dass sich Plan und Ergebnis kaum noch gegenüberstellen ließen.',
     outcomes: [
+      'Über 20 Jahre Projekt- und Rechnungshistorie zusammengeführt, Grundlage für einen Customer Lifetime Value, den es vorher nicht gab',
       'Der reale Angebots- und Projektprozess steht im System, für alle nachvollziehbar',
       'Weniger Handarbeit im Tagesgeschäft, weil Vertrieb, Kalkulation und Rechnung ineinandergreifen',
       'Kalkulation und Deckungsbeitrag direkt am Prozess statt nachgelagert zusammengesucht',
@@ -780,23 +786,23 @@ export const missionSections = [
     body: 'Gute Lösungen entstehen im Gespräch, nicht im Ticketsystem. Deshalb arbeiten wir in kleinen Teams direkt mit euch: weniger Übergaben, schnellere Entscheidungen. Und jemand, der widerspricht, wenn eine Anforderung in die falsche Richtung läuft.',
   },
   {
-    id: 'zukunft',
+    id: 'schnittstellen',
     number: '08',
-    eyebrow: 'Verantwortung',
-    title: 'Von Anfang an übergebbar',
+    eyebrow: 'Anschlussfähigkeit',
+    title: 'API-first gebaut',
     keyFacts: [
-      { label: 'Saubere Dokumentation und nachvollziehbare Architektur' },
-      { label: 'Unabhängigkeit von einzelnen Personen oder Systemen' },
-      { label: 'Optionale Exit- und Fallback-Strategien' },
+      { label: 'Dokumentierte Schnittstellen für jeden Kernprozess' },
+      { label: 'Automatisierungen über n8n, Make oder eigene Skripte' },
+      { label: 'KI-Modelle anbinden, ohne dass wir etwas freischalten' },
     ],
     visual: 'safety' as const,
     safety: [
-      { label: 'Architektur-Dokumentation', icon: 'file-text' },
-      { label: 'Übergebbarer Code', icon: 'code' },
-      { label: 'Offene Standards & Daten', icon: 'globe' },
-      { label: 'Fallback-Pfade', icon: 'shield' },
+      { label: 'Dokumentierte API', icon: 'book' },
+      { label: 'Anbindung an eure Systeme', icon: 'globe' },
+      { label: 'Automatisierung per n8n', icon: 'zap' },
+      { label: 'Zugang für eigene Skripte', icon: 'terminal' },
     ],
-    body: 'Software, die ihr heute baut, betreibt ihr zehn Jahre. Deshalb bleibt bei uns alles nachvollziehbar und übergebbar: gängige Technologien, dokumentierte Entscheidungen, euer Code. Ihr sollt jederzeit wechseln können, auch weg von uns.',
+    body: 'Jede Anwendung, die wir bauen, hat eine dokumentierte Schnittstelle. Damit hängt ihr sie an eure übrigen Systeme, baut Automatisierungen in n8n oder Make, oder lasst ein KI-Modell darauf arbeiten – ohne dass wir dafür etwas freischalten müssen. Was ihr damit anstellt, entscheidet ihr.',
   },
 ];
 
