@@ -113,6 +113,16 @@ export const routes = {
     nav: { show: false, order: 52, label: 'nav.einsatzplanung' },
   },
 
+  // Ziel des Bio-Links auf Instagram (noindex, nicht in der Navigation).
+  // `nav` steht hier, obwohl die Seite nie in der Navigation auftaucht: Der
+  // Typ entsteht über `as const satisfies`, und ein Eintrag ohne `nav` hat die
+  // Eigenschaft dann gar nicht — `getNavRoutes()` in i18n/helpers.ts greift
+  // aber über alle Einträge darauf zu.
+  instagram: {
+    de: 'instagram',
+    nav: { show: false, order: 92, label: 'nav.instagram' },
+  },
+
   // Legal pages (noindex, no nav)
   imprint: {
     de: 'impressum',

@@ -34,12 +34,14 @@ export default defineConfig({
           de: 'de',
         },
       },
-      // /f/ (Anzeigen) und /b/ (Brief) sind beide nur über ihren jeweiligen
-      // Kanal erreichbar und stehen auf noindex — sie gehören nicht in die Sitemap.
+      // /f/ (Anzeigen), /b/ (Brief) und /instagram/ (Bio-Link) sind jeweils nur
+      // über ihren eigenen Kanal erreichbar und stehen auf noindex — sie gehören
+      // nicht in die Sitemap.
       filter: (page) =>
         !/\/(impressum|datenschutz)\/?$/.test(page) &&
         !/\/f\//.test(page) &&
-        !/\/b\//.test(page),
+        !/\/b\//.test(page) &&
+        !/\/instagram\/?$/.test(page),
     }),
   ],
 

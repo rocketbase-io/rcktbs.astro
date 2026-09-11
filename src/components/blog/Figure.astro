@@ -105,15 +105,21 @@ const ratioClass = ratio === '4/3' ? 'aspect-[4/3]' : 'aspect-video';
   (function () {
     if (document.querySelector('[data-figure-lightbox]')) return;
 
+    // Das Padding am <dialog> ist der Platz, in dem der Schliessen-Knopf sitzt.
+    // Vorher ragte er per `-top-3 -right-3` aus dem Kasten heraus und wurde am
+    // Fensterrand abgeschnitten; das Bild durfte ausserdem so breit werden wie
+    // der Dialog selbst (beide 96vw) und lief deshalb oben und rechts aus dem
+    // Bild. Jetzt begrenzt der Dialog, und das Bild bleibt um das Padding
+    // kleiner.
     const dialog = document.createElement('dialog');
     dialog.setAttribute('data-figure-lightbox', '');
     dialog.className =
-      'backdrop:bg-black/70 bg-transparent p-0 max-w-[96vw] max-h-[94vh] w-auto';
+      'backdrop:bg-black/70 bg-transparent p-3 sm:p-5 m-auto max-w-[100vw] max-h-[100dvh] w-auto overflow-visible';
     dialog.innerHTML =
       '<div class="relative">' +
-      '<img alt="" class="block max-h-[88vh] max-w-[96vw] rounded-xl object-contain shadow-2xl" />' +
+      '<img alt="" class="block max-h-[calc(100dvh-4rem)] max-w-[calc(100vw-2.5rem)] sm:max-w-[calc(100vw-4rem)] w-auto h-auto rounded-xl object-contain shadow-2xl" />' +
       '<button type="button" data-figure-close aria-label="Schließen" ' +
-      'class="absolute -top-3 -right-3 grid h-9 w-9 place-items-center rounded-full border border-white/20 bg-neutral-900 text-white shadow-lg">✕</button>' +
+      'class="absolute top-2 right-2 z-10 grid h-9 w-9 place-items-center rounded-full border border-white/20 bg-neutral-900/90 text-white shadow-lg backdrop-blur">✕</button>' +
       '</div>';
     document.body.appendChild(dialog);
 

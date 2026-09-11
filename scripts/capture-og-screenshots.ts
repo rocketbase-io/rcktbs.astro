@@ -28,18 +28,24 @@ const CAPTURE_HEIGHT = 756; // 1440 * 630/1200
 const OG_WIDTH = 1200;
 const OG_HEIGHT = 630;
 
+// Jeder Pfad MIT Schrägstrich am Ende: Seit `trailingSlash: 'always'` in der
+// astro.config.mjs beantwortet der Dev-Server die Form ohne Slash mit einer
+// 404 — der Screenshot wäre dann stillschweigend die Astro-Fehlerseite statt
+// der Seite. Die Bilder im Repo stammen von vor dieser Umstellung, deshalb ist
+// es bis jetzt niemandem aufgefallen.
 const TARGETS: Array<{ path: string; slug: string }> = [
   { path: '/', slug: 'index' },
-  { path: '/mission', slug: 'mission' },
-  { path: '/leistungen', slug: 'leistungen' },
-  { path: '/arbeitsweise', slug: 'arbeitsweise' },
-  { path: '/referenzen', slug: 'referenzen' },
-  { path: '/standardsoftware-abloesung', slug: 'standardsoftware-abloesung' },
-  { path: '/einsatzplanung', slug: 'einsatzplanung' },
-  { path: '/discovery-workshop', slug: 'discovery-workshop' },
-  { path: '/kontakt', slug: 'kontakt' },
-  { path: '/impressum', slug: 'impressum' },
-  { path: '/datenschutz', slug: 'datenschutz' },
+  { path: '/mission/', slug: 'mission' },
+  { path: '/leistungen/', slug: 'leistungen' },
+  { path: '/arbeitsweise/', slug: 'arbeitsweise' },
+  { path: '/referenzen/', slug: 'referenzen' },
+  { path: '/standardsoftware-abloesung/', slug: 'standardsoftware-abloesung' },
+  { path: '/einsatzplanung/', slug: 'einsatzplanung' },
+  { path: '/discovery-workshop/', slug: 'discovery-workshop' },
+  { path: '/kontakt/', slug: 'kontakt' },
+  { path: '/instagram/', slug: 'instagram' },
+  { path: '/impressum/', slug: 'impressum' },
+  { path: '/datenschutz/', slug: 'datenschutz' },
 ];
 
 function findFreePort(): Promise<number> {
@@ -116,6 +122,40 @@ async function main() {
       style.textContent =
         'astro-dev-toolbar, astro-dev-overlay { display: none !important; }';
       document.head.appendChild(style);
+    });
+
+    // Consent-Banner aus den OG-Bildern heraushalten. Zwei Schritte, weil eine
+    // gespeicherte Entscheidung zwar das Banner unterdrückt, aber stattdessen
+    // den kleinen Wiederöffnen-Knopf einblendet (`init()` in ConsentBanner.astro:
+    // entschieden -> showReopener()) - der säße sonst in der Ecke jedes Bildes.
+    //
+    // Gespeichert wird "alles abgelehnt": Das Format muss zu `getStored()`
+    // passen (gleiche `version`, sonst gilt die Einwilligung als nicht erteilt),
+    // und nichts ausser den notwendigen Cookies zu setzen hält Plausible und
+    // Meta aus den Aufnahmen heraus.
+    await page.addInitScript(() => {
+      try {
+        localStorage.setItem(
+          'velocity-consent',
+          JSON.stringify({
+            version: 1,
+            timestamp: new Date().toISOString(),
+            categories: {
+              necessary: true,
+              analytics: false,
+              marketing: false,
+              preferences: false,
+            },
+          }),
+        );
+      } catch {
+        // Private-Mode o. Ä. - dann greift wenigstens das CSS unten.
+      }
+
+      const style = document.createElement('style');
+      style.textContent =
+        '#consent-banner, .consent-reopener { display: none !important; }';
+      document.addEventListener('DOMContentLoaded', () => document.head.appendChild(style));
     });
 
     for (const { path, slug } of TARGETS) {

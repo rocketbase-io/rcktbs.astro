@@ -9,10 +9,16 @@
  * Die Formulare selbst bleiben getrennt — nur diese Mechanik ist geteilt.
  */
 
-const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'] as const;
+export const UTM_KEYS = [
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'utm_content',
+  'utm_term',
+] as const;
 
 /** Click-IDs der Ad-Plattformen — Basis für server-seitige Conversion-APIs. */
-const CLICK_ID_KEYS = ['fbclid', 'gclid', 'msclkid', 'li_fat_id', 'ttclid'] as const;
+export const CLICK_ID_KEYS = ['fbclid', 'gclid', 'msclkid', 'li_fat_id', 'ttclid'] as const;
 
 export function readCookie(name: string): string | undefined {
   const match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
