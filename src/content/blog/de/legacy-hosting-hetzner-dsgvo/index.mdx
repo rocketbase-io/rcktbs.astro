@@ -1,19 +1,19 @@
 ---
-title: "Der Server im Büroschrank kostet mehr, als er scheint"
-seoTitle: "Legacy-Hosting ablösen: Hetzner statt Büro-Server"
-description: "Was der eigene Server im Büro wirklich kostet, wenn man Ausfälle, VPN-Reibung und Wartungswissen mitrechnet. Und was ein deutsches Rechenzentrum dagegen kostet: unter 50 Euro im Monat."
+title: 'Der Server im Büroschrank kostet mehr, als er scheint'
+seoTitle: 'Legacy-Hosting ablösen: Hetzner statt Büro-Server'
+description: 'Was der eigene Server im Büro wirklich kostet, wenn man Ausfälle, VPN-Reibung und Wartungswissen mitrechnet. Und was ein deutsches Rechenzentrum dagegen kostet: unter 50 Euro im Monat.'
 publishedAt: 2026-03-01
 updatedAt: 2026-08-21
-author: "Marten Prieß"
-image: "./hero.png"
-imageAlt: "Server im Büroschrank versus DSGVO-konformes Rechenzentrum bei Hetzner"
-tags: ["hosting", "hetzner", "dsgvo", "legacy", "infrastruktur", "betrieb"]
+author: 'Marten Prieß'
+image: './hero.png'
+imageAlt: 'Server im Büroschrank versus DSGVO-konformes Rechenzentrum bei Hetzner'
+tags: ['hosting', 'hetzner', 'dsgvo', 'legacy', 'infrastruktur', 'betrieb']
 featured: false
 draft: false
 locale: de
 cta:
-  headline: "Steht euer Server noch im Büro?"
-  body: "Ein Infrastruktur-Check in einer halben Stunde: Wo die größten Risiken liegen, was der kleinstmögliche sinnvolle Schritt wäre und ob sich das bei euch rechnet."
+  headline: 'Steht euer Server noch im Büro?'
+  body: 'Ein Infrastruktur-Check in einer halben Stunde: Wo die größten Risiken liegen, was der kleinstmögliche sinnvolle Schritt wäre und ob sich das bei euch rechnet.'
 ---
 
 import Button from '@/components/ui/form/Button/Button.astro';
@@ -23,6 +23,8 @@ import { contactLinks } from '@/data/rocketbase';
 Am Anfang unserer Ablöseprojekte geht es meistens um die Anwendung. Kurz danach um die Umgebung, in der sie läuft, und die sieht erstaunlich oft gleich aus: **ein Server im Büroraum, ein NAS für Backups, ein VPN für den Zugriff von außen**. Dazu das seit Jahren mitlaufende Gefühl, dass das "so nicht mehr zeitgemäß" ist, ohne dass es je oben auf der Agenda stand.
 
 Wir sehen das bei Handwerksbetrieben mit einer Eigenentwicklung aus den späten Neunzigern genauso wie bei Beratungshäusern mit gewachsener Standardsoftware im lokalen Betrieb. Die Rechnung, die dabei aufgeht, überrascht die Beteiligten regelmäßig.
+
+Dass der Eigenbetrieb in dieser Größenordnung noch Normalfall ist, zeigt die amtliche Statistik. Nach der [IKT-Erhebung des Statistischen Bundesamts](https://www.destatis.de/DE/Presse/Pressemitteilungen/2025/11/PD25_416_52911.html) vom November 2025 nutzen 51 Prozent der kleinen Unternehmen mit 10 bis 49 Beschäftigten kostenpflichtige Cloud-Dienste. Bei den Großunternehmen sind es 86 Prozent. Die Lücke zwischen beiden ist ziemlich genau die Gruppe, um die es in diesem Beitrag geht.
 
 ## Was typischerweise im Einsatz ist
 
@@ -172,6 +174,8 @@ Rechnet man die Konstellation durch, kommen Zahlen zusammen, mit denen die Betei
   </div>
 </div>
 
+Das dritte Risiko hat einen Beleg, der aus einer anderen Richtung kommt. Der [Lagebericht des BSI](https://www.bsi.bund.de/DE/Service-Navi/Publikationen/Lagebericht/lagebericht_node.html) für 2025 zählt rund 80 Prozent der angezeigten Angriffe gegen kleine und mittlere Unternehmen, „denen häufig die Mittel und das Wissen fehlen". Gemeint ist dort Ransomware, nicht der Ausfall einer Festplatte. Der Halbsatz beschreibt aber genau die Lage, in der ein Betrieb steckt, dessen Infrastruktur an einer Person hängt.
+
 <aside className="not-prose my-8" data-reveal="fade-up">
   <div className="border-brand-200 bg-brand-50/60 dark:border-brand-800 dark:bg-brand-900/15 rounded-2xl border p-6 sm:p-7">
     <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
@@ -242,6 +246,8 @@ Eine Migration ist Handwerk, kein Großprojekt. Drei Bausteine gehören dazu:
 </div>
 
 Je nach Sensibilität der Daten kommt ein DSGVO-Dokumentationsniveau dazu, das ein Provider fertig mitliefert: Auftragsverarbeitungsvertrag, dokumentierte technische und organisatorische Maßnahmen, Zugriffsprotokolle. Im eigenen Büro müsst ihr das selbst herstellen.
+
+Mit dem Standort steht ihr damit nicht allein. Im [Cloud Report 2025 von Bitkom Research](https://www.bitkom.org/Presse/Presseinformation/Wirtschaft-ruft-nach-deutscher-Cloud) nennen 64 Prozent der Unternehmen, die Cloud nutzen oder das erwägen, Rechenzentren in Deutschland oder der EU als Auswahlkriterium. Befragt wurden insgesamt 604 Unternehmen ab 20 Beschäftigten.
 
 ## Wie so ein Projekt abläuft
 
@@ -342,3 +348,44 @@ Drei Fälle sprechen dafür, den Status quo weiterzubetreiben:
 </div>
 
 In der Mehrheit der mittelständischen Setups, die uns begegnen, trifft keiner dieser drei Punkte zu. Dann ist der Weg ins Rechenzentrum eine der risikoärmsten Verbesserungen, die sich an einer IT-Landschaft überhaupt machen lassen: überschaubare Kosten, planbarer Aufwand, und danach arbeitet es sich aus dem Homeoffice genauso wie im Büro.
+
+<div className="not-prose my-10" data-reveal="fade-up">
+  <div className="border-border bg-background-secondary rounded-2xl border p-6 sm:p-7">
+    <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Quellen</p>
+    <ul className="mt-4 space-y-3 text-sm leading-6 [&_li>a>p]:inline [&_li>p]:inline">
+      <li className="text-foreground-secondary">
+        <a
+          href="https://www.destatis.de/DE/Presse/Pressemitteilungen/2025/11/PD25_416_52911.html"
+          className="text-brand-600 hover:text-brand-500 dark:text-brand-400 dark:hover:text-brand-300 underline underline-offset-2"
+        >
+          Statistisches Bundesamt, Jedes zweite Unternehmen nutzt kostenpflichtige Cloud-Services
+        </a>
+        , Pressemitteilung Nr. 416 vom 24. November 2025, IKT-Erhebung unter 20.000 Unternehmen. 51
+        Prozent der kleinen Unternehmen mit 10 bis 49 Beschäftigten nutzen kostenpflichtige
+        Cloud-Dienste, bei den Großunternehmen 86 Prozent.
+      </li>
+      <li className="text-foreground-secondary">
+        <a
+          href="https://www.bitkom.org/Presse/Presseinformation/Wirtschaft-ruft-nach-deutscher-Cloud"
+          className="text-brand-600 hover:text-brand-500 dark:text-brand-400 dark:hover:text-brand-300 underline underline-offset-2"
+        >
+          Bitkom Research, Cloud Report 2025
+        </a>
+        , 604 Unternehmen ab 20 Beschäftigten, telefonische Befragung von März bis Mai 2025,
+        veröffentlicht im Juni. Von den Unternehmen, die Cloud nutzen oder das erwägen, nennen 64
+        Prozent Rechenzentren in Deutschland oder der EU als Auswahlkriterium. Sicherheit,
+        Datenschutz und Leistungsfähigkeit rangieren in derselben Erhebung noch davor.
+      </li>
+      <li className="text-foreground-secondary">
+        <a
+          href="https://www.bsi.bund.de/DE/Service-Navi/Publikationen/Lagebericht/lagebericht_node.html"
+          className="text-brand-600 hover:text-brand-500 dark:text-brand-400 dark:hover:text-brand-300 underline underline-offset-2"
+        >
+          BSI, Die Lage der IT-Sicherheit in Deutschland 2025
+        </a>
+        , November 2025. Rund 80 Prozent der angezeigten Angriffe richteten sich gegen kleine und
+        mittlere Unternehmen. Gemeint ist Ransomware, nicht Hardwareausfall.
+      </li>
+    </ul>
+  </div>
+</div>

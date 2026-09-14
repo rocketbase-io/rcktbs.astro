@@ -26,10 +26,11 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "validate": "pnpm lint && pnpm check && pnpm build",
+    "validate": "pnpm lint && pnpm check && pnpm build && pnpm check:links",
     "test": "vitest",
     "test:e2e": "playwright test",
-    "og:capture": "tsx scripts/capture-og-screenshots.ts"
+    "og:capture": "tsx scripts/capture-og-screenshots.ts",
+    "check:links": "tsx scripts/check-links.ts"
   },
   "dependencies": {
     "@astrojs/mdx": "8.0.1",

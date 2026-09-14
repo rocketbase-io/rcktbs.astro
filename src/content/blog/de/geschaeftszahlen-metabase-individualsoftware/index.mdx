@@ -1,19 +1,19 @@
 ---
-title: "Wenn der Monatsabschluss zum Projekt wird"
-seoTitle: "Reporting mit Metabase statt Excel-Monatsprojekt"
-description: "Warum Standardsoftware selten belastbare Zahlen liefert und wie eine individuelle Anwendung zusammen mit Metabase aus dem Monatsprojekt eine Auswertung in Minuten macht."
+title: 'Wenn der Monatsabschluss zum Projekt wird'
+seoTitle: 'Reporting mit Metabase statt Excel-Monatsprojekt'
+description: 'Warum Standardsoftware selten belastbare Zahlen liefert und wie eine individuelle Anwendung zusammen mit Metabase aus dem Monatsprojekt eine Auswertung in Minuten macht.'
 publishedAt: 2026-04-23
 updatedAt: 2026-08-21
-author: "Marten Prieß"
-image: "./hero.png"
-imageAlt: "Von verstreuten Zahlen zu einem einheitlichen Steuerungs-Dashboard"
-tags: ["business-intelligence", "metabase", "kpi", "individualsoftware", "reporting"]
+author: 'Marten Prieß'
+image: './hero.png'
+imageAlt: 'Von verstreuten Zahlen zu einem einheitlichen Steuerungs-Dashboard'
+tags: ['business-intelligence', 'metabase', 'kpi', 'individualsoftware', 'reporting']
 featured: true
 draft: false
 locale: de
 cta:
-  headline: "Hat euer Monatsabschluss Projektcharakter?"
-  body: "Dann lasst uns darüber sprechen. Auch wenn strategische Entscheidungen bei euch regelmäßig auf Bauchgefühl statt auf Zahlen beruhen."
+  headline: 'Hat euer Monatsabschluss Projektcharakter?'
+  body: 'Dann lasst uns darüber sprechen. Auch wenn strategische Entscheidungen bei euch regelmäßig auf Bauchgefühl statt auf Zahlen beruhen.'
 ---
 
 import Button from '@/components/ui/form/Button/Button.astro';
@@ -26,6 +26,8 @@ Gemeint ist das Muster, bei dem die Monats- oder Quartalsauswertung zur Projekta
 
 Bis dahin hat sich die Lage im Unternehmen weiterentwickelt.
 
+Ein Maßstab dafür, wo ihr steht: APQC erhebt bei rund 2.300 Organisationen, wie lange der Monatsabschluss dauert. Der Median liegt bei 6,4 Kalendertagen, das langsamste Viertel braucht zehn Tage und mehr. Gemessen wird dort der Abschluss selbst, von der Rohbilanz bis zum fertigen Zahlenwerk. Die Auswertung, um die es hier geht, kommt danach.
+
 ## Warum Standardsoftware selten saubere Zahlen liefert
 
 Standardsoftware ist hier nicht der Schuldige. Interessant ist, warum Reporting aus einem Standardsystem an Grenzen stößt, sobald jemand spezifische Geschäftsfragen stellt. Das hat drei Ursachen, und keine davon lässt sich durch besseres Reporting-Tooling beheben.
@@ -37,21 +39,35 @@ Ein Standardsystem bildet Geschäftsvorfälle generisch ab: ein Auftrag, eine Po
 Die Fragen, die wirklich interessant sind, sehen anders aus:
 
 <div className="not-prose my-10 grid gap-4 sm:grid-cols-2" data-reveal="fade-up">
-  <div className="rounded-2xl border border-border bg-background-secondary p-5">
-    <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Deckungsbeitrag</p>
-    <p className="text-foreground mt-2 text-sm leading-6">Auf Kundensegment-Ebene, gewichtet nach strategischer Bedeutung.</p>
+  <div className="border-border bg-background-secondary rounded-2xl border p-5">
+    <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">
+      Deckungsbeitrag
+    </p>
+    <p className="text-foreground mt-2 text-sm leading-6">
+      Auf Kundensegment-Ebene, gewichtet nach strategischer Bedeutung.
+    </p>
   </div>
-  <div className="rounded-2xl border border-border bg-background-secondary p-5">
-    <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Margenentwicklung</p>
-    <p className="text-foreground mt-2 text-sm leading-6">In einem neu eröffneten Produktbereich, differenziert nach Vertriebskanal.</p>
+  <div className="border-border bg-background-secondary rounded-2xl border p-5">
+    <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">
+      Margenentwicklung
+    </p>
+    <p className="text-foreground mt-2 text-sm leading-6">
+      In einem neu eröffneten Produktbereich, differenziert nach Vertriebskanal.
+    </p>
   </div>
-  <div className="rounded-2xl border border-border bg-background-secondary p-5">
-    <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Projekt-Profitabilität</p>
-    <p className="text-foreground mt-2 text-sm leading-6">Pro Projekttyp, unter Einbeziehung interner Aufwände, die nicht fakturiert werden.</p>
+  <div className="border-border bg-background-secondary rounded-2xl border p-5">
+    <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">
+      Projekt-Profitabilität
+    </p>
+    <p className="text-foreground mt-2 text-sm leading-6">
+      Pro Projekttyp, unter Einbeziehung interner Aufwände, die nicht fakturiert werden.
+    </p>
   </div>
-  <div className="rounded-2xl border border-border bg-background-secondary p-5">
+  <div className="border-border bg-background-secondary rounded-2xl border p-5">
     <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Time-to-Cash</p>
-    <p className="text-foreground mt-2 text-sm leading-6">Abgeleitet aus Projektbeginn bis tatsächlichem Zahlungseingang.</p>
+    <p className="text-foreground mt-2 text-sm leading-6">
+      Abgeleitet aus Projektbeginn bis tatsächlichem Zahlungseingang.
+    </p>
   </div>
 </div>
 
@@ -63,6 +79,8 @@ Selbst wenn das Datenmodell tragen würde: Die Reporting-Funktionen sind in Stan
 
 Viele behelfen sich mit Excel als Reporting-Schicht. Für eine Momentaufnahme reicht das. Auf Dauer wird die Person, die das Master-Template pflegt, zum Single Point of Failure, Versionen verzweigen sich, und jede Datenänderung muss von Hand nachgezogen werden.
 
+Wie fehleranfällig solche gewachsenen Tabellen sind, ist gut untersucht. Ray Panko hat Prüfberichte zu 85 Tabellen aus dem laufenden Betrieb zusammengetragen, jede über mehrere Tage von Auditoren durchgesehen. In 94 Prozent fand sich mindestens ein Fehler. Das heißt weder, dass jede dieser Tabellen falsche Ergebnisse lieferte, noch dass eure fehlerhaft ist. Es heißt, dass eine Tabelle, die niemand systematisch prüft, statistisch gesehen Fehler enthält, und dass ihre Qualität an der Sorgfalt einer einzigen Person hängt.
+
 ### Daten leben in mehreren Systemen
 
 Die Daten, die eine Geschäftsführung braucht, liegen fast nie in einem einzigen System. Umsätze im ERP, Pipeline im CRM, Kosten in der Buchhaltung, Projektzeiten in der Zeiterfassung, Marketingkosten in HubSpot, Hosting auf einer Lieferantenrechnung. Jede Quelle bringt eigene Definitionen mit, eigene Stammdatenschlüssel, eigene Zeitstempel.
@@ -70,9 +88,12 @@ Die Daten, die eine Geschäftsführung braucht, liegen fast nie in einem einzige
 Die Zusammenführung ist der eigentliche Aufwand. Und sie ist selten einmalig - jeden Monat neu.
 
 <figure className="not-prose my-12" data-reveal="fade-up">
-  <div className="rounded-[2rem] border border-border bg-card p-8 shadow-sm sm:p-10">
+  <div className="border-border bg-card rounded-[2rem] border p-8 shadow-sm sm:p-10">
     <p className="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">Ausgangslage</p>
-    <p className="text-foreground-secondary mt-3 text-sm leading-6 max-w-xl">Typische Systemlandschaft im Mittelstand: Jedes System ist für sich gut - das Gesamtbild entsteht nur über manuelle Zusammenführung.</p>
+    <p className="text-foreground-secondary mt-3 max-w-xl text-sm leading-6">
+      Typische Systemlandschaft im Mittelstand: Jedes System ist für sich gut - das Gesamtbild
+      entsteht nur über manuelle Zusammenführung.
+    </p>
     <div className="relative mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
       {[
         { icon: 'table', label: 'ERP' },
@@ -82,7 +103,7 @@ Die Zusammenführung ist der eigentliche Aufwand. Und sie ist selten einmalig - 
         { icon: 'layers', label: 'Marketing-Tools' },
         { icon: 'table', label: 'Excel-Tabellen' },
       ].map((sys) => (
-        <div className="flex items-center gap-3 rounded-xl border border-border bg-background-secondary px-4 py-3">
+        <div className="border-border bg-background-secondary flex items-center gap-3 rounded-xl border px-4 py-3">
           <span className="text-brand-600 shrink-0">
             <Icon name={sys.icon} size="sm" />
           </span>
@@ -92,7 +113,7 @@ Die Zusammenführung ist der eigentliche Aufwand. Und sie ist selten einmalig - 
     </div>
     <div className="mt-8 flex items-center gap-4 sm:gap-6">
       <div className="h-px flex-1 bg-[repeating-linear-gradient(90deg,var(--color-border)_0,var(--color-border)_6px,transparent_6px,transparent_12px)]"></div>
-      <div className="inline-flex items-center gap-2 rounded-full border border-dashed border-brand-300 bg-brand-50 px-4 py-2 text-brand-700 dark:bg-brand-900/20 dark:text-brand-300 dark:border-brand-800">
+      <div className="border-brand-300 bg-brand-50 text-brand-700 dark:bg-brand-900/20 dark:text-brand-300 dark:border-brand-800 inline-flex items-center gap-2 rounded-full border border-dashed px-4 py-2">
         <Icon name="alert-circle" size="sm" />
         <span className="text-sm font-semibold">Gesamtbild?</span>
       </div>
@@ -102,14 +123,21 @@ Die Zusammenführung ist der eigentliche Aufwand. Und sie ist selten einmalig - 
 </figure>
 
 <aside className="not-prose my-8" data-reveal="fade-up">
-  <div className="rounded-2xl border border-brand-200 bg-brand-50/60 p-6 dark:border-brand-800 dark:bg-brand-900/15 sm:p-7">
+  <div className="border-brand-200 bg-brand-50/60 dark:border-brand-800 dark:bg-brand-900/15 rounded-2xl border p-6 sm:p-7">
     <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
       <div className="flex-1">
-        <p className="font-display text-foreground text-lg font-semibold leading-snug sm:text-xl">Kommt euch das bekannt vor?</p>
-        <p className="text-foreground-secondary mt-1.5 text-sm leading-6">Im Erstgespräch klären wir, ob sich ein strukturierter Umbau für euch lohnt.</p>
+        <p className="font-display text-foreground text-lg leading-snug font-semibold sm:text-xl">
+          Kommt euch das bekannt vor?
+        </p>
+        <p className="text-foreground-secondary mt-1.5 text-sm leading-6">
+          Im Erstgespräch klären wir, ob sich ein strukturierter Umbau für euch lohnt.
+        </p>
       </div>
       <div className="shrink-0">
-        <Button href={contactLinks.cal} target="_blank" rel="noopener"><span>Mit Marten sprechen</span><Icon name="arrow-up-right" size="sm" /></Button>
+        <Button href={contactLinks.cal} target="_blank" rel="noopener">
+          <span>Mit Marten sprechen</span>
+          <Icon name="arrow-up-right" size="sm" />
+        </Button>
       </div>
     </div>
   </div>
@@ -192,6 +220,7 @@ Die Kombination wirkt aus einem einfachen Grund: Ist das Datenmodell sauber, wei
         Einmal sauber modelliert. Danach dauerhaft tragfähig.
       </p>
     </div>
+
   </div>
 </figure>
 
@@ -201,7 +230,7 @@ Ein Beispiel aus einem echten Projekt. Ein mittelständisches Unternehmen im Pro
 
 Der Umbau lief in drei Schritten:
 
-**Schritt 1 - Datenmodell neu entworfen.** Mit der Geschäftsführung und den Projektverantwortlichen haben wir das Modell so geschnitten, dass die interessanten Dimensionen direkt darin stecken: Kundensegment, Projekttyp, Leistungsart, interne und externe Aufwände. Als tragende Struktur, nicht als Custom-Feld. Dazu kamen Oberflächen und Arbeitsabläufe, in denen diese Struktur *nebenbei* entsteht, statt vom Team gepflegt werden zu müssen.
+**Schritt 1 - Datenmodell neu entworfen.** Mit der Geschäftsführung und den Projektverantwortlichen haben wir das Modell so geschnitten, dass die interessanten Dimensionen direkt darin stecken: Kundensegment, Projekttyp, Leistungsart, interne und externe Aufwände. Als tragende Struktur, nicht als Custom-Feld. Dazu kamen Oberflächen und Arbeitsabläufe, in denen diese Struktur _nebenbei_ entsteht, statt vom Team gepflegt werden zu müssen.
 
 **Schritt 2 - Altdaten migriert.** Die Historie aus der bisherigen Standardlösung kam mit. Das war eine bewusste Entscheidung: Nur so sind vom ersten Tag an Trendauswertungen über mehrere Jahre möglich. Ohne Historie bleibt ein neues System ein Jahr lang blind.
 
@@ -215,19 +244,31 @@ Geblieben ist etwas, das über das ursprüngliche Problem hinausgeht: eine Basis
 
 <figure className="not-prose my-12" data-reveal="fade-up">
   <div className="grid gap-4 md:grid-cols-[1fr_auto_1fr] md:items-stretch">
-    <div className="rounded-[2rem] border border-border bg-background-secondary p-8 sm:p-10">
-      <p className="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">Vorher</p>
-      <p className="font-display text-foreground mt-4 text-4xl font-bold tracking-tight sm:text-5xl">4–8&nbsp;Stunden</p>
-      <p className="text-foreground-secondary mt-3 text-sm leading-6">Einmal im Monat Zahlen aus dem System exportieren, ins Excel-Modell kippen, Abweichungen klären, versenden.</p>
+    <div className="border-border bg-background-secondary rounded-[2rem] border p-8 sm:p-10">
+      <p className="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">
+        Vorher
+      </p>
+      <p className="font-display text-foreground mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
+        4–8&nbsp;Stunden
+      </p>
+      <p className="text-foreground-secondary mt-3 text-sm leading-6">
+        Einmal im Monat Zahlen aus dem System exportieren, ins Excel-Modell kippen, Abweichungen
+        klären, versenden.
+      </p>
     </div>
-    <div className="flex items-center justify-center text-brand-500">
+    <div className="text-brand-500 flex items-center justify-center">
       <Icon name="arrow-right" size="xl" class="hidden md:block" />
-      <Icon name="arrow-right" size="xl" class="md:hidden rotate-90" />
+      <Icon name="arrow-right" size="xl" class="rotate-90 md:hidden" />
     </div>
-    <div className="rounded-[2rem] border border-brand-300 bg-card p-8 shadow-[0_22px_55px_rgba(34,43,74,0.08)] sm:p-10">
+    <div className="border-brand-300 bg-card rounded-[2rem] border p-8 shadow-[0_22px_55px_rgba(34,43,74,0.08)] sm:p-10">
       <p className="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">Nachher</p>
-      <p className="font-display text-foreground mt-4 text-4xl font-bold tracking-tight sm:text-5xl">Live.</p>
-      <p className="text-foreground-secondary mt-3 text-sm leading-6">Dashboard jederzeit abrufbar. Kein manueller Aufwand. Entscheidungen auf Basis aktueller Zahlen.</p>
+      <p className="font-display text-foreground mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
+        Live.
+      </p>
+      <p className="text-foreground-secondary mt-3 text-sm leading-6">
+        Dashboard jederzeit abrufbar. Kein manueller Aufwand. Entscheidungen auf Basis aktueller
+        Zahlen.
+      </p>
     </div>
   </div>
 </figure>
@@ -237,20 +278,37 @@ Geblieben ist etwas, das über das ursprüngliche Problem hinausgeht: eine Basis
 Dasselbe Projekt wäre mit einem proprietären BI-Tool ebenfalls machbar gewesen. Die kommerziellen Lösungen sind ausgereift und haben ihre Berechtigung. Trotzdem fällt unsere Wahl fast immer auf Metabase oder eine vergleichbare Open-Source-Alternative. Drei Gründe:
 
 <div className="not-prose my-10 grid gap-4 md:grid-cols-3" data-reveal="fade-up">
-  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+  <div className="border-border bg-background-secondary rounded-2xl border p-6">
     <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">01</p>
-    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Fokus auf das eigentliche Problem</p>
-    <p className="text-foreground-secondary mt-3 text-sm leading-6">Der Engpass ist das Datenmodell, nicht die Tool-Auswahl. Ein gutes Open-Source-Tool steht in zwei Tagen. Wer Monate in BI-Lizenzvergleiche steckt, arbeitet am falschen Hebel.</p>
+    <p className="font-display text-foreground mt-2 text-lg leading-snug font-semibold">
+      Fokus auf das eigentliche Problem
+    </p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">
+      Der Engpass ist das Datenmodell, nicht die Tool-Auswahl. Ein gutes Open-Source-Tool steht in
+      zwei Tagen. Wer Monate in BI-Lizenzvergleiche steckt, arbeitet am falschen Hebel.
+    </p>
   </div>
-  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+  <div className="border-border bg-background-secondary rounded-2xl border p-6">
     <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">02</p>
-    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Keine Lizenzfalle</p>
-    <p className="text-foreground-secondary mt-3 text-sm leading-6">Unsere Kunden sollen nach dem Projekt nicht an uns oder einen BI-Hersteller gebunden sein. Metabase können sie selbst betreiben, erweitern, anpassen. Wenn sie uns irgendwann nicht mehr brauchen, ist das in Ordnung.</p>
+    <p className="font-display text-foreground mt-2 text-lg leading-snug font-semibold">
+      Keine Lizenzfalle
+    </p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">
+      Unsere Kunden sollen nach dem Projekt nicht an uns oder einen BI-Hersteller gebunden sein.
+      Metabase können sie selbst betreiben, erweitern, anpassen. Wenn sie uns irgendwann nicht mehr
+      brauchen, ist das in Ordnung.
+    </p>
   </div>
-  <div className="rounded-2xl border border-border bg-background-secondary p-6">
+  <div className="border-border bg-background-secondary rounded-2xl border p-6">
     <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">03</p>
-    <p className="font-display text-foreground mt-2 text-lg font-semibold leading-snug">Transparenz im Datenfluss</p>
-    <p className="text-foreground-secondary mt-3 text-sm leading-6">Bei Open-Source-Bausteinen können wir bis auf die Ebene der Abfragelogik zeigen, was passiert. Das hilft in Entwicklung und Betrieb - und es hilft den Kunden, die Verantwortung für ihre Zahlen wirklich zu übernehmen.</p>
+    <p className="font-display text-foreground mt-2 text-lg leading-snug font-semibold">
+      Transparenz im Datenfluss
+    </p>
+    <p className="text-foreground-secondary mt-3 text-sm leading-6">
+      Bei Open-Source-Bausteinen können wir bis auf die Ebene der Abfragelogik zeigen, was passiert.
+      Das hilft in Entwicklung und Betrieb - und es hilft den Kunden, die Verantwortung für ihre
+      Zahlen wirklich zu übernehmen.
+    </p>
   </div>
 </div>
 
@@ -320,3 +378,31 @@ Nicht jedes Unternehmen braucht eine individuelle Anwendung für saubere Zahlen.
 
 Wir empfehlen diesen Weg aktiv, wenn das Kerngeschäft nicht von den Reporting-Fragen abhängt und wenn die bestehenden Systeme grundsätzlich sauber sind. Die volle Kombination - individuelle Kernanwendung plus Reporting-Layer - lohnt sich dort, wo die Geschäftsfragen spezifisch sind, wo die Daten heute über mehrere Systeme verteilt sind und wo die Geschäftsführung das Reporting als echtes Steuerungsinstrument nutzen will.
 
+<div className="not-prose my-10" data-reveal="fade-up">
+  <div className="border-border bg-background-secondary rounded-2xl border p-6 sm:p-7">
+    <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Quellen</p>
+    <ul className="mt-4 space-y-3 text-sm leading-6 [&_li>a>p]:inline [&_li>p]:inline">
+      <li className="text-foreground-secondary">
+        <a
+          href="https://www.cfo.com/news/metric-of-the-month-cycle-time-for-monthly-close/659297/"
+          className="text-brand-600 hover:text-brand-500 dark:text-brand-400 dark:hover:text-brand-300 underline underline-offset-2"
+        >
+          Perry D. Wiggins, Metric of the Month: Cycle Time for Monthly Close
+        </a>
+        , CFO.com, 5. März 2018. Benchmarking von APQC unter 2.300 Organisationen. Median 6,4
+        Kalendertage von der Rohbilanz bis zum fertigen Abschluss, das langsamste Viertel braucht
+        zehn Tage und mehr.
+      </li>
+      <li className="text-foreground-secondary">
+        <a
+          href="https://arxiv.org/pdf/1602.02601"
+          className="text-brand-600 hover:text-brand-500 dark:text-brand-400 dark:hover:text-brand-300 underline underline-offset-2"
+        >
+          Raymond R. Panko, What We Don't Know About Spreadsheet Errors Today
+        </a>
+        , EuSpRIG 2015. Zusammenfassung mehrerer Prüfstudien zu 85 Tabellen aus dem laufenden
+        Betrieb. In 94 Prozent wurde mindestens ein Fehler gefunden.
+      </li>
+    </ul>
+  </div>
+</div>
