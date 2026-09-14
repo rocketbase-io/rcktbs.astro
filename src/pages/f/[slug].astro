@@ -19,6 +19,11 @@ export function getStaticPaths() {
 
 const { funnel } = Astro.props;
 
+// Die Trust-Video-Sektion ist fertig gebaut, aber abgeschaltet, bis die
+// Screencasts geschnitten sind. Auf true setzen, um sie zu aktivieren.
+const SHOW_TRUST_VIDEO = false;
+const trustVideo = SHOW_TRUST_VIDEO ? funnel.trustVideo : undefined;
+
 const clientLogos = [
   { key: 'bonprix_logo', name: 'bonprix' },
   { key: 'statista-logo', name: 'Statista' },
@@ -99,29 +104,29 @@ const clientLogos = [
 
   <!-- TRUST-VIDEO (Screencast aus echten Projekten) – zeigt Platzhalter, solange kein src gesetzt -->
   {
-    funnel.trustVideo && false && (
+    trustVideo && (
       <section class="py-14 lg:py-20">
         <div class="container max-w-4xl">
           <header class="mx-auto max-w-2xl text-center">
             <h2 class="font-display text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
-              {funnel.trustVideo.heading}
+              {trustVideo.heading}
             </h2>
-            {funnel.trustVideo.text && (
+            {trustVideo.text && (
               <p class="text-foreground-secondary mx-auto mt-4 max-w-xl text-base leading-7">
-                {funnel.trustVideo.text}
+                {trustVideo.text}
               </p>
             )}
           </header>
 
           <div class="mt-8 overflow-hidden rounded-2xl border border-border shadow-lg">
-            {funnel.trustVideo.src ? (
+            {trustVideo.src ? (
               <video
                 class="aspect-video w-full bg-black"
                 controls
                 preload="metadata"
-                poster={funnel.trustVideo.poster}
+                poster={trustVideo.poster}
               >
-                <source src={funnel.trustVideo.src} type="video/mp4" />
+                <source src={trustVideo.src} type="video/mp4" />
               </video>
             ) : (
               <div class="bg-background-secondary relative flex aspect-video w-full items-center justify-center">
