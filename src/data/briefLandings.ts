@@ -34,6 +34,15 @@ export interface BriefLandingDefinition {
     subline: string;
   };
   /**
+   * Dieselben Belegzahlen wie auf Seite 2 des Briefes.
+   *
+   * Wer hier ankommt, hat den Brief gerade gelesen — die Kacheln stellen die
+   * Wiedererkennung her und ersetzen den Fließtext, der die Argumentation des
+   * Briefes sonst ein zweites Mal ausbreitet. Drei Stück, sonst wird aus dem
+   * Beleg eine Statistikseite.
+   */
+  belege?: { zahl: string; aussage: string; quelle: string }[];
+  /**
    * Kurzer Screencast aus echten Projekten. Solange `src` fehlt, zeigt die
    * Seite einen sichtbaren Platzhalter — die Sektion steht dann schon.
    */
@@ -42,6 +51,13 @@ export interface BriefLandingDefinition {
     text?: string;
     src?: string;
     poster?: string;
+    /**
+     * Ungekürzte Fassung als Link unter dem Player. Die Kurzfassung läuft
+     * eingebettet (90 Sekunden, stumm mit Musik) — wer nach dem Brief wirklich
+     * wissen will, wie es funktioniert, bekommt die lange mit Originalton.
+     */
+    langSrc?: string;
+    langLabel?: string;
   };
   referenzen: {
     heading: string;
@@ -100,22 +116,37 @@ const CAL_URL = 'https://cal.com/rocketbase-marten/erstgesprach-anschreiben';
 
 export const briefLandings: BriefLandingDefinition[] = [
   {
-    slug: 'fertigung',
+    /**
+     * Hebel B — wie das Angebot entsteht.
+     *
+     * Für Prüf- und Wartungsbetriebe, die nach Norm und Zyklus kalkulieren:
+     * Der Prüfumfang steht fest, die Frage ist nur der Aufwand. Diese Leser
+     * messen Aufwand, nicht Optik — deshalb zeigt die Seite den Weg von der
+     * fälligen Prüfung bis zum versendeten Angebot, nicht die Darstellung
+     * beim Kunden.
+     *
+     * Der frühere Slug hieß `fertigung` und stammte aus der abgeschlossenen
+     * Handwerks-Zielgruppe. Er hat nie getragen: Die Zielgruppe sind Prüf-,
+     * Wartungs- und Zertifizierungsbetriebe, und die Headline
+     * ("Software, die Ihrem Ablauf folgt") hätte über jeder der drei Seiten
+     * stehen können.
+     */
+    slug: 'ablauf',
     meta: {
-      title: 'Software für Fertigungsbetriebe — RocketBase',
+      title: 'Vom Prüfzyklus zum Angebot — RocketBase',
       description:
-        'Individuelle Fachanwendungen für Betriebe, deren Abläufe nicht in ein Standardprodukt passen. Kurz gezeigt, was wir gebaut haben.',
+        'Prüffrist, Anlagenzahl und Sätze liegen im System, das Angebot rechnet sich daraus — samt Deckungsbeitrag, bevor es rausgeht. Kurz gezeigt an einer laufenden Lösung.',
     },
     hero: {
       eyebrow: 'Sie haben Post von uns bekommen',
-      headline: 'Software, die Ihrem Ablauf folgt —',
-      headlineAccent: 'nicht umgekehrt',
+      headline: 'Der Prüfzyklus steht fest.',
+      headlineAccent: 'Warum dauert das Angebot dann so lange?',
       subline:
-        'Wir bauen Fachanwendungen für Fertigungs- und Handwerksbetriebe: dort, wo Serien- und Einzelfertigung nebeneinanderlaufen, Nachweise gefordert sind und die Planung heute noch in Excel hängt.',
+        'Bei wiederkehrenden Prüfungen und Wartungen ist der Aufwand je Anlage bekannt, bevor jemand ein Angebot schreibt. Trotzdem passieren die Schritte dazwischen von Hand: Stunden aus der Vorjahresdatei, Sätze aus der Erinnerung, die Marge erst in der Nachkalkulation. Liegen Norm, Anlagendaten und Sätze im System, rechnet sich das Angebot daraus — und der Deckungsbeitrag steht daneben, bevor es rausgeht.',
     },
     video: {
-      heading: 'So sieht das bei uns aus',
-      text: 'Marten Prieß zeigt in wenigen Minuten, wie wir arbeiten und wie fertige Lösungen aussehen — keine Folien, echte Oberflächen aus laufenden Projekten.',
+      heading: 'So entsteht ein Wartungsangebot',
+      text: 'Marten Prieß zeigt die Strecke an einer laufenden Lösung: fällige Prüfung, Kalkulation aus Norm und Anlagendaten, Deckungsbeitrag, Versand und Wiedervorlage — keine Folien, echte Oberflächen.',
     },
     referenzen: {
       heading: 'Aus vergleichbaren Betrieben',
@@ -139,32 +170,117 @@ export const briefLandings: BriefLandingDefinition[] = [
     },
   },
   {
-    slug: 'beratung',
+    /**
+     * Hebel A — was der Kunde sieht.
+     *
+     * Für Häuser, die ihren Angebotsumfang frei zuschneiden: Optionen sind
+     * der Hebel, und das Angebot arbeitet die meiste Zeit ohne den Absender
+     * (17 %, HBR 2022). Die Seite zeigt deshalb die Kundensicht — Optionen
+     * wählen, Summe läuft mit, zusagen — und was davon beim Absender
+     * sichtbar wird.
+     *
+     * Slug vorher `beratung`; umbenannt, weil die Trennung am Hebel hängt,
+     * nicht an der Branche.
+     */
+    slug: 'angebot',
     meta: {
-      title: 'Software für Beratungen und Ingenieurbüros — RocketBase',
+      title: 'Was Ihr Kunde sieht, wenn Ihr Angebot ankommt — RocketBase',
       description:
-        'Anfrage, Angebot, Projekt und Rechnung in einem System, gebaut für eine Unternehmensberatung, die aus Vertec herausgewachsen war. Kurz gezeigt, was wir gebaut haben.',
+        'Statt eines PDF-Anhangs eine Seite: Der Kunde wählt Optionen, die Summe läuft mit, er sagt per Klick zu — und Sie sehen, wann er hineingeschaut hat. Kurz gezeigt an einer laufenden Lösung.',
     },
     hero: {
       eyebrow: 'Sie haben Post von uns bekommen',
       headline: 'Was sieht Ihr Kunde, wenn er',
       headlineAccent: 'ein Angebot von Ihnen bekommt?',
       subline:
-        'Für eine Unternehmensberatung haben wir Vertec durch eine eigene Plattform ersetzt: Vertrieb als Kanban-Board, Angebote, die sich selbst durchrechnen, eine Angebotsseite, auf der der Kunde Optionen wählt und die Summe mitläuft, Rechnung per Klick. Das Muster trifft Ingenieurbüros, Beratungen und Kanzleien gleichermaßen: Projektzeit ist das Produkt, und jede Stunde im Systemumweg fehlt auf der Rechnung.',
+        'Sie haben den Brief gelesen. Hier sehen Sie in anderthalb Minuten, wie ein Angebot bei uns entsteht — und was Ihr Kunde am Ende davon hat.',
     },
+    belege: [
+      {
+        zahl: '17 %',
+        aussage:
+          'ihres Kaufprozesses verbringen Kunden im Gespräch mit Anbietern. In den anderen 83 Prozent arbeitet Ihr Angebot allein.',
+        quelle: 'Harvard Business Review 2022',
+      },
+      {
+        zahl: 'Doppelt',
+        aussage:
+          'so oft berichten Käufer von einem guten Abschluss, wenn sie sicher waren, was sie kaufen — verglichen mit denen, die unsicher blieben.',
+        quelle: 'Gartner 2026, 646 Befragte',
+      },
+      {
+        zahl: '13 Personen',
+        aussage:
+          'sind im Schnitt an einer B2B-Kaufentscheidung beteiligt. Die meisten davon lesen nur das Dokument.',
+        quelle: 'Forrester 2024, über 16.000 Einkäufer',
+      },
+    ],
     video: {
-      heading: 'So sieht das bei uns aus',
-      text: 'Marten Prieß zeigt in wenigen Minuten die Strecke von der Anfrage bis zur Rechnung aus einem laufenden Projekt — keine Folien, echte Oberflächen.',
+      heading: 'Von der Anfrage bis zur Zusage',
+      text: 'Die Strecke aus einem laufenden Projekt, in anderthalb Minuten: von der Anfrage über die Kalkulation bis zu dem, was Ihr Kunde am Ende sieht.',
+      src: '/screencasts/angebotsprozess-kurz.mp4',
+      poster: '/screencasts/angebotsprozess-kurz.jpg',
+      langSrc: '/screencasts/angebotsprozess-lang.mp4',
+      langLabel: 'Ausführlich ansehen — jeder Schritt einzeln erklärt (4:19)',
     },
     referenzen: {
       heading: 'Aus vergleichbaren Häusern',
       intro:
         'Das Projekt aus dem Brief, dazu zwei weitere, in denen Planung und Zahlen aus Excel in einen belastbaren Prozess gewandert sind.',
+      slugs: ['fkc-consulting', 'schlosserei-diezinger', 'statista'],
+    },
+    termin: {
+      heading: 'Suchen Sie sich einen Termin aus',
+      text: '30 Minuten mit Marten Prieß — ohne Präsentation. Wir schauen uns an, wie bei Ihnen ein Angebot entsteht und wo dabei Zeit liegen bleibt. Sie bekommen eine ehrliche Einschätzung, ob sich da etwas lohnt — und wenn nicht, sagen wir das genauso.',
+      calUrl: CAL_URL,
+      calLabel: '30-Minuten-Gespräch buchen',
+    },
+    kontakt: {
+      heading: 'Lieber erst schreiben?',
+      text: 'Hinterlassen Sie Ihre Kontaktdaten — Marten Prieß meldet sich werktags persönlich. Kein Newsletter, keine Weitergabe Ihrer Daten.',
+    },
+    erfolg: {
+      heading: 'Danke, Ihre Nachricht ist angekommen.',
+      text: 'Marten Prieß meldet sich werktags bei Ihnen.',
+    },
+  },
+  {
+    /**
+     * Dritte Variante, für Betriebe, die alt genug für eine Übergabe wären.
+     *
+     * Bewusst ohne das Wort Nachfolge: Diese Geschäftsführer bekommen
+     * regelmäßig Post von Aufkäufern. Wer damit anfängt, wird als einer von
+     * ihnen gelesen und ist weg, bevor der zweite Satz drankommt. Es geht um
+     * Steuerbarkeit — ob der Betrieb ohne den Inhaber lesbar ist. Wer daraus
+     * eine Nachfolge ableiten will, tut das selbst; der Blog-Beitrag dazu
+     * steht für die, die weiterlesen.
+     */
+    slug: 'steuerbarkeit',
+    meta: {
+      title: 'Die vier Zahlen, nach denen zuerst gefragt wird — RocketBase',
+      description:
+        'Vertragswert im Folgejahr, Marge je Vertrag, Abhängigkeit vom Inhaber, Forderungslaufzeit: vier Zahlen, die jeder Dienstleister über sich kennen will. Kurz gezeigt, wie sie aus dem System kommen statt aus dem Kopf.',
+    },
+    hero: {
+      eyebrow: 'Sie haben Post von uns bekommen',
+      headline: 'Die vier Zahlen, nach denen',
+      headlineAccent: 'zuerst gefragt wird',
+      subline:
+        'Welche Verträge laufen nächstes Jahr aus und was ist das wert? Was verdienen Sie an jedem einzelnen? Wie viel davon hängt an Ihnen persönlich? Und wann kommt das Geld? Vier Fragen, die ein Betrieb mit Betreuungs- oder Wartungsverträgen über sich beantworten können sollte — ob für die Bank, den neuen Bereichsleiter oder den eigenen Urlaub.',
+    },
+    video: {
+      heading: 'So sieht das bei uns aus',
+      text: 'Marten Prieß zeigt das Cockpit einer laufenden Lösung: Vertragswert-Wegfall ins Folgejahr, Deckungsbeitrag je Vertrag, Auslastung je Team. Keine Folien, echte Oberflächen.',
+    },
+    referenzen: {
+      heading: 'Aus vergleichbaren Häusern',
+      intro:
+        'Ein Beratungshaus, das seine Zahlen aus der Standardsoftware herausgeholt hat, dazu zwei Projekte, in denen Planung und Controlling aus Excel in einen belastbaren Prozess gewandert sind.',
       slugs: ['fkc-consulting', 'stage-cml', 'statista'],
     },
     termin: {
       heading: 'Suchen Sie sich einen Termin aus',
-      text: '30 Minuten mit Marten Prieß — ohne Präsentation. Wir schauen uns an, wie bei Ihnen ein Angebot entsteht und wo dabei Zeit liegen bleibt. Lohnt sich der nächste Schritt, sagen wir das: ein Tag bei Ihnen, ein Dokument mit Empfehlung und Kostenrahmen, 2.400 Euro, und das Dokument gehört Ihnen. Lohnt er sich nicht, sagen wir das auch.',
+      text: '30 Minuten mit Marten Prieß — ohne Präsentation. Wir gehen die vier Fragen an Ihren Zahlen durch und sagen Ihnen, welche davon heute aus dem System kommen und welche aus dem Kopf. Ohne Bewertung, ohne Verkaufsabsicht.',
       calUrl: CAL_URL,
       calLabel: '30-Minuten-Gespräch buchen',
     },

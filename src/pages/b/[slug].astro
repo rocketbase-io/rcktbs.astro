@@ -15,7 +15,6 @@
  * vorqualifizierter Leser, der gesiezt wird. Ein gemeinsames Template hätte
  * `if (kanal === 'brief')` durch jede Textzeile gezogen.
  */
-import { Picture } from 'astro:assets';
 import FunnelLayout from '@/layouts/FunnelLayout.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Blueprint from '@/components/hero-backgrounds/Blueprint.astro';
@@ -23,8 +22,6 @@ import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
 import { BriefKontakt } from '@/components/brief/BriefKontakt';
 import { BriefTermin } from '@/components/brief/BriefTermin';
 import { briefLandings } from '@/data/briefLandings';
-import { cases, additionalCases } from '@/data/rocketbase';
-import { caseTeaserImages } from '@/features/references/caseImages';
 
 export function getStaticPaths() {
   return briefLandings.map((landing) => ({
@@ -38,11 +35,6 @@ const { landing } = Astro.props;
 // Referenztexte kommen aus rocketbase.ts — die Variante wählt nur die Slugs.
 // So bleibt der Inhalt an einer Stelle gepflegt und driftet nicht gegen die
 // Website-Referenzen ab.
-const alleCases = [...cases, ...additionalCases];
-const referenzen = landing.referenzen.slugs
-  .map((slug) => alleCases.find((c) => c.slug === slug))
-  .filter((c): c is (typeof alleCases)[number] => Boolean(c));
-
 const clientLogos = [
   { key: 'bonprix_logo', name: 'bonprix' },
   { key: 'statista-logo', name: 'Statista' },
@@ -85,6 +77,39 @@ const clientLogos = [
       >
         {landing.hero.subline}
       </p>
+
+      {/* Belege im Hero statt in eigener Sektion: kompakt genug, dass auf einem
+          normalen Monitor der Video-Abschnitt darunter noch angeschnitten
+          sichtbar bleibt — das ist die Einladung zum Scrollen. */}
+      {
+        landing.belege && landing.belege.length > 0 && (
+          <div class="mx-auto mt-10 grid max-w-4xl gap-3 text-left sm:grid-cols-3">
+            {landing.belege.map((b) => (
+              <div class="border-border bg-card/70 rounded-xl border p-4">
+                <p class="font-display text-brand-600 dark:text-brand-300 text-xl leading-none font-bold tracking-tight">
+                  {b.zahl}
+                </p>
+                <p class="text-foreground-secondary mt-2 text-[0.8rem] leading-5">{b.aussage}</p>
+                <p class="text-foreground-muted mt-2 text-[0.7rem] leading-4">{b.quelle}</p>
+              </div>
+            ))}
+          </div>
+        )
+      }
+
+      {
+        landing.video.src && (
+          <p class="mt-8">
+            <a
+              href="#video"
+              class="text-foreground-muted hover:text-brand-600 dark:hover:text-brand-400 inline-flex flex-col items-center gap-1 text-xs transition-colors"
+            >
+              <span>So entsteht ein Angebot</span>
+              <Icon name="chevron-down" size="sm" />
+            </a>
+          </p>
+        )
+      }
     </div>
   </section>
 
@@ -92,7 +117,7 @@ const clientLogos = [
        Produktion - Brief-Empfänger sollen keine Baustelle sehen; die Sektion
        kommt automatisch, sobald die Datei in briefLandings.ts eingetragen ist. -->
   {landing.video.src && (
-  <section class="pt-4 pb-14 lg:pt-8 lg:pb-20">
+  <section id="video" class="scroll-mt-20 pt-4 pb-14 lg:pt-8 lg:pb-20">
     <div class="container max-w-4xl">
       <header class="mx-auto max-w-2xl text-center">
         <h2 class="font-display text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
@@ -140,6 +165,20 @@ const clientLogos = [
           )
         }
       </div>
+
+      {
+        landing.video.langSrc && (
+          <p class="mt-4 text-center">
+            <a
+              href={landing.video.langSrc}
+              class="text-foreground-secondary hover:text-brand-600 dark:hover:text-brand-400 inline-flex items-center gap-1.5 text-sm underline underline-offset-4 transition-colors"
+            >
+              <Icon name="arrow-up-right" size="sm" />
+              <span>{landing.video.langLabel ?? 'Ausführliche Fassung ansehen'}</span>
+            </a>
+          </p>
+        )
+      }
     </div>
   </section>
   )}
@@ -151,8 +190,9 @@ const clientLogos = [
     variant="light"
   />
 
-  <!-- TERMIN (Primärweg) — steht vor den Referenzen: Wer nach dem Video
-       überzeugt ist, soll buchen können, ohne erst weiterscrollen zu müssen. -->
+  <!-- TERMIN (Primärweg) — direkt nach dem Video. Eine Funnel-Seite hat EIN
+       Ziel; Referenzkarten und Blog-Links standen vorher dazwischen und waren
+       Ausgänge, keine Belege. Die Logoleiste darüber trägt das Vertrauen. -->
   <section class="py-16 lg:py-20">
     <div class="container max-w-3xl">
       <BriefTermin
@@ -162,54 +202,6 @@ const clientLogos = [
         heading={landing.termin.heading}
         text={landing.termin.text}
       />
-    </div>
-  </section>
-
-  <!-- REFERENZEN: dieselben Projekte wie im Brief. Nach der Buchung, als
-       Vertiefung für alle, die noch mehr sehen wollen. -->
-  <section class="bg-background-secondary border-border border-y py-16 lg:py-20">
-    <div class="container max-w-5xl">
-      <header class="mx-auto max-w-2xl text-center">
-        <h2 class="font-display text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
-          {landing.referenzen.heading}
-        </h2>
-        {
-          landing.referenzen.intro && (
-            <p class="text-foreground-secondary mx-auto mt-4 text-base leading-7">
-              {landing.referenzen.intro}
-            </p>
-          )
-        }
-      </header>
-
-      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {
-          referenzen.map((ref) => (
-            <article class="border-border bg-card flex flex-col overflow-hidden rounded-2xl border shadow-sm">
-              {caseTeaserImages[ref.slug] && (
-                <Picture
-                  src={caseTeaserImages[ref.slug]!}
-                  formats={['avif', 'webp']}
-                  alt={`${ref.client} — ${ref.title}`}
-                  class="aspect-[16/10] w-full object-cover"
-                  widths={[400, 800]}
-                  sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 90vw"
-                  loading="lazy"
-                />
-              )}
-              <div class="flex flex-1 flex-col p-5">
-                <p class="text-brand-600 dark:text-brand-300 text-xs font-semibold tracking-[0.18em] uppercase">
-                  {ref.client}
-                </p>
-                <h3 class="font-display text-foreground mt-2 text-base leading-snug font-bold">
-                  {ref.title}
-                </h3>
-                <p class="text-foreground-secondary mt-3 text-sm leading-6">{ref.kicker}</p>
-              </div>
-            </article>
-          ))
-        }
-      </div>
     </div>
   </section>
 
