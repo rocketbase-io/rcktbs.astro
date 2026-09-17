@@ -186,14 +186,14 @@ export const briefLandings: BriefLandingDefinition[] = [
     meta: {
       title: 'Was Ihr Kunde sieht, wenn Ihr Angebot ankommt — RocketBase',
       description:
-        'Statt eines PDF-Anhangs eine Seite: Der Kunde wählt Optionen, die Summe läuft mit, er sagt per Klick zu — und Sie sehen, wann er hineingeschaut hat. Kurz gezeigt an einer laufenden Lösung.',
+        'Statt eines PDF-Anhangs eine Seite: Der Kunde wählt Optionen, die Summe läuft mit, er sagt per Klick zu — und Sie sehen, wann er hineingeschaut hat. In knapp zwei Minuten an einer laufenden Lösung gezeigt.',
     },
     hero: {
       eyebrow: 'Sie haben Post von uns bekommen',
       headline: 'Was sieht Ihr Kunde, wenn er',
       headlineAccent: 'ein Angebot von Ihnen bekommt?',
       subline:
-        'Sie haben den Brief gelesen. Hier sehen Sie in anderthalb Minuten, wie ein Angebot bei uns entsteht — und was Ihr Kunde am Ende davon hat.',
+        'Sie haben den Brief gelesen. Hier sehen Sie, was Ihr Kunde beim Angebot vor sich hat — und zum Schluss, wie es bei Ihnen entsteht.',
     },
     belege: [
       {
@@ -216,12 +216,10 @@ export const briefLandings: BriefLandingDefinition[] = [
       },
     ],
     video: {
-      heading: 'Von der Anfrage bis zur Zusage',
-      text: 'Die Strecke aus einem laufenden Projekt, in anderthalb Minuten: von der Anfrage über die Kalkulation bis zu dem, was Ihr Kunde am Ende sieht.',
-      src: '/screencasts/angebotsprozess-kurz.mp4',
-      poster: '/screencasts/angebotsprozess-kurz.jpg',
-      langSrc: '/screencasts/angebotsprozess-lang.mp4',
-      langLabel: 'Ausführlich ansehen — jeder Schritt einzeln erklärt (4:19)',
+      heading: 'So kommt Ihr Angebot beim Kunden an',
+      text: 'Knapp zwei Minuten aus einem laufenden Projekt: wie der Kunde das Angebot öffnet, Optionen wählt und zusagt — und zum Schluss, wie es bei Ihnen entsteht und sich kalkuliert. Mit Untertiteln, auch ohne Ton.',
+      src: '/screencasts/angebotsprozess-9x16.mp4',
+      poster: '/screencasts/angebotsprozess-9x16.jpg',
     },
     referenzen: {
       heading: 'Aus vergleichbaren Häusern',

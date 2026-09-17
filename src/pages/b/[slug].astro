@@ -19,7 +19,6 @@ import FunnelLayout from '@/layouts/FunnelLayout.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Blueprint from '@/components/hero-backgrounds/Blueprint.astro';
 import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
-import { BriefKontakt } from '@/components/brief/BriefKontakt';
 import { BriefTermin } from '@/components/brief/BriefTermin';
 import { briefLandings } from '@/data/briefLandings';
 
@@ -73,38 +72,24 @@ const clientLogos = [
         <span class="text-brand-500 mt-2 block">{landing.hero.headlineAccent}</span>
       </h1>
       <p
-        class="text-foreground-secondary mx-auto mt-6 max-w-2xl text-base leading-7 sm:text-lg sm:leading-8"
+        class="text-foreground-secondary mx-auto mt-6 max-w-2xl text-base leading-7 text-pretty sm:text-lg sm:leading-8"
       >
         {landing.hero.subline}
       </p>
 
-      {/* Belege im Hero statt in eigener Sektion: kompakt genug, dass auf einem
-          normalen Monitor der Video-Abschnitt darunter noch angeschnitten
-          sichtbar bleibt — das ist die Einladung zum Scrollen. */}
-      {
-        landing.belege && landing.belege.length > 0 && (
-          <div class="mx-auto mt-10 grid max-w-4xl gap-3 text-left sm:grid-cols-3">
-            {landing.belege.map((b) => (
-              <div class="border-border bg-card/70 rounded-xl border p-4">
-                <p class="font-display text-brand-600 dark:text-brand-300 text-xl leading-none font-bold tracking-tight">
-                  {b.zahl}
-                </p>
-                <p class="text-foreground-secondary mt-2 text-[0.8rem] leading-5">{b.aussage}</p>
-                <p class="text-foreground-muted mt-2 text-[0.7rem] leading-4">{b.quelle}</p>
-              </div>
-            ))}
-          </div>
-        )
-      }
-
+      {/* Keine Belegkacheln: Wer hier ankommt, hat die Zahlen gerade im Brief
+          gelesen. Ein zweites Mal kosten sie nur die Höhe, die das Video
+          braucht — auf dem Handy sitzt es dann unter der Falz.
+          Die Daten (landing.belege) bleiben erhalten, falls eine andere
+          Landing sie ohne vorangehenden Brief braucht. */}
       {
         landing.video.src && (
-          <p class="mt-8">
+          <p class="mt-10">
             <a
               href="#video"
               class="text-foreground-muted hover:text-brand-600 dark:hover:text-brand-400 inline-flex flex-col items-center gap-1 text-xs transition-colors"
             >
-              <span>So entsteht ein Angebot</span>
+              <span>Kurz gezeigt</span>
               <Icon name="chevron-down" size="sm" />
             </a>
           </p>
@@ -118,33 +103,44 @@ const clientLogos = [
        kommt automatisch, sobald die Datei in briefLandings.ts eingetragen ist. -->
   {landing.video.src && (
   <section id="video" class="scroll-mt-20 pt-4 pb-14 lg:pt-8 lg:pb-20">
-    <div class="container max-w-4xl">
-      <header class="mx-auto max-w-2xl text-center">
-        <h2 class="font-display text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
+    {/* Ab lg zweispaltig: Ein Hochformat-Video in einer zentrierten Spalte
+        lässt den Desktop links und rechts leer stehen. Text daneben nutzt den
+        Platz und hält die Überschrift kurz genug, dass kein Wort allein in
+        die zweite Zeile rutscht. Auf dem Handy bleibt es untereinander —
+        dort liest sich Text über Video ohnehin natürlicher. */}
+    <div class="container max-w-5xl lg:grid lg:grid-cols-[1fr_420px] lg:items-center lg:gap-14">
+      <header class="mx-auto max-w-2xl text-center lg:mx-0 lg:text-left">
+        <h2
+          class="font-display text-foreground text-2xl font-bold tracking-tight text-balance sm:text-3xl"
+        >
           {landing.video.heading}
         </h2>
         {
           landing.video.text && (
-            <p class="text-foreground-secondary mx-auto mt-4 max-w-xl text-base leading-7">
+            <p
+              class="text-foreground-secondary mx-auto mt-4 max-w-xl text-base leading-7 text-pretty lg:mx-0"
+            >
               {landing.video.text}
             </p>
           )
         }
       </header>
 
-      <div class="border-border mt-8 overflow-hidden rounded-2xl border shadow-lg">
+      <div class="mx-auto mt-8 w-full max-w-[420px] lg:mt-0">
         {
           landing.video.src ? (
             <video
-              class="aspect-video w-full bg-black"
+              class="border-border max-h-[78vh] w-full rounded-2xl border bg-black object-contain shadow-lg"
+              style="aspect-ratio: 604 / 1080"
               controls
+              playsinline
               preload="metadata"
               poster={landing.video.poster}
             >
               <source src={landing.video.src} type="video/mp4" />
             </video>
           ) : (
-            <div class="bg-background-secondary relative flex aspect-video w-full items-center justify-center">
+            <div class="bg-background-secondary border-border relative flex aspect-[604/1080] w-full items-center justify-center rounded-2xl border">
               <div
                 class="bg-grid-pattern pointer-events-none absolute inset-0 opacity-20"
                 aria-hidden="true"
@@ -165,34 +161,47 @@ const clientLogos = [
           )
         }
       </div>
-
-      {
-        landing.video.langSrc && (
-          <p class="mt-4 text-center">
-            <a
-              href={landing.video.langSrc}
-              class="text-foreground-secondary hover:text-brand-600 dark:hover:text-brand-400 inline-flex items-center gap-1.5 text-sm underline underline-offset-4 transition-colors"
-            >
-              <Icon name="arrow-up-right" size="sm" />
-              <span>{landing.video.langLabel ?? 'Ausführliche Fassung ansehen'}</span>
-            </a>
-          </p>
-        )
-      }
     </div>
   </section>
   )}
 
-  <!-- TRUST: direkt nach dem Video, solange die Aufmerksamkeit oben ist -->
-  <ClientLogoStrip
-    heading="Für diese Häuser haben wir gebaut"
-    logos={clientLogos}
-    variant="light"
-  />
+  <!-- WER WIR SIND: ersetzt die Logoleiste. Wer kalt angeschrieben wurde,
+       fragt sich zuerst "mit wem rede ich da" — darauf antwortet ein Absatz
+       besser als eine Reihe fremder Marken. Telefonnummer inklusive: fuer
+       diese Zielgruppe ist der Hoerer der Kanal mit der niedrigsten Huerde. -->
+  <section class="border-border bg-background-secondary border-y py-14 lg:py-16">
+    <div class="container max-w-3xl">
+      <h2 class="font-display text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
+        Wer wir sind
+      </h2>
+      <p class="text-foreground-secondary mt-4 text-base leading-7">
+        RocketBase ist ein kleines festes Entwickler-Team aus der Metropolregion Hamburg,
+        ansässig in Winsen an der Luhe. Gegründet 2014, seit über zehn Jahren am Markt —
+        angefangen bei Konzernprojekten, heute zu Hause im Mittelstand.
+      </p>
+      <p class="text-foreground-secondary mt-4 text-base leading-7">
+        Wir bauen Software für Betriebe, deren Abläufe nicht in ein Standardprogramm passen —
+        vom Angebot über die Einsatzplanung bis zur Rechnung. Kein Baukasten, keine
+        Lizenzfalle: Was entsteht, gehört Ihnen.
+      </p>
+      <p class="text-foreground mt-6 text-base leading-7">
+        Lieber direkt sprechen?{' '}
+        <a
+          href="tel:+4915123336263"
+          class="hover:text-brand-600 dark:hover:text-brand-400 font-semibold underline underline-offset-4 transition-colors"
+        >
+          (+49) 1512 333 6263
+        </a>
+      </p>
+    </div>
+  </section>
 
-  <!-- TERMIN (Primärweg) — direkt nach dem Video. Eine Funnel-Seite hat EIN
-       Ziel; Referenzkarten und Blog-Links standen vorher dazwischen und waren
-       Ausgänge, keine Belege. Die Logoleiste darüber trägt das Vertrauen. -->
+  <!-- TERMIN — der einzige Weg auf dieser Seite, neben der Telefonnummer
+       darüber. Kontaktformular, Referenzkarten und Blog-Links sind bewusst
+       raus: Eine Funnel-Seite hat ein Ziel, und zwei gleichrangige Optionen
+       enden am häufigsten in keiner von beiden.
+       `kontakt`/`erfolg` bleiben in den Daten und BriefKontakt.tsx bleibt
+       liegen — falls eine andere Landing das Formular doch braucht. -->
   <section class="py-16 lg:py-20">
     <div class="container max-w-3xl">
       <BriefTermin
@@ -201,18 +210,6 @@ const clientLogos = [
         calLabel={landing.termin.calLabel}
         heading={landing.termin.heading}
         text={landing.termin.text}
-      />
-    </div>
-  </section>
-
-  <!-- KONTAKT (Fallback für alle, die erst schreiben wollen) -->
-  <section class="py-14 lg:py-16">
-    <div class="container max-w-2xl">
-      <BriefKontakt
-        client:load
-        funnel={`brief-${landing.slug}`}
-        kontakt={landing.kontakt}
-        erfolg={landing.erfolg}
       />
     </div>
   </section>
