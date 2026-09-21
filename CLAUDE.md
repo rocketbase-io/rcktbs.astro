@@ -88,14 +88,40 @@ Static site content (strengths, cases, service areas, contact links) lives in `s
 See `.env.example`. Key variables:
 - `SITE_URL` — production URL (required for canonical/OG/sitemap)
 - `PUBLIC_GA_MEASUREMENT_ID` / `PUBLIC_GTM_ID` — optional analytics
-- `CONTACT_FORM_ENDPOINT`, `NEWSLETTER_API_KEY` — optional form handling
+- `PLUNK_SECRET_KEY`, `CONTACT_NOTIFICATION_EMAIL` — contact form mail
 - `GOOGLE_SITE_VERIFICATION`, `BING_SITE_VERIFICATION` — optional SEO verification
 
 ### OG image generation
 
 Auto-generated per page via `src/pages/og/[...slug].png.ts` using Satori + `satori-html`.
 
-### API routes
+### API routes — Netlify Functions, not Astro endpoints
 
-- `src/pages/api/contact.ts` — contact form submission
-- `src/pages/api/newsletter.ts` — newsletter signup
+`output: 'static'` with no adapter, so Astro cannot serve API routes. All server
+logic lives in `netlify/functions/` and maps itself to a URL via
+`export const config = { path: '/api/...' }`.
+
+- `netlify/functions/contact.ts` — `/api/contact`, contact form
+- `netlify/functions/funnel-lead.ts` — `/api/funnel-lead`, funnel + brief leads
+
+**These endpoints 404 under `astro dev`.** Use `netlify dev` (port 8888) to
+exercise them locally.
+
+### Contact form spam protection
+
+Deliberately small — all of it lives in `contact.ts`. No captcha, no third-party
+service, no extra stores.
+
+Only a filled honeypot is dropped, silently, with the same response a genuine
+sender gets. Everything else is *delivered* — `suspicionOf()` just prefixes the
+subject with `[SPAM?]` and names the reasons at the top of the mail. A false
+positive therefore costs a filter rule, never a lead, which is why the checks
+can stay blunt.
+
+The load-bearing signal is a hidden `renderedAt` field stamped by JS in
+`kontakt.astro`: form scrapers don't run JavaScript, so they omit it entirely.
+Stamp it on init (not submit), inside `initContactForm()` so `astro:after-swap`
+re-stamps it.
+
+Grep Netlify logs for `[contact:verdacht]` to see what is being flagged before
+tightening anything.
