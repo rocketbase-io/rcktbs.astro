@@ -213,4 +213,19 @@ const clientLogos = [
       />
     </div>
   </section>
+
+  <!-- Stiller Tracking-Versuch: meldet dem Sales-Backend, dass diese Landing
+       geoeffnet wurde, sofern der QR-Code eine Kennung mitgebracht hat (?r=).
+       Der Slug reist ueber ein data-Attribut mit, weil das Modulskript keinen
+       Zugriff auf Astro-Props hat. Schlaegt der Aufruf fehl, passiert nichts --
+       fuer den Besucher ist er unsichtbar. -->
+  <span data-brief-funnel={`brief-${landing.slug}`} hidden></span>
 </FunnelLayout>
+
+<script>
+  import { meldeSeitenaufruf } from '@/lib/funnelTracking';
+
+  const traeger = document.querySelector<HTMLElement>('[data-brief-funnel]');
+  const funnel = traeger?.dataset.briefFunnel;
+  if (funnel) meldeSeitenaufruf(funnel);
+</script>
