@@ -67,6 +67,15 @@ export type InstagramPost = InstagramPostMitBeitrag | InstagramPostMitUrl;
 
 export const instagramPosts: InstagramPost[] = [
   {
+    // Vorläufiger Schlüssel: Den Shortcode gibt es erst nach dem Veröffentlichen,
+    // der Eintrag muss aber vorher live sein. Danach hier und in coverImages.ts
+    // gegen den echten Code tauschen.
+    code: 'quartalsbericht-3-leute-2-wochen',
+    postSlug: 'standardsoftware-vertec-centric-grenzen',
+    hook: 'Wie lange dauert euer Quartalsbericht?',
+    datum: '2026-10-02',
+  },
+  {
     code: 'DdJekmNFtUk',
     postSlug: 'angebotsprozess-anfrage-bis-zusage',
     hook: 'Wurde dein letztes Angebot überhaupt geöffnet?',

@@ -1,5 +1,6 @@
 import type { ImageMetadata } from 'astro';
 import angebotFunkstille from '@/assets/instagram/angebot-funkstille.jpg';
+import quartalsberichtExcel from '@/assets/instagram/quartalsbericht-excel.jpg';
 
 /**
  * Kachelbilder je Instagram-Post, adressiert über den Shortcode aus der
@@ -28,4 +29,6 @@ import angebotFunkstille from '@/assets/instagram/angebot-funkstille.jpg';
  */
 export const instagramCovers: Record<string, ImageMetadata> = {
   DdJekmNFtUk: angebotFunkstille,
+  // Vorläufiger Schlüssel bis zum Veröffentlichen, siehe src/data/instagram.ts.
+  'quartalsbericht-3-leute-2-wochen': quartalsberichtExcel,
 };
