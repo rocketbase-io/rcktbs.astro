@@ -1,0 +1,313 @@
+---
+/**
+ * Schieberegler über die Kalkulationstiefe. Beantwortet die Frage, die eine
+ * Preisspanne offenlässt: wovon hängt ab, wo wir liegen?
+ *
+ * Fünf Stufen, von „der Kern rechnet genau" bis „alles, mit allen Sonderfällen".
+ * Mit dem Preis läuft die gesparte Zeit mit, bewusst in Stunden statt in Euro:
+ * gesparte Zeit schlägt nur teilweise in Umsatz um, und wer selbst umrechnet,
+ * glaubt das Ergebnis eher. Grundlage sind 1,5 bis 2 Stunden je Angebot — das
+ * System nimmt nicht alles ab, Kundendaten und Bausteine bleiben Handarbeit.
+ *
+ * Ohne JavaScript steht die mittlere Stufe vollständig da (Stufe 3 ist der
+ * `selected`-Zustand im Markup), wie beim Branchen-Rechner nebenan.
+ */
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+
+export interface Stufe {
+  /** Untergrenze dieser Stufe in Euro. */
+  von: number;
+  /** Obergrenze dieser Stufe in Euro. */
+  bis: number;
+  /** Kurzform für die Skala unter dem Regler. */
+  kurz: string;
+  titel: string;
+  text: string;
+  /** Gesparte Stunden je Angebot auf dieser Stufe. */
+  proAngebot: number;
+}
+
+interface Props {
+  stufen: Stufe[];
+  /** Angebote im Monat, mit denen die Ersparnis gerechnet wird. */
+  angeboteProMonat?: number;
+  start?: number;
+}
+
+const { stufen, angeboteProMonat = 20, start = 2 } = Astro.props;
+
+const eur = (n: number) => `${n.toLocaleString('de-DE')} €`;
+const spanneVon = (s: Stufe) => `${s.von.toLocaleString('de-DE')} – ${eur(s.bis)}`;
+const stunden = (s: Stufe) => Math.round(s.proAngebot * angeboteProMonat);
+---
+
+<div
+  class="ur"
+  data-ur
+  data-angebote={angeboteProMonat}
+  data-spannen={stufen.map((s) => `${s.von}|${s.bis}`).join(',')}
+  data-stunden={stufen.map(stunden).join(',')}
+  data-titel={stufen.map((s) => s.titel).join('|')}
+  data-texte={stufen.map((s) => s.text).join('|')}
+>
+  <div class="ur-card rounded-[1.75rem] p-6 sm:p-8 lg:p-10">
+    <div class="grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
+      <!-- Regler -->
+      <div>
+        <label for="ur-range" class="ur-label"> Wie weit reicht eure Kalkulation? </label>
+        <p class="text-foreground-secondary mt-3 text-sm leading-6">
+          Je mehr Regeln, Ausnahmen und Bereiche dazukommen, desto mehr wird gebaut. Sucht die
+          Beschreibung, in der ihr euch wiedererkennt.
+        </p>
+
+        <input
+          id="ur-range"
+          type="range"
+          min="0"
+          max={stufen.length - 1}
+          step="1"
+          value={start}
+          class="ur-range mt-7 w-full"
+          aria-describedby="ur-stufe-titel ur-stufe-text"
+        />
+
+        <ol class="ur-scale mt-3" aria-hidden="true">
+          {stufen.map((s, i) => (
+            <li
+              data-on={i === start ? 'true' : 'false'}
+              style={`--p: ${stufen.length > 1 ? (i / (stufen.length - 1)) * 100 : 50}%`}
+            >
+              {s.kurz}
+            </li>
+          ))}
+        </ol>
+
+        <div class="ur-stufe mt-7 rounded-2xl p-5">
+          <p id="ur-stufe-titel" class="font-display text-foreground text-base font-bold tracking-tight">
+            {stufen[start]?.titel}
+          </p>
+          <p id="ur-stufe-text" class="text-foreground-secondary mt-1.5 text-sm leading-6">
+            {stufen[start]?.text}
+          </p>
+        </div>
+      </div>
+
+      <!-- Ergebnis -->
+      <div class="ur-result rounded-2xl p-6 sm:p-7">
+        <div>
+          <p class="ur-mini">Euer Baustein</p>
+          <p
+            class="font-display text-foreground mt-2 text-[1.6rem] leading-tight font-bold tracking-tight text-balance tabular-nums sm:text-3xl"
+            data-ur-preis
+          >
+            {spanneVon(stufen[start] ?? stufen[0]!)}
+          </p>
+          <p class="text-foreground-muted mt-1.5 text-sm">
+            einmalig, inklusive Betrieb im ersten Jahr. Genauer steht es nach dem Workshop.
+          </p>
+        </div>
+
+        <div class="ur-sep my-6"></div>
+
+        <div>
+          <p class="ur-mini">Gespart im Monat</p>
+          <p
+            class="font-display text-foreground mt-2 text-3xl font-bold tracking-tight tabular-nums sm:text-4xl"
+            data-ur-stunden
+          >
+            {stunden(stufen[start] ?? stufen[0]!)} Stunden
+          </p>
+          <p class="text-foreground-muted mt-1.5 text-sm">
+            gerechnet mit {angeboteProMonat} Angeboten im Monat
+          </p>
+        </div>
+
+        <p class="ur-note mt-6 flex gap-2.5 rounded-xl p-3.5 text-[0.8rem] leading-5">
+          <Icon name="info" size="xs" class="text-brand-500 mt-0.5 shrink-0" />
+          <span>
+            Eure Daten und Bausteine stellt weiter jemand zusammen. Was wegfällt, ist das Rechnen:
+            etwa die Mitarbeiterzahl auf die Betreuung durch Sicherheitsfachkraft und Betriebsarzt
+            umzulegen.
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <p class="text-foreground-secondary border-border mt-8 border-t pt-6 text-center text-sm leading-6">
+      Wo ihr liegt, entscheidet ihr im Workshop selbst: Manche stellen jede Kalkulation vollständig
+      ins System, andere nehmen den Kern genau und rechnen den Rest pauschal.
+    </p>
+  </div>
+</div>
+
+<style>
+  .ur-card {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 30px 70px -40px oklch(30% 0.08 265 / 0.55);
+  }
+  .ur-label {
+    display: block;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-brand-600);
+  }
+  :global(.dark) .ur-label {
+    color: var(--color-brand-300);
+  }
+  .ur-mini {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-foreground-muted);
+  }
+
+  /* Regler: eigene Optik in beiden Engines, damit er nicht nach Systemsteuerung aussieht */
+  .ur-range {
+    appearance: none;
+    -webkit-appearance: none;
+    height: 2.5rem;
+    background: transparent;
+    cursor: pointer;
+  }
+  .ur-range::-webkit-slider-runnable-track {
+    height: 0.5rem;
+    border-radius: 999px;
+    background: color-mix(in oklch, var(--color-foreground) 9%, transparent);
+  }
+  .ur-range::-moz-range-track {
+    height: 0.5rem;
+    border-radius: 999px;
+    background: color-mix(in oklch, var(--color-foreground) 9%, transparent);
+  }
+  .ur-range::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 1.6rem;
+    height: 1.6rem;
+    margin-top: -0.55rem;
+    border-radius: 999px;
+    background: var(--color-brand-500);
+    border: 3px solid var(--color-card);
+    box-shadow: 0 6px 18px -6px var(--color-brand-500);
+  }
+  .ur-range::-moz-range-thumb {
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 999px;
+    background: var(--color-brand-500);
+    border: 3px solid var(--color-card);
+    box-shadow: 0 6px 18px -6px var(--color-brand-500);
+  }
+  .ur-range:focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 4px;
+    border-radius: 999px;
+  }
+
+  /*
+   * Die Beschriftungen stehen unter der Mitte des Reglerknopfs, nicht auf der
+   * vollen Breite verteilt: Der Knopf ist 1.6rem breit, seine Mitte wandert
+   * deshalb nur zwischen 0.8rem und 100% − 0.8rem.
+   */
+  .ur-scale {
+    position: relative;
+    height: 1.1rem;
+    font-size: 11px;
+    color: var(--color-foreground-muted);
+  }
+  .ur-scale li {
+    position: absolute;
+    top: 0;
+    left: calc(0.8rem + (100% - 1.6rem) * var(--p) / 100%);
+    transform: translateX(-50%);
+    white-space: nowrap;
+    transition: color 0.2s ease;
+  }
+  .ur-scale li:first-child {
+    transform: none;
+    left: 0;
+  }
+  .ur-scale li:last-child {
+    transform: none;
+    right: 0;
+    left: auto;
+  }
+  /* Schmale Spalten: die mittleren Beschriftungen kollidieren, dort tragen die
+     beiden Enden die Skala — den Rest sagt die Karte unter dem Regler. */
+  @media (max-width: 620px) {
+    .ur-scale li {
+      font-size: 10px;
+    }
+    .ur-scale li:not(:first-child):not(:last-child) {
+      display: none;
+    }
+  }
+  .ur-scale li[data-on='true'] {
+    color: var(--color-brand-600);
+    font-weight: 600;
+  }
+  :global(.dark) .ur-scale li[data-on='true'] {
+    color: var(--color-brand-300);
+  }
+
+  .ur-stufe {
+    background: color-mix(in oklch, var(--color-foreground) 4%, transparent);
+    border: 1px solid var(--color-border);
+  }
+  .ur-result {
+    background:
+      radial-gradient(
+        120% 80% at 100% 0%,
+        color-mix(in oklch, var(--color-brand-400) 14%, transparent),
+        transparent 60%
+      ),
+      color-mix(in oklch, var(--color-brand-500) 3%, var(--color-card));
+    border: 1px solid var(--color-border);
+  }
+  .ur-sep {
+    height: 1px;
+    background: var(--color-border);
+  }
+  .ur-note {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    color: var(--color-foreground-secondary);
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-ur]').forEach((root) => {
+    const range = root.querySelector<HTMLInputElement>('.ur-range');
+    const preisEl = root.querySelector<HTMLElement>('[data-ur-preis]');
+    const stundenEl = root.querySelector<HTMLElement>('[data-ur-stunden]');
+    const titelEl = root.querySelector<HTMLElement>('#ur-stufe-titel');
+    const textEl = root.querySelector<HTMLElement>('#ur-stufe-text');
+    const marks = [...root.querySelectorAll<HTMLElement>('.ur-scale li')];
+    if (!range) return;
+
+    const spannen = (root.dataset.spannen ?? '').split(',').map((p) => p.split('|').map(Number));
+    const stunden = (root.dataset.stunden ?? '').split(',').map(Number);
+    const titel = (root.dataset.titel ?? '').split('|');
+    const texte = (root.dataset.texte ?? '').split('|');
+    const eur = (n: number) => `${n.toLocaleString('de-DE')} €`;
+
+    const render = () => {
+      const i = Number(range.value);
+      const sp = spannen[i];
+      if (preisEl && sp) preisEl.textContent = `${sp[0]!.toLocaleString('de-DE')} – ${eur(sp[1]!)}`;
+      if (stundenEl && stunden[i] !== undefined) stundenEl.textContent = `${stunden[i]} Stunden`;
+      if (titelEl && titel[i]) titelEl.textContent = titel[i];
+      if (textEl && texte[i]) textEl.textContent = texte[i];
+      marks.forEach((m, j) => (m.dataset.on = j === i ? 'true' : 'false'));
+    };
+
+    range.addEventListener('input', render);
+    render();
+  });
+</script>

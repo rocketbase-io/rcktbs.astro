@@ -13,6 +13,8 @@ export interface Rechnung {
   key: string;
   icon: string;
   branche: string;
+  /** Vorschrift oder Norm, nach der dieses Gewerk rechnet. Optional: nicht jedes hat eine. */
+  grundlage?: string;
   satz: string;
   /** `auto`: Wert berechnet das System (z. B. Fahrzeit), nicht von Hand. */
   eingaben: { label: string; wert: string; auto?: boolean }[];
@@ -21,17 +23,46 @@ export interface Rechnung {
   kosten: string;
   db: string;
   dbProzent: number;
-  ampel: 'gruen' | 'gelb';
+  ampel: 'gruen' | 'gelb' | 'rot';
   /** Hinweis unter der Rechnung, z. B. dass das die Beispielkalkulation im Screenshot ist. */
   hinweis?: string;
+  /**
+   * Stellschrauben, die der Leser umlegen kann. Je Gewerk die Größe, die dort
+   * wirklich den Preis bewegt: eine Besetzung, eine Menge, ein Zuschlag. Jede
+   * Option trägt ihr vollständiges Ergebnis, gerechnet wird nicht im Browser.
+   */
+  regler?: {
+    label: string;
+    optionen: {
+      name: string;
+      /** Kurzwert unter dem Namen, z. B. „124 €/h" oder „ab 500 Stk". */
+      wert?: string;
+      /** Überschreibt einzelne Eingabezeilen, Schlüssel ist das Label. */
+      setzt?: Record<string, string>;
+      preis?: string;
+      /** Überschreibt die zweite Ergebniszeile, z. B. die Stundenzahl. */
+      kennzahl?: string;
+      kosten: string;
+      db: string;
+      dbProzent: number;
+      ampel: 'gruen' | 'gelb' | 'rot';
+    }[];
+  };
+
 }
 
 interface Props {
   rechnungen: Rechnung[];
+  /** Rechengrößen, die in jedem Gewerk gleich funktionieren. Stehen einmal unter den Tabs. */
+  gemeinsam?: { icon: string; titel: string; text: string }[];
 }
 
-const { rechnungen } = Astro.props;
-const ampelText = { gruen: 'Rechnet sich', gelb: 'Knapp · nur mit Freigabe' };
+const { rechnungen, gemeinsam = [] } = Astro.props;
+const ampelText = {
+  gruen: 'Rechnet sich',
+  gelb: 'Knapp · nur mit Freigabe',
+  rot: 'Unter eurer Grenze · geht so nicht raus',
+};
 ---
 
 <div class="kr" data-kr>
@@ -76,20 +107,35 @@ const ampelText = { gruen: 'Rechnet sich', gelb: 'Knapp · nur mit Freigabe' };
           hidden={i !== 0}
           class="kr-panel"
           style={`--db: ${r.dbProzent}%`}
+          data-optionen={r.regler ? JSON.stringify(r.regler.optionen) : undefined}
+          data-basis={JSON.stringify({
+            preis: r.ergebnis[0]?.wert ?? '',
+            kennzahl: r.ergebnis[1]?.wert ?? '',
+            kosten: r.kosten,
+            db: r.db,
+            dbProzent: r.dbProzent,
+            ampel: r.ampel,
+          })}
         >
           <div class="kr-card relative grid overflow-hidden rounded-[1.75rem] lg:grid-cols-2">
             <span class="kr-sample absolute top-4 right-4 z-10 rounded-full px-2.5 py-1 text-[10px] font-semibold tracking-[0.14em] uppercase">
               Frei erfunden
             </span>
             {/* Eingaben */}
-            <div class="p-6 sm:p-8 lg:pr-14">
+            <div class="kr-eingaben p-6 sm:p-8 lg:pr-14">
               <p class="kr-label">Eure Größen</p>
+              {r.grundlage && (
+                <p class="kr-grundlage mt-3 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1">
+                  <Icon name="book" size="xs" />
+                  {r.grundlage}
+                </p>
+              )}
               <p class="font-display text-foreground mt-2 text-xl font-bold tracking-tight sm:text-2xl">
                 {r.satz}
               </p>
               <dl class="mt-6 space-y-2">
                 {r.eingaben.map((e, j) => (
-                  <div class="kr-row" style={`--d: ${j * 60}ms`}>
+                  <div class="kr-row" style={`--d: ${j * 60}ms`} data-eingabe={e.label}>
                     <dt class="text-foreground-secondary flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
                       {e.label}
                       {e.auto && (
@@ -99,13 +145,44 @@ const ampelText = { gruen: 'Rechnet sich', gelb: 'Knapp · nur mit Freigabe' };
                         </span>
                       )}
                     </dt>
-                    <dd class="text-foreground font-mono text-sm font-semibold whitespace-nowrap tabular-nums">
+                    <dd
+                      class="text-foreground font-mono text-sm font-semibold whitespace-nowrap tabular-nums"
+                      data-eingabe-wert
+                    >
                       {e.wert}
                     </dd>
                   </div>
                 ))}
               </dl>
+
             </div>
+
+            {/* Stellschrauben: eigenes Grid-Kind, damit sie mobil unter das
+                Ergebnis rutschen können (siehe .kr-swap-wrap). */}
+            {r.regler && (
+              <div class="kr-swap-wrap px-6 pb-6 sm:px-8 sm:pb-8 lg:pr-14">
+                <div class="kr-swap mt-5 rounded-2xl p-4">
+                  <p class="text-foreground-muted text-[11px] font-semibold tracking-[0.14em] uppercase">
+                    {r.regler.label}
+                  </p>
+                  <div class="mt-2.5 flex flex-wrap gap-2" role="group" aria-label={r.regler.label}>
+                    {r.regler.optionen.map((o, k) => (
+                      <button
+                        type="button"
+                        class="kr-swap-btn flex-1 rounded-xl px-3 py-2 text-left"
+                        data-swap={String(k)}
+                        aria-pressed={k === 0 ? 'true' : 'false'}
+                      >
+                        <span class="text-foreground block text-sm font-semibold">{o.name}</span>
+                        {o.wert && (
+                          <span class="text-foreground-muted block font-mono text-xs">{o.wert}</span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Regel: Knoten auf der Trennlinie zwischen Eingaben und Ergebnis */}
             <div class="kr-link" aria-hidden="true">
@@ -130,6 +207,8 @@ const ampelText = { gruen: 'Rechnet sich', gelb: 'Knapp · nur mit Freigabe' };
                         'text-foreground font-bold tabular-nums',
                         j === 0 ? 'font-display text-3xl tracking-tight sm:text-4xl' : 'font-mono text-base',
                       ]}
+                      data-preis={j === 0 ? '' : undefined}
+                      data-kennzahl={j === 1 ? '' : undefined}
                     >
                       {e.wert}
                     </dd>
@@ -137,21 +216,23 @@ const ampelText = { gruen: 'Rechnet sich', gelb: 'Knapp · nur mit Freigabe' };
                 ))}
                 <div class="flex items-baseline justify-between gap-4">
                   <dt class="text-foreground-secondary text-sm">Kosten</dt>
-                  <dd class="text-foreground font-mono text-base font-semibold tabular-nums">{r.kosten}</dd>
+                  <dd class="text-foreground font-mono text-base font-semibold tabular-nums" data-kosten>
+                    {r.kosten}
+                  </dd>
                 </div>
               </dl>
 
               <div class="kr-db mt-6 rounded-2xl p-4" data-ampel={r.ampel}>
                 <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                   <p class="text-foreground text-sm font-semibold">Deckungsbeitrag</p>
-                  <p class="text-foreground font-mono text-sm font-bold whitespace-nowrap tabular-nums">
+                  <p class="text-foreground font-mono text-sm font-bold whitespace-nowrap tabular-nums" data-db>
                     {r.db} · {r.dbProzent} %
                   </p>
                 </div>
                 <div class="kr-bar mt-3 h-2 overflow-hidden rounded-full" aria-hidden="true">
                   <span class="kr-bar-fill block h-full rounded-full" />
                 </div>
-                <p class="kr-ampel mt-3 inline-flex items-center gap-2 text-xs font-semibold">
+                <p class="kr-ampel mt-3 inline-flex items-center gap-2 text-xs font-semibold" data-ampeltext>
                   <span class="kr-dot" aria-hidden="true" />
                   {ampelText[r.ampel]}
                 </p>
@@ -162,6 +243,34 @@ const ampelText = { gruen: 'Rechnet sich', gelb: 'Knapp · nur mit Freigabe' };
       ))
     }
   </div>
+
+  {
+    gemeinsam.length > 0 && (
+      <div class="kr-shared mt-10">
+        <div class="flex items-center gap-4">
+          <span class="kr-rule h-px flex-1" aria-hidden="true" />
+          <p class="text-foreground-muted font-mono text-xs font-semibold tracking-[0.2em] whitespace-nowrap uppercase">
+            Das rechnet bei jedem mit
+          </p>
+          <span class="kr-rule kr-rule-r h-px flex-1" aria-hidden="true" />
+        </div>
+        <ul class="mt-8 grid gap-x-8 gap-y-7 sm:grid-cols-2 lg:grid-cols-4">
+          {gemeinsam.map((g) => (
+            <li>
+              <p class="font-display text-foreground flex items-center gap-2 text-sm font-bold tracking-tight">
+                <Icon name={g.icon} size="sm" class="text-brand-500 shrink-0" />
+                {g.titel}
+              </p>
+              <p class="text-foreground-secondary mt-2 text-sm leading-6">{g.text}</p>
+            </li>
+          ))}
+        </ul>
+        <p class="text-foreground-muted mt-7 text-center text-sm">
+          Einmal nach euren Regeln gebaut, und es gilt für jede Leistung.
+        </p>
+      </div>
+    )
+  }
 </div>
 
 <style>
@@ -232,6 +341,71 @@ const ampelText = { gruen: 'Rechnet sich', gelb: 'Knapp · nur mit Freigabe' };
     .kr-sample {
       display: none;
     }
+  }
+  .kr-grundlage {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--color-brand-700);
+    background: color-mix(in oklch, var(--color-brand-500) 10%, transparent);
+    border: 1px solid color-mix(in oklch, var(--color-brand-400) 35%, transparent);
+  }
+  :global(.dark) .kr-grundlage {
+    color: var(--color-brand-200);
+  }
+  .kr-rule {
+    background: linear-gradient(to right, transparent, var(--color-border));
+  }
+  .kr-rule-r {
+    background: linear-gradient(to left, transparent, var(--color-border));
+  }
+  /*
+   * Die Stellschrauben stehen mobil NACH dem Ergebnis: Wer auf eine Option
+   * tippt, hat Preis und Deckungsbeitrag direkt darüber im Blick. Ab lg liegen
+   * sie wieder unter den Eingaben in der linken Spalte.
+   */
+  .kr-swap-wrap {
+    order: 3;
+    margin-top: -0.5rem;
+  }
+  @media (min-width: 1024px) {
+    .kr-swap-wrap {
+      order: 0;
+      grid-column: 1;
+      grid-row: 2;
+      margin-top: -1rem;
+      align-self: start;
+    }
+  }
+  .kr-swap {
+    background: color-mix(in oklch, var(--color-brand-500) 5%, transparent);
+    border: 1px dashed color-mix(in oklch, var(--color-brand-400) 45%, var(--color-border));
+  }
+  .kr-swap-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 8.5rem;
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  .kr-swap-btn[aria-pressed='true'] {
+    border-color: var(--color-brand-400);
+    box-shadow: 0 0 0 2px color-mix(in oklch, var(--color-brand-500) 22%, transparent);
+  }
+  @media (hover: hover) {
+    .kr-swap-btn:hover {
+      border-color: var(--color-brand-300);
+    }
+  }
+  .kr-swap-btn:focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
   }
   .kr-label {
     font-family: var(--font-mono, ui-monospace, monospace);
@@ -325,7 +499,11 @@ const ampelText = { gruen: 'Rechnet sich', gelb: 'Knapp · nur mit Freigabe' };
     }
   }
 
+  .kr-eingaben {
+    order: 1;
+  }
   .kr-result {
+    order: 2;
     border-top: 1px solid var(--color-border);
     background:
       radial-gradient(
@@ -339,11 +517,15 @@ const ampelText = { gruen: 'Rechnet sich', gelb: 'Knapp · nur mit Freigabe' };
   .kr-db {
     --ok: oklch(68% 0.15 150);
     --warn: oklch(78% 0.15 80);
+    --bad: oklch(63% 0.2 25);
     background: var(--color-card);
     border: 1px solid var(--color-border);
   }
   .kr-db[data-ampel='gelb'] {
     --ok: var(--warn);
+  }
+  .kr-db[data-ampel='rot'] {
+    --ok: var(--bad);
   }
   .kr-bar {
     background: color-mix(in oklch, var(--color-foreground) 8%, transparent);
@@ -372,7 +554,15 @@ const ampelText = { gruen: 'Rechnet sich', gelb: 'Knapp · nur mit Freigabe' };
   }
 
   @media (min-width: 1024px) {
+    .kr-eingaben {
+      order: 0;
+      grid-column: 1;
+      grid-row: 1;
+    }
     .kr-result {
+      order: 0;
+      grid-column: 2;
+      grid-row: 1 / span 2;
       border-top: 0;
       border-left: 1px solid var(--color-border);
     }
@@ -419,6 +609,73 @@ const ampelText = { gruen: 'Rechnet sich', gelb: 'Knapp · nur mit Freigabe' };
       if (focus) tab?.focus();
       centerInList(tab, true);
     };
+
+    // Stellschrauben je Panel: Option wählen, alle abhängigen Werte nachziehen.
+    // Gerechnet wird nichts im Browser — jede Option bringt ihr fertiges Ergebnis mit.
+    panels.forEach((panel) => {
+      const btns = [...panel.querySelectorAll<HTMLButtonElement>('[data-swap]')];
+      if (!btns.length) return;
+
+      type Option = {
+        setzt?: Record<string, string>;
+        preis?: string;
+        kennzahl?: string;
+        kosten: string;
+        db: string;
+        dbProzent: number;
+        ampel: string;
+      };
+      let optionen: Option[] = [];
+      let basis: (Option & { preis: string; kennzahl: string }) | null = null;
+      try {
+        optionen = JSON.parse(panel.dataset.optionen ?? '[]');
+        basis = JSON.parse(panel.dataset.basis ?? 'null');
+      } catch {
+        return;
+      }
+      if (!optionen.length || !basis) return;
+
+      const preisEl = panel.querySelector<HTMLElement>('[data-preis]');
+      const kennzahlEl = panel.querySelector<HTMLElement>('[data-kennzahl]');
+      const kostenEl = panel.querySelector<HTMLElement>('[data-kosten]');
+      const dbEl = panel.querySelector<HTMLElement>('[data-db]');
+      const ampelEl = panel.querySelector<HTMLElement>('[data-ampeltext]');
+      const box = panel.querySelector<HTMLElement>('.kr-db');
+      const texte: Record<string, string> = {
+        gruen: 'Rechnet sich',
+        gelb: 'Knapp · nur mit Freigabe',
+        rot: 'Unter eurer Grenze · geht so nicht raus',
+      };
+      // Ausgangswerte der Eingabezeilen merken, damit eine andere Option sie zurücksetzt.
+      const zeilen = new Map<string, { el: HTMLElement; start: string }>();
+      panel.querySelectorAll<HTMLElement>('[data-eingabe]').forEach((row) => {
+        const wert = row.querySelector<HTMLElement>('[data-eingabe-wert]');
+        const label = row.dataset.eingabe;
+        if (wert && label) zeilen.set(label, { el: wert, start: wert.textContent ?? '' });
+      });
+
+      const apply = (i: number) => {
+        const o = optionen[i];
+        if (!o || !basis) return;
+        if (preisEl) preisEl.textContent = o.preis ?? basis.preis;
+        if (kennzahlEl) kennzahlEl.textContent = o.kennzahl ?? basis.kennzahl;
+        if (kostenEl) kostenEl.textContent = o.kosten;
+        if (dbEl) dbEl.textContent = `${o.db} · ${o.dbProzent} %`;
+        if (ampelEl) {
+          const dot = ampelEl.querySelector('.kr-dot');
+          ampelEl.textContent = texte[o.ampel] ?? '';
+          if (dot) ampelEl.prepend(dot);
+        }
+        if (box) box.dataset.ampel = o.ampel;
+        panel.style.setProperty('--db', `${o.dbProzent}%`);
+        zeilen.forEach(({ el, start }, label) => {
+          el.textContent = o.setzt?.[label] ?? start;
+        });
+        btns.forEach((b, k) => b.setAttribute('aria-pressed', k === i ? 'true' : 'false'));
+      };
+
+      btns.forEach((b, i) => b.addEventListener('click', () => apply(i)));
+    });
 
     tabs.forEach((tab, i) => {
       tab.addEventListener('click', () => select(i));
