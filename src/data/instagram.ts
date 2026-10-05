@@ -67,6 +67,14 @@ export type InstagramPost = InstagramPostMitBeitrag | InstagramPostMitUrl;
 
 export const instagramPosts: InstagramPost[] = [
   {
+    // Vorläufiger Schlüssel bis zum Veröffentlichen (Hot Take „Gute Tools machen
+    // blind“). Danach gegen den echten Shortcode tauschen.
+    code: 'hot-take-gute-tools-machen-blind',
+    postSlug: 'tool-sprawl-hubspot-pipedrive-lexoffice',
+    hook: 'Wie viele Tools habt ihr offen, bis ihr eine Frage zu einem einzigen Kunden beantworten könnt?',
+    datum: '2026-10-05',
+  },
+  {
     // Vorläufiger Schlüssel: Den Shortcode gibt es erst nach dem Veröffentlichen,
     // der Eintrag muss aber vorher live sein. Danach hier und in coverImages.ts
     // gegen den echten Code tauschen.
