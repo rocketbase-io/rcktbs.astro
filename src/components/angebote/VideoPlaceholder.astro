@@ -1,0 +1,152 @@
+---
+/**
+ * Platzhalter für ein Kurzvideo, das noch gedreht wird.
+ *
+ * Steht an jeder Stelle der Angebots-Seite, an der Bewegung mehr erklärt als
+ * ein Screenshot. Er sagt, was im Video passieren soll, damit die Aufnahme
+ * direkt aus der Seite geplant werden kann. Sobald es eine Datei gibt, wird der
+ * Platzhalter durch einen `<video>` mit derselben Ratio ersetzt.
+ *
+ * Bewusst sichtbar „in Arbeit": Die Seite ist ein Entwurf, und ein
+ * Platzhalter, der wie ein kaputter Player aussieht, wäre schlimmer als einer,
+ * der sagt, was kommt.
+ */
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+
+interface Props {
+  /** Was das Video zeigt, als Überschrift. */
+  title: string;
+  /** Ablauf in einem Satz: was passiert, in welcher Reihenfolge. */
+  script: string;
+  /** Geplante Länge, z. B. „20 Sek.". */
+  duration: string;
+  /** Wo in der Demo gedreht wird (Route oder Ansicht). */
+  where?: string;
+  ratio?: '16/9' | '16/10' | '4/5' | '9/16';
+  class?: string;
+}
+
+const { title, script, duration, where, ratio = '16/9', class: className } = Astro.props;
+---
+
+<figure
+  class:list={[
+    'video-placeholder group border-brand-300/60 bg-card dark:border-brand-700/60 relative isolate overflow-hidden rounded-[1.75rem] border border-dashed',
+    className,
+  ]}
+  style={`--vp-ratio: ${ratio}`}
+>
+  <div
+    class="bg-grid-pattern pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black_10%,transparent_75%)] opacity-40"
+    aria-hidden="true"
+  >
+  </div>
+  <div
+    class="vp-orb bg-brand-400/30 pointer-events-none absolute -top-16 -left-10 h-56 w-56 rounded-full blur-3xl"
+    aria-hidden="true"
+  >
+  </div>
+  <div
+    class="vp-orb vp-orb-2 bg-brand-300/30 pointer-events-none absolute -right-10 -bottom-16 h-56 w-56 rounded-full blur-3xl"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="relative flex h-full flex-col justify-between p-5 sm:p-7">
+    <div class="flex items-center justify-between gap-3">
+      <span
+        class="bg-brand-500/10 text-brand-600 dark:text-brand-300 inline-flex items-center gap-2 rounded-full px-3 py-1 font-mono text-[11px] font-semibold tracking-[0.18em] uppercase"
+      >
+        <span class="vp-dot bg-brand-500 h-1.5 w-1.5 rounded-full" aria-hidden="true"></span>
+        Kurzvideo folgt
+      </span>
+      <span class="text-foreground-muted font-mono text-xs tabular-nums">{duration}</span>
+    </div>
+
+    <div class="flex items-center justify-center py-4">
+      <span
+        class="vp-play bg-brand-500 text-on-invert flex h-16 w-16 items-center justify-center rounded-full shadow-[0_18px_40px_rgba(70,90,160,0.35)] sm:h-20 sm:w-20"
+      >
+        <svg
+          class="ml-1 h-7 w-7 sm:h-8 sm:w-8"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+          ><path d="M8 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 8 5.5Z"
+          ></path></svg
+        >
+      </span>
+    </div>
+
+    <figcaption>
+      <p
+        class="font-display text-foreground text-lg leading-snug font-bold tracking-tight sm:text-xl"
+      >
+        {title}
+      </p>
+      <p class="text-foreground-secondary mt-2 text-sm leading-6">{script}</p>
+      {
+        where && (
+          <p class="text-foreground-muted mt-3 inline-flex items-center gap-1.5 font-mono text-[11px]">
+            <Icon name="monitor" size="xs" />
+            {where}
+          </p>
+        )
+      }
+    </figcaption>
+  </div>
+</figure>
+
+<style>
+  /* Festes Format erst ab sm: auf dem Handy wäre 16:10 zu niedrig für Titel und Drehbuch. */
+  .video-placeholder {
+    min-height: 22rem;
+  }
+  @media (min-width: 640px) {
+    .video-placeholder {
+      min-height: 0;
+      aspect-ratio: var(--vp-ratio);
+    }
+  }
+  .vp-play {
+    transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .video-placeholder:hover .vp-play {
+    transform: scale(1.06);
+  }
+  .vp-dot {
+    animation: vp-pulse 1.8s ease-in-out infinite;
+  }
+  .vp-orb {
+    animation: vp-drift 9s ease-in-out infinite alternate;
+  }
+  .vp-orb-2 {
+    animation-delay: -4.5s;
+  }
+  @keyframes vp-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.3;
+    }
+  }
+  @keyframes vp-drift {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(24px, 16px, 0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .vp-dot,
+    .vp-orb {
+      animation: none;
+    }
+    .vp-play {
+      transition: none;
+    }
+  }
+</style>

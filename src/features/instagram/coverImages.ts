@@ -31,4 +31,6 @@ export const instagramCovers: Record<string, ImageMetadata> = {
   DdJekmNFtUk: angebotFunkstille,
   // Vorläufiger Schlüssel bis zum Veröffentlichen, siehe src/data/instagram.ts.
   'quartalsbericht-3-leute-2-wochen': quartalsberichtExcel,
+  // Rubrik „Angebotsmodul": Bild kommt aus dem Instagram-Post, sobald er steht.
+  // Bis dahin zeigt instagram.astro einen Platzhalter.
 };

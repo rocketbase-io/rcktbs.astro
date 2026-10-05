@@ -1,0 +1,462 @@
+---
+/**
+ * Vergleichsseiten /angebote/<tool>-alternative/ (Qwilr, PandaDoc).
+ *
+ * Suchintention „<Tool> Alternative": Wer so sucht, erwartet eine Tabelle,
+ * Preise und eine Empfehlung. Die Seite liefert das und ordnet ehrlich ein,
+ * wann das Tool reicht. Sie verkauft kein Abo, sondern ein Projekt — das
+ * muss früh stehen, sonst zieht die Seite Leser mit 35-Dollar-Erwartung.
+ *
+ * Inhalte in src/data/angebotVergleiche.ts, Tabelle geteilt mit dem Funnel /f/angebote/.
+ */
+import PageLayout from '@/layouts/PageLayout.astro';
+import { Picture } from 'astro:assets';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import GridShift from '@/components/hero-backgrounds/GridShift.astro';
+import VergleichTabelle from '@/components/angebote/VergleichTabelle.astro';
+import { defaultLocale } from '@/i18n/config';
+import { contactLinks } from '@/data/rocketbase';
+import { STAND, vergleichSeiten } from '@/data/angebotVergleiche';
+import { createBreadcrumbSchema, createFAQSchema, createServiceSchema } from '@/lib/schema';
+
+import kalkulation from '@/assets/blog/angebot-kalkulation.png';
+import bausteinDetail from '@/assets/angebote/angebot-bausteine-ankerplatz.webp';
+import cockpit from '@/assets/angebote/cockpit-ueberblick.webp';
+
+export function getStaticPaths() {
+  return vergleichSeiten.map((seite) => ({
+    params: { vergleich: seite.slug },
+    props: { seite },
+  }));
+}
+
+const { seite } = Astro.props;
+const locale = defaultLocale;
+
+const pageUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const angeboteUrl = new URL('/f/angebote/', Astro.site).toString();
+
+const unterschiedBilder = [
+  { image: kalkulation, alt: 'Kalkulation mit Stunden je Baustein und Deckungsbeitrag' },
+  { image: bausteinDetail, alt: 'Angebot mit Leistungen, Stunden und Deckungsbeitrag je Zeile' },
+  {
+    image: cockpit,
+    alt: 'Cockpit mit Umsatz, Deckungsbeitrag und Auslastung aus demselben System',
+  },
+];
+
+const { nutzer, jahre, monatlichJeNutzer, waehrung } = seite.preisbeispiel;
+const saasSumme = nutzer * jahre * 12 * monatlichJeNutzer;
+const saasFormatiert = `${saasSumme.toLocaleString('de-DE')} ${waehrung}`;
+
+const serviceSchema = createServiceSchema({
+  name: `${seite.tool}-Alternative: Angebotsmodul`,
+  description: seite.meta.description,
+  url: pageUrl,
+  serviceType: 'Individualsoftware für Angebotskalkulation und Angebotsversand',
+  areaServed: 'DE',
+});
+
+const breadcrumbSchema = createBreadcrumbSchema([
+  { name: 'Angebotsmodul', url: angeboteUrl },
+  { name: `${seite.tool}-Alternative`, url: pageUrl },
+]);
+
+const andere = vergleichSeiten.filter((s) => s.slug !== seite.slug);
+---
+
+<PageLayout
+  title={seite.meta.title}
+  description={seite.meta.description}
+  lang={locale}
+  extraSchemas={[
+    serviceSchema,
+    breadcrumbSchema,
+    createFAQSchema(seite.faqs.map((f) => ({ question: f.q, answer: f.a }))),
+  ]}
+>
+  <!-- HERO -->
+  <section class="relative flex min-h-[55vh] items-center overflow-hidden py-20 sm:py-28">
+    <GridShift />
+    <div
+      class="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,var(--color-background)_0%,transparent_75%)] opacity-70"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="relative z-10 container max-w-5xl text-center">
+      <nav
+        aria-label="Pfad"
+        class="text-foreground-muted mb-6 text-xs font-semibold tracking-[0.18em] uppercase"
+      >
+        <a href="/f/angebote/" class="hover:text-brand-600 transition-colors">Angebotsmodul</a>
+        <span class="mx-2" aria-hidden="true">/</span>
+        <span class="text-brand-600">{seite.tool}-Alternative</span>
+      </nav>
+      <h1
+        data-reveal="fade-down"
+        lang="de"
+        class="font-display text-foreground text-4xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-5xl lg:text-6xl"
+      >
+        {seite.hero.headline}
+        <span class="text-brand-500 mt-2 block">{seite.hero.headlineAccent}</span>
+      </h1>
+      <p
+        data-reveal
+        class="text-foreground-secondary mx-auto mt-8 max-w-2xl text-lg leading-8 sm:text-xl"
+      >
+        {seite.hero.subline}
+      </p>
+      <div data-reveal class="mt-10 flex flex-wrap items-center justify-center gap-4">
+        <Button size="lg" href="#tabelle">
+          Zum Vergleich
+          <Icon name="chevron-down" size="sm" />
+        </Button>
+        <Button
+          variant="link"
+          href="/f/angebote/"
+          class="text-foreground-secondary hover:text-foreground"
+        >
+          Das Angebotsmodul im Überblick
+          <Icon name="arrow-right" size="sm" />
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- KURZANTWORT -->
+  <section class="bg-background-secondary border-border border-y py-20 lg:py-24">
+    <div class="container max-w-6xl">
+      <header data-reveal class="mx-auto max-w-3xl text-center">
+        <p class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">
+          Die kurze Antwort
+        </p>
+        <h2 class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
+          Drei Fälle, drei Antworten.
+        </h2>
+      </header>
+      <div data-reveal class="mt-12 grid gap-6 lg:grid-cols-3">
+        <div class="border-border bg-card rounded-2xl border p-7 shadow-sm">
+          <p class="text-foreground-muted font-mono text-xs font-semibold tracking-wider uppercase">
+            {seite.tool} reicht
+          </p>
+          <p class="text-foreground-secondary mt-4 text-[0.95rem] leading-7">
+            {seite.kurzantwort.toolReicht}
+          </p>
+        </div>
+        <div
+          class="border-brand-300 bg-card dark:border-brand-800 rounded-2xl border p-7 shadow-[0_22px_55px_rgba(34,43,74,0.08)]"
+        >
+          <p class="text-brand-600 font-mono text-xs font-semibold tracking-wider uppercase">
+            Das Modul lohnt
+          </p>
+          <p class="text-foreground-secondary mt-4 text-[0.95rem] leading-7">
+            {seite.kurzantwort.modulLohnt}
+          </p>
+        </div>
+        <div class="border-border bg-card rounded-2xl border p-7 shadow-sm">
+          <p class="text-foreground-muted font-mono text-xs font-semibold tracking-wider uppercase">
+            Keins von beiden
+          </p>
+          <p class="text-foreground-secondary mt-4 text-[0.95rem] leading-7">
+            {seite.kurzantwort.keinsVonBeiden}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TABELLE -->
+  <section id="tabelle" class="bg-background scroll-mt-20 py-20 lg:py-28">
+    <div class="container max-w-6xl">
+      <header data-reveal class="mx-auto max-w-3xl text-center">
+        <p class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">
+          Im Vergleich
+        </p>
+        <h2 class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
+          {seite.tool}, PandaDoc-Klasse und Angebotsmodul nebeneinander.
+        </h2>
+        <p class="text-foreground-secondary mt-6 text-lg leading-8">
+          Dazu die Spalte, die in den meisten Häusern die Wahrheit ist: Word, Excel und ein PDF.
+        </p>
+      </header>
+      <div data-reveal class="mt-12">
+        <VergleichTabelle fokus={seite.spalte} />
+      </div>
+
+      <div
+        data-reveal
+        class="border-border bg-background-secondary mt-10 rounded-2xl border p-6 sm:p-8"
+      >
+        <p class="text-foreground-muted font-mono text-xs font-semibold tracking-wider uppercase">
+          Was {seite.tool} gut macht
+        </p>
+        <ul class="mt-4 grid gap-3 md:grid-cols-3">
+          {
+            seite.staerken.map((s) => (
+              <li class="flex gap-3">
+                <Icon name="check" size="sm" class="text-foreground-muted mt-1 shrink-0" />
+                <span class="text-foreground-secondary text-sm leading-6">{s}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- DREI UNTERSCHIEDE -->
+  <section class="bg-background-secondary border-border border-y py-20 lg:py-28">
+    <div class="container max-w-6xl">
+      <header data-reveal class="mx-auto max-w-3xl text-center">
+        <p class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">
+          Die drei Unterschiede
+        </p>
+        <h2 class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
+          Was den Projektpreis rechtfertigt.
+        </h2>
+      </header>
+
+      <div class="mt-14 space-y-14">
+        {
+          seite.unterschiede.map((u, index) => {
+            const bild = unterschiedBilder[index] ?? unterschiedBilder[0];
+            return (
+              <div
+                class:list={[
+                  'grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-14',
+                  index % 2 === 1 && 'lg:[&>*:first-child]:order-2',
+                ]}
+              >
+                <div data-reveal={index % 2 === 1 ? 'fade-left' : 'fade-right'}>
+                  <span class="text-brand-600 font-mono text-xs font-semibold tracking-wider">
+                    0{index + 1}
+                  </span>
+                  <h3 class="font-display text-foreground mt-3 text-2xl font-bold tracking-tight">
+                    {u.title}
+                  </h3>
+                  <p class="text-foreground-secondary mt-4 text-base leading-7">{u.text}</p>
+                </div>
+                <figure
+                  data-reveal={index % 2 === 1 ? 'fade-right' : 'fade-left'}
+                  class="border-border bg-card overflow-hidden rounded-[2rem] border shadow-[0_22px_55px_rgba(34,43,74,0.08)]"
+                >
+                  <Picture
+                    src={bild.image}
+                    alt={bild.alt}
+                    widths={[640, 960, 1280]}
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    formats={['avif', 'webp']}
+                    class="aspect-[16/9] w-full object-cover object-left-top"
+                    loading="lazy"
+                  />
+                </figure>
+              </div>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- PREISE -->
+  <section class="bg-background py-20 lg:py-28">
+    <div class="container max-w-6xl">
+      <header data-reveal class="mx-auto max-w-3xl text-center">
+        <p class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">
+          Preise, ehrlich
+        </p>
+        <h2 class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
+          Abo je Nutzer gegen Projekt plus Betrieb.
+        </h2>
+        <p class="text-foreground-secondary mt-6 text-lg leading-8">
+          Zwei verschiedene Rechnungen. Die eine läuft, solange ihr das Tool nutzt. Die andere hat
+          einen Anfang und danach eine Pauschale.
+        </p>
+      </header>
+
+      <div data-reveal class="mt-12 grid gap-6 lg:grid-cols-2">
+        <div class="border-border bg-card rounded-2xl border p-7 shadow-sm sm:p-8">
+          <p class="text-foreground-muted font-mono text-xs font-semibold tracking-wider uppercase">
+            {seite.tool}
+          </p>
+          <p class="font-display text-foreground mt-3 text-3xl font-bold tracking-tight">
+            ab {monatlichJeNutzer}
+            {waehrung}
+            <span class="text-foreground-muted text-base font-medium">je Nutzer und Monat</span>
+          </p>
+          <p class="text-foreground-secondary mt-4 text-sm leading-6">
+            Rechenbeispiel: {nutzer} Nutzer über {jahre} Jahre im günstigsten Tarif ergeben rund{
+              ' '
+            }
+            <strong class="text-foreground">{saasFormatiert}</strong>. Dazu die Stunden, die weiter
+            in Excel und in die Übergabe an Projekt und Rechnung gehen. Stand {STAND},
+            Herstellerseite.
+          </p>
+        </div>
+        <div
+          class="border-brand-300 bg-card dark:border-brand-800 rounded-2xl border p-7 shadow-[0_22px_55px_rgba(34,43,74,0.08)] sm:p-8"
+        >
+          <p class="text-brand-600 font-mono text-xs font-semibold tracking-wider uppercase">
+            Angebotsmodul
+          </p>
+          <p class="font-display text-foreground mt-3 text-3xl font-bold tracking-tight">
+            Festpreis <span class="text-foreground-muted text-base font-medium"
+              >plus Betriebspauschale</span
+            >
+          </p>
+          <p class="text-foreground-secondary mt-4 text-sm leading-6">
+            Oder monatlich: Einrichtung plus Betrag je Nutzer, mit Betrieb, Updates und einem
+            Kontingent für Anpassungen, weil sich Kalkulation, Norm und Vorlagen bei euch ändern.
+            Den Rahmen hört ihr im Erstgespräch. Vorher gibt es das Angebots-Konzept für 2.400 €,
+            voll anrechenbar.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WAS BLEIBT -->
+  <section class="bg-background-secondary border-border border-y py-20 lg:py-24">
+    <div class="container max-w-4xl">
+      <header data-reveal class="text-center">
+        <p class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">
+          Was bleibt
+        </p>
+        <h2 class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
+          Drei Dinge, die ihr behaltet.
+        </h2>
+      </header>
+      <ul data-reveal class="mt-10 grid gap-5 md:grid-cols-3">
+        <li class="border-border bg-card rounded-2xl border p-6 shadow-sm">
+          <p class="font-display text-foreground font-bold">Das PDF</p>
+          <p class="text-foreground-secondary mt-2 text-sm leading-6">
+            Für die Akte und den Einkauf, aus denselben Daten wie die Seite.
+          </p>
+        </li>
+        <li class="border-border bg-card rounded-2xl border p-6 shadow-sm">
+          <p class="font-display text-foreground font-bold">Eure Vorlagen</p>
+          <p class="text-foreground-secondary mt-2 text-sm leading-6">
+            Texte und Struktur wandern in Textbausteine und Vorlagen je Geschäftsbereich.
+          </p>
+        </li>
+        <li class="border-border bg-card rounded-2xl border p-6 shadow-sm">
+          <p class="font-display text-foreground font-bold">Euer Postfach</p>
+          <p class="text-foreground-secondary mt-2 text-sm leading-6">
+            Mails gehen aus eurem Microsoft-365-Konto raus, nicht über einen fremden Versender.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="bg-background py-20 lg:py-28">
+    <div class="container max-w-4xl">
+      <header data-reveal class="text-center">
+        <p class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">
+          Häufige Fragen
+        </p>
+        <h2 class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
+          Was {seite.tool}-Nutzer vorab fragen.
+        </h2>
+      </header>
+      <div data-reveal class="mt-12 flex flex-col gap-4">
+        {
+          seite.faqs.map((item) => (
+            <details class="group border-border bg-card rounded-2xl border p-5 shadow-sm transition-shadow duration-300 open:shadow-lg sm:p-6">
+              <summary class="flex cursor-pointer list-none items-start gap-4 [&::-webkit-details-marker]:hidden">
+                <h3 class="font-display text-foreground flex-1 text-base font-bold tracking-tight sm:text-lg">
+                  {item.q}
+                </h3>
+                <Icon
+                  name="chevron-down"
+                  size="sm"
+                  class="text-foreground-muted mt-1 shrink-0 transition-transform duration-300 group-open:rotate-180"
+                />
+              </summary>
+              <p class="text-foreground-secondary border-border/60 mt-4 border-t pt-4 text-[0.95rem] leading-7">
+                {item.a}
+              </p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="border-border bg-background-secondary border-t py-24">
+    <div class="container max-w-4xl">
+      <div
+        data-reveal="zoom-in"
+        class="border-border bg-card rounded-[2.25rem] border p-6 shadow-sm sm:p-8 lg:p-10"
+      >
+        <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <div>
+            <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
+              Nächster Schritt
+            </p>
+            <h2
+              lang="de"
+              class="font-display text-foreground mt-4 text-2xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-3xl lg:text-4xl"
+            >
+              Unsicher, welche Größe passt? Dafür ist das Erstgespräch da.
+            </h2>
+            <p class="text-foreground-secondary mt-6 text-lg leading-8">
+              30 Minuten mit Marten Prieß. Wenn {seite.tool} für euch die richtige Wahl ist, sagen wir
+              das auch.
+            </p>
+          </div>
+          <div
+            class="bg-background-secondary flex flex-wrap items-center gap-4 rounded-[1.5rem] p-5 sm:p-6"
+          >
+            <Button href={contactLinks.cal} target="_blank" data-track-cal="vergleich">
+              Erstgespräch buchen
+              <Icon name="arrow-up-right" size="sm" />
+            </Button>
+            <Button variant="link" href="/f/angebote/">
+              Zum Angebotsmodul
+              <Icon name="arrow-right" size="sm" />
+            </Button>
+          </div>
+        </div>
+        {
+          andere.length > 0 && (
+            <div class="border-border/60 mt-8 border-t pt-6">
+              {andere.map((s) => (
+                <a
+                  href={`/angebote/${s.slug}/`}
+                  class="group text-foreground-secondary inline-flex items-center gap-2 text-sm leading-7"
+                >
+                  <span>Auch im Vergleich:</span>
+                  <span class="text-brand-600 decoration-brand-300/60 group-hover:text-brand-700 font-semibold underline underline-offset-4 transition-colors">
+                    {s.tool}-Alternative
+                  </span>
+                  <Icon
+                    name="arrow-right"
+                    size="xs"
+                    class="text-brand-500 transition-transform group-hover:translate-x-1"
+                  />
+                </a>
+              ))}
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<script>
+  import { trackPlausible, pushEvent } from '@/lib/leadTracking';
+
+  document.querySelectorAll<HTMLAnchorElement>('[data-track-cal]').forEach((link) => {
+    link.addEventListener('click', () => {
+      const position = link.dataset.trackCal ?? 'unbekannt';
+      trackPlausible('Cal Click', { page: window.location.pathname, position });
+      pushEvent('cal_click', { page: window.location.pathname, position });
+    });
+  });
+</script>

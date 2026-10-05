@@ -1,6 +1,6 @@
 import type { ImageMetadata } from 'astro';
 import { getCollection } from 'astro:content';
-import { instagramPosts } from '@/data/instagram';
+import { instagramPosts, type InstagramKategorie } from '@/data/instagram';
 import { instagramCovers } from '@/features/instagram/coverImages';
 import { defaultLocale } from '@/i18n/config';
 
@@ -22,17 +22,25 @@ export interface InstagramEintrag {
   href: string;
   /** Überschrift der Kachel bzw. Text der Linkzeile. */
   titel: string;
+  /**
+   * Echter Titel des Blogbeitrags (bei freien Zielen gleich `titel`). Die
+   * Rubriken zeigen ihn statt des Instagram-Aufhängers: Dort sucht niemand die
+   * Zeile aus dem Post, sondern den Artikel.
+   */
+  beitragTitel: string;
   /** Beschreibungstext für die große Kachel; bei Linkzeilen ungenutzt. */
   text: string | null;
   /** Kachelbild: echtes Instagram-Cover, sonst Hero des Beitrags, sonst nichts. */
   bild: ImageMetadata | null;
   /** Alt-Text zum Bild. */
   bildAlt: string;
+  /** Feste Rubrik, siehe `InstagramKategorie` in src/data/instagram.ts. */
+  kategorie: InstagramKategorie | null;
 }
 
 export async function ladeInstagramEintraege(): Promise<InstagramEintrag[]> {
   const alleBeitraege = await getCollection('blog', ({ data }) =>
-    import.meta.env.PROD ? data.draft !== true : true,
+    import.meta.env.PROD ? data.draft !== true : true
   );
 
   const sortiert = [...instagramPosts].sort((a, b) => b.datum.localeCompare(a.datum));
@@ -51,9 +59,11 @@ export async function ladeInstagramEintraege(): Promise<InstagramEintrag[]> {
         code: eintrag.code,
         href: eintrag.url,
         titel: eintrag.titel,
+        beitragTitel: eintrag.titel,
         text: eintrag.text ?? null,
         bild: cover,
         bildAlt: eintrag.hook,
+        kategorie: eintrag.kategorie ?? null,
       });
       continue;
     }
@@ -66,7 +76,7 @@ export async function ladeInstagramEintraege(): Promise<InstagramEintrag[]> {
       throw new Error(
         `src/data/instagram.ts: Kein Blogbeitrag für postSlug "${eintrag.postSlug}" ` +
           `(Post ${eintrag.code}). Erwartet wird ein Ordner unter ` +
-          `src/content/blog/${defaultLocale}/.`,
+          `src/content/blog/${defaultLocale}/.`
       );
     }
 
@@ -79,9 +89,11 @@ export async function ladeInstagramEintraege(): Promise<InstagramEintrag[]> {
       code: eintrag.code,
       href: `/blog/${slug}/`,
       titel: eintrag.hook,
+      beitragTitel: beitrag.data.title,
       text: beitrag.data.description,
       bild: cover ?? beitrag.data.image ?? null,
       bildAlt: cover ? eintrag.hook : (beitrag.data.imageAlt ?? beitrag.data.title),
+      kategorie: eintrag.kategorie ?? null,
     });
   }
 
@@ -94,4 +106,23 @@ export async function ladeInstagramEintraege(): Promise<InstagramEintrag[]> {
  */
 export function mitTracking(href: string): string {
   return href.startsWith('/') ? `${href}?utm_source=instagram&utm_medium=bio` : href;
+}
+
+/**
+ * Blogbeiträge einer Rubrik als Linkzeilen (Titel + Ziel). Ein falscher Slug
+ * bricht den Build, aus demselben Grund wie in `ladeInstagramEintraege`.
+ */
+export async function ladeRubrikBeitraege(
+  slugs: string[]
+): Promise<{ href: string; titel: string }[]> {
+  const alle = await getCollection('blog', ({ data }) =>
+    import.meta.env.PROD ? data.draft !== true : true
+  );
+  return slugs.map((slug) => {
+    const beitrag = alle.find((p) => p.id === `${defaultLocale}/${slug}`);
+    if (!beitrag) {
+      throw new Error(`src/data/instagram.ts: Kein Blogbeitrag für Rubrik-Slug "${slug}".`);
+    }
+    return { href: `/blog/${slug}/`, titel: beitrag.data.title };
+  });
 }

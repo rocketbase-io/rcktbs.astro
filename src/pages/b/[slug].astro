@@ -124,6 +124,19 @@ const clientLogos = [
             </p>
           )
         }
+        {
+          landing.video.weiter && (
+            <p class="mt-5">
+              <a
+                href={landing.video.weiter.href}
+                class="text-brand-600 hover:text-brand-700 inline-flex items-center gap-2 text-sm font-semibold transition-colors"
+              >
+                {landing.video.weiter.label}
+                <Icon name="arrow-right" size="sm" />
+              </a>
+            </p>
+          )
+        }
       </header>
 
       <div class="mx-auto mt-8 w-full max-w-[420px] lg:mt-0">

@@ -1,0 +1,1239 @@
+---
+/**
+ * Funnel-Seite Angebotsmodul (/f/angebote/).
+ *
+ * Ziel der Social-Posts (Instagram-Bio, Facebook-Caption, LinkedIn-Kommentar).
+ * Vorerst bewusst nur Funnel: FunnelLayout, also noindex, ohne Navigation, nicht
+ * in der Sitemap. /angebote/ leitet hierher (netlify.toml). Für die Suche bleiben
+ * die Vergleichsseiten /angebote/<tool>-alternative/ indexiert und verlinken her.
+ * Liegt als statische Datei neben /f/[slug].astro und gewinnt gegen die
+ * dynamische Route; in funnels.ts darf es deshalb keinen Slug „angebote“ geben.
+ *
+ * Für jeden Betrieb geschrieben, der Angebote kalkuliert: Handwerk, Fertigung,
+ * Service, Beratung, Kanzleien. Die Screenshots kommen aus einer laufenden
+ * Lösung (Aveno-Demo, anonymisiert), der Text erzählt aber nicht deren
+ * Branche nach. Jeder Schritt beginnt mit „Bisher", damit sich der Leser
+ * wiederfindet, bevor er sieht, was das Modul anders macht.
+ *
+ * Aufbau: erst das eigene Produkt (Weg, Kalkulation, Kunde, Nachfassen, Cockpit),
+ * dann ab Abschnitt 06 der Vergleich. Vorher fällt kein Fremdname.
+ *
+ * Feature-Aussagen sind im Code der Lösung verifiziert: keine E-Signatur,
+ * Tracking nur Öffnungen plus Zeitpunkt, keine Benachrichtigung per Mail.
+ * Die Kalkulationsregel wird je Kunde eingebaut; die Seite verspricht deshalb
+ * „eure Regel", nicht eine fertige Stücklisten- oder Materialkalkulation.
+ */
+import FunnelLayout from '@/layouts/FunnelLayout.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import Blueprint from '@/components/hero-backgrounds/Blueprint.astro';
+import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
+import ScrollShowcase, { type ShowcaseStep } from '@/components/angebote/ScrollShowcase.astro';
+import SectionHeader from '@/components/angebote/SectionHeader.astro';
+import ShotFrame from '@/components/angebote/ShotFrame.astro';
+import VideoPlaceholder from '@/components/angebote/VideoPlaceholder.astro';
+import VergleichTabelle from '@/components/angebote/VergleichTabelle.astro';
+import { AngeboteKontakt } from '@/components/angebote/AngeboteKontakt';
+import { defaultLocale } from '@/i18n/config';
+import { getLocalizedPath } from '@/i18n/index';
+import { contactLinks } from '@/data/rocketbase';
+import { vergleichSeiten } from '@/data/angebotVergleiche';
+
+import anfragenBoard from '@/assets/angebote/anfragen-board.webp';
+import anfrageDetail from '@/assets/angebote/anfrage-detail.webp';
+import bausteine from '@/assets/angebote/angebot-bausteine.webp';
+import bausteineAnker from '@/assets/angebote/angebot-bausteine-ankerplatz.webp';
+import editor from '@/assets/angebote/angebot-praesentation-editor.webp';
+import followups from '@/assets/angebote/angebot-followups.webp';
+import protokoll from '@/assets/angebote/angebot-protokoll.webp';
+import kanban from '@/assets/angebote/angebote-kanban.webp';
+import kundeStart from '@/assets/angebote/kunde-angebot-start.webp';
+import kundeRechenweg from '@/assets/angebote/kunde-rechenweg.webp';
+import kundeAnnahme from '@/assets/angebote/kunde-annahme.webp';
+import cockpitUeberblick from '@/assets/angebote/cockpit-ueberblick.webp';
+import cockpitDurchlauf from '@/assets/angebote/cockpit-durchlaufzeit.webp';
+import cockpitVertriebler from '@/assets/angebote/cockpit-vertriebler.webp';
+import cockpitPipeline from '@/assets/angebote/cockpit-pipeline.webp';
+import cockpitGewonnen from '@/assets/angebote/cockpit-gewonnen.webp';
+import kalkulationDetail from '@/assets/blog/angebot-kalkulation.png';
+
+const locale = defaultLocale;
+const contactUrl = getLocalizedPath('contact', locale);
+const workshopUrl = getLocalizedPath('discoveryWorkshop', locale);
+
+const clientLogos = [
+  { key: 'fkc_logo', name: 'FKC Consulting' },
+  { key: 'statista-logo', name: 'Statista' },
+  { key: 'stage_logo', name: 'Stage Entertainment' },
+  { key: 'diezinger_logo', name: 'Schlosserei Diezinger' },
+  { key: 'mavox_logo', name: 'MAVOX Winterdienst' },
+];
+
+const branchen = [
+  'Handwerk & Bau',
+  'Fertigung',
+  'Wartung & Service',
+  'Beratung & Prüfung',
+  'Kanzleien',
+  'Agenturen & IT',
+];
+
+const APP = 'app.euer-betrieb.de';
+
+// 01 — der Weg. Jeder Schritt: Stichwort, Titel, wie es bisher läuft, was das Modul macht.
+const weg: ShowcaseStep[] = [
+  {
+    eyebrow: 'Anfrage',
+    title: 'Jede Anfrage landet an einem Ort',
+    before:
+      'Anfragen kommen per Mail, Telefon und Website und liegen verteilt in mehreren Postfächern.',
+    text: 'Mails, das Formular eurer Website und Anfragen von Bestandskunden laufen auf einem Board zusammen, sortiert nach Bereich und Status. Die KI liest die Mail und schlägt Firma, Ansprechpartner und Bedarf vor. Ein Mensch bestätigt.',
+    image: anfragenBoard,
+    alt: 'Board mit allen Anfragen, getrennt nach Postfach, Website und Bestandskunden',
+    url: `${APP}/anfragen`,
+    chips: [
+      { text: 'Mail · Website · Bestandskunde', pos: 'tr' },
+      { text: 'KI-Vorschlag, Mensch bestätigt', pos: 'bl' },
+    ],
+  },
+  {
+    eyebrow: 'Bedarf',
+    title: 'Die Anfrage bringt mit, was ihr zum Rechnen braucht',
+    before:
+      'Für die Kalkulation fehlen Angaben. Also wird nachtelefoniert und nachgemailt, oft tagelang.',
+    text: 'Welche Leistung, ab wann, wie groß, wie viele: Die Angaben, die eure Kalkulation braucht, stehen an der Anfrage. Fehlt etwas, bekommt der Kunde einen Fragebogen und füllt ihn selbst aus. Ein Klick macht daraus das Angebot.',
+    image: anfrageDetail,
+    alt: 'Anfrage mit Bereich, zuständiger Person, Produkt und Wunschtermin',
+    url: `${APP}/anfragen/260812-001`,
+    chips: [
+      { text: 'Fragebogen an den Kunden', pos: 'tr' },
+      { text: 'Angebot erstellen · ein Klick', pos: 'br' },
+    ],
+  },
+  {
+    eyebrow: 'Kalkulation',
+    title: 'Das Angebot rechnet sich selbst',
+    before:
+      'Kalkuliert wird in der Excel vom letzten Mal. Ob es sich gelohnt hat, zeigt erst die Nachkalkulation.',
+    text: 'Jede Leistung ist ein Baustein mit Stunden, Mengen, Anfahrt und Kosten. Daraus ergeben sich Preis und Deckungsbeitrag, je Baustein und für das ganze Angebot, bevor es rausgeht. Was optional ist, markiert ihr, und der Kunde entscheidet.',
+    image: bausteine,
+    alt: 'Angebot mit Bausteinen, Stunden, Deckungsbeitrag je Zeile und Gesamtwert',
+    url: `${APP}/angebote/11326-01/kalkulation`,
+    chips: [
+      { text: 'Deckungsbeitrag 49 % · im Ziel', pos: 'tr' },
+      { text: 'Optionale Leistung', pos: 'bl' },
+    ],
+  },
+  {
+    eyebrow: 'Angebot',
+    title: 'Aus der Kalkulation wird eine Angebotsseite',
+    before:
+      'Die Zahlen wandern aus Excel in eine Word-Vorlage. Am Ende heißen drei Dateien „final".',
+    text: 'Texte, Bilder und Abschnitte kommen aus eurer Vorlage, Positionen und Preise direkt aus der Kalkulation. Nichts wird abgetippt. Vorschau für Handy und Desktop, das PDF für die Akte auf Knopfdruck.',
+    image: editor,
+    alt: 'Editor der Angebotsseite mit Vorschau, Gerätewahl und PDF-Knopf',
+    url: `${APP}/angebote/11326-01/seite`,
+    chips: [
+      { text: 'Eure Vorlage · euer Logo', pos: 'tr' },
+      { text: 'PDF aus denselben Daten', pos: 'bl' },
+    ],
+  },
+  {
+    eyebrow: 'Versand',
+    title: 'Verschicken, und das Nachfassen ist schon geplant',
+    before: 'Das PDF geht raus. Wann nachgefasst wird, steht im Kalender, oder nirgends.',
+    text: 'Die Mail geht aus eurem eigenen Postfach. Die Erinnerungen legt die Vorlage gleich mit an, zum Beispiel nach vier und nach acht Wochen. Sagt der Kunde zu oder ab, stoppen sie von selbst.',
+    image: followups,
+    alt: 'Geplante Erinnerungsmails zu einem Angebot, eine gesendet, zwei gestoppt',
+    url: `${APP}/angebote/11328-01/nachfassen`,
+    chips: [
+      { text: 'Aus eurem Postfach', pos: 'tr' },
+      { text: 'Stoppt bei Entscheidung', pos: 'bl' },
+    ],
+  },
+  {
+    eyebrow: 'Zusage',
+    title: 'Der Kunde wählt aus und sagt online zu',
+    before: 'Der Kunde druckt, unterschreibt, scannt. Und die Hälfte der Angaben fehlt trotzdem.',
+    text: 'Auf der Angebotsseite wählt er Optionen ab oder dazu, die Summe rechnet mit. Name, Wunschtermin, Rechnungsadresse, Zusage. Seine Angaben landen direkt im System, niemand tippt sie ab.',
+    image: kundeAnnahme,
+    alt: 'Zusage auf der Angebotsseite mit wählbaren Leistungen und Summe',
+    url: 'angebot.euer-betrieb.de/11328-01',
+    chips: [
+      { text: 'Option gewählt · Summe neu', pos: 'tr' },
+      { text: 'Zusage per Klick', pos: 'bl' },
+    ],
+  },
+  {
+    eyebrow: 'Nachverfolgung',
+    title: 'Ihr seht, wann das Angebot geöffnet wird',
+    before: 'Nach dem Versand ist Funkstille. Nachgefasst wird nach Gefühl.',
+    text: 'Im Angebot steht, wie oft und wann zuletzt der Kunde hineingeschaut hat. Jede Öffnung landet mit Uhrzeit im Protokoll, und die Wiedervorlage rückt vor, solange das Interesse frisch ist.',
+    image: protokoll,
+    alt: 'Protokoll eines Angebots mit 21 Öffnungen durch den Kunden, jeweils mit Uhrzeit',
+    url: `${APP}/angebote/11328-01/protokoll`,
+    chips: [
+      { text: '21× geöffnet · zuletzt 13:18', pos: 'tr' },
+      { text: 'Wiedervorlage rückt vor', pos: 'bl' },
+    ],
+  },
+  {
+    eyebrow: 'Überblick',
+    title: 'Alle Angebote auf einen Blick, mit realistischem Wert',
+    before: 'Was in der Pipeline steckt, steht in einer Liste, die einer pflegt und keiner glaubt.',
+    text: 'In Arbeit, offen, gewonnen, verloren: Jedes Angebot steht in seiner Spalte, mit Summe und dem Wert, der nach Wahrscheinlichkeit realistisch ist. So steht im Forecast, was wirklich kommt.',
+    image: kanban,
+    alt: 'Board aller Angebote mit Summe und wahrscheinlichem Wert je Spalte',
+    url: `${APP}/angebote`,
+    chips: [{ text: 'Realistisch offen: 49.396 €', pos: 'tr' }],
+  },
+];
+
+// 02 — die Kalkulation.
+const margePunkte = [
+  {
+    icon: 'settings',
+    title: 'Eure Regel, nicht unsere',
+    text: 'Was bei euch den Aufwand bestimmt, ob Fläche, Stückzahl, Anlagen, Mitarbeiterzahl oder Prüfintervall, wird einmal als Regel eingebaut. Daraus rechnen sich Stunden und Mengen für jedes Angebot.',
+  },
+  {
+    icon: 'users',
+    title: 'Echte Kosten je Leistung',
+    text: 'Wer die Arbeit macht, was seine Stunde kostet, wie weit die Anfahrt ist: Die Kalkulation rechnet mit euren tatsächlichen Kosten, nicht mit einem Pauschalsatz.',
+  },
+  {
+    icon: 'trending-up',
+    title: 'Ampel vor dem Versand',
+    text: 'Deckungsbeitrag in Euro und Prozent, je Baustein und für das ganze Angebot. Ist er rot, geht das Angebot nicht raus. Gelb nur mit Freigabe.',
+  },
+  {
+    icon: 'clock',
+    title: 'Konditionen eingebaut',
+    text: 'Wiederkehrende Leistungen, Preisanpassung nach X Jahren, Kündigungsfrist, Zahlungsintervall, Rabatt mit Enddatum. Neue Preise gelten ab Stichtag, ohne jedes Angebot anzufassen.',
+  },
+];
+
+// 03 — beim Kunden.
+const kundePunkte = [
+  {
+    icon: 'layout',
+    title: 'Klar gegliedert',
+    text: 'Abschnitte mit Navigation, euer Logo, eure Farben, eure Bilder. Auch wer das Angebot nur weitergeleitet bekommt, findet sich zurecht.',
+  },
+  {
+    icon: 'book',
+    title: 'Nachvollziehbar gerechnet',
+    text: 'Der Rechenweg steht in Worten da: wovon ihr ausgeht und was daraus folgt. Der Kunde verhandelt über Annahmen, nicht über eine Zahl, die er nicht versteht.',
+  },
+  {
+    icon: 'check-circle',
+    title: 'Zusage per Klick',
+    text: 'Optionen abwählen oder dazunehmen, die Summe rechnet mit. Wunschtermin und Rechnungsadresse eintragen, zusagen. Drucken geht trotzdem.',
+  },
+];
+
+const belege = [
+  {
+    zahl: '17 %',
+    aussage:
+      'ihres Kaufprozesses verbringen Kunden im Gespräch mit Anbietern. In den anderen 83 Prozent arbeitet euer Angebot allein.',
+    quelle: 'Harvard Business Review 2022',
+  },
+  {
+    zahl: 'Doppelt',
+    aussage:
+      'so oft berichten Käufer von einem guten Abschluss, wenn sie sicher waren, was sie kaufen, verglichen mit denen, die unsicher blieben.',
+    quelle: 'Gartner 2026, 646 Befragte',
+  },
+  {
+    zahl: '13 Personen',
+    aussage:
+      'sind im Schnitt an einer B2B-Kaufentscheidung beteiligt. Die meisten davon lesen nur das Dokument.',
+    quelle: 'Forrester 2024, über 16.000 Einkäufer',
+  },
+];
+
+// 04 — nachfassen nach Signal: die Kette, die nach einer Öffnung abläuft.
+const signalKette = [
+  { icon: 'eye', title: 'Der Kunde öffnet', text: 'Das Angebot zählt mit, wie oft und wann.' },
+  {
+    icon: 'inbox',
+    title: 'Es steht im Protokoll',
+    text: 'Jede Öffnung ist ein Eintrag mit Uhrzeit.',
+  },
+  {
+    icon: 'clock',
+    title: 'Die Wiedervorlage rückt vor',
+    text: 'Auf höchstens zwei Werktage, solange es frisch ist.',
+  },
+  {
+    icon: 'mail',
+    title: 'Die Erinnerung kommt früher',
+    text: 'Die nächste Mail der Sequenz wird vorgezogen.',
+  },
+];
+
+// 05 — Vertriebscockpit. Beispielwerte, wie das Cockpit sie anzeigt.
+const cockpitZahlen = [
+  { wert: '44 %', label: 'Abschlussquote', detail: '177 gewonnen, 229 verloren' },
+  { wert: '4,3 Tage', label: 'Anfrage bis Angebot', detail: 'Durchschnitt über 208 Angebote' },
+  { wert: '23 / 45', label: 'Tage bis zur Entscheidung', detail: 'Zusage gegen Absage' },
+  { wert: '49.396 €', label: 'Realistisch offen', detail: 'von 144.224 € Angebotswert' },
+];
+
+const cockpitKacheln = [
+  {
+    image: cockpitPipeline,
+    alt: 'Offene Angebote nach Wahrscheinlichkeit, je Person im Vertrieb',
+    title: 'Pipeline nach Wahrscheinlichkeit',
+    text: 'Was offen ist, gewichtet nach Chance, je Person im Vertrieb.',
+  },
+  {
+    image: cockpitDurchlauf,
+    alt: 'Durchlaufzeiten von der Anfrage bis zum versendeten Angebot',
+    title: 'Durchlaufzeiten',
+    text: 'Anfrage bis Erstkontakt, bis Angebot erstellt, bis versendet. Wo es hakt, sieht man in Tagen.',
+  },
+  {
+    image: cockpitGewonnen,
+    alt: 'Gewonnene Angebote je Monat nach Bereich',
+    title: 'Gewonnen je Monat',
+    text: 'Abschlüsse über das Jahr, aufgeteilt nach Bereich.',
+  },
+  {
+    image: cockpitVertriebler,
+    alt: 'Angebote je Person im Vertrieb mit Abschlussquote und Dauer',
+    title: 'Je Person im Vertrieb',
+    text: 'Erstellt, offen, gewonnen, verloren, Quote und Dauer.',
+  },
+];
+
+// 07 — nach der Zusage.
+const danach = [
+  {
+    icon: 'file-text',
+    step: 'Auftragsbestätigung',
+    text: 'Als PDF aus dem Angebot, per Mail an den Kunden.',
+  },
+  {
+    icon: 'layers',
+    step: 'Auftrag',
+    text: 'Wird mit allen Positionen angelegt oder an einen laufenden angehängt.',
+  },
+  {
+    icon: 'book',
+    step: 'Vertrag',
+    text: 'Aus Bausteinen zusammengesetzt, mit euren Paragraphen und Tabellen.',
+  },
+  { icon: 'users', step: 'Planung', text: 'Termine und Einsätze je Leistung, Soll gegen Ist.' },
+  {
+    icon: 'database',
+    step: 'Rechnung',
+    text: 'ZUGFeRD und XRechnung, Mahnstufen, Export an DATEV.',
+  },
+  {
+    icon: 'trending-up',
+    step: 'Auswertung',
+    text: 'Welcher wiederkehrende Umsatz nächstes Jahr ausläuft, bevor er ausläuft.',
+  },
+];
+
+// 08 — wiedererkennen.
+const wiedererkennen = [
+  'Jedes Angebot wird neu kalkuliert, meistens in Excel.',
+  'Zwischen Anfrage und Angebot vergehen Tage, weil Angaben fehlen.',
+  'Ob sich ein Auftrag gelohnt hat, wisst ihr erst nach der Rechnung.',
+  'Ob ein Angebot überhaupt gelesen wurde, weiß niemand.',
+  'Wie viel in der Pipeline steckt, kann keiner auf Knopfdruck sagen.',
+];
+
+const passtNicht = [
+  'Ihr schreibt wenige Angebote, die fast gleich sind. Dann reicht eine gute Vorlage.',
+  'Ihr arbeitet fast nur über Ausschreibungen mit vorgegebenem Format.',
+  'Ihr sucht ein fertiges Abo-Tool für ein paar Euro im Monat. Das Modul wird auf eure Kalkulation zugeschnitten.',
+];
+
+// 09 — die Treppe. Preise nur dort, wo sie feststehen.
+const treppe = [
+  {
+    number: '01',
+    title: 'Erstgespräch',
+    meta: '30 Minuten, kostenlos',
+    text: 'Mit Marten Prieß, ohne Präsentation. Wie bei euch ein Angebot entsteht, wo Zeit liegen bleibt, und ob sich etwas lohnt. Den Rahmen der Umsetzung hört ihr hier, bevor ihr irgendetwas bucht.',
+  },
+  {
+    number: '02',
+    title: 'Angebots-Konzept',
+    meta: 'Drei Termine, 2.400 € Festpreis',
+    text: 'Euer Ablauf und eure Kalkulation aufgeschrieben, ein Beispielangebot in eurem Design mit eurer echten Rechnung, und der Festpreis der Umsetzung. Das Dokument behaltet ihr auch ohne Auftrag. Beauftragt ihr innerhalb von acht Wochen, wird der Betrag voll angerechnet.',
+  },
+  {
+    number: '03',
+    title: 'Umsetzung',
+    meta: 'Wochen, nicht Monate',
+    text: 'Weil die Grundlage steht, geht es um eure Regel, eure Vorlagen und eure Daten. Einmalig mit Betriebspauschale oder monatlich je Nutzer, ihr wählt.',
+  },
+];
+
+const seoTitle = 'Angebotsmodul: durchgerechnet, als Seite beim Kunden, Zusage online';
+const miniFaqs = [
+  {
+    q: 'Bleibt das PDF?',
+    a: 'Ja, als Ableitung. Angebotsseite und PDF entstehen aus denselben Daten. Der Kunde kann jederzeit drucken, und beim Versand wird das PDF automatisch abgelegt. Für die Akte und den Einkauf, der ein Dokument will, ändert sich nichts.',
+  },
+  {
+    q: 'Rechnet das nach unserer Kalkulation?',
+    a: 'Ja. In der gezeigten Lösung bestimmen Mitarbeiterzahl und Risikogruppe des Kunden die Stunden. Bei euch kann es Fläche, Stückzahl, Anlagen, ein Prüfintervall oder schlicht Stundensatz mal Aufwand sein. Die Regel wird im Angebots-Konzept aufgeschrieben und dann einmal eingebaut.',
+  },
+  {
+    q: 'Für welche Branchen passt das?',
+    a: 'Für jeden Betrieb, dessen Angebote aus einer Kalkulation entstehen und nicht aus einem Katalogpreis: Handwerk und Bau, Fertigung, Wartung und Service, Beratung und Prüfung, Kanzleien, Agenturen. Entscheidend ist nicht die Branche, sondern dass ihr wiederkehrend ähnlich rechnet.',
+  },
+  {
+    q: 'Was wird beim Kunden gezählt, und ist das sauber?',
+    a: 'Wie oft das Angebot geöffnet wurde und wann zuletzt. Kein Gerät, kein Abschnitt, keine Lesezeit. Das reicht, um die Wiedervorlage vorzuziehen, und braucht nur einen kurzen Hinweis im Angebot. Den Text dafür liefern wir mit.',
+  },
+  {
+    q: 'Was kostet die Umsetzung?',
+    a: 'Das Angebots-Konzept kostet 2.400 Euro und wird bei Beauftragung voll angerechnet. Den Rahmen der Umsetzung nennen wir im Erstgespräch, bevor ihr etwas bucht. Er hängt vor allem davon ab, wie viele verschiedene Kalkulationsarten ihr habt.',
+  },
+  {
+    q: 'Wo laufen die Daten?',
+    a: 'Auf Servern in Deutschland. Mails gehen aus eurem eigenen Postfach raus, nicht über einen fremden Versanddienst. Rechnungen entstehen als ZUGFeRD oder XRechnung, der Export geht an DATEV.',
+  },
+];
+---
+
+<FunnelLayout
+  title={seoTitle}
+  description="Was sieht euer Kunde, wenn euer Angebot ankommt? Kalkuliert nach eurer Regel, durchgerechnet vor dem Versand, beim Kunden als Seite mit Zusage per Klick, Öffnungen sichtbar. Für Handwerk, Fertigung, Service, Beratung und Kanzleien."
+  headerNote="Angebotsmodul"
+>
+  <!-- HERO -->
+  <section class="relative overflow-hidden pt-16 pb-20 sm:pt-20 lg:pt-24 lg:pb-28">
+    <Blueprint />
+    <div
+      class="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,var(--color-background)_0%,transparent_75%)] opacity-70"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div
+      class="relative z-10 container max-w-6xl lg:grid lg:grid-cols-[1fr_360px] lg:items-center lg:gap-16"
+    >
+      <div class="text-center lg:text-left">
+        <p
+          data-reveal="fade-down"
+          class="text-brand-600 dark:text-brand-300 text-sm font-semibold tracking-[0.22em] uppercase"
+        >
+          Angebotsmodul
+        </p>
+        <h1
+          data-reveal="fade-down"
+          lang="de"
+          class="font-display text-foreground mt-6 text-4xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-5xl lg:text-6xl"
+        >
+          Was sieht euer Kunde,
+          <span class="text-brand-500 mt-2 block">wenn euer Angebot ankommt?</span>
+        </h1>
+        <p
+          data-reveal
+          class="text-foreground-secondary mx-auto mt-8 max-w-2xl text-lg leading-8 sm:text-xl lg:mx-0"
+        >
+          Meistens das: eine Kalkulation aus Excel, ein Text aus Word, ein PDF im Anhang, danach
+          Funkstille. Das Angebotsmodul kalkuliert nach <strong>eurer Regel</strong>,{' '}
+          <strong>rechnet jedes Angebot durch, bevor es rausgeht</strong>, und schickt dem Kunden
+          eine <strong>Seite, auf der er auswählt und zusagt</strong>. Ihr seht, wann er
+          hineinschaut.
+        </p>
+        <div
+          data-reveal
+          class="mt-10 flex flex-wrap items-center justify-center gap-4 lg:justify-start"
+        >
+          <Button size="lg" href={contactLinks.cal} target="_blank" data-track-cal="hero">
+            Erstgespräch buchen
+            <Icon name="arrow-up-right" size="sm" />
+          </Button>
+          <Button
+            variant="link"
+            href="#weg"
+            class="text-foreground-secondary hover:text-foreground"
+          >
+            In acht Schritten ansehen
+            <Icon name="chevron-down" size="sm" />
+          </Button>
+        </div>
+        <ul
+          data-reveal
+          class="mt-10 flex flex-wrap justify-center gap-2 lg:justify-start"
+          aria-label="Branchen"
+        >
+          {
+            branchen.map((b) => (
+              <li class="border-border bg-card/70 text-foreground-secondary rounded-full border px-3 py-1 text-xs font-medium backdrop-blur">
+                {b}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div
+        data-reveal="fade-left"
+        class="mx-auto mt-14 w-full max-w-[300px] sm:max-w-[340px] lg:mt-0"
+      >
+        <video
+          class="border-border max-h-[70vh] w-full rounded-[1.75rem] border bg-black object-contain shadow-[0_40px_80px_-30px_rgba(40,50,90,0.5)]"
+          style="aspect-ratio: 604 / 1080"
+          controls
+          playsinline
+          preload="metadata"
+          poster="/screencasts/angebotsprozess-9x16.jpg"
+        >
+          <source src="/screencasts/angebotsprozess-9x16.mp4" type="video/mp4" />
+        </video>
+        <p class="text-foreground-muted mt-3 text-center text-xs leading-5">
+          Knapp zwei Minuten, mit Untertiteln.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGOS + EINORDNUNG -->
+  <ClientLogoStrip heading="Aus Projekten mit" logos={clientLogos} variant="light" />
+  <section class="bg-background-secondary border-border border-b py-10">
+    <div class="container max-w-3xl text-center">
+      <p class="text-foreground-secondary text-base leading-7 sm:text-lg">
+        Für Betriebe, deren Angebote aus einer Kalkulation entstehen und nicht aus einer Preisliste.
+        Die Screenshots zeigen eine laufende Lösung mit anonymisierten Echtdaten. Bei euch stehen
+        dort eure Leistungen, eure Preise und euer Logo.
+      </p>
+    </div>
+  </section>
+
+  <!-- 01 DER WEG: volles dunkles Band. overflow-x-clip statt overflow-hidden,
+       sonst greift die Sticky-Spalte der Showcase nicht. -->
+  <section
+    id="weg"
+    class="invert-section bg-surface-invert relative scroll-mt-16 overflow-x-clip py-24 lg:py-36"
+  >
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <div
+        class="bg-brand-500/25 absolute -top-40 left-1/4 h-[36rem] w-[36rem] rounded-full blur-[140px]"
+      >
+      </div>
+      <div
+        class="bg-brand-300/15 absolute right-0 bottom-0 h-[30rem] w-[30rem] rounded-full blur-[140px]"
+      >
+      </div>
+      <div
+        class="bg-grid-pattern absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_85%)] opacity-[0.07]"
+      >
+      </div>
+    </div>
+
+    <div class="relative z-10 mx-auto max-w-[96rem] px-5 sm:px-8 lg:px-12">
+      <SectionHeader
+        number="01"
+        eyebrow="Der Weg"
+        title="Von der Anfrage bis zur Zusage, ohne Datei dazwischen."
+        lead="Acht Schritte, die heute in den meisten Betrieben über Postfach, Excel, Word und Kalender laufen. Hier laufen sie durch eine Strecke. Jeder Schritt zeigt die echte Ansicht."
+        invert
+      />
+
+      <div class="mt-16 lg:mt-24">
+        <ScrollShowcase steps={weg} />
+      </div>
+
+      <div class="mx-auto mt-24 max-w-4xl lg:mt-32">
+        <VideoPlaceholder
+          class="af-rise"
+          title="Die ganze Strecke in 60 Sekunden"
+          script="Eine Mail kommt rein, die KI füllt die Anfrage, ein Klick macht das Angebot, die Kalkulation steht, das Angebot geht raus. Schnitt auf den Kunden, der am Handy eine Option abwählt und zusagt. Zurück im System: Status gewonnen, Auftrag angelegt."
+          duration="60 Sek."
+          where="Anfragen → Angebot → Angebotsseite → Übersicht"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 DIE KALKULATION -->
+  <section class="bg-background relative overflow-x-clip py-24 lg:py-36">
+    <div
+      class="bg-brand-300/10 pointer-events-none absolute top-40 left-1/2 h-[40rem] w-[60rem] -translate-x-1/2 rounded-full blur-[120px]"
+      aria-hidden="true"
+    >
+    </div>
+    <div class="relative z-10 container max-w-7xl">
+      <SectionHeader
+        number="02"
+        eyebrow="Die Kalkulation"
+        title="Jedes Angebot ist durchgerechnet, bevor es rausgeht."
+        lead="Das Angebot entsteht aus eurer Kalkulation, nicht aus einer Vorlage mit Zahlen. Aufwand, Kosten und Preis jeder Leistung stehen nebeneinander, und was am Ende übrig bleibt, seht ihr gleich mit. Passt die Rechnung nicht, merkt ihr es jetzt und nicht nach der Rechnung."
+      />
+
+      <div class="mx-auto mt-16 max-w-6xl lg:mt-20">
+        <ShotFrame
+          image={kalkulationDetail}
+          alt="Kalkulation einer Leistung mit Stunden vor Ort, remote und intern, zuständiger Person, Anfahrt und Deckungsbeitrag"
+          url={`${APP}/angebote/11326-01/kalkulation`}
+          motion="tilt"
+          sizes="(min-width: 1280px) 72rem, 100vw"
+          chips={[
+            { text: 'Deckungsbeitrag je Leistung', pos: 'tr' },
+            { text: 'Anfahrt und Kosten der Person', pos: 'bl' },
+          ]}
+        />
+      </div>
+
+      <ol
+        class="mx-auto mt-16 grid max-w-6xl gap-x-10 gap-y-12 sm:grid-cols-2 lg:mt-20 lg:grid-cols-4"
+      >
+        {
+          margePunkte.map((item, index) => (
+            <li class="af-rise border-border relative border-t pt-6">
+              <span class="bg-brand-500 absolute -top-px left-0 h-px w-12" aria-hidden="true" />
+              <div class="flex items-center gap-3">
+                <span class="text-brand-600 dark:text-brand-300 font-mono text-xs font-semibold">
+                  0{index + 1}
+                </span>
+                <Icon name={item.icon} size="sm" class="text-brand-500" />
+              </div>
+              <h3 class="font-display text-foreground mt-4 text-lg font-bold tracking-tight">
+                {item.title}
+              </h3>
+              <p class="text-foreground-secondary mt-3 text-[0.95rem] leading-7">{item.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div
+        class="mx-auto mt-20 grid max-w-6xl gap-10 lg:mt-28 lg:grid-cols-2 lg:grid-rows-[auto_auto] lg:gap-x-12 lg:gap-y-0"
+      >
+        <figure class="flex flex-col lg:row-span-2 lg:grid lg:grid-rows-subgrid">
+          <ShotFrame
+            image={bausteineAnker}
+            alt="Angebot mit drei Leistungen, eine davon mit rot markiertem Deckungsbeitrag"
+            fit="cover"
+            ratio="16/10"
+            sizes="(min-width: 1024px) 36rem, 100vw"
+            chips={[{ text: 'Eine Leistung rechnet sich nicht', pos: 'br' }]}
+          />
+          <figcaption class="mt-6">
+            <h3 class="font-display text-foreground text-xl font-bold tracking-tight">
+              Wo die Rechnung nicht aufgeht, steht dran
+            </h3>
+            <p class="text-foreground-secondary mt-3 text-[0.95rem] leading-7">
+              Das Angebot ist insgesamt im Ziel, eine Leistung darunter rot. Ihr seht, wo
+              nachverhandelt oder anders geplant werden muss, bevor der Kunde den Preis kennt.
+            </p>
+          </figcaption>
+        </figure>
+        <figure class="flex flex-col lg:row-span-2 lg:grid lg:grid-rows-subgrid">
+          <VideoPlaceholder
+            class="af-rise"
+            title="Eine Zahl ändern, alles rechnet neu"
+            script="Beim Kunden die Größe ändern, etwa Fläche oder Mitarbeiterzahl. Stunden und Preis springen, der Deckungsbeitrag färbt sich um. Eine andere Person mit weiterer Anfahrt einplanen: Kosten steigen, die Ampel geht auf gelb."
+            duration="20 Sek."
+            where="Angebot → Kalkulation"
+            ratio="16/10"
+          />
+          <figcaption class="mt-6">
+            <h3 class="font-display text-foreground text-xl font-bold tracking-tight">
+              Was-wäre-wenn in Sekunden
+            </h3>
+            <p class="text-foreground-secondary mt-3 text-[0.95rem] leading-7">
+              Ändert sich eine Annahme, rechnet das ganze Angebot neu. Kein Zurück in die Excel,
+              keine zweite Version im Postfach.
+            </p>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 BEIM KUNDEN -->
+  <section
+    class="bg-background-secondary border-border relative overflow-x-clip border-y py-24 lg:py-36"
+  >
+    <div
+      class="bg-grid-pattern pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)] opacity-30"
+      aria-hidden="true"
+    >
+    </div>
+    <div class="relative z-10 container max-w-7xl">
+      <SectionHeader
+        number="03"
+        eyebrow="Beim Kunden"
+        title="Eine Angebotsseite, auf der euer Kunde Ja sagen kann."
+        lead="Kein Anhang, den er öffnen, ausdrucken und weiterleiten muss. Eine Seite in eurem Design, die auch Einkauf und Geschäftsführung ohne Erklärung verstehen."
+      />
+
+      <!-- Komposition: Startseite groß, Zusage überlappend davor. Unter lg untereinander. -->
+      <div class="relative mx-auto mt-16 max-w-6xl lg:mt-20 lg:pb-28">
+        <div class="lg:w-[78%]">
+          <ShotFrame
+            image={kundeStart}
+            alt="Angebotsseite mit Titelbild, Firmenname des Kunden und Navigation"
+            url="angebot.euer-betrieb.de/11328-01"
+            motion="tilt"
+            sizes="(min-width: 1024px) 56rem, 100vw"
+            chips={[{ text: 'Euer Design · eure Bilder', pos: 'tl' }]}
+          />
+        </div>
+        <div class="mt-6 lg:absolute lg:right-0 lg:bottom-0 lg:mt-0 lg:w-[48%]">
+          <ShotFrame
+            image={kundeAnnahme}
+            alt="Zusage auf der Angebotsseite mit Name, Wunschtermin, Rechnungsadresse und wählbaren Leistungen"
+            url="angebot.euer-betrieb.de/11328-01#zusage"
+            fit="cover"
+            ratio="16/11"
+            motion="drift"
+            sizes="(min-width: 1024px) 34rem, 100vw"
+            chips={[{ text: 'Zusage per Klick', pos: 'br' }]}
+          />
+        </div>
+      </div>
+
+      <ul class="mx-auto mt-16 grid max-w-6xl gap-x-10 gap-y-10 md:grid-cols-3 lg:mt-20">
+        {
+          kundePunkte.map((item) => (
+            <li class="af-rise">
+              <div class="border-brand-300/70 bg-brand-500/5 text-brand-600 dark:text-brand-300 flex h-11 w-11 items-center justify-center rounded-xl border">
+                <Icon name={item.icon} size="md" />
+              </div>
+              <h3 class="font-display text-foreground mt-5 text-lg font-bold tracking-tight">
+                {item.title}
+              </h3>
+              <p class="text-foreground-secondary mt-3 text-[0.95rem] leading-7">{item.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div
+        class="mx-auto mt-20 grid max-w-6xl gap-10 lg:mt-28 lg:grid-cols-2 lg:grid-rows-[auto_auto] lg:gap-x-12 lg:gap-y-0"
+      >
+        <figure class="flex flex-col lg:row-span-2 lg:grid lg:grid-rows-subgrid">
+          <ShotFrame
+            image={kundeRechenweg}
+            alt="Abschnitt auf der Angebotsseite, der dem Kunden erklärt, wie sich der Umfang berechnet"
+            fit="cover"
+            ratio="16/10"
+            sizes="(min-width: 1024px) 36rem, 100vw"
+            chips={[{ text: 'Rechenweg in Worten', pos: 'bl' }]}
+          />
+          <figcaption class="mt-6">
+            <h3 class="font-display text-foreground text-xl font-bold tracking-tight">
+              Der Kunde sieht, woher der Preis kommt
+            </h3>
+            <p class="text-foreground-secondary mt-3 text-[0.95rem] leading-7">
+              „Für Ihren Betrieb rechnen wir mit …" Wer die Annahmen kennt, prüft sie, statt den
+              Preis zu drücken. Das spart die Runde, in der ihr erklärt, wie ihr gerechnet habt.
+            </p>
+          </figcaption>
+        </figure>
+        <figure class="flex flex-col lg:row-span-2 lg:grid lg:grid-rows-subgrid">
+          <VideoPlaceholder
+            class="af-rise"
+            title="Zusagen vom Handy"
+            script="Der Kunde öffnet den Link aus der Mail am Handy, scrollt durch die Abschnitte, wählt eine optionale Leistung ab, die Summe springt, er trägt den Wunschtermin ein und sagt zu."
+            duration="25 Sek."
+            where="Angebotsseite, mobil"
+            ratio="16/10"
+          />
+          <figcaption class="mt-6">
+            <h3 class="font-display text-foreground text-xl font-bold tracking-tight">
+              Funktioniert, wo der Kunde gerade ist
+            </h3>
+            <p class="text-foreground-secondary mt-3 text-[0.95rem] leading-7">
+              Am Schreibtisch, im Auto, zwischen zwei Terminen. Die Seite passt sich an, die Zusage
+              dauert eine Minute.
+            </p>
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="mx-auto mt-20 grid max-w-6xl gap-5 md:grid-cols-3 lg:mt-24">
+        {
+          belege.map((beleg) => (
+            <div class="af-rise border-border bg-card rounded-2xl border p-6 shadow-sm">
+              <p class="font-display text-brand-600 dark:text-brand-300 text-3xl font-bold tracking-tight">
+                {beleg.zahl}
+              </p>
+              <p class="text-foreground-secondary mt-3 text-sm leading-6">{beleg.aussage}</p>
+              <p class="text-foreground-muted mt-3 text-xs">{beleg.quelle}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 NACHFASSEN NACH SIGNAL -->
+  <section class="bg-background relative overflow-x-clip py-24 lg:py-36">
+    <div class="relative z-10 container max-w-7xl">
+      <SectionHeader
+        number="04"
+        eyebrow="Nachfassen"
+        title="Anrufen, wenn es passt, nicht wenn der Kalender es sagt."
+        lead="Ein ungeöffnetes Angebot heißt vielleicht Urlaub. Ein dreimal geöffnetes heißt: jetzt anrufen. Das Modul macht aus jeder Öffnung einen Hinweis, ohne jemanden zu überwachen."
+      />
+
+      <ol class="mx-auto mt-16 grid max-w-6xl gap-4 sm:grid-cols-2 lg:mt-20 lg:grid-cols-4">
+        {
+          signalKette.map((item, index) => (
+            <li class="af-rise border-border bg-card relative flex flex-col rounded-2xl border p-6 shadow-sm">
+              <div class="flex items-center justify-between">
+                <span class="bg-brand-500/10 text-brand-600 dark:text-brand-300 flex h-10 w-10 items-center justify-center rounded-full">
+                  <Icon name={item.icon} size="sm" />
+                </span>
+                <span class="text-foreground-muted font-mono text-xs">0{index + 1}</span>
+              </div>
+              <h3 class="font-display text-foreground mt-5 text-base font-bold tracking-tight">
+                {item.title}
+              </h3>
+              <p class="text-foreground-secondary mt-2 text-sm leading-6">{item.text}</p>
+              {index < signalKette.length - 1 && (
+                <span
+                  class="border-border bg-background text-brand-500 absolute top-1/2 -right-[1.1rem] z-10 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border lg:flex"
+                  aria-hidden="true"
+                >
+                  <Icon name="arrow-right" size="xs" />
+                </span>
+              )}
+            </li>
+          ))
+        }
+      </ol>
+
+      <div class="mx-auto mt-16 max-w-6xl lg:mt-20">
+        <ShotFrame
+          image={protokoll}
+          alt="Protokoll eines Angebots mit 21 Öffnungen durch den Kunden, jeweils mit Uhrzeit"
+          url={`${APP}/angebote/11328-01/protokoll`}
+          motion="tilt"
+          sizes="(min-width: 1280px) 72rem, 100vw"
+          chips={[
+            { text: '21× geöffnet · zuletzt 13:18', pos: 'tr' },
+            { text: 'Jede Öffnung mit Uhrzeit', pos: 'bl' },
+          ]}
+        />
+      </div>
+
+      <div
+        class="mx-auto mt-20 grid max-w-6xl items-center gap-10 lg:mt-28 lg:grid-cols-2 lg:gap-16"
+      >
+        <div class="af-rise">
+          <h3 class="font-display text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
+            Und was nicht passiert, fällt auch auf.
+          </h3>
+          <ul class="mt-6 space-y-5">
+            <li class="flex gap-4">
+              <Icon name="alert-circle" size="md" class="text-brand-500 mt-0.5 shrink-0" />
+              <p class="text-foreground-secondary text-[0.95rem] leading-7">
+                <strong class="text-foreground">Abgelaufen heißt erledigt.</strong> Jedes Angebot hat
+                ein Gültigkeitsdatum. Läuft es ab, wird es abgeschlossen, der Kunde sieht einen Hinweis,
+                und der Vertrieb bekommt eine Aufgabe zum Nachhaken.
+              </p>
+            </li>
+            <li class="flex gap-4">
+              <Icon name="x-circle" size="md" class="text-brand-500 mt-0.5 shrink-0" />
+              <p class="text-foreground-secondary text-[0.95rem] leading-7">
+                <strong class="text-foreground">Absagen mit Grund.</strong> Der Kunde wählt beim Absagen
+                einen Grund aus. Nach einem Jahr wisst ihr, ob ihr am Preis, am Termin oder am Umfang
+                verliert.
+              </p>
+            </li>
+            <li class="flex gap-4">
+              <Icon name="shield" size="md" class="text-brand-500 mt-0.5 shrink-0" />
+              <p class="text-foreground-secondary text-[0.95rem] leading-7">
+                <strong class="text-foreground">Kein Überwachen.</strong> Gezählt werden Öffnungen und
+                Zeitpunkt. Keine Geräte, keine Lesezeiten, keine Abschnitte.
+              </p>
+            </li>
+          </ul>
+        </div>
+        <VideoPlaceholder
+          class="af-rise"
+          title="Der Kunde öffnet, der Vertrieb sieht es"
+          script="Geteilter Bildschirm: links öffnet der Kunde das Angebot, rechts springt im System die Zahl der Öffnungen, ein Protokolleintrag erscheint, und die Wiedervorlage rückt auf übermorgen."
+          duration="15 Sek."
+          where="Angebotsseite + Angebot → Protokoll"
+          ratio="16/10"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 VERTRIEBSCOCKPIT: dunkles Band -->
+  <section class="invert-section bg-surface-invert relative overflow-x-clip py-24 lg:py-36">
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <div
+        class="bg-brand-500/20 absolute top-1/4 -right-40 h-[34rem] w-[34rem] rounded-full blur-[140px]"
+      >
+      </div>
+      <div
+        class="bg-brand-300/10 absolute bottom-0 -left-40 h-[30rem] w-[30rem] rounded-full blur-[140px]"
+      >
+      </div>
+      <div class="bg-grid-pattern absolute inset-0 opacity-[0.06]"></div>
+    </div>
+    <div class="relative z-10 mx-auto max-w-[96rem] px-5 sm:px-8 lg:px-12">
+      <SectionHeader
+        number="05"
+        eyebrow="Vertriebscockpit"
+        title="Wie läuft der Vertrieb? Die Antwort steht schon da."
+        lead="Abschlussquote, Durchlaufzeiten, offene Angebote nach Wahrscheinlichkeit, Ergebnisse je Person. Alles aus denselben Daten, aus denen die Angebote entstehen. Niemand baut am Monatsende eine Auswertung."
+        invert
+      />
+
+      <div class="mx-auto mt-14 flex max-w-6xl flex-wrap items-center justify-between gap-3">
+        <p
+          class="text-on-invert inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-1.5 text-xs font-semibold"
+        >
+          <span class="bg-brand-400 h-1.5 w-1.5 rounded-full" aria-hidden="true"></span>
+          Beispielwerte: So sieht euer Cockpit im Betrieb aus
+        </p>
+      </div>
+      <dl class="mx-auto mt-5 grid max-w-6xl grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+        {
+          cockpitZahlen.map((z) => (
+            <div class="af-rise rounded-2xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur sm:p-6">
+              <dt class="text-on-invert-secondary text-[11px] font-semibold tracking-[0.16em] uppercase sm:text-xs">
+                {z.label}
+              </dt>
+              <dd class="font-display text-on-invert mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+                {z.wert}
+              </dd>
+              <dd class="text-on-invert-secondary mt-2 text-xs sm:text-sm">{z.detail}</dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      <div class="mx-auto mt-14 max-w-6xl">
+        <ShotFrame
+          image={cockpitUeberblick}
+          alt="Vertriebscockpit mit Abschlussquote, Herkunft der Anfragen, Vertriebskanälen, Kennzahlen und Karte"
+          url={`${APP}/cockpit/vertrieb`}
+          motion="tilt"
+          sizes="(min-width: 1280px) 72rem, 100vw"
+          chips={[
+            { text: 'Abschlussquote 44 %', pos: 'tr' },
+            { text: 'Ø 23 Tage bis zur Zusage', pos: 'bl' },
+          ]}
+        />
+      </div>
+
+      <div class="mx-auto mt-14 grid max-w-6xl gap-x-8 gap-y-12 md:grid-cols-2">
+        {
+          cockpitKacheln.map((k) => (
+            <figure class="flex flex-col">
+              <ShotFrame
+                image={k.image}
+                alt={k.alt}
+                fit="contain"
+                ratio="16/8"
+                sizes="(min-width: 768px) 36rem, 100vw"
+              />
+              <figcaption class="mt-5">
+                <h3 class="font-display text-on-invert text-lg font-bold tracking-tight">
+                  {k.title}
+                </h3>
+                <p class="text-on-invert-secondary mt-2 text-sm leading-6">{k.text}</p>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+
+      <p class="text-on-invert-secondary mx-auto mt-14 max-w-3xl text-center text-xs leading-5">
+        Alle Zahlen und Ansichten sind Beispielwerte. Bei euch stehen dort eure eigenen, laufend
+        aktuell, ohne dass jemand eine Auswertung baut.
+      </p>
+    </div>
+  </section>
+
+  <!-- 06 VERGLEICH: erst hier fallen Namen -->
+  <section
+    id="vergleich"
+    class="bg-background relative scroll-mt-20 overflow-hidden py-24 lg:py-32"
+  >
+    <div class="relative z-10 container max-w-6xl">
+      <SectionHeader
+        number="06"
+        eyebrow="Qwilr, PandaDoc und wir"
+        title="Die machen das Dokument schön. Das Angebot rechnen sie nicht."
+        lead="Beide sind gute Werkzeuge, wenn das Dokument das Problem ist. Sie beginnen beim leeren Dokument und enden beim Klick. Das Modul beginnt bei der Anfrage und läuft bis zur Rechnung."
+      />
+
+      <div class="af-rise mt-14">
+        <VergleichTabelle kompakt />
+      </div>
+
+      <div class="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+        {
+          vergleichSeiten.map((seite) => (
+            <a
+              href={`/angebote/${seite.slug}/`}
+              class="text-brand-600 hover:text-brand-700 inline-flex items-center gap-2 text-sm font-semibold transition-colors"
+            >
+              Ausführlich: {seite.tool} im Vergleich
+              <Icon name="arrow-right" size="sm" />
+            </a>
+          ))
+        }
+      </div>
+      <p class="text-foreground-muted mx-auto mt-6 max-w-2xl text-center text-sm leading-6">
+        Wann Qwilr oder PandaDoc reichen, steht auf beiden Seiten auch. Wenige, ähnliche Angebote
+        ohne eigene Kalkulation dahinter: Dann sind sie die richtige Größe.
+      </p>
+    </div>
+  </section>
+
+  <!-- 07 NACH DER ZUSAGE -->
+  <section
+    class="bg-background-secondary border-border relative overflow-x-clip border-y py-24 lg:py-32"
+  >
+    <div
+      class="bg-grid-pattern pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)] opacity-30"
+      aria-hidden="true"
+    >
+    </div>
+    <div class="relative z-10 container max-w-6xl">
+      <SectionHeader
+        number="07"
+        eyebrow="Nach der Zusage"
+        title="Die Zusage ist der Anfang, nicht das Ende."
+        lead="Was nach dem Ja passiert, bleibt dieselbe Strecke. Niemand überträgt das Angebot in einen Auftrag, einen Vertrag oder eine Rechnung."
+      />
+
+      <ol class="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          danach.map((node, index) => (
+            <li class="af-rise border-border bg-card flex gap-4 rounded-2xl border p-6 shadow-sm">
+              <span class="bg-brand-500/10 text-brand-600 dark:text-brand-300 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
+                <Icon name={node.icon} size="sm" />
+              </span>
+              <div>
+                <p class="text-foreground-muted font-mono text-[11px]">0{index + 1}</p>
+                <h3 class="font-display text-foreground mt-1 text-base font-bold tracking-tight">
+                  {node.step}
+                </h3>
+                <p class="text-foreground-secondary mt-2 text-sm leading-6">{node.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div class="mx-auto mt-16 max-w-4xl">
+        <VideoPlaceholder
+          class="af-rise"
+          title="Vom Ja zum Auftrag"
+          script="Der Status springt auf gewonnen, die Auftragsbestätigung geht als PDF raus, ein Klick legt den Auftrag mit allen Positionen an, die Termine erscheinen in der Planung."
+          duration="30 Sek."
+          where="Angebot → Auftrag → Planung"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 FÜR WEN -->
+  <section class="bg-background relative overflow-hidden py-24 lg:py-32">
+    <div class="relative z-10 container max-w-6xl">
+      <SectionHeader
+        number="08"
+        eyebrow="Für wen"
+        title="Ihr erkennt euch wieder? Dann lohnt sich das Gespräch."
+        lead="Die Branche ist zweitrangig. Entscheidend ist, dass eure Angebote aus einer Kalkulation entstehen und ihr wiederkehrend ähnlich rechnet."
+      />
+
+      <div class="mt-16 grid gap-6 lg:grid-cols-[1.4fr_1fr] lg:gap-8">
+        <div
+          class="af-rise border-brand-300 bg-card dark:border-brand-800 rounded-2xl border p-7 shadow-sm sm:p-9"
+        >
+          <p
+            class="text-brand-600 dark:text-brand-300 font-mono text-xs font-semibold tracking-wider uppercase"
+          >
+            Kommt euch bekannt vor
+          </p>
+          <ul class="mt-6 space-y-4">
+            {
+              wiedererkennen.map((p) => (
+                <li class="flex gap-3">
+                  <Icon name="check" size="sm" class="text-brand-500 mt-1 shrink-0" />
+                  <span class="text-foreground text-base leading-7">{p}</span>
+                </li>
+              ))
+            }
+          </ul>
+          <div class="border-border mt-8 flex flex-wrap gap-2 border-t pt-6">
+            {
+              branchen.map((b) => (
+                <span class="bg-brand-500/10 text-brand-700 dark:text-brand-200 rounded-full px-3 py-1 text-xs font-medium">
+                  {b}
+                </span>
+              ))
+            }
+          </div>
+        </div>
+        <div class="af-rise border-border bg-background-secondary rounded-2xl border p-7 sm:p-9">
+          <p class="text-foreground-muted font-mono text-xs font-semibold tracking-wider uppercase">
+            Eher nicht
+          </p>
+          <ul class="mt-6 space-y-4">
+            {
+              passtNicht.map((p) => (
+                <li class="flex gap-3">
+                  <Icon name="minus" size="sm" class="text-foreground-muted mt-1 shrink-0" />
+                  <span class="text-foreground-secondary text-base leading-7">{p}</span>
+                </li>
+              ))
+            }
+          </ul>
+          <p class="text-foreground-muted mt-6 text-sm leading-6">
+            Das sagen wir im Erstgespräch auch so, wenn es so ist.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 SO GEHT ES LOS -->
+  <section
+    class="bg-background-secondary border-border relative overflow-hidden border-y py-24 lg:py-32"
+  >
+    <div class="relative z-10 container max-w-6xl">
+      <SectionHeader
+        number="09"
+        eyebrow="So geht es los"
+        title="Drei Stufen. Jede bepreist die nächste."
+        lead="Kostenlos ist, was aus öffentlichen Daten entsteht. Bezahlt wird, wofür eure Zahlen und eure Zeit nötig sind. Und der Festpreis kommt erst, wenn wir eure Kalkulation kennen."
+      />
+
+      <ol class="mt-16 grid gap-6 lg:grid-cols-3">
+        {
+          treppe.map((stufe) => (
+            <li class="af-rise border-border bg-card flex flex-col rounded-2xl border p-7 shadow-sm sm:p-8">
+              <span class="text-brand-600 font-mono text-xs font-semibold tracking-wider">
+                {stufe.number}
+              </span>
+              <h3 class="font-display text-foreground mt-3 text-xl font-bold tracking-tight">
+                {stufe.title}
+              </h3>
+              <p class="text-brand-600 mt-1 text-sm font-semibold">{stufe.meta}</p>
+              <p class="text-foreground-secondary mt-4 text-[0.95rem] leading-7">{stufe.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="text-foreground-muted mt-6 text-center text-sm leading-6">
+        Mehr zum Angebots-Konzept und den Formaten:{' '}
+        <a
+          href={workshopUrl}
+          class="text-brand-600 hover:text-brand-700 decoration-brand-300/60 font-semibold underline underline-offset-4 transition-colors"
+        >
+          Workshop &amp; Preise
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="bg-background relative overflow-hidden py-24 lg:py-32">
+    <div class="relative z-10 container max-w-4xl">
+      <SectionHeader number="10" eyebrow="Häufige Fragen" title="Was vorab gefragt wird." />
+
+      <div class="mt-12 flex flex-col gap-4">
+        {
+          miniFaqs.map((item) => (
+            <details class="group border-border bg-card rounded-2xl border p-5 shadow-sm transition-shadow duration-300 open:shadow-lg sm:p-6">
+              <summary class="flex cursor-pointer list-none items-start gap-4 [&::-webkit-details-marker]:hidden">
+                <h3 class="font-display text-foreground flex-1 text-base font-bold tracking-tight sm:text-lg">
+                  {item.q}
+                </h3>
+                <Icon
+                  name="chevron-down"
+                  size="sm"
+                  class="text-foreground-muted mt-1 shrink-0 transition-transform duration-300 group-open:rotate-180"
+                />
+              </summary>
+              <p class="text-foreground-secondary border-border/60 mt-4 border-t pt-4 text-[0.95rem] leading-7">
+                {item.a}
+              </p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="kontakt" class="border-border bg-background-secondary scroll-mt-20 border-t py-24">
+    <div class="container max-w-5xl">
+      <div
+        data-reveal="zoom-in"
+        class="border-border bg-card rounded-[2.25rem] border p-6 shadow-sm sm:p-8 lg:p-10"
+      >
+        <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <div>
+            <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
+              Nächster Schritt
+            </p>
+            <h2
+              lang="de"
+              class="font-display text-foreground mt-4 text-2xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-3xl lg:text-4xl"
+            >
+              Zeigt uns, wie bei euch ein Angebot entsteht.
+            </h2>
+            <p class="text-foreground-secondary mt-6 text-lg leading-8">
+              30 Minuten mit Marten Prieß, ohne Präsentation. Wir schauen uns an, wo bei euch Zeit
+              liegen bleibt, und ihr bekommt eine ehrliche Einschätzung, ob sich etwas lohnt. Wenn
+              nicht, sagen wir das genauso.
+            </p>
+          </div>
+          <div
+            class="bg-background-secondary flex flex-wrap items-center gap-4 rounded-[1.5rem] p-5 sm:p-6"
+          >
+            <Button href={contactLinks.cal} target="_blank" data-track-cal="cta">
+              Erstgespräch buchen
+              <Icon name="arrow-up-right" size="sm" />
+            </Button>
+            <Button variant="link" href={contactUrl}>
+              Kontaktseite
+              <Icon name="arrow-right" size="sm" />
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-8">
+        <AngeboteKontakt
+          client:load
+          heading="Lieber erst schreiben?"
+          text="Hinterlasst eure Kontaktdaten, Marten Prieß meldet sich werktags persönlich. Kein Newsletter, keine Weitergabe eurer Daten."
+          erfolg={{
+            heading: 'Danke, eure Nachricht ist angekommen.',
+            text: 'Marten Prieß meldet sich werktags bei euch.',
+          }}
+        />
+      </div>
+    </div>
+  </section>
+</FunnelLayout>
+
+<script>
+  // Der Cal-Klick ist der häufigste Konversionspunkt und verlässt die Domain.
+  import { trackPlausible, pushEvent } from '@/lib/leadTracking';
+
+  document.querySelectorAll<HTMLAnchorElement>('[data-track-cal]').forEach((link) => {
+    link.addEventListener('click', () => {
+      const position = link.dataset.trackCal ?? 'unbekannt';
+      trackPlausible('Cal Click', { page: 'angebote', position });
+      pushEvent('cal_click', { page: 'angebote', position });
+    });
+  });
+</script>

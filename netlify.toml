@@ -29,6 +29,16 @@
 
 # Legacy rocketbase.io URL redirects (301)
 [[redirects]]
+  from = "/angebote"
+  to = "/f/angebote/"
+  status = 301
+
+[[redirects]]
+  from = "/angebote/"
+  to = "/f/angebote/"
+  status = 301
+
+[[redirects]]
   from = "/imprint"
   to = "/impressum/"
   status = 301
