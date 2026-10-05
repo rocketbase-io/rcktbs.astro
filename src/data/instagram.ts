@@ -55,7 +55,7 @@ export const instagramKategorien: Record<
   }
 > = {
   angebote: {
-    titel: 'Angebotsmodul',
+    titel: 'Angebotsbaustein',
     text: 'Was sieht euer Kunde, wenn euer Angebot ankommt? Die Seite dazu und die Beiträge dahinter.',
     beitraege: ['angebotskalkulation-regel-deckungsbeitrag', 'angebotsprozess-anfrage-bis-zusage'],
   },
@@ -97,8 +97,8 @@ export const instagramPosts: InstagramPost[] = [
     // Der Schlüssel ist frei gewählt (kein Shortcode); Cover in coverImages.ts.
     code: 'angebotsmodul',
     url: '/f/angebote/',
-    titel: 'Das Angebotsmodul: kalkuliert nach eurer Regel, beim Kunden als Seite',
-    text: 'Von der Anfrage bis zur Zusage ohne Datei dazwischen: Deckungsbeitrag vor dem Versand, Optionen für den Kunden, Öffnungen sichtbar. Mit Vergleich zu Qwilr und PandaDoc.',
+    titel: 'Der Angebotsbaustein: individuell für euch, kalkuliert nach eurer Regel',
+    text: 'Von der Anfrage bis zur Zusage ohne Datei dazwischen: Deckungsbeitrag vor dem Versand, Optionen für den Kunden, Öffnungen sichtbar.',
     hook: 'Was sieht euer Kunde, wenn euer Angebot ankommt?',
     datum: '2026-10-05',
     kategorie: 'angebote',

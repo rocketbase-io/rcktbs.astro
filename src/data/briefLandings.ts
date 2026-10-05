@@ -228,7 +228,7 @@ export const briefLandings: BriefLandingDefinition[] = [
       poster: '/screencasts/angebotsprozess-9x16.jpg',
       weiter: {
         href: '/f/angebote/',
-        label: 'Alle Funktionen des Angebotsmoduls ansehen',
+        label: 'Alle Funktionen des Angebotsbausteins ansehen',
       },
     },
     referenzen: {

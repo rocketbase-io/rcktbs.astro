@@ -73,7 +73,6 @@ ${serviceLines.join('\n')}
 
 - [Standardsoftware ablösen](${base}/standardsoftware-abloesung/): Wenn ein Branchensystem wie Vertec oder Centric nicht mehr mitwächst - Vorgehen im Parallelbetrieb statt Big Bang.
 - [Einsatzplanung und grafischer Leitstand](${base}/einsatzplanung/): Wenn Disposition, Einsatzsteuerung und Abrechnung über gewachsene Excel-Welten laufen.
-- [Qwilr-Alternative](${base}/angebote/qwilr-alternative/) und [PandaDoc-Alternative](${base}/angebote/pandadoc-alternative/): Ehrlicher Vergleich mit Tabelle, Preisen und der Einordnung, wann das jeweilige Tool reicht.
 
 ## Fachbeiträge
 

@@ -38,6 +38,17 @@
   to = "/f/angebote/"
   status = 301
 
+# Entwurfsadresse der Funnel-Seite, bevor sie /f/angebote/ ersetzt hat (2026-10-05).
+[[redirects]]
+  from = "/f/angebote-neu"
+  to = "/f/angebote/"
+  status = 301
+
+[[redirects]]
+  from = "/f/angebote-neu/"
+  to = "/f/angebote/"
+  status = 301
+
 [[redirects]]
   from = "/imprint"
   to = "/impressum/"

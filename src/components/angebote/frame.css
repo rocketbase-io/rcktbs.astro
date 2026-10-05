@@ -145,7 +145,7 @@
 
 /*
  * Scroll-Effekte über CSS-Scroll-Timelines: Elemente steigen beim Eintreten in den
- * Viewport leicht auf und werden scharf. Browser ohne Support (und reduced motion)
+ * Viewport leicht auf und sind früh fertig (siehe Keyframes). Browser ohne Support (und reduced motion)
  * zeigen alles sofort.
  */
 @supports (animation-timeline: view()) {
@@ -153,7 +153,7 @@
     .af-rise {
       animation: af-rise linear both;
       animation-timeline: view();
-      animation-range: entry 0% cover 30%;
+      animation-range: entry 0% entry 55%;
     }
     .af-drift {
       animation: af-drift linear both;
@@ -163,15 +163,18 @@
     .af-tilt {
       animation: af-tilt linear both;
       animation-timeline: view();
-      animation-range: entry 0% cover 45%;
+      animation-range: entry 0% entry 75%;
     }
   }
 }
 
+/* Nur Verschiebung und Deckkraft, keine Skalierung: Skalieren rechnet Text und
+   Screenshots um und lässt sie beim Scrollen weich wirken. Fertig ist der Effekt,
+   bevor das Element zur Hälfte im Bild ist (2026-10-05). */
 @keyframes af-rise {
   from {
     opacity: 0;
-    transform: translateY(60px) scale(0.96);
+    transform: translateY(28px);
   }
   to {
     opacity: 1;
@@ -188,11 +191,183 @@
 }
 @keyframes af-tilt {
   from {
-    opacity: 0.2;
-    transform: perspective(1600px) rotateX(14deg) translateY(80px) scale(0.94);
+    opacity: 0.3;
+    transform: perspective(1600px) rotateX(8deg) translateY(36px);
   }
   to {
     opacity: 1;
-    transform: perspective(1600px) rotateX(0deg) translateY(0) scale(1);
+    transform: none;
+  }
+}
+
+/*
+ * Vorher/Nachher-Karten (auch außerhalb der Scroll-Showcase nutzbar).
+ * Farben aus den Sektions-Tokens, damit sie im dunklen Band und im Dark Mode
+ * gleich gut lesbar sind.
+ */
+.af-before {
+  border: 1px dashed color-mix(in oklch, var(--color-foreground) 22%, transparent);
+  background: color-mix(in oklch, var(--color-foreground) 4%, transparent);
+}
+.af-before-pill {
+  color: oklch(72% 0.14 25);
+  background: color-mix(in oklch, oklch(65% 0.18 25) 16%, transparent);
+}
+.af-after {
+  border: 1px solid color-mix(in oklch, var(--color-brand-400) 45%, transparent);
+  background: color-mix(in oklch, var(--color-brand-500) 14%, transparent);
+  box-shadow: 0 20px 40px -24px color-mix(in oklch, var(--color-brand-500) 70%, transparent);
+}
+.af-after-pill {
+  color: white;
+  background: var(--color-brand-500);
+}
+
+/* ---- Lightbox: Knopf über dem Screenshot ---- */
+.af-zoom {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  cursor: zoom-in;
+  background: transparent;
+  border: 0;
+  border-radius: inherit;
+}
+.af-zoom:focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: -4px;
+}
+.af-zoom-hint {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+  background: oklch(22% 0.03 265 / 0.72);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+.af-zoom-hint svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+@media (hover: hover) {
+  .af-zoom:hover .af-zoom-hint {
+    opacity: 1;
+    transform: none;
+  }
+}
+.af-zoom:focus-visible .af-zoom-hint {
+  opacity: 1;
+  transform: none;
+}
+/* Ohne Hover (Touch) bleibt der Hinweis klein sichtbar. */
+@media (hover: none) {
+  .af-zoom-hint {
+    opacity: 1;
+    transform: none;
+    font-size: 0;
+    gap: 0;
+    padding: 0.45rem;
+  }
+}
+
+/* ---- Lightbox: Dialog ---- */
+.af-lightbox {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  padding: clamp(0.75rem, 3vw, 2.5rem);
+  border: 0;
+  background: transparent;
+  color: #fff;
+  overflow: auto;
+}
+.af-lightbox::backdrop {
+  background: oklch(14% 0.02 265 / 0.86);
+  backdrop-filter: blur(6px);
+}
+.af-lightbox[open] {
+  display: grid;
+  place-items: center;
+  animation: af-lb-in 0.22s ease-out;
+}
+.af-lightbox-figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  max-width: 100%;
+}
+.af-lightbox-figure img {
+  display: block;
+  max-width: min(100%, 1800px);
+  max-height: calc(100dvh - 7rem);
+  width: auto;
+  height: auto;
+  border-radius: 0.75rem;
+  box-shadow: 0 40px 100px -30px rgb(0 0 0 / 0.7);
+  background: #fff;
+  cursor: zoom-out;
+}
+.af-lightbox-figure figcaption {
+  max-width: 60rem;
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: rgb(255 255 255 / 0.75);
+}
+.af-lightbox-close {
+  position: fixed;
+  top: clamp(0.75rem, 2vw, 1.5rem);
+  right: clamp(0.75rem, 2vw, 1.5rem);
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  color: #fff;
+  background: rgb(255 255 255 / 0.12);
+  border: 1px solid rgb(255 255 255 / 0.2);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.af-lightbox-close:hover {
+  background: rgb(255 255 255 / 0.22);
+}
+.af-lightbox-close:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+.af-lightbox-close svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+:root.af-lightbox-open {
+  overflow: hidden;
+}
+@keyframes af-lb-in {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .af-lightbox[open] {
+    animation: none;
   }
 }

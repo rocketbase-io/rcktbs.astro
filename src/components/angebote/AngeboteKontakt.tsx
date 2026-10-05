@@ -13,7 +13,7 @@ import {
 } from '@/lib/leadTracking';
 
 /**
- * Kontaktformular der Angebotsmodul-Seite (/f/angebote/).
+ * Kontaktformular der Angebotsbaustein-Seite (/f/angebote/).
  *
  * Schwester von `BriefKontakt.tsx`, nur in Ihr-Form und ohne Brief-Kennung:
  * Wer hier ankommt, kommt aus einem Social-Post oder der Suche, nicht aus

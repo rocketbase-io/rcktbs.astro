@@ -1,0 +1,443 @@
+---
+/**
+ * Branchen-Umschalter für die Kalkulation: je Branche eine Beispielrechnung
+ * (Eingaben → Regel → Preis, Kosten, Deckungsbeitrag mit Ampel).
+ *
+ * WAI-ARIA-Tabs (Pfeiltasten, Home/End). Die Werte sind Beispielwerte und
+ * stehen so auch im UI. Der Balken wächst beim Wechsel, ohne JS ist die erste
+ * Branche sichtbar und vollständig.
+ */
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+
+export interface Rechnung {
+  key: string;
+  icon: string;
+  branche: string;
+  satz: string;
+  /** `auto`: Wert berechnet das System (z. B. Fahrzeit), nicht von Hand. */
+  eingaben: { label: string; wert: string; auto?: boolean }[];
+  regel: string;
+  ergebnis: { label: string; wert: string }[];
+  kosten: string;
+  db: string;
+  dbProzent: number;
+  ampel: 'gruen' | 'gelb';
+  /** Hinweis unter der Rechnung, z. B. dass das die Beispielkalkulation im Screenshot ist. */
+  hinweis?: string;
+}
+
+interface Props {
+  rechnungen: Rechnung[];
+}
+
+const { rechnungen } = Astro.props;
+const ampelText = { gruen: 'Rechnet sich', gelb: 'Knapp · nur mit Freigabe' };
+---
+
+<div class="kr" data-kr>
+  <div class="kr-tabs mx-auto flex max-w-full items-center gap-1 overflow-x-auto rounded-2xl p-1.5 lg:w-fit">
+  <div role="tablist" aria-label="Beispiele nach Branche" class="flex gap-1">
+    {
+      rechnungen.map((r, i) => (
+        <button
+          type="button"
+          role="tab"
+          id={`kr-tab-${r.key}`}
+          aria-controls={`kr-panel-${r.key}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          tabindex={i === 0 ? 0 : -1}
+          class="kr-tab flex shrink-0 items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold whitespace-nowrap"
+        >
+          <Icon name={r.icon} size="sm" />
+          {r.branche}
+        </button>
+      ))
+    }
+  </div>
+  </div>
+
+  <p class="text-foreground-muted mt-4 text-center text-sm">
+    Eure Branche ist nicht dabei? Kein Problem, das klären wir{' '}
+    <a
+      href="#kontakt"
+      class="text-brand-600 hover:text-brand-700 dark:text-brand-300 font-semibold underline-offset-4 hover:underline"
+      >im Erstgespräch</a
+    >.
+  </p>
+
+  <div class="kr-stage mt-8 grid">
+    {
+      rechnungen.map((r, i) => (
+        <div
+          role="tabpanel"
+          id={`kr-panel-${r.key}`}
+          aria-labelledby={`kr-tab-${r.key}`}
+          data-active={i === 0 ? 'true' : 'false'}
+          hidden={i !== 0}
+          class="kr-panel"
+          style={`--db: ${r.dbProzent}%`}
+        >
+          <div class="kr-card relative grid overflow-hidden rounded-[1.75rem] lg:grid-cols-2">
+            <span class="kr-sample absolute top-4 right-4 z-10 rounded-full px-2.5 py-1 text-[10px] font-semibold tracking-[0.14em] uppercase">
+              Frei erfunden
+            </span>
+            {/* Eingaben */}
+            <div class="p-6 sm:p-8 lg:pr-14">
+              <p class="kr-label">Eure Größen</p>
+              <p class="font-display text-foreground mt-2 text-xl font-bold tracking-tight sm:text-2xl">
+                {r.satz}
+              </p>
+              <dl class="mt-6 space-y-2">
+                {r.eingaben.map((e, j) => (
+                  <div class="kr-row" style={`--d: ${j * 60}ms`}>
+                    <dt class="text-foreground-secondary flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
+                      {e.label}
+                      {e.auto && (
+                        <span class="kr-auto inline-flex items-center gap-1 rounded-full px-1.5 py-px text-[10px] font-semibold tracking-wide uppercase">
+                          <Icon name="zap" size="xs" />
+                          berechnet
+                        </span>
+                      )}
+                    </dt>
+                    <dd class="text-foreground font-mono text-sm font-semibold whitespace-nowrap tabular-nums">
+                      {e.wert}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+
+            {/* Regel: Knoten auf der Trennlinie zwischen Eingaben und Ergebnis */}
+            <div class="kr-link" aria-hidden="true">
+              <span class="kr-link-dot flex h-12 w-12 items-center justify-center rounded-full">
+                <Icon name="zap" size="sm" />
+              </span>
+              <span class="kr-link-label rounded-full px-2.5 py-0.5 text-[10px] font-semibold tracking-[0.14em] uppercase">
+                Eure Regel
+              </span>
+            </div>
+
+            {/* Ergebnis */}
+            <div class="kr-result p-6 sm:p-8 lg:pl-14">
+              <p class="kr-label">Ergebnis</p>
+              <p class="text-foreground-muted mt-2 text-xs leading-5 lg:pr-24">{r.regel}</p>
+              <dl class="mt-5 space-y-3">
+                {r.ergebnis.map((e, j) => (
+                  <div class="flex items-baseline justify-between gap-4">
+                    <dt class="text-foreground-secondary text-sm">{e.label}</dt>
+                    <dd
+                      class:list={[
+                        'text-foreground font-bold tabular-nums',
+                        j === 0 ? 'font-display text-3xl tracking-tight sm:text-4xl' : 'font-mono text-base',
+                      ]}
+                    >
+                      {e.wert}
+                    </dd>
+                  </div>
+                ))}
+                <div class="flex items-baseline justify-between gap-4">
+                  <dt class="text-foreground-secondary text-sm">Kosten</dt>
+                  <dd class="text-foreground font-mono text-base font-semibold tabular-nums">{r.kosten}</dd>
+                </div>
+              </dl>
+
+              <div class="kr-db mt-6 rounded-2xl p-4" data-ampel={r.ampel}>
+                <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                  <p class="text-foreground text-sm font-semibold">Deckungsbeitrag</p>
+                  <p class="text-foreground font-mono text-sm font-bold whitespace-nowrap tabular-nums">
+                    {r.db} · {r.dbProzent} %
+                  </p>
+                </div>
+                <div class="kr-bar mt-3 h-2 overflow-hidden rounded-full" aria-hidden="true">
+                  <span class="kr-bar-fill block h-full rounded-full" />
+                </div>
+                <p class="kr-ampel mt-3 inline-flex items-center gap-2 text-xs font-semibold">
+                  <span class="kr-dot" aria-hidden="true" />
+                  {ampelText[r.ampel]}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .kr-tabs {
+    background: color-mix(in oklch, var(--color-foreground) 5%, transparent);
+    border: 1px solid var(--color-border);
+    scrollbar-width: none;
+  }
+  .kr-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .kr-auto {
+    color: var(--color-brand-700);
+    background: color-mix(in oklch, var(--color-brand-500) 12%, transparent);
+  }
+  :global(.dark) .kr-auto {
+    color: var(--color-brand-200);
+  }
+  .kr-tab {
+    color: var(--color-foreground-secondary);
+    transition:
+      color 0.2s ease,
+      background 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  @media (hover: hover) {
+    .kr-tab:hover {
+      color: var(--color-foreground);
+    }
+  }
+  .kr-tab[aria-selected='true'] {
+    color: var(--color-foreground);
+    background: var(--color-card);
+    box-shadow: 0 6px 18px -10px oklch(30% 0.06 265 / 0.45);
+  }
+  .kr-tab[aria-selected='true'] :global(svg) {
+    color: var(--color-brand-500);
+  }
+  .kr-tab:focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+  }
+
+  .kr-stage > .kr-panel {
+    grid-area: 1 / 1;
+  }
+  .kr-panel[data-active='true'] {
+    animation: kr-in 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @keyframes kr-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+
+  .kr-card {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 30px 70px -40px oklch(30% 0.08 265 / 0.55);
+  }
+  .kr-sample {
+    color: var(--color-foreground-muted);
+    background: var(--color-card);
+    border: 1px dashed var(--color-border-strong, var(--color-border));
+  }
+  @media (max-width: 1023px) {
+    .kr-sample {
+      display: none;
+    }
+  }
+  .kr-label {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-brand-600);
+  }
+  :global(.dark) .kr-label {
+    color: var(--color-brand-300);
+  }
+
+  .kr-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.6rem 0.85rem;
+    border-radius: 0.75rem;
+    background: color-mix(in oklch, var(--color-foreground) 4%, transparent);
+  }
+  .kr-panel[data-active='true'] .kr-row {
+    animation: kr-row 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--d);
+  }
+  @keyframes kr-row {
+    from {
+      opacity: 0;
+      transform: translateX(-8px);
+    }
+  }
+
+  /* Regel-Knoten: unter lg zwischen den gestapelten Hälften, ab lg mittig auf der Trennlinie */
+  .kr-link {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    margin: -1.5rem 0 -1.1rem;
+    pointer-events: none;
+  }
+  @media (min-width: 1024px) {
+    .kr-link {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin: 0;
+      transform: translate(-50%, -50%);
+    }
+  }
+  .kr-link-dot {
+    color: #fff;
+    background: var(--color-brand-500);
+    box-shadow:
+      0 0 0 6px var(--color-card),
+      0 14px 30px -10px var(--color-brand-500);
+  }
+  .kr-link-dot::after {
+    content: '';
+    position: absolute;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 999px;
+    border: 2px solid var(--color-brand-400);
+    animation: kr-ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  @keyframes kr-ping {
+    0% {
+      transform: scale(1);
+      opacity: 0.6;
+    }
+    100% {
+      transform: scale(1.7);
+      opacity: 0;
+    }
+  }
+  .kr-link-label {
+    color: var(--color-brand-700);
+    background: var(--color-card);
+    border: 1px solid color-mix(in oklch, var(--color-brand-400) 45%, var(--color-border));
+  }
+  :global(.dark) .kr-link-label {
+    color: var(--color-brand-200);
+  }
+  @media (max-width: 1023px) {
+    .kr-link-label {
+      display: none;
+    }
+  }
+
+  .kr-result {
+    border-top: 1px solid var(--color-border);
+    background:
+      radial-gradient(
+        120% 80% at 100% 0%,
+        color-mix(in oklch, var(--color-brand-400) 14%, transparent),
+        transparent 60%
+      ),
+      color-mix(in oklch, var(--color-brand-500) 3%, var(--color-card));
+  }
+
+  .kr-db {
+    --ok: oklch(68% 0.15 150);
+    --warn: oklch(78% 0.15 80);
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+  }
+  .kr-db[data-ampel='gelb'] {
+    --ok: var(--warn);
+  }
+  .kr-bar {
+    background: color-mix(in oklch, var(--color-foreground) 8%, transparent);
+  }
+  .kr-bar-fill {
+    width: var(--db);
+    background: var(--ok);
+  }
+  .kr-panel[data-active='true'] .kr-bar-fill {
+    animation: kr-bar 0.9s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  @keyframes kr-bar {
+    from {
+      width: 0;
+    }
+  }
+  .kr-ampel {
+    color: var(--color-foreground-secondary);
+  }
+  .kr-dot {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 999px;
+    background: var(--ok);
+    box-shadow: 0 0 0 4px color-mix(in oklch, var(--ok) 25%, transparent);
+  }
+
+  @media (min-width: 1024px) {
+    .kr-result {
+      border-top: 0;
+      border-left: 1px solid var(--color-border);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kr-link-dot::after {
+      animation: none;
+      opacity: 0;
+    }
+    .kr-panel[data-active='true'],
+    .kr-panel[data-active='true'] .kr-row,
+    .kr-panel[data-active='true'] .kr-bar-fill {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const centerInList = (tab: HTMLElement | undefined, smooth: boolean) => {
+    const list = tab?.closest<HTMLElement>('.kr-tabs');
+    if (!tab || !list || list.scrollWidth <= list.clientWidth) return;
+    const t = tab.getBoundingClientRect();
+    const l = list.getBoundingClientRect();
+    list.scrollTo({
+      left: list.scrollLeft + (t.left - l.left) - (l.width - t.width) / 2,
+      behavior: smooth ? 'smooth' : 'auto',
+    });
+  };
+  document.querySelectorAll<HTMLElement>('[data-kr]').forEach((root) => {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role=tab]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[role=tabpanel]')];
+
+    const select = (index: number, focus = false) => {
+      tabs.forEach((tab, i) => {
+        const on = i === index;
+        tab.setAttribute('aria-selected', on ? 'true' : 'false');
+        tab.tabIndex = on ? 0 : -1;
+        const panel = panels[i];
+        if (!panel) return;
+        panel.hidden = !on;
+        panel.dataset.active = on ? 'true' : 'false';
+      });
+      const tab = tabs[index];
+      if (focus) tab?.focus();
+      centerInList(tab, true);
+    };
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(i));
+      tab.addEventListener('keydown', (e) => {
+        const last = tabs.length - 1;
+        const next =
+          e.key === 'ArrowRight'
+            ? (i + 1) % tabs.length
+            : e.key === 'ArrowLeft'
+              ? (i - 1 + tabs.length) % tabs.length
+              : e.key === 'Home'
+                ? 0
+                : e.key === 'End'
+                  ? last
+                  : -1;
+        if (next < 0) return;
+        e.preventDefault();
+        select(next, true);
+      });
+    });
+  });
+</script>
