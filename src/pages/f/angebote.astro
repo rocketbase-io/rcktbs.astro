@@ -874,60 +874,110 @@ const miniFaqs = [
     </div>
   </section>
 
-  <!-- CTA nach der Kalkulation: schlichter Aufruf, Texte aus dem Kontaktblock -->
-  <section class="cta-band relative overflow-x-clip py-14 lg:py-16">
-    <div
-      class="af-rise relative z-10 container flex max-w-6xl flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-12"
-    >
-      <div class="max-w-2xl">
-        <h2
-          class="font-display text-foreground text-2xl font-bold tracking-tight text-balance sm:text-3xl"
-        >
-          Wie sähe das mit euren Sätzen aus?
-        </h2>
-        <p class="text-brand-600 dark:text-brand-300 mt-1 text-sm font-semibold">
-          30 Minuten · online · kostenlos
-        </p>
-        <p class="text-foreground-secondary mt-3 text-[0.95rem] leading-7">
-          Bringt ein echtes Angebot mit. Wir schauen gemeinsam, was eure Kalkulation abbilden muss,
-          und ihr wisst danach, in welchem Preisrahmen euer Baustein liegt.
-        </p>
-        <a
-          href="#ablauf"
-          class="text-brand-600 dark:text-brand-300 mt-3 inline-block text-sm font-semibold underline-offset-4 hover:underline"
-        >
-          So kommt ihr dazu: Erstgespräch, Workshop, Baustein{' '}
-          <Icon name="arrow-right" size="xs" class="inline-block -translate-y-px" />
-        </a>
-      </div>
-      <div class="flex shrink-0 flex-wrap items-center gap-x-5 gap-y-3">
-        <Button
-          size="lg"
-          href={contactLinks.cal}
-          target="_blank"
-          class="bg-brand-500 hover:bg-brand-400 text-white shadow-[0_14px_34px_-12px_var(--color-brand-500)]"
-          data-track-cal="nach-kalkulation"
-        >
-          Erstgespräch buchen
-          <Icon name="arrow-up-right" size="sm" />
-        </Button>
-        <a
-          href="#kontakt"
-          class="text-foreground-secondary hover:text-foreground inline-flex items-center gap-2 text-sm font-semibold underline-offset-4 hover:underline"
-        >
-          <Icon name="mail" size="sm" />
-          Lieber erst schreiben?
-        </a>
+  <!-- 02 SO ARBEITEN WIR: kompakt (Detail in 06) -->
+  <section class="bg-background-secondary border-border relative border-b py-20 lg:py-24">
+    <div class="relative z-10 container max-w-6xl">
+      <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-16">
+        <div class="af-rise">
+          <p
+            class="text-brand-600 dark:text-brand-300 font-mono text-xs font-semibold tracking-[0.2em] uppercase"
+          >
+            02 · So arbeiten wir
+          </p>
+          <h2
+            class="font-display text-foreground mt-4 text-2xl font-bold tracking-tight text-balance sm:text-3xl lg:text-[2.5rem] lg:leading-tight"
+          >
+            Erst verstehen, dann bauen.
+          </h2>
+          <p class="text-foreground-secondary mt-5 text-base leading-7">
+            Jeder Betrieb rechnet anders. Deshalb beginnt jedes Projekt mit einem Workshop: Wir
+            nehmen eure Abläufe und eure Kalkulation auf, und daraus entsteht das Paket, das zu euch
+            passt.
+          </p>
+          <div class="af-after mt-6 flex gap-3 rounded-2xl p-4">
+            <Icon name="check-circle" size="md" class="text-brand-500 mt-0.5 shrink-0" />
+            <p class="text-foreground text-sm leading-6">
+              <strong>Der Workshop wird angerechnet.</strong> Bestellt ihr euer Paket innerhalb von{' '}
+              <strong>acht Wochen</strong>, ziehen wir den Workshop-Preis vom Paketpreis ab.
+            </p>
+          </div>
+          <div class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <a
+              href="#ablauf"
+              class="bg-brand-500/10 text-brand-700 hover:bg-brand-500/15 dark:text-brand-200 group inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors"
+            >
+              Ablauf im Detail
+              <Icon
+                name="chevron-down"
+                size="sm"
+                class="transition-transform duration-300 group-hover:translate-y-0.5"
+              />
+            </a>
+            <a
+              href={workshopUrl}
+              class="text-foreground-secondary hover:text-foreground inline-flex items-center gap-2 text-sm font-semibold transition-colors"
+            >
+              Mehr zum Workshop
+              <Icon name="arrow-right" size="sm" />
+            </a>
+          </div>
+        </div>
+        <ol class="relative grid auto-rows-fr gap-3">
+          <span class="bg-border absolute top-8 bottom-8 left-[1.6rem] w-px" aria-hidden="true"
+          ></span>
+          {
+            weg.map((stufe, index) => (
+              <li class="af-rise relative">
+                <a
+                  href={`#ablauf-${stufe.number}`}
+                  class:list={[
+                  'group relative flex h-full gap-4 rounded-2xl border p-4 transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-[0_18px_40px_-24px_rgba(70,90,160,0.5)] sm:gap-5 sm:p-5',
+                  index === 2
+                    ? 'border-brand-300 bg-card dark:border-brand-700 shadow-[0_20px_45px_-24px_rgba(70,90,160,0.45)]'
+                    : 'border-border bg-card',
+                ]}
+              >
+                <span
+                  class:list={[
+                    'relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-mono text-xs font-bold',
+                    index === 2
+                      ? 'bg-brand-500 text-white'
+                      : 'bg-brand-500/10 text-brand-600 dark:text-brand-300',
+                  ]}
+                >
+                  {stufe.number}
+                </span>
+                <div class="min-w-0 flex-1">
+                  <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                    <h3 class="font-display text-foreground text-base font-bold tracking-tight sm:text-lg">
+                      {stufe.title}
+                    </h3>
+                    <p class="text-brand-600 dark:text-brand-300 text-xs font-semibold sm:text-sm">
+                      {stufe.meta}
+                    </p>
+                  </div>
+                  <p class="text-foreground-secondary mt-1.5 text-sm leading-6">{stufe.text}</p>
+                </div>
+                <Icon
+                  name="chevron-down"
+                  size="sm"
+                  class="text-foreground-muted group-hover:text-brand-500 mt-2 shrink-0 transition-colors"
+                />
+                </a>
+              </li>
+            ))
+          }
+        </ol>
       </div>
     </div>
   </section>
 
-  <!-- 02 WIE RECHNET IHR: Optionen aus Kundenprojekten, nur Angebot und Preis -->
-  <section class="bg-background-secondary border-border relative border-y py-20 lg:py-28">
+  <!-- 03 WIE RECHNET IHR: Optionen aus Kundenprojekten, nur Angebot und Preis -->
+  <section class="bg-background border-border relative border-b py-20 lg:py-28">
     <div class="relative z-10 container max-w-6xl">
       <SectionHeader
         size="md"
-        number="02"
+        number="03"
         eyebrow="Wie rechnet ihr?"
         title="Was in eure Kalkulation einfließen kann."
         lead="Beispiele aus unseren Kundenprojekten, kein fester Lieferumfang."
@@ -1097,7 +1147,7 @@ const miniFaqs = [
     </div>
   </section>
 
-  <!-- 03 DER BAUSTEIN IN AKTION: Beleg mit echten Screenshots, fünf Schritte -->
+  <!-- 04 DER BAUSTEIN IN AKTION: Beleg mit echten Screenshots, fünf Schritte -->
   <section
     id="angebot"
     class="invert-section bg-surface-invert relative scroll-mt-16 overflow-x-clip py-20 lg:py-28"
@@ -1119,7 +1169,7 @@ const miniFaqs = [
 
     <div class="relative z-10 mx-auto max-w-[90rem] px-5 sm:px-8 lg:px-12">
       <SectionHeader
-        number="03"
+        number="04"
         eyebrow="Unser Angebotsbaustein"
         title="Mehr als ein schönes Dokument."
         lead="Eine schöne Angebotsseite kann heute fast jedes Tool. Unser Angebotsbaustein stammt aus Lösungen, die bei Kunden im Einsatz sind, und wird für euch angepasst. Er macht mehr daraus: Er rechnet nach eurer Kalkulation, prüft, was ein Angebot einbringt, präsentiert es beim Kunden und fasst selbst nach."
@@ -1159,100 +1209,50 @@ const miniFaqs = [
     </div>
   </section>
 
-  <!-- 04 SO ARBEITEN WIR: kompakt (Detail in 06) -->
-  <section class="bg-background-secondary border-border relative border-b py-20 lg:py-24">
-    <div class="relative z-10 container max-w-6xl">
-      <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-16">
-        <div class="af-rise">
-          <p
-            class="text-brand-600 dark:text-brand-300 font-mono text-xs font-semibold tracking-[0.2em] uppercase"
-          >
-            04 · So arbeiten wir
-          </p>
-          <h2
-            class="font-display text-foreground mt-4 text-2xl font-bold tracking-tight text-balance sm:text-3xl lg:text-[2.5rem] lg:leading-tight"
-          >
-            Erst verstehen, dann bauen.
-          </h2>
-          <p class="text-foreground-secondary mt-5 text-base leading-7">
-            Jeder Betrieb rechnet anders. Deshalb beginnt jedes Projekt mit einem Workshop: Wir
-            nehmen eure Abläufe und eure Kalkulation auf, und daraus entsteht das Paket, das zu euch
-            passt.
-          </p>
-          <div class="af-after mt-6 flex gap-3 rounded-2xl p-4">
-            <Icon name="check-circle" size="md" class="text-brand-500 mt-0.5 shrink-0" />
-            <p class="text-foreground text-sm leading-6">
-              <strong>Der Workshop wird angerechnet.</strong> Bestellt ihr euer Paket innerhalb von{' '}
-              <strong>acht Wochen</strong>, ziehen wir den Workshop-Preis vom Paketpreis ab.
-            </p>
-          </div>
-          <div class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
-            <a
-              href="#ablauf"
-              class="bg-brand-500/10 text-brand-700 hover:bg-brand-500/15 dark:text-brand-200 group inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors"
-            >
-              Ablauf im Detail
-              <Icon
-                name="chevron-down"
-                size="sm"
-                class="transition-transform duration-300 group-hover:translate-y-0.5"
-              />
-            </a>
-            <a
-              href={workshopUrl}
-              class="text-foreground-secondary hover:text-foreground inline-flex items-center gap-2 text-sm font-semibold transition-colors"
-            >
-              Mehr zum Workshop
-              <Icon name="arrow-right" size="sm" />
-            </a>
-          </div>
-        </div>
-        <ol class="relative grid auto-rows-fr gap-3">
-          <span class="bg-border absolute top-8 bottom-8 left-[1.6rem] w-px" aria-hidden="true"
-          ></span>
-          {
-            weg.map((stufe, index) => (
-              <li class="af-rise relative">
-                <a
-                  href={`#ablauf-${stufe.number}`}
-                  class:list={[
-                  'group relative flex h-full gap-4 rounded-2xl border p-4 transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-[0_18px_40px_-24px_rgba(70,90,160,0.5)] sm:gap-5 sm:p-5',
-                  index === 2
-                    ? 'border-brand-300 bg-card dark:border-brand-700 shadow-[0_20px_45px_-24px_rgba(70,90,160,0.45)]'
-                    : 'border-border bg-card',
-                ]}
-              >
-                <span
-                  class:list={[
-                    'relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-mono text-xs font-bold',
-                    index === 2
-                      ? 'bg-brand-500 text-white'
-                      : 'bg-brand-500/10 text-brand-600 dark:text-brand-300',
-                  ]}
-                >
-                  {stufe.number}
-                </span>
-                <div class="min-w-0 flex-1">
-                  <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                    <h3 class="font-display text-foreground text-base font-bold tracking-tight sm:text-lg">
-                      {stufe.title}
-                    </h3>
-                    <p class="text-brand-600 dark:text-brand-300 text-xs font-semibold sm:text-sm">
-                      {stufe.meta}
-                    </p>
-                  </div>
-                  <p class="text-foreground-secondary mt-1.5 text-sm leading-6">{stufe.text}</p>
-                </div>
-                <Icon
-                  name="chevron-down"
-                  size="sm"
-                  class="text-foreground-muted group-hover:text-brand-500 mt-2 shrink-0 transition-colors"
-                />
-                </a>
-              </li>
-            ))
-          }
-        </ol>
+  <!-- CTA vor „Alles drin": schlichter Aufruf -->
+  <section class="cta-band relative overflow-x-clip py-14 lg:py-16">
+    <div
+      class="af-rise relative z-10 container flex max-w-6xl flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-12"
+    >
+      <div class="max-w-2xl">
+        <h2
+          class="font-display text-foreground text-2xl font-bold tracking-tight text-balance sm:text-3xl"
+        >
+          Wie sähe das mit euren Sätzen aus?
+        </h2>
+        <p class="text-brand-600 dark:text-brand-300 mt-1 text-sm font-semibold">
+          30 Minuten · online · kostenlos
+        </p>
+        <p class="text-foreground-secondary mt-3 text-[0.95rem] leading-7">
+          Bringt ein echtes Angebot mit. Wir schauen gemeinsam, was eure Kalkulation abbilden muss,
+          und ihr wisst danach, in welchem Preisrahmen euer Baustein liegt.
+        </p>
+        <a
+          href="#ablauf"
+          class="text-brand-600 dark:text-brand-300 mt-3 inline-block text-sm font-semibold underline-offset-4 hover:underline"
+        >
+          So kommt ihr dazu: Erstgespräch, Workshop, Baustein{' '}
+          <Icon name="arrow-right" size="xs" class="inline-block -translate-y-px" />
+        </a>
+      </div>
+      <div class="flex shrink-0 flex-wrap items-center gap-x-5 gap-y-3">
+        <Button
+          size="lg"
+          href={contactLinks.cal}
+          target="_blank"
+          class="bg-brand-500 hover:bg-brand-400 text-white shadow-[0_14px_34px_-12px_var(--color-brand-500)]"
+          data-track-cal="nach-kalkulation"
+        >
+          Erstgespräch buchen
+          <Icon name="arrow-up-right" size="sm" />
+        </Button>
+        <a
+          href="#kontakt"
+          class="text-foreground-secondary hover:text-foreground inline-flex items-center gap-2 text-sm font-semibold underline-offset-4 hover:underline"
+        >
+          <Icon name="mail" size="sm" />
+          Lieber erst schreiben?
+        </a>
       </div>
     </div>
   </section>
