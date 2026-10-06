@@ -101,17 +101,6 @@ export const instagramPosts: InstagramPost[] = [
     datum: '2026-10-05',
   },
   {
-    // Kein Post, sondern das feste Ziel der Angebots-Posts: die Funnel-Seite.
-    // Der Schlüssel ist frei gewählt (kein Shortcode); Cover in coverImages.ts.
-    code: 'angebotsmodul',
-    url: '/f/angebote/',
-    titel: 'Der Angebotsbaustein: individuell für euch, kalkuliert nach eurer Regel',
-    text: 'Von der Anfrage bis zur Zusage ohne Datei dazwischen: Deckungsbeitrag vor dem Versand, Optionen für den Kunden, Öffnungen sichtbar.',
-    hook: 'Was sieht euer Kunde, wenn euer Angebot ankommt?',
-    datum: '2026-10-05',
-    kategorie: 'angebote',
-  },
-  {
     // Vorläufiger Schlüssel: Den Shortcode gibt es erst nach dem Veröffentlichen,
     // der Eintrag muss aber vorher live sein. Danach hier und in coverImages.ts
     // gegen den echten Code tauschen.

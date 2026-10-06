@@ -15,6 +15,7 @@
  */
 import { Picture } from 'astro:assets';
 import PageLayout from '@/layouts/PageLayout.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import {
   ladeInstagramEintraege,
@@ -75,6 +76,50 @@ const beschreibung =
         Auf Instagram passt immer nur der kurze Gedanke. Hier steht der lange: zu jedem Post der
         Artikel, aus dem er stammt.
       </p>
+    </div>
+  </section>
+
+  <!-- Erstgespräch: Ziel der Posts ohne eigenen Artikel („Erstgespräch: Link in
+       der Bio“). Steht vor den Posts, damit niemand dafür scrollen muss. -->
+  <section id="erstgespraech" class="border-border scroll-mt-24 border-b py-12 sm:py-16">
+    <div class="container max-w-5xl">
+      <div
+        class="border-border bg-card rounded-[2rem] border p-8 shadow-[0_22px_55px_rgba(34,43,74,0.08)] sm:p-10"
+      >
+        <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+          <div>
+            <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
+              Erstgespräch
+            </p>
+            <h2
+              class="font-display text-foreground mt-3 text-2xl leading-snug font-bold text-balance sm:text-3xl"
+            >
+              Sprechen wir über euren Fall.
+            </h2>
+            <p class="text-foreground-secondary mt-4 text-base leading-7">
+              30 Minuten direkt mit Marten Prieß. Wir schauen auf eure Ausgangslage und klären, ob
+              und wie Software dabei helfen kann.
+            </p>
+          </div>
+          <div class="flex flex-col gap-4">
+            <Button href={contactLinks.cal} target="_blank" rel="noopener">
+              <span>Erstgespräch buchen</span>
+              <Icon name="arrow-up-right" size="sm" />
+            </Button>
+            <div class="flex flex-col gap-2">
+              <p class="text-foreground-muted text-xs leading-5">Lieber schreiben statt Termin?</p>
+              <Button
+                variant="outline"
+                href={`${mitTracking('/kontakt/')}#anfrage-stellen`}
+                data-instagram-link
+              >
+                <Icon name="mail" size="sm" />
+                <span>Zum Kontaktformular</span>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 

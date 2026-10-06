@@ -26,9 +26,12 @@ interface AngeboteKontaktProps {
   /** Funnel-Kennung für die Auswertung in der Lead-Mail. */
   funnel?: string;
   heading: string;
-  text: string;
+  /** Leer lassen, wenn der Kontext darüber schon alles sagt. */
+  text?: string;
   erfolg: { heading: string; text: string };
   privacyUrl?: string;
+  /** Ohne eigenen Kartenrahmen, wenn das Formular schon in einer Karte sitzt. */
+  plain?: boolean;
   endpoint?: string;
 }
 
@@ -39,6 +42,7 @@ export function AngeboteKontakt({
   erfolg,
   privacyUrl = '/datenschutz/',
   endpoint = '/api/funnel-lead',
+  plain = false,
 }: AngeboteKontaktProps) {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -91,7 +95,7 @@ export function AngeboteKontakt({
 
   return (
     <div ref={cardRef} className="scroll-mt-24">
-      <div className="border-border bg-card rounded-2xl border p-6 shadow-sm sm:p-8">
+      <div className={plain ? '' : 'border-border bg-card rounded-2xl border p-6 shadow-sm sm:p-8'}>
         {submitted ? (
           <div className="text-center">
             <div className="bg-brand-500/10 text-brand-600 mx-auto flex h-14 w-14 items-center justify-center rounded-full">
@@ -109,7 +113,9 @@ export function AngeboteKontakt({
             <h3 className="font-display text-foreground text-xl font-bold tracking-tight sm:text-2xl">
               {heading}
             </h3>
-            <p className="text-foreground-secondary mt-2 text-sm leading-6 sm:text-base">{text}</p>
+            {text && (
+              <p className="text-foreground-secondary mt-2 text-sm leading-6 sm:text-base">{text}</p>
+            )}
 
             <form onSubmit={handleSubmit} className="mt-6 space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
@@ -117,7 +123,6 @@ export function AngeboteKontakt({
                   label="Firma"
                   name="company"
                   type="text"
-                  required
                   autoComplete="organization"
                   size="lg"
                 />
@@ -128,6 +133,7 @@ export function AngeboteKontakt({
                   required
                   autoComplete="name"
                   size="lg"
+                  requiredMark
                 />
                 <Input
                   label="E-Mail"
@@ -137,19 +143,23 @@ export function AngeboteKontakt({
                   autoComplete="email"
                   inputMode="email"
                   size="lg"
+                  requiredMark
                 />
                 <Input
-                  label="Telefon (optional)"
+                  label="Telefon"
                   name="phone"
                   type="tel"
+                  required
                   autoComplete="tel"
                   inputMode="tel"
                   size="lg"
+                  requiredMark
                 />
               </div>
 
               <p className="text-foreground-muted text-xs leading-5">
-                Die Telefonnummer nur für eine kurze Rückfrage. Wir rufen an, wenn es hilft.
+                <span className="text-brand-500">*</span> Pflichtfeld. Die Telefonnummer für eine kurze
+                Rückfrage. Wir rufen an, wenn es hilft.
               </p>
 
               {/* Honeypot */}

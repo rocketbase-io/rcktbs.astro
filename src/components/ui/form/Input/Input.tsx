@@ -14,9 +14,11 @@ interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'ref' |
   /** Icon to display at the end of the input */
   trailingIcon?: ReactNode;
   size?: InputSize;
+  /** Sternchen am Label, wenn das Feld `required` ist (opt-in, z. B. für Funnel-Formulare). */
+  requiredMark?: boolean;
 }
 
-export function Input({ ref, label, error, hint, leadingIcon, trailingIcon, size = 'md', className, id, ...props }: InputProps) {
+export function Input({ ref, label, error, hint, leadingIcon, trailingIcon, size = 'md', requiredMark = false, className, id, ...props }: InputProps) {
   const generatedId = useId();
   const inputId = id || generatedId;
   const config = inputSizeConfig[size];
@@ -39,6 +41,11 @@ export function Input({ ref, label, error, hint, leadingIcon, trailingIcon, size
       {label && (
         <label htmlFor={inputId} className="text-sm font-medium leading-none">
           {label}
+          {requiredMark && props.required && (
+            <span className="text-brand-500 ml-0.5" aria-hidden="true">
+              *
+            </span>
+          )}
         </label>
       )}
 

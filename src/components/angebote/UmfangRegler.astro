@@ -32,9 +32,14 @@ interface Props {
   /** Angebote im Monat, mit denen die Ersparnis gerechnet wird. */
   angeboteProMonat?: number;
   start?: number;
+  /**
+   * Preisspanne je Stufe zeigen. Aus: kein Preis, statt dessen der Hinweis, dass der Umfang
+   * im Workshop geklärt wird (Stand Oktober 2026: keine Preise auf der Funnel-Seite).
+   */
+  preis?: boolean;
 }
 
-const { stufen, angeboteProMonat = 20, start = 2 } = Astro.props;
+const { stufen, angeboteProMonat = 20, start = 2, preis = true } = Astro.props;
 
 const eur = (n: number) => `${n.toLocaleString('de-DE')} €`;
 const spanneVon = (s: Stufe) => `${s.von.toLocaleString('de-DE')} – ${eur(s.bis)}`;
@@ -45,7 +50,7 @@ const stunden = (s: Stufe) => Math.round(s.proAngebot * angeboteProMonat);
   class="ur"
   data-ur
   data-angebote={angeboteProMonat}
-  data-spannen={stufen.map((s) => `${s.von}|${s.bis}`).join(',')}
+  data-spannen={preis ? stufen.map((s) => `${s.von}|${s.bis}`).join(',') : undefined}
   data-stunden={stufen.map(stunden).join(',')}
   data-titel={stufen.map((s) => s.titel).join('|')}
   data-texte={stufen.map((s) => s.text).join('|')}
@@ -115,18 +120,32 @@ const stunden = (s: Stufe) => Math.round(s.proAngebot * angeboteProMonat);
 
       <!-- Ergebnis -->
       <div class="ur-result rounded-2xl p-6 sm:p-7">
-        <div>
-          <p class="ur-mini">Euer Baustein</p>
-          <p
-            class="font-display text-foreground mt-2 text-[1.6rem] leading-tight font-bold tracking-tight text-balance tabular-nums sm:text-3xl"
-            data-ur-preis
-          >
-            {spanneVon(stufen[start] ?? stufen[0]!)}
-          </p>
-          <p class="text-foreground-muted mt-1.5 text-sm">
-            einmalig, inklusive Betrieb im ersten Jahr. Genauer steht es nach dem Workshop.
-          </p>
-        </div>
+        {
+          preis ? (
+            <div>
+              <p class="ur-mini">Euer Baustein</p>
+              <p
+                class="font-display text-foreground mt-2 text-[1.6rem] leading-tight font-bold tracking-tight text-balance tabular-nums sm:text-3xl"
+                data-ur-preis
+              >
+                {spanneVon(stufen[start] ?? stufen[0]!)}
+              </p>
+              <p class="text-foreground-muted mt-1.5 text-sm">
+                einmalig, inklusive Betrieb im ersten Jahr. Genauer steht es nach dem Workshop.
+              </p>
+            </div>
+          ) : (
+            <div>
+              <p class="ur-mini">Euer Baustein</p>
+              <p class="font-display text-foreground mt-2 text-xl leading-snug font-bold tracking-tight text-balance sm:text-2xl">
+                Zugeschnitten auf euren Bedarf.
+              </p>
+              <p class="text-foreground-muted mt-1.5 text-sm">
+                Was genau gebaut wird, klären wir gemeinsam im Workshop.
+              </p>
+            </div>
+          )
+        }
 
         <div class="ur-sep my-5"></div>
 

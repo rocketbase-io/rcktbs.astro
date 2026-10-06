@@ -10,6 +10,7 @@ import {
   pushEvent,
   sammleAttribution,
   trackMetaLead,
+  trackPlausible,
 } from '@/lib/leadTracking';
 
 interface FunnelQuizProps {
@@ -19,6 +20,23 @@ interface FunnelQuizProps {
   success: { heading: string; text: string; calUrl?: string; calLabel?: string };
   privacyUrl?: string;
   endpoint?: string;
+  /** Text des Absende-Knopfs. */
+  submitLabel?: string;
+  /** Telefon als Pflichtfeld (der Endpoint prüft das je Funnel mit). */
+  phoneRequired?: boolean;
+  /** Firma optional statt Pflicht (der Endpoint prüft das je Funnel mit). */
+  companyOptional?: boolean;
+  /** Hinweis unter dem Telefonfeld. */
+  phoneHint?: string;
+  /** Eigener dataLayer-Event für den Lead, zusätzlich als Plausible-Event „Lead“. */
+  leadEvent?: string;
+  /**
+   * Kompakte Form für ein Quiz neben dem Hero-Text: kleinere Abstände und Optionen,
+   * Kontaktfelder zu zweit nebeneinander, damit der Hero in eine Bildschirmhöhe passt.
+   */
+  compact?: boolean;
+  /** Pflichtfelder mit Sternchen markieren, dazu der Hinweis „* Pflichtfeld“. */
+  markRequired?: boolean;
 }
 
 interface QuizAnswer {
@@ -36,6 +54,13 @@ export function FunnelQuiz({
   success,
   privacyUrl = '/datenschutz/',
   endpoint = '/api/funnel-lead',
+  submitLabel = 'Ersteinschätzung anfordern',
+  phoneRequired = false,
+  companyOptional = false,
+  phoneHint = 'Für eine kurze Rückfrage - wir rufen nur an, wenn es hilft.',
+  leadEvent,
+  compact = false,
+  markRequired = false,
 }: FunnelQuizProps) {
   // Schritte: 0..questions.length-1 = Fragen, questions.length = Kontakt
   const [step, setStep] = useState(0);
@@ -64,8 +89,14 @@ export function FunnelQuiz({
     pushEvent('funnel_quiz_start', { funnel });
   }
 
+  // Nur scrollen, wenn der Kartenkopf aus dem Bild gerutscht ist (etwa mobil nach einer langen
+  // Frage). Sonst springt die Seite bei jeder Auswahl ein Stück, obwohl die Karte schon sichtbar ist.
   function scrollToCard() {
-    cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const card = cardRef.current;
+    if (!card) return;
+    if (card.getBoundingClientRect().top < 0) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
   function goToStep(next: number) {
@@ -154,6 +185,10 @@ export function FunnelQuiz({
           problem: answers[questions[0]?.id]?.optionId,
           impact: answers[questions[1]?.id]?.optionId,
         });
+        if (leadEvent) {
+          pushEvent(leadEvent, { funnel });
+          trackPlausible('Lead', { funnel });
+        }
         // Browser-Pixel-Lead mit derselben eventId wie das CAPI-Event (Dedup)
         trackMetaLead(eventId);
         scrollToCard();
@@ -183,7 +218,7 @@ export function FunnelQuiz({
           />
         </div>
 
-        <div className="p-5 sm:p-8">
+        <div className={compact ? 'p-5 sm:p-6' : 'p-5 sm:p-8'}>
           {submitted ? (
             <div className="flex flex-col items-center py-6 text-center sm:py-10">
               <div className="bg-brand-500 text-on-invert flex h-14 w-14 items-center justify-center rounded-full">
@@ -219,26 +254,89 @@ export function FunnelQuiz({
                 totalSteps={totalSteps}
                 onBack={() => goToStep(step - 1)}
               />
-              <h2 className="font-display text-foreground mt-4 text-xl font-bold tracking-tight sm:text-2xl">
+              <h2
+                className={cn(
+                  'font-display text-foreground text-xl font-bold tracking-tight sm:text-2xl',
+                  compact ? 'mt-3' : 'mt-4'
+                )}
+              >
                 {contact.heading}
               </h2>
               <p className="text-foreground-secondary mt-2 text-sm leading-6 sm:text-base">
                 {contact.text}
               </p>
 
-              <form onSubmit={handleSubmit} className="mt-6 space-y-4" noValidate={false}>
-                <Input label="Firma" name="company" type="text" required autoComplete="organization" size="lg" />
-                <Input label="Name" name="name" type="text" required autoComplete="name" size="lg" />
-                <Input label="E-Mail" name="email" type="email" required autoComplete="email" inputMode="email" size="lg" />
-                <Input
-                  label="Telefon (optional)"
-                  name="phone"
-                  type="tel"
-                  autoComplete="tel"
-                  inputMode="tel"
-                  size="lg"
-                  hint="Für eine kurze Rückfrage - wir rufen nur an, wenn es hilft."
-                />
+              <form
+                onSubmit={handleSubmit}
+                className={compact ? 'mt-5 space-y-4' : 'mt-6 space-y-4'}
+                noValidate={false}
+              >
+                {compact ? (
+                  <>
+                    <div className="grid gap-x-4 gap-y-3 sm:grid-cols-2">
+                      <Input label="Name" name="name" type="text" required autoComplete="name" requiredMark={markRequired} />
+                      <Input
+                        label="E-Mail"
+                        name="email"
+                        type="email"
+                        required
+                        autoComplete="email"
+                        inputMode="email"
+                        requiredMark={markRequired}
+                      />
+                      <Input
+                        label={phoneRequired || markRequired ? 'Telefon' : 'Telefon (optional)'}
+                        name="phone"
+                        type="tel"
+                        required={phoneRequired}
+                        autoComplete="tel"
+                        inputMode="tel"
+                        requiredMark={markRequired}
+                      />
+                      <Input
+                        label={companyOptional && !markRequired ? 'Firma (optional)' : 'Firma'}
+                        name="company"
+                        type="text"
+                        required={!companyOptional}
+                        autoComplete="organization"
+                        requiredMark={markRequired}
+                      />
+                    </div>
+                    {(phoneHint || markRequired) && (
+                      <p className="text-foreground-muted text-xs leading-5">
+                        {markRequired && (
+                          <>
+                            <span className="text-brand-500">*</span> Pflichtfeld.{' '}
+                          </>
+                        )}
+                        {phoneHint}
+                      </p>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <Input
+                      label={companyOptional ? 'Firma (optional)' : 'Firma'}
+                      name="company"
+                      type="text"
+                      required={!companyOptional}
+                      autoComplete="organization"
+                      size="lg"
+                    />
+                    <Input label="Name" name="name" type="text" required autoComplete="name" size="lg" />
+                    <Input label="E-Mail" name="email" type="email" required autoComplete="email" inputMode="email" size="lg" />
+                    <Input
+                      label={phoneRequired ? 'Telefon' : 'Telefon (optional)'}
+                      name="phone"
+                      type="tel"
+                      required={phoneRequired}
+                      autoComplete="tel"
+                      inputMode="tel"
+                      size="lg"
+                      hint={phoneHint}
+                    />
+                  </>
+                )}
 
                 {/* Honeypot */}
                 <div className="hidden" aria-hidden="true">
@@ -263,7 +361,7 @@ export function FunnelQuiz({
                     </>
                   ) : (
                     <>
-                      Ersteinschätzung anfordern
+                      {submitLabel}
                       <ArrowRight aria-hidden="true" />
                     </>
                   )}
@@ -289,7 +387,12 @@ export function FunnelQuiz({
                 totalSteps={totalSteps}
                 onBack={step > 0 ? () => goToStep(step - 1) : undefined}
               />
-              <h2 className="font-display text-foreground mt-4 text-xl font-bold tracking-tight sm:text-2xl">
+              <h2
+                className={cn(
+                  'font-display text-foreground text-xl font-bold tracking-tight sm:text-2xl',
+                  compact ? 'mt-3' : 'mt-4'
+                )}
+              >
                 {currentQuestion.question}
               </h2>
               {currentQuestion.hint && (
@@ -298,7 +401,7 @@ export function FunnelQuiz({
                 </p>
               )}
 
-              <div className="mt-6 flex flex-col gap-3">
+              <div className={cn('flex flex-col', compact ? 'mt-4 gap-2' : 'mt-6 gap-3')}>
                 {currentQuestion.options.map((option) => {
                   const selected = selectedOptionId === option.id;
                   return (
@@ -308,7 +411,8 @@ export function FunnelQuiz({
                       onClick={() => selectOption(option.id)}
                       aria-pressed={selected}
                       className={cn(
-                        'group w-full rounded-2xl border-2 p-4 text-left transition-all duration-150 sm:p-5',
+                        'group w-full rounded-2xl border-2 text-left transition-all duration-150',
+                        compact ? 'px-4 py-3' : 'p-4 sm:p-5',
                         'focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
                         'active:scale-[0.99]',
                         selected

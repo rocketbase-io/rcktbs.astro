@@ -12,7 +12,8 @@ const answerSchema = z.object({
 
 const leadSchema = z.object({
 	funnel: z.string().min(1).max(100),
-	company: z.string().min(2, 'Bitte den Firmennamen angeben.').max(200),
+	// Pflicht prüft superRefine: auf /f/angebote/ darf die Firma fehlen.
+	company: z.string().max(200),
 	name: z.string().min(2, 'Bitte mindestens 2 Zeichen eingeben.').max(100),
 	email: z.string().email('Bitte eine gueltige E-Mail-Adresse eingeben.'),
 	phone: z.string().max(50).optional(),
@@ -31,6 +32,16 @@ const leadSchema = z.object({
 	 */
 	letterRef: z.string().max(50).optional(),
 	honeypot: z.string().max(0),
+}).superRefine((lead, ctx) => {
+	// Auf der Angebotsbaustein-Seite (/f/angebote/) gibt es keine Terminbuchung, Marten ruft
+	// zurück: Telefon ist dort Pflicht, die Firma dafür optional.
+	const angebote = lead.funnel === 'angebote';
+	if (angebote && (lead.phone ?? '').trim().length < 5) {
+		ctx.addIssue({ code: 'custom', path: ['phone'], message: 'Bitte eine Telefonnummer angeben.' });
+	}
+	if (!angebote && lead.company.trim().length < 2) {
+		ctx.addIssue({ code: 'custom', path: ['company'], message: 'Bitte den Firmennamen angeben.' });
+	}
 });
 
 const json = (body: unknown, status = 200) =>
@@ -308,10 +319,10 @@ export default async (request: Request, context: Context) => {
 					body: JSON.stringify({
 						to: contactEmail,
 						from: 'kontakt@rocketbase.io',
-						subject: `Funnel-Lead (${lead.funnel}): ${lead.company}`,
+						subject: `Funnel-Lead (${lead.funnel}): ${lead.company || lead.name}`,
 						body: `
               ${originHtml}
-              <p><strong>Firma:</strong> ${lead.company}</p>
+              <p><strong>Firma:</strong> ${lead.company || '–'}</p>
               <p><strong>Name:</strong> ${lead.name}</p>
               <p><strong>E-Mail:</strong> ${lead.email}</p>
               ${lead.phone ? `<p><strong>Telefon:</strong> ${lead.phone}</p>` : ''}
