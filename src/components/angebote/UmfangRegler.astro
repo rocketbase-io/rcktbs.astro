@@ -51,8 +51,8 @@ const stunden = (s: Stufe) => Math.round(s.proAngebot * angeboteProMonat);
   data-texte={stufen.map((s) => s.text).join('|')}
   data-kurz={stufen.map((s) => s.kurz).join('|')}
 >
-  <div class="ur-card rounded-[1.75rem] p-6 sm:p-8 lg:p-10">
-    <div class="grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
+  <div class="ur-card rounded-[1.75rem] p-5 sm:p-7 lg:p-8">
+    <div class="grid gap-6 lg:grid-cols-[1.15fr_1fr] lg:gap-12">
       <!-- Regler -->
       <div>
         <label for="ur-range" class="ur-label"> Wie weit reicht eure Kalkulation? </label>
@@ -92,7 +92,7 @@ const stunden = (s: Stufe) => Math.round(s.proAngebot * angeboteProMonat);
           </p>
         </div>
 
-        <ol class="ur-scale mt-3" aria-hidden="true">
+        <ol class="ur-scale mt-2" aria-hidden="true">
           {stufen.map((s, i) => (
             <li
               data-on={i === start ? 'true' : 'false'}
@@ -103,7 +103,7 @@ const stunden = (s: Stufe) => Math.round(s.proAngebot * angeboteProMonat);
           ))}
         </ol>
 
-        <div class="ur-stufe mt-7 rounded-2xl p-5">
+        <div class="ur-stufe mt-5 rounded-2xl p-4 sm:p-5">
           <p id="ur-stufe-titel" class="font-display text-foreground text-base font-bold tracking-tight">
             {stufen[start]?.titel}
           </p>
@@ -128,7 +128,7 @@ const stunden = (s: Stufe) => Math.round(s.proAngebot * angeboteProMonat);
           </p>
         </div>
 
-        <div class="ur-sep my-6"></div>
+        <div class="ur-sep my-5"></div>
 
         <div>
           <p class="ur-mini">Gespart im Monat</p>
@@ -154,14 +154,27 @@ const stunden = (s: Stufe) => Math.round(s.proAngebot * angeboteProMonat);
       </div>
     </div>
 
-    <p class="text-foreground-secondary border-border mt-8 border-t pt-6 text-center text-sm leading-6">
+    <p class="text-foreground-secondary border-border mt-6 border-t pt-5 text-center text-sm leading-6">
       Wo ihr liegt, entscheidet ihr im Workshop selbst: Manche stellen jede Kalkulation vollständig
       ins System, andere nehmen den Kern genau und rechnen den Rest pauschal.
     </p>
+
+    <!-- Footer der Karte: Konditionen, randlos bis an die Kartenkante -->
+    {
+      Astro.slots.has('footer') && (
+        <div class="ur-footer -mx-5 -mb-5 mt-6 rounded-b-[1.75rem] sm:-mx-7 sm:-mb-7 lg:-mx-8 lg:-mb-8">
+          <slot name="footer" />
+        </div>
+      )
+    }
   </div>
 </div>
 
 <style>
+  .ur-footer {
+    border-top: 1px solid var(--color-border);
+    background: color-mix(in oklch, var(--color-foreground) 2.5%, var(--color-card));
+  }
   .ur-card {
     background: var(--color-card);
     border: 1px solid var(--color-border);
@@ -265,60 +278,77 @@ const stunden = (s: Stufe) => Math.round(s.proAngebot * angeboteProMonat);
   .ur-slider {
     position: relative;
   }
-  .ur-rail,
+  /* Eigene Schiene auf allen Größen: Fortschritt plus Haltepunkte, die native
+     Schiene ist transparent. Ein Klick auf die Schiene springt zur nächsten Stufe. */
+  .ur-range {
+    position: relative;
+    z-index: 1;
+  }
+  .ur-range::-webkit-slider-runnable-track {
+    background: transparent;
+  }
+  .ur-range::-moz-range-track {
+    background: transparent;
+  }
+  .ur-rail {
+    position: absolute;
+    left: 0.8rem;
+    right: 0.8rem;
+    top: 1.25rem;
+    height: 0.5rem;
+    transform: translateY(-50%);
+    border-radius: 999px;
+    background: color-mix(in oklch, var(--color-foreground) 9%, transparent);
+  }
+  .ur-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: var(--ur-pct);
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--color-brand-300), var(--color-brand-500));
+    transition: width 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .ur-stop {
+    position: absolute;
+    top: 50%;
+    left: var(--p);
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 999px;
+    transform: translate(-50%, -50%);
+    background: var(--color-card);
+    box-shadow:
+      0 0 0 2px color-mix(in oklch, var(--color-foreground) 18%, transparent),
+      0 2px 6px -2px oklch(30% 0.06 265 / 0.35);
+    transition:
+      background 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  .ur-stop[data-passed='true'] {
+    background: #fff;
+    box-shadow: 0 0 0 2px var(--color-brand-400);
+  }
+  .ur-slider:hover .ur-stop:not([data-passed='true']) {
+    box-shadow:
+      0 0 0 2px color-mix(in oklch, var(--color-brand-400) 70%, transparent),
+      0 2px 6px -2px oklch(30% 0.06 265 / 0.35);
+  }
   .ur-bubble {
     display: none;
   }
+  /* Namen unter dem Regler sind anklickbar (Desktop). */
+  .ur-scale li {
+    cursor: pointer;
+  }
+  @media (hover: hover) {
+    .ur-scale li:hover {
+      color: var(--color-foreground);
+    }
+  }
+  /* Mobil: statt aller Namen wandert der Name der gewählten Stufe mit dem Knopf. */
   @media (max-width: 620px) {
     .ur-scale {
       display: none;
-    }
-    .ur-range {
-      position: relative;
-      z-index: 1;
-    }
-    .ur-range::-webkit-slider-runnable-track {
-      background: transparent;
-    }
-    .ur-range::-moz-range-track {
-      background: transparent;
-    }
-    .ur-rail {
-      display: block;
-      position: absolute;
-      left: 0.8rem;
-      right: 0.8rem;
-      top: 1.25rem;
-      height: 0.5rem;
-      transform: translateY(-50%);
-      border-radius: 999px;
-      background: color-mix(in oklch, var(--color-foreground) 9%, transparent);
-    }
-    .ur-fill {
-      position: absolute;
-      inset: 0 auto 0 0;
-      width: var(--ur-pct);
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--color-brand-300), var(--color-brand-500));
-      transition: width 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .ur-stop {
-      position: absolute;
-      top: 50%;
-      left: var(--p);
-      width: 0.5rem;
-      height: 0.5rem;
-      border-radius: 999px;
-      transform: translate(-50%, -50%);
-      background: var(--color-card);
-      box-shadow: 0 0 0 1.5px color-mix(in oklch, var(--color-foreground) 22%, transparent);
-      transition:
-        background 0.2s ease,
-        box-shadow 0.2s ease;
-    }
-    .ur-stop[data-passed='true'] {
-      background: #fff;
-      box-shadow: none;
     }
     .ur-bubble {
       display: block;
@@ -424,6 +454,12 @@ const stunden = (s: Stufe) => Math.round(s.proAngebot * angeboteProMonat);
       }
     };
 
+    marks.forEach((m, j) =>
+      m.addEventListener('click', () => {
+        range.value = String(j);
+        render();
+      }),
+    );
     range.addEventListener('input', render);
     render();
   });

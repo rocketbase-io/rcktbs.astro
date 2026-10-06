@@ -17,10 +17,10 @@
  *
  * Fokus (Entscheidung 2026-10-05): nur der Angebotsbaustein selbst.
  *   Hero mit interaktiver Angebotskarte, danach „Kommt euch das bekannt vor?“
- *   01 Der Angebotsbaustein: was er kann, dann Stepper mit 5 Schritten
- *   02 So arbeiten wir: kompakt, Workshop zuerst, Anrechnung binnen 8 Wochen
- *   03 Die Kalkulation: Branchen-Rechner, Notiz, vier Kernpunkte
- *   04 Wie rechnet ihr: Optionen aus Kundenprojekten (Beispiele, kein Lieferumfang)
+ *   01 Die Kalkulation: Branchen-Rechner und Notiz, direkt nach dem Ist-Zustand
+ *   02 Wie rechnet ihr: Optionen aus Kundenprojekten (Beispiele, kein Lieferumfang)
+ *   03 Der Baustein in Aktion: fünf Schritte mit echten Screenshots (Beleg, eingeklappt)
+ *   04 So arbeiten wir: kompakt, Workshop zuerst, Anrechnung binnen 8 Wochen
  *   05 Was der Baustein mitbringt (enthalten) als Kachel-Raster
  *   06 So kommt ihr dazu: Erstgespräch, Workshop, Basisumfang ausführlich
  *   07 Weitere Bausteine nur angerissen (ModulHub)
@@ -157,30 +157,6 @@ const angebot: ShowcaseStep[] = [
   },
 ];
 
-
-// 01 — Einordnung gegenüber reinen Angebots-Tools, ohne Häme.
-const unterschiede = [
-  {
-    icon: 'zap',
-    title: 'Rechnet selbst',
-    text: 'Jede Position entsteht aus euren Größen, Preisen und Kosten. Nichts wird abgetippt, keine zweite Excel.',
-  },
-  {
-    icon: 'trending-up',
-    title: 'Zeigt den Ertrag',
-    text: 'Deckungsbeitrag je Leistung und fürs ganze Angebot, bevor es rausgeht. Was sich nicht rechnet, fällt auf.',
-  },
-  {
-    icon: 'check-circle',
-    title: 'Zusage per Klick',
-    text: 'Der Kunde wählt Optionen, die Summe läuft mit, er sagt online zu. Seine Angaben landen direkt im System.',
-  },
-  {
-    icon: 'mail',
-    title: 'Fasst selbst nach',
-    text: 'Erinnerungen gehen aus eurem Postfach raus, Öffnungen sind sichtbar, alles stoppt bei der Entscheidung.',
-  },
-];
 
 // 03 — Kalkulation: Beispielrechnungen je Branche (Beispielwerte).
 const rechnungen: Rechnung[] = [
@@ -458,31 +434,6 @@ const kalkulationOptionen = [
   },
 ];
 
-// Was die Kalkulation im Kern tut. Nachkalkulation steht bewusst nicht hier:
-// sie braucht den Auftrags-Baustein und steht in 07 als Erweiterung.
-const kalkulationPunkte = [
-  {
-    icon: 'zap',
-    title: 'Rechnet aus euren Größen',
-    text: 'Ihr tragt Stunden, Mengen oder Termine ein, die Regel macht daraus den Preis. Jede Änderung rechnet sofort neu.',
-  },
-  {
-    icon: 'map-pin',
-    title: 'Echte Kosten, echte Wege',
-    text: 'Gerechnet wird mit dem Kostensatz der Person, die arbeitet. Fahrzeit und Strecke berechnet das System selbst.',
-  },
-  {
-    icon: 'trending-up',
-    title: 'Ertrag vor dem Versand',
-    text: 'Deckungsbeitrag je Leistung und fürs Angebot, mit Ampel. Was sich nicht rechnet, geht nur mit Freigabe raus.',
-  },
-  {
-    icon: 'settings',
-    title: 'Pflegt ihr selbst',
-    text: 'Preise und Rechengrundlagen wie Stunden- und Kostensätze legt ihr selbst fest und ändert sie ohne uns.',
-  },
-];
-
 // 03 — versenden und nachfassen.
 // 04 — was der Angebotsbaustein neben der Kalkulation mitbringt.
 const funktionen: BentoFeature[] = [
@@ -752,7 +703,7 @@ const miniFaqs = [
   headerNote="Angebotsbaustein"
 >
   <!-- HERO: Text links, interaktive Angebotskarte rechts -->
-  <section class="relative overflow-x-clip pt-14 pb-24 sm:pt-20 lg:pt-24 lg:pb-32">
+  <section data-hero class="relative overflow-x-clip pt-14 pb-24 sm:pt-20 lg:pt-24 lg:pb-32">
     <Blueprint />
     <div
       class="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_60%_50%_at_30%_40%,var(--color-background)_0%,transparent_75%)] opacity-80"
@@ -870,12 +821,7 @@ const miniFaqs = [
           </span>
           <p class="text-foreground-secondary text-sm leading-6">
             <strong class="text-foreground">Unser Angebotsbaustein</strong> ist bei Kunden bewährt und
-            wird für euch individuell aufgebaut. Keine Standardsoftware.{' '}
-            <a
-              href="#angebot"
-              class="text-brand-600 hover:text-brand-700 dark:text-brand-300 font-semibold whitespace-nowrap underline-offset-4 hover:underline"
-              >So sieht das aus ↓</a
-            >
+            wird für euch individuell aufgebaut. Keine Standardsoftware.
           </p>
         </div>
       </div>
@@ -886,10 +832,275 @@ const miniFaqs = [
     </div>
   </section>
 
-  <!-- 01 DAS ANGEBOT: dunkles Band mit Scroll-Showcase -->
+  <!-- 01 DIE KALKULATION: direkt nach dem Ist-Zustand, der eigentliche Unterschied -->
+  <section
+    id="kalkulation"
+    class="bg-background relative scroll-mt-16 overflow-x-clip py-24 lg:py-36"
+  >
+    <div
+      class="bg-brand-300/10 pointer-events-none absolute top-40 left-1/2 h-[40rem] w-[60rem] -translate-x-1/2 rounded-full blur-[120px]"
+      aria-hidden="true"
+    >
+    </div>
+    <div class="relative z-10 container max-w-7xl">
+      <SectionHeader
+        size="md"
+        number="01"
+        eyebrow="Die Kalkulation"
+        title="Eure Kalkulation. Nicht unsere."
+        lead="Die Kalkulation ist das Herz des Bausteins, und sie wird für jeden Betrieb eigens gebaut: mit euren Vorschriften, Sonderfällen und Sätzen. Sie sitzt im Angebot statt daneben, niemand tippt mehr ab, und bevor es rausgeht, seht ihr, was es einbringt. So kann das aussehen:"
+      />
+
+      <div class="af-rise mx-auto mt-14 max-w-6xl lg:mt-16">
+        <KalkulationRechner rechnungen={rechnungen} gemeinsam={gemeinsameGroessen}>
+          <p slot="hinweis">
+            <span class="text-foreground font-semibold">Die Zahlen sind frei erfunden, die
+            Vorschriften echt.</span> Welche Fassung für euch gilt und wie ihr sie auslegt,
+            entscheidet ihr; eingebaut wird eure Auslegung. Genau solche Regeln rechnen bei unseren
+            Kunden im Tagesgeschäft, von der Betreuungsvorschrift bis zum Prüfzyklus. Preise und Sätze
+            legt ihr danach selbst fest.{' '}
+            <a
+              href="#ablauf-02"
+              class="text-brand-600 hover:text-brand-700 dark:text-brand-300 inline-flex items-center gap-1 font-semibold whitespace-nowrap underline-offset-4 hover:underline"
+            >
+              Zum Workshop
+              <Icon name="arrow-right" size="xs" />
+            </a>
+          </p>
+        </KalkulationRechner>
+      </div>
+
+
+    </div>
+  </section>
+
+  <!-- CTA nach der Kalkulation: schlichter Aufruf, Texte aus dem Kontaktblock -->
+  <section class="cta-band relative overflow-x-clip py-14 lg:py-16">
+    <div
+      class="af-rise relative z-10 container flex max-w-6xl flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-12"
+    >
+      <div class="max-w-2xl">
+        <h2
+          class="font-display text-foreground text-2xl font-bold tracking-tight text-balance sm:text-3xl"
+        >
+          Wie sähe das mit euren Sätzen aus?
+        </h2>
+        <p class="text-brand-600 dark:text-brand-300 mt-1 text-sm font-semibold">
+          30 Minuten · online · kostenlos
+        </p>
+        <p class="text-foreground-secondary mt-3 text-[0.95rem] leading-7">
+          Bringt ein echtes Angebot mit. Wir schauen gemeinsam, was eure Kalkulation abbilden muss,
+          und ihr wisst danach, in welchem Preisrahmen euer Baustein liegt.
+        </p>
+        <a
+          href="#ablauf"
+          class="text-brand-600 dark:text-brand-300 mt-3 inline-flex items-center gap-1.5 text-sm font-semibold underline-offset-4 hover:underline"
+        >
+          So kommt ihr dazu: Erstgespräch, Workshop, Baustein
+          <Icon name="arrow-right" size="xs" />
+        </a>
+      </div>
+      <div class="flex shrink-0 flex-wrap items-center gap-x-5 gap-y-3">
+        <Button
+          size="lg"
+          href={contactLinks.cal}
+          target="_blank"
+          class="bg-brand-500 hover:bg-brand-400 text-white shadow-[0_14px_34px_-12px_var(--color-brand-500)]"
+          data-track-cal="nach-kalkulation"
+        >
+          Erstgespräch buchen
+          <Icon name="arrow-up-right" size="sm" />
+        </Button>
+        <a
+          href="#kontakt"
+          class="text-foreground-secondary hover:text-foreground inline-flex items-center gap-2 text-sm font-semibold underline-offset-4 hover:underline"
+        >
+          <Icon name="mail" size="sm" />
+          Lieber erst schreiben?
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 WIE RECHNET IHR: Optionen aus Kundenprojekten, nur Angebot und Preis -->
+  <section class="bg-background-secondary border-border relative border-y py-20 lg:py-28">
+    <div class="relative z-10 container max-w-6xl">
+      <SectionHeader
+        size="md"
+        number="02"
+        eyebrow="Wie rechnet ihr?"
+        title="Was in eure Kalkulation einfließen kann."
+        lead="Beispiele aus unseren Kundenprojekten, kein fester Lieferumfang."
+      />
+      <!-- Streifen: gemeinsam herausfinden, Lernsatz, Rechenarten als Laufband -->
+      <div class="af-rise opt-intro mt-12 overflow-hidden rounded-[1.75rem] lg:mt-14">
+        <div class="grid gap-8 p-6 sm:p-8 lg:grid-cols-[1.1fr_1fr] lg:items-end lg:gap-14 lg:p-10">
+          <div>
+            <p
+              class="text-brand-600 dark:text-brand-300 font-mono text-xs font-semibold tracking-[0.2em] uppercase"
+            >
+              Aus unseren Kundenprojekten
+            </p>
+            <h3
+              class="font-display text-foreground mt-3 text-2xl font-bold tracking-tight text-balance sm:text-3xl"
+            >
+              Wir finden es gemeinsam heraus.
+            </h3>
+            <p class="text-foreground-secondary mt-3 text-[0.95rem] leading-7">
+              Was in die Kalkulation einfließt, wie Preise entstehen, wie Angebote verwaltet werden:
+              Wir haben schon vieles gesehen. Was davon zu euch passt, klären wir im Workshop.
+            </p>
+          </div>
+          <figure class="opt-quote relative">
+            <span class="opt-quote-mark" aria-hidden="true">“</span>
+            <blockquote
+              class="font-display text-foreground relative text-xl leading-snug font-semibold tracking-tight text-balance sm:text-2xl"
+            >
+              Jeder Betrieb rechnet anders und hat eigene Anforderungen.
+            </blockquote>
+            <figcaption
+              class="border-border mt-5 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t pt-4"
+            >
+              <span class="text-foreground-secondary text-sm">
+                Gelernt in unseren Kundenprojekten. Deshalb klären wir es individuell.
+              </span>
+              <a
+                href="#ablauf-02"
+                class="text-brand-600 hover:text-brand-700 dark:text-brand-300 dark:hover:text-brand-200 group inline-flex items-center gap-2 text-sm font-semibold whitespace-nowrap transition-colors"
+              >
+                So läuft der Workshop
+                <Icon
+                  name="arrow-right"
+                  size="sm"
+                  class="transition-transform duration-300 group-hover:translate-x-0.5"
+                />
+              </a>
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="opt-marquee-wrap border-border border-t py-5 sm:py-6">
+          <p class="text-foreground-muted px-6 text-xs font-semibold sm:px-8 lg:px-10">
+            Gerechnet wird zum Beispiel nach
+          </p>
+          {
+            [rechenartenA, rechenartenB].map((reihe, r) => (
+              <div class="opt-marquee mt-3" data-dir={r === 0 ? 'left' : 'right'}>
+                <ul class="opt-track">
+                  {[...reihe, ...reihe].map((art, i) => (
+                    <li
+                      class:list={[
+                        art === 'und, und, und' ? 'opt-art-more' : 'opt-art',
+                        'inline-flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap',
+                      ]}
+                      aria-hidden={i >= reihe.length ? 'true' : undefined}
+                    >
+                      {art}
+                      {art === 'und, und, und' && (
+                        <span class="opt-dots" aria-hidden="true">
+                          <i />
+                          <i />
+                          <i />
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <!-- Zwei Karten: Kopf mit kleiner Vorschau rechts, darunter die Optionen kompakt -->
+      <div class="mt-4 grid gap-4 lg:grid-cols-2">
+        {
+          kalkulationOptionen.map((gruppe, g) => (
+            <div class="af-rise opt-card flex flex-col rounded-[1.75rem] p-5 sm:p-6">
+              <div class="grid gap-4 sm:grid-cols-[minmax(0,1fr)_17.5rem] sm:items-center">
+                <div class="flex items-center gap-3">
+                  <span class="opt-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
+                    <Icon name={gruppe.icon} size="sm" />
+                  </span>
+                  <div>
+                    <p class="font-display text-foreground text-lg leading-tight font-bold tracking-tight">
+                      {gruppe.title}
+                    </p>
+                    <p class="text-foreground-muted mt-0.5 text-sm leading-5">{gruppe.text}</p>
+                  </div>
+                </div>
+                <div class="opt-visual hidden rounded-2xl p-2.5 sm:block" aria-hidden="true">
+                  {g === 0 ? (
+                    <div class="space-y-1.5">
+                      <div class="opt-ui flex items-center gap-2 rounded-lg px-2.5 py-1.5">
+                        <span class="opt-ui-check shrink-0" />
+                        <span class="min-w-0 flex-1">
+                          <span class="text-foreground block text-[11px] leading-4 font-semibold">
+                            Wartung im ersten Jahr
+                          </span>
+                          <span class="text-foreground-muted block text-[10px] leading-4">optional</span>
+                        </span>
+                        <span class="text-foreground font-mono text-[11px] font-semibold whitespace-nowrap">1.200 €</span>
+                      </div>
+                      <div class="opt-ui flex items-center gap-2 rounded-lg px-2.5 py-1.5">
+                        <span class="opt-ui-dot shrink-0" data-tone="warn" />
+                        <span class="min-w-0 flex-1">
+                          <span class="text-foreground block text-[11px] leading-4 font-semibold">
+                            Deckungsbeitrag 24 %
+                          </span>
+                          <span class="opt-ui-pill mt-0.5 inline-block text-[9px] leading-4 font-semibold whitespace-nowrap">Freigabe angefragt</span>
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <div class="flex items-center gap-1.5">
+                        <div class="opt-ui flex-1 rounded-lg px-2.5 py-1.5">
+                          <p class="text-foreground-muted text-[9px] font-semibold uppercase">bis 30.06.</p>
+                          <p class="text-foreground-muted font-mono text-xs line-through">75,00 €</p>
+                        </div>
+                        <Icon name="arrow-right" size="xs" class="text-brand-500 shrink-0" />
+                        <div class="opt-ui opt-ui-active flex-1 rounded-lg px-2.5 py-1.5">
+                          <p class="text-brand-600 dark:text-brand-300 text-[9px] font-semibold uppercase">ab 01.07.</p>
+                          <p class="text-foreground font-mono text-xs font-bold">79,50 €</p>
+                        </div>
+                      </div>
+                      <div class="opt-ui mt-1.5 flex items-center justify-between rounded-lg px-2.5 py-1.5">
+                        <span class="text-foreground text-[11px] font-semibold">Rabatt −10 %</span>
+                        <span class="text-foreground-muted text-[10px]">endet am 31.12.</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <ul class="mt-4 grid gap-x-6 sm:grid-cols-2">
+                {gruppe.punkte.map((punkt) => (
+                  <li class="opt-li flex gap-2.5 py-2.5">
+                    <span class="opt-item-icon mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md">
+                      <Icon name={punkt.icon} size="xs" />
+                    </span>
+                    <div>
+                      <p class="text-foreground text-sm leading-5 font-semibold">{punkt.titel}</p>
+                      <p class="text-foreground-secondary text-[0.8rem] leading-5">{punkt.text}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <p class="opt-more-line text-foreground-muted mt-auto flex items-center gap-2 pt-3 text-sm">
+                <Icon name="plus" size="xs" />
+                {gruppe.mehr}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 DER BAUSTEIN IN AKTION: Beleg mit echten Screenshots, fünf Schritte -->
   <section
     id="angebot"
-    class="invert-section bg-surface-invert relative scroll-mt-16 overflow-x-clip py-24 lg:py-36"
+    class="invert-section bg-surface-invert relative scroll-mt-16 overflow-x-clip py-20 lg:py-28"
   >
     <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
       <div
@@ -908,7 +1119,7 @@ const miniFaqs = [
 
     <div class="relative z-10 mx-auto max-w-[90rem] px-5 sm:px-8 lg:px-12">
       <SectionHeader
-        number="01"
+        number="03"
         eyebrow="Unser Angebotsbaustein"
         title="Mehr als ein schönes Dokument."
         lead="Eine schöne Angebotsseite kann heute fast jedes Tool. Unser Angebotsbaustein stammt aus Lösungen, die bei Kunden im Einsatz sind, und wird für euch angepasst. Er macht mehr daraus: Er rechnet nach eurer Kalkulation, prüft, was ein Angebot einbringt, präsentiert es beim Kunden und fasst selbst nach."
@@ -916,36 +1127,39 @@ const miniFaqs = [
         invert
       />
 
-      <ul class="mx-auto mt-12 grid max-w-6xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {
-          unterschiede.map((u) => (
-            <li class="af-rise flex flex-col gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur sm:p-6">
-              <span class="bg-brand-500/20 text-brand-300 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
-                <Icon name={u.icon} size="sm" />
-              </span>
-              <div>
-                <h3 class="font-display text-on-invert text-base font-bold tracking-tight">
-                  {u.title}
-                </h3>
-                <p class="text-on-invert-secondary mt-1.5 text-sm leading-6">{u.text}</p>
-              </div>
-            </li>
-          ))
-        }
-      </ul>
-
-      <div class="mx-auto mt-16 max-w-6xl border-t border-white/10 pt-14 lg:mt-20 lg:pt-16">
-        <p class="text-on-invert-secondary text-center text-sm">
-          So entsteht ein Angebot mit dem Baustein, in fünf Schritten:
-        </p>
-        <div class="mt-6">
-          <AngebotTabs steps={angebot} />
+      <!-- Die fünf Schritte sind optional: zugeklappt, öffnen per Knopf oder Sprung (#angebot) -->
+      <div class="mx-auto mt-12 max-w-6xl lg:mt-14" data-af-more>
+        <div class="flex flex-col items-center gap-4 text-center">
+          <p class="text-on-invert-secondary text-sm">
+            So entsteht ein Angebot mit dem Baustein, in fünf Schritten:
+          </p>
+          <button
+            type="button"
+            class="af-more-btn group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold"
+            aria-expanded="false"
+            aria-controls="angebot-schritte"
+            data-af-more-btn
+          >
+            So sieht das aus
+            <Icon
+              name="chevron-down"
+              size="sm"
+              class="af-more-chevron transition-transform duration-300"
+            />
+          </button>
+        </div>
+        <div id="angebot-schritte" class="af-more-panel" data-open="false" inert>
+          <div class="af-more-inner">
+            <div class="pt-10">
+              <AngebotTabs steps={angebot} />
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 02 SO ARBEITEN WIR: kompakt, direkt nach dem Produkt -->
+  <!-- 04 SO ARBEITEN WIR: kompakt (Detail in 06) -->
   <section class="bg-background-secondary border-border relative border-b py-20 lg:py-24">
     <div class="relative z-10 container max-w-6xl">
       <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-16">
@@ -953,7 +1167,7 @@ const miniFaqs = [
           <p
             class="text-brand-600 dark:text-brand-300 font-mono text-xs font-semibold tracking-[0.2em] uppercase"
           >
-            02 · So arbeiten wir
+            04 · So arbeiten wir
           </p>
           <h2
             class="font-display text-foreground mt-4 text-2xl font-bold tracking-tight text-balance sm:text-3xl lg:text-[2.5rem] lg:leading-tight"
@@ -1043,255 +1257,8 @@ const miniFaqs = [
     </div>
   </section>
 
-  <!-- 03 DIE KALKULATION -->
-  <section
-    id="kalkulation"
-    class="bg-background relative scroll-mt-16 overflow-x-clip py-24 lg:py-36"
-  >
-    <div
-      class="bg-brand-300/10 pointer-events-none absolute top-40 left-1/2 h-[40rem] w-[60rem] -translate-x-1/2 rounded-full blur-[120px]"
-      aria-hidden="true"
-    >
-    </div>
-    <div class="relative z-10 container max-w-7xl">
-      <SectionHeader
-        size="md"
-        number="03"
-        eyebrow="Die Kalkulation"
-        title="Eure Kalkulation. Nicht unsere."
-        lead="Die Kalkulation ist das Herz des Bausteins, und sie wird für jeden Betrieb eigens gebaut. Im Workshop nehmen wir auf, wie ihr heute rechnet. Genau das rechnet danach der Baustein, nur schneller und ohne Fehler. So kann das aussehen:"
-      />
-
-      <div class="af-rise mx-auto mt-14 max-w-6xl lg:mt-16">
-        <KalkulationRechner rechnungen={rechnungen} gemeinsam={gemeinsameGroessen} />
-      </div>
-
-      <!-- Einordnung der Beispielwerte: der Kern entsteht im Workshop -->
-      <div
-        class="af-rise border-border mx-auto mt-5 flex max-w-6xl flex-col gap-3 rounded-2xl border border-dashed px-5 py-4 sm:flex-row sm:items-center sm:gap-4"
-      >
-        <Icon name="info" size="sm" class="text-brand-500 shrink-0" />
-        <p class="text-foreground-secondary flex-1 text-sm leading-6">
-          <span class="text-foreground font-semibold">Die Zahlen sind frei erfunden, die
-          Vorschriften echt.</span> Welche Fassung für euch gilt und wie ihr sie auslegt, entscheidet
-          ihr; eingebaut wird eure Auslegung. Genau solche Regeln rechnen bei unseren Kunden im
-          Tagesgeschäft, von der Betreuungsvorschrift bis zum Prüfzyklus. Preise und Sätze legt
-          ihr danach selbst fest.
-        </p>
-        <a
-          href="#ablauf-02"
-          class="text-brand-600 hover:text-brand-700 dark:text-brand-300 inline-flex items-center gap-1.5 text-sm font-semibold whitespace-nowrap transition-colors"
-        >
-          Zum Workshop
-          <Icon name="arrow-right" size="xs" />
-        </a>
-      </div>
-
-      <!-- Kernpunkte: offene Reihe, typografisch, ohne Kartenfläche -->
-      <div class="mx-auto mt-16 max-w-6xl lg:mt-20">
-        <div class="af-rise flex items-center gap-4">
-          <span class="kp-rule h-px flex-1" aria-hidden="true"></span>
-          <p
-            class="text-foreground-muted font-mono text-xs font-semibold tracking-[0.2em] whitespace-nowrap uppercase"
-          >
-            Das gilt bei jeder Kalkulation
-          </p>
-          <span class="kp-rule kp-rule-r h-px flex-1" aria-hidden="true"></span>
-        </div>
-        <ul class="mt-10 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-0">
-          {
-            kalkulationPunkte.map((item, index) => (
-              <li class="af-rise kp-item lg:px-7 lg:first:pl-0 lg:last:pr-0">
-                <p class="kp-num font-display text-4xl leading-none font-bold tracking-tight tabular-nums">
-                  {String(index + 1).padStart(2, '0')}
-                </p>
-                <h3 class="font-display text-foreground mt-4 flex items-center gap-2 text-base font-bold tracking-tight">
-                  <Icon name={item.icon} size="sm" class="text-brand-500 shrink-0" />
-                  {item.title}
-                </h3>
-                <p class="text-foreground-secondary mt-2 text-sm leading-6">{item.text}</p>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- 04 WIE RECHNET IHR: Optionen aus Kundenprojekten, nur Angebot und Preis -->
-  <section class="bg-background-secondary border-border relative border-y py-20 lg:py-28">
-    <div class="relative z-10 container max-w-6xl">
-      <SectionHeader
-        size="md"
-        number="04"
-        eyebrow="Wie rechnet ihr?"
-        title="Was in eure Kalkulation einfließen kann."
-        lead="Beispiele aus unseren Kundenprojekten, kein fester Lieferumfang."
-      />
-      <!-- Streifen: gemeinsam herausfinden, Lernsatz, Rechenarten als Laufband -->
-      <div class="af-rise opt-intro mt-12 overflow-hidden rounded-[1.75rem] lg:mt-14">
-        <div class="grid gap-8 p-6 sm:p-8 lg:grid-cols-[1.1fr_1fr] lg:items-end lg:gap-14 lg:p-10">
-          <div>
-            <p
-              class="text-brand-600 dark:text-brand-300 font-mono text-xs font-semibold tracking-[0.2em] uppercase"
-            >
-              Aus unseren Kundenprojekten
-            </p>
-            <h3
-              class="font-display text-foreground mt-3 text-2xl font-bold tracking-tight text-balance sm:text-3xl"
-            >
-              Wir finden es gemeinsam heraus.
-            </h3>
-            <p class="text-foreground-secondary mt-3 text-[0.95rem] leading-7">
-              Was in die Kalkulation einfließt, wie Preise entstehen, wie Angebote verwaltet werden:
-              Wir haben schon vieles gesehen. Was davon zu euch passt, klären wir im Workshop.
-            </p>
-          </div>
-          <figure class="opt-quote relative">
-            <span class="opt-quote-mark" aria-hidden="true">“</span>
-            <blockquote
-              class="font-display text-foreground relative text-xl leading-snug font-semibold tracking-tight text-balance sm:text-2xl"
-            >
-              Jeder Betrieb rechnet anders und hat eigene Anforderungen.
-            </blockquote>
-            <figcaption
-              class="border-border mt-5 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t pt-4"
-            >
-              <span class="text-foreground-secondary text-sm">
-                Gelernt in unseren Kundenprojekten. Deshalb klären wir es individuell.
-              </span>
-              <a
-                href="#ablauf-02"
-                class="text-brand-600 hover:text-brand-700 dark:text-brand-300 dark:hover:text-brand-200 group inline-flex items-center gap-2 text-sm font-semibold whitespace-nowrap transition-colors"
-              >
-                So läuft der Workshop
-                <Icon
-                  name="arrow-right"
-                  size="sm"
-                  class="transition-transform duration-300 group-hover:translate-x-0.5"
-                />
-              </a>
-            </figcaption>
-          </figure>
-        </div>
-
-        <div class="opt-marquee-wrap border-border border-t py-5 sm:py-6">
-          <p class="text-foreground-muted px-6 text-xs font-semibold sm:px-8 lg:px-10">
-            Gerechnet wird zum Beispiel nach
-          </p>
-          {
-            [rechenartenA, rechenartenB].map((reihe, r) => (
-              <div class="opt-marquee mt-3" data-dir={r === 0 ? 'left' : 'right'}>
-                <ul class="opt-track">
-                  {[...reihe, ...reihe].map((art, i) => (
-                    <li
-                      class:list={[
-                        art === 'und, und, und' ? 'opt-art-more' : 'opt-art',
-                        'inline-flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap',
-                      ]}
-                      aria-hidden={i >= reihe.length ? 'true' : undefined}
-                    >
-                      {art}
-                      {art === 'und, und, und' && (
-                        <span class="opt-dots" aria-hidden="true">
-                          <i />
-                          <i />
-                          <i />
-                        </span>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))
-          }
-        </div>
-      </div>
-
-      <!-- Zwei breite Karten: Mini-Illustration oben, Optionen als Liste -->
-      <div class="mt-4 grid gap-4 lg:grid-cols-2">
-        {
-          kalkulationOptionen.map((gruppe, g) => (
-            <div class="af-rise opt-card flex flex-col overflow-hidden rounded-[1.75rem]">
-              <div class="opt-visual relative flex h-40 items-center justify-center px-6" aria-hidden="true">
-                {g === 0 ? (
-                  <div class="w-full max-w-sm space-y-2.5">
-                    <div class="opt-ui flex items-center gap-3 rounded-xl px-3.5 py-2.5">
-                      <span class="opt-ui-check" />
-                      <span class="text-foreground flex-1 text-xs font-semibold">
-                        Wartung im ersten Jahr
-                        <span class="text-foreground-muted ml-1 font-normal">optional</span>
-                      </span>
-                      <span class="text-foreground font-mono text-xs font-semibold">1.200 €</span>
-                    </div>
-                    <div class="opt-ui flex items-center gap-3 rounded-xl px-3.5 py-2.5">
-                      <span class="opt-ui-dot" data-tone="warn" />
-                      <span class="text-foreground flex-1 text-xs font-semibold">
-                        Deckungsbeitrag 24 %
-                      </span>
-                      <span class="opt-ui-pill text-[10px] font-semibold">Freigabe angefragt</span>
-                    </div>
-                  </div>
-                ) : (
-                  <div class="w-full max-w-sm">
-                    <div class="flex items-center gap-2">
-                      <div class="opt-ui flex-1 rounded-xl px-3.5 py-2.5">
-                        <p class="text-foreground-muted text-[10px] font-semibold uppercase">bis 30.06.</p>
-                        <p class="text-foreground-muted mt-0.5 font-mono text-sm line-through">75,00 €</p>
-                      </div>
-                      <Icon name="arrow-right" size="sm" class="text-brand-500 shrink-0" />
-                      <div class="opt-ui opt-ui-active flex-1 rounded-xl px-3.5 py-2.5">
-                        <p class="text-brand-600 dark:text-brand-300 text-[10px] font-semibold uppercase">ab 01.07.</p>
-                        <p class="text-foreground mt-0.5 font-mono text-sm font-bold">79,50 €</p>
-                      </div>
-                    </div>
-                    <div class="opt-ui mt-2.5 flex items-center justify-between rounded-xl px-3.5 py-2">
-                      <span class="text-foreground text-xs font-semibold">Rabatt −10 %</span>
-                      <span class="text-foreground-muted text-[11px]">endet am 31.12.</span>
-                    </div>
-                  </div>
-                )}
-              </div>
-              <div class="flex flex-1 flex-col p-6 sm:p-7">
-                <div class="flex items-center gap-3">
-                  <span class="opt-icon flex h-10 w-10 items-center justify-center rounded-xl">
-                    <Icon name={gruppe.icon} size="sm" />
-                  </span>
-                  <div>
-                    <p class="font-display text-foreground text-lg leading-tight font-bold tracking-tight">
-                      {gruppe.title}
-                    </p>
-                    <p class="text-foreground-muted mt-0.5 text-sm">{gruppe.text}</p>
-                  </div>
-                </div>
-                <ul class="mt-6 grid gap-x-8 sm:grid-cols-2">
-                  {gruppe.punkte.map((punkt) => (
-                    <li class="opt-li flex gap-3 py-3.5">
-                      <span class="opt-item-icon mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg">
-                        <Icon name={punkt.icon} size="xs" />
-                      </span>
-                      <div>
-                        <p class="text-foreground text-sm leading-5 font-semibold">{punkt.titel}</p>
-                        <p class="text-foreground-secondary mt-0.5 text-[0.8rem] leading-5">{punkt.text}</p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-                <p class="opt-more-line text-foreground-muted mt-auto flex items-center gap-2 pt-4 text-sm">
-                  <Icon name="plus" size="xs" />
-                  {gruppe.mehr}
-                </p>
-              </div>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
   <!-- 05 WAS DER ANGEBOTSBAUSTEIN MITBRINGT: dunkles Band, Bento -->
-  <section class="invert-section bg-surface-invert relative overflow-x-clip py-24 lg:py-32">
+  <section class="invert-section bg-surface-invert relative overflow-x-clip py-16 lg:py-24">
     <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
       <div
         class="bg-brand-500/20 absolute -top-32 right-1/4 h-[32rem] w-[32rem] rounded-full blur-[140px]"
@@ -1302,18 +1269,21 @@ const miniFaqs = [
       >
       </div>
     </div>
-    <div class="relative z-10 container max-w-6xl">
-      <SectionHeader
-        size="md"
-        number="05"
-        eyebrow="Alles drin"
-        title="Was der Angebotsbaustein sonst noch mitbringt."
-        lead="Neben der Kalkulation steckt im Baustein alles, was ein Angebot von der ersten Zeile bis zur Zusage braucht."
-        invert
-      />
-      <div class="mt-14">
-        <FeatureBento features={funktionen} />
+    <div
+      class="relative z-10 container grid max-w-7xl gap-10 xl:grid-cols-[24rem_minmax(0,1fr)] xl:items-start xl:gap-14"
+    >
+      <div class="xl:sticky xl:top-28">
+        <SectionHeader
+          size="md"
+          number="05"
+          eyebrow="Alles drin"
+          title="Was der Angebotsbaustein sonst noch mitbringt."
+          lead="Neben der Kalkulation steckt im Baustein alles, was ein Angebot von der ersten Zeile bis zur Zusage braucht."
+          align="left"
+          invert
+        />
       </div>
+      <FeatureBento features={funktionen} compact />
 
     </div>
   </section>
@@ -1321,7 +1291,7 @@ const miniFaqs = [
   <!-- 06 DER WEG ZUM BAUSTEIN: ausführlich -->
   <section
     id="ablauf"
-    class="bg-background-secondary border-border relative scroll-mt-16 overflow-x-clip border-b py-24 lg:py-32"
+    class="bg-background-secondary border-border relative scroll-mt-16 overflow-x-clip border-b py-16 lg:py-24"
   >
     <div class="relative z-10 container max-w-6xl">
       <SectionHeader
@@ -1332,72 +1302,141 @@ const miniFaqs = [
         lead="Drei Schritte, und nach jedem entscheidet ihr neu. Niemand muss ein Projekt einplanen, um herauszufinden, ob es passt."
       />
 
-      <div class="af-rise mt-14 lg:mt-16">
-        <UmfangRegler stufen={umfangStufen} />
+      <div class="af-rise mt-10 lg:mt-12">
+        <UmfangRegler stufen={umfangStufen}>
+        <!-- Konditionen als Footer des Rechners: Anrechnung und Betreuung, zwei Spalten -->
+        <div slot="footer" class="konditionen grid lg:grid-cols-2">
+          <div class="flex flex-col gap-4 p-5 sm:p-7">
+            <div class="flex items-center gap-3">
+              <span class="bg-brand-500/10 text-brand-600 dark:text-brand-300 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
+                <Icon name="check-circle" size="sm" />
+              </span>
+              <p class="font-display text-foreground text-base font-bold tracking-tight sm:text-lg">
+                Der Workshop wird angerechnet.
+              </p>
+            </div>
+            <p class="text-foreground-secondary text-sm leading-6">
+              Bestellt ihr euer Paket innerhalb von <strong class="text-foreground">acht Wochen</strong>{' '}
+              nach dem Workshop, ziehen wir den Workshop-Preis vom Paketpreis ab. Und das Ergebnis
+              gehört euch, auch wenn ihr nicht bestellt.
+            </p>
+            <p class="text-foreground-secondary konditionen-hinweis mt-auto flex gap-2.5 pt-4 text-sm leading-6">
+              <Icon name="clock" size="sm" class="text-brand-500 mt-0.5 shrink-0" />
+              <span>
+                Euer Aufwand dafür: <strong class="text-foreground">sechs Stunden</strong> in drei
+                Terminen. Danach bis zum Rollout rund zwei bis drei Stunden pro Woche.
+              </span>
+            </p>
+          </div>
+          <div class="konditionen-rechts flex flex-col gap-4 p-5 sm:p-7">
+            <div class="flex items-center gap-3">
+              <span class="bg-brand-500/10 text-brand-600 dark:text-brand-300 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
+                <Icon name="shield" size="sm" />
+              </span>
+              <p class="font-display text-foreground text-base font-bold tracking-tight sm:text-lg">
+                Das erste Jahr Betreuung ist enthalten.
+              </p>
+            </div>
+            <p class="text-foreground-secondary text-sm leading-6">
+              Ab dem zweiten Jahr kostet die Betreuung{' '}
+              <strong class="text-foreground">{preise.betriebProzent} % jährlich</strong> von allem,
+              was bis dahin gebaut wurde, monatlich abgerechnet. Kommt später etwas dazu, wächst die
+              Grundlage mit. Der Betrag hängt an dem, was gebaut wurde, und bleibt gleich, wenn euer
+              Team wächst.
+            </p>
+            <ul class="mt-auto flex flex-wrap gap-1.5 pt-1" aria-label="In der Betreuung enthalten">
+              {
+                [
+                  'Hosting in Deutschland, mit Backups',
+                  'Security-Updates',
+                  'Aktualisierte Abhängigkeiten',
+                  'Eine feste Ansprechperson',
+                  'Kleine Änderungen im laufenden Betrieb',
+                ].map((punkt) => (
+                  <li class="konditionen-chip text-foreground inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[0.8rem] font-medium">
+                    <Icon name="check" size="xs" class="text-brand-500" />
+                    {punkt}
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+        </UmfangRegler>
       </div>
 
-      <ol class="relative mt-10 grid gap-5 lg:grid-cols-3 lg:grid-rows-[auto_auto_auto_auto_1fr] lg:gap-x-6 lg:gap-y-0">
-        <span
-          class="from-brand-300/0 via-brand-400/60 to-brand-500 pointer-events-none absolute top-[2.15rem] right-[16%] left-[16%] hidden h-px bg-gradient-to-r lg:block"
-          aria-hidden="true"
+      <!-- Drei Schritte nebeneinander, Kopf · Ablauf · Ergebnis auf gemeinsamen Zeilen (Subgrid) -->
+      <ol class="ablauf-liste relative mt-10 grid gap-4 lg:grid-cols-3 lg:grid-rows-[auto_auto_1fr] lg:gap-x-5 lg:gap-y-0">
+        <span class="ablauf-linie pointer-events-none absolute top-8 bottom-8 left-[2.15rem] w-px sm:left-[2.4rem] lg:hidden" aria-hidden="true"
+        ></span>
+        <span class="ablauf-linie-x pointer-events-none absolute top-[2.15rem] right-[18%] left-[18%] hidden h-px lg:block" aria-hidden="true"
         ></span>
         {
           ablauf.map((stufe, index) => (
             <li
               id={`ablauf-${stufe.number}`}
               class:list={[
-                'ablauf-karte af-rise relative flex scroll-mt-28 flex-col rounded-3xl border p-6 sm:p-7 lg:scroll-mt-64 lg:row-span-5 lg:grid lg:grid-rows-subgrid',
+                'ablauf-karte af-rise relative grid scroll-mt-28 gap-4 rounded-3xl border p-5 sm:p-6 lg:row-span-3 lg:grid-rows-subgrid lg:scroll-mt-64',
                 index === 2
                   ? 'border-brand-300 bg-card dark:border-brand-700 shadow-[0_24px_55px_-28px_rgba(70,90,160,0.55)]'
                   : 'border-border bg-card shadow-sm',
               ]}
             >
-              <div class="flex items-center gap-4">
-                <span
-                  class:list={[
-                    'relative z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl',
-                    index === 2
-                      ? 'bg-brand-500 text-white shadow-lg'
-                      : 'bg-brand-500/10 text-brand-600 dark:text-brand-300 ring-card ring-4',
-                  ]}
-                >
-                  <Icon name={stufe.icon} size="sm" />
-                </span>
-                <span class="text-foreground-muted font-mono text-xs font-semibold tracking-[0.2em]">
-                  SCHRITT {stufe.number}
-                </span>
-              </div>
-              <h3 class="font-display text-foreground mt-6 text-xl font-bold tracking-tight sm:text-2xl">
-                {stufe.title}
-              </h3>
-              <p class="text-brand-600 dark:text-brand-300 mt-1.5 text-sm font-semibold">
-                {stufe.meta}
-                {stufe.zusatz && (
-                  <span class="text-foreground-muted mt-0.5 block text-xs font-normal">
-                    {stufe.zusatz}
+              {/* Kopf */}
+              <div>
+                <div class="flex items-center gap-3">
+                  <span
+                    class:list={[
+                      'relative z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl',
+                      index === 2
+                        ? 'bg-brand-500 text-white shadow-lg'
+                        : 'bg-brand-500/10 text-brand-600 dark:text-brand-300 ring-card ring-4',
+                    ]}
+                  >
+                    <Icon name={stufe.icon} size="sm" />
                   </span>
-                )}
-              </p>
-              <div class="mt-5">
-                <p class="text-foreground-secondary text-[0.95rem] leading-7">{stufe.passiert}</p>
+                  <span class="text-foreground-muted font-mono text-xs font-semibold tracking-[0.2em]">
+                    SCHRITT {stufe.number}
+                  </span>
+                </div>
+                <h3 class="font-display text-foreground mt-4 text-xl font-bold tracking-tight sm:text-2xl">
+                  {stufe.title}
+                </h3>
+                <p class="text-brand-600 dark:text-brand-300 mt-1.5 text-sm font-semibold">
+                  {stufe.meta}
+                  {stufe.zusatz && (
+                    <span class="text-foreground-muted mt-0.5 block text-xs font-normal">
+                      {stufe.zusatz}
+                    </span>
+                  )}
+                </p>
+              </div>
+
+              {/* Ablauf */}
+              <div>
+                <p class="text-foreground-secondary text-sm leading-6">{stufe.passiert}</p>
                 {stufe.termine && (
-                  <ul class="ws-termine mt-4 rounded-2xl px-4 py-3">
+                  <ul class="mt-3 grid gap-1.5">
                     {stufe.termine.map((t) => (
-                      <li class="flex gap-3 py-1.5 text-[0.8rem] leading-5">
-                        <span class="text-brand-600 dark:text-brand-300 w-7 shrink-0 font-mono font-semibold">
+                      <li class="ws-termin flex items-baseline gap-3 rounded-xl px-3 py-2">
+                        <span class="text-brand-600 dark:text-brand-300 w-7 shrink-0 font-mono text-sm font-bold">
                           {t.dauer}
                         </span>
-                        <span class="text-foreground-secondary">{t.was}</span>
+                        <span class="text-foreground-secondary block text-[0.8rem] leading-5">
+                          {t.was}
+                        </span>
                       </li>
                     ))}
                   </ul>
                 )}
               </div>
-              <div class="border-border mt-6 border-t pt-5">
-                <p class="text-foreground-muted mt-1 text-[11px] font-semibold tracking-[0.18em] uppercase">
+
+              {/* Ergebnis */}
+              <div class="border-border border-t pt-4">
+                <p class="text-foreground-muted text-[11px] font-semibold tracking-[0.18em] uppercase">
                   Das bekommt ihr
                 </p>
-                <ul class="mt-3 space-y-2">
+                <ul class="mt-2.5 space-y-1.5">
                   {stufe.bekommt.map((punkt) => (
                     <li class="text-foreground flex gap-2.5 text-sm leading-6">
                       <Icon name="check" size="xs" class="text-brand-500 mt-1.5 shrink-0" />
@@ -1411,72 +1450,54 @@ const miniFaqs = [
         }
       </ol>
 
-      <div
-        class="af-rise border-brand-300/70 dark:border-brand-700 bg-card mt-8 grid gap-6 rounded-3xl border border-dashed p-6 sm:p-7 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-10"
-      >
-        <div class="flex gap-4">
-          <span class="bg-brand-500/10 text-brand-600 dark:text-brand-300 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl">
-            <Icon name="check-circle" size="sm" />
-          </span>
-          <div>
-            <p class="font-display text-foreground text-lg font-bold tracking-tight">
-              Der Workshop wird angerechnet.
-            </p>
-            <p class="text-foreground-secondary mt-1 text-sm leading-6">
-              Bestellt ihr euer Paket innerhalb von <strong class="text-foreground">acht Wochen</strong>{' '}
-              nach dem Workshop, ziehen wir den Workshop-Preis vom Paketpreis ab. Und das Ergebnis
-              gehört euch, auch wenn ihr nicht bestellt.
-            </p>
-          </div>
-        </div>
-        <p
-          class="bg-background-secondary text-foreground-secondary rounded-2xl px-5 py-4 text-sm leading-6 lg:max-w-xs"
-        >
-          Euer Aufwand dafür: <strong class="text-foreground">sechs Stunden</strong> in drei
-          Terminen. Danach bis zum Rollout rund zwei bis drei Stunden pro Woche.
-        </p>
-      </div>
+    </div>
+  </section>
 
-      <!-- Betrieb ab Jahr 2 -->
-      <div
-        class="af-rise border-border bg-card mt-5 grid gap-6 rounded-3xl border p-6 sm:p-7 lg:grid-cols-[1fr_auto] lg:gap-10"
-      >
-        <div class="flex gap-4">
-          <span class="bg-brand-500/10 text-brand-600 dark:text-brand-300 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl">
-            <Icon name="shield" size="sm" />
-          </span>
-          <div>
-            <p class="font-display text-foreground text-lg font-bold tracking-tight">
-              Das erste Jahr Betreuung ist enthalten.
-            </p>
-            <p class="text-foreground-secondary mt-1 text-sm leading-6">
-              Ab dem zweiten Jahr kostet die Betreuung{' '}
-              <strong class="text-foreground">{preise.betriebProzent} % jährlich</strong> von allem,
-              was bis dahin gebaut wurde, monatlich abgerechnet. Kommt später etwas dazu, wächst die
-              Grundlage mit. Der Betrag hängt an dem, was gebaut wurde, und bleibt gleich, wenn euer
-              Team wächst.
-            </p>
-          </div>
-        </div>
-        <ul
-          class="bg-background-secondary grid gap-2 rounded-2xl px-5 py-4 text-sm lg:max-w-xs"
-          aria-label="In der Betreuung enthalten"
+  <!-- CTA nach „So kommt ihr dazu": der erste Schritt als Aufruf (Texte aus Schritt 01) -->
+  <section class="cta-band relative overflow-x-clip py-14 lg:py-16">
+    <div
+      class="af-rise relative z-10 container flex max-w-6xl flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-12"
+    >
+      <div class="flex max-w-2xl gap-4">
+        <span
+          class="bg-brand-500 mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-white shadow-lg"
         >
-          {
-            [
-              'Hosting in Deutschland, mit Backups',
-              'Security-Updates',
-              'Aktualisierte Abhängigkeiten',
-              'Eine feste Ansprechperson',
-              'Kleine Änderungen im laufenden Betrieb',
-            ].map((punkt) => (
-              <li class="text-foreground-secondary flex gap-2.5 leading-6">
-                <Icon name="check" size="xs" class="text-brand-500 mt-1.5 shrink-0" />
-                {punkt}
-              </li>
-            ))
-          }
-        </ul>
+          <Icon name="phone" size="sm" />
+        </span>
+        <div>
+          <p class="text-foreground-muted font-mono text-xs font-semibold tracking-[0.2em]">
+            SCHRITT 01
+          </p>
+          <h2 class="font-display text-foreground mt-1 text-2xl font-bold tracking-tight sm:text-3xl">
+            Erstgespräch
+          </h2>
+          <p class="text-brand-600 dark:text-brand-300 mt-1 text-sm font-semibold">
+            30 Minuten · online · kostenlos
+          </p>
+          <p class="text-foreground-secondary mt-3 text-[0.95rem] leading-7">
+            Ihr zeigt uns, wie ihr heute ein Angebot rechnet, gern an einem echten Beispiel. Ohne
+            Präsentation von unserer Seite.
+          </p>
+        </div>
+      </div>
+      <div class="flex shrink-0 flex-wrap items-center gap-x-5 gap-y-3">
+        <Button
+          size="lg"
+          href={contactLinks.cal}
+          target="_blank"
+          class="bg-brand-500 hover:bg-brand-400 text-white shadow-[0_14px_34px_-12px_var(--color-brand-500)]"
+          data-track-cal="nach-ablauf"
+        >
+          Erstgespräch buchen
+          <Icon name="arrow-up-right" size="sm" />
+        </Button>
+        <a
+          href="#kontakt"
+          class="text-foreground-secondary hover:text-foreground inline-flex items-center gap-2 text-sm font-semibold underline-offset-4 hover:underline"
+        >
+          <Icon name="mail" size="sm" />
+          Lieber erst schreiben?
+        </a>
       </div>
     </div>
   </section>
@@ -1689,6 +1710,59 @@ const miniFaqs = [
       var(--color-background-secondary);
   }
 
+  /* 03: aufklappbare Schritte */
+  .af-more-btn {
+    color: var(--color-on-invert, #fff);
+    border: 1px solid rgb(255 255 255 / 0.18);
+    background: rgb(255 255 255 / 0.06);
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease;
+  }
+  @media (hover: hover) {
+    .af-more-btn:hover {
+      background: rgb(255 255 255 / 0.12);
+      border-color: rgb(255 255 255 / 0.3);
+    }
+  }
+  .af-more-btn:focus-visible {
+    outline: 2px solid var(--color-brand-400);
+    outline-offset: 3px;
+  }
+  .af-more-btn[aria-expanded='true'] .af-more-chevron {
+    transform: rotate(180deg);
+  }
+  .af-more-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .af-more-panel[data-open='true'] {
+    grid-template-rows: 1fr;
+  }
+  .af-more-inner {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* CTA-Band nach der Kalkulation */
+  .cta-band {
+    background:
+      radial-gradient(
+        60% 120% at 100% 50%,
+        color-mix(in oklch, var(--color-brand-400) 18%, transparent),
+        transparent 70%
+      ),
+      color-mix(in oklch, var(--color-brand-500) 6%, var(--color-background));
+    border-block: 1px solid color-mix(in oklch, var(--color-brand-400) 30%, var(--color-border));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .af-more-panel {
+      transition: none;
+    }
+  }
+
   /* Hero: was der Baustein ablöst, durchgestrichen */
   .hero-alt {
     text-decoration: line-through;
@@ -1697,30 +1771,8 @@ const miniFaqs = [
     background: var(--color-card);
   }
 
-  /* 03: Kernpunkte als offene Reihe */
-  .kp-rule {
-    background: linear-gradient(90deg, transparent, var(--color-border));
-  }
-  .kp-rule-r {
-    background: linear-gradient(90deg, var(--color-border), transparent);
-  }
-  .kp-num {
-    background: linear-gradient(180deg, var(--color-brand-400), var(--color-brand-600));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  @media (min-width: 1024px) {
-    .kp-item + .kp-item {
-      border-left: 1px solid var(--color-border);
-    }
-  }
 
   /* 06: Workshop-Variante „Vertieft“ */
-  .ws-termine {
-    border: 1px dashed color-mix(in oklch, var(--color-brand-400) 55%, var(--color-border));
-    background: color-mix(in oklch, var(--color-brand-500) 5%, var(--color-card));
-  }
 
   /* Wie rechnet ihr: Optionen aus Kundenprojekten (eigener Abschnitt vor 04) */
   .opt-intro {
@@ -1844,7 +1896,7 @@ const miniFaqs = [
         transparent 60%
       ),
       color-mix(in oklch, var(--color-foreground) 3%, var(--color-card));
-    border-bottom: 1px solid var(--color-border);
+    border: 1px solid var(--color-border);
   }
   .opt-ui {
     background: var(--color-card);
@@ -1920,6 +1972,46 @@ const miniFaqs = [
   }
 
 
+  /* 06: Zeitlinie hinter den drei Schritt-Zeilen (sichtbar in den Lücken) */
+  .ablauf-linie {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--color-brand-400) 20%, transparent),
+      var(--color-brand-400),
+      var(--color-brand-500)
+    );
+  }
+  .ablauf-linie-x {
+    background: linear-gradient(
+      to right,
+      color-mix(in oklch, var(--color-brand-400) 20%, transparent),
+      var(--color-brand-400),
+      var(--color-brand-500)
+    );
+  }
+  .ws-termin {
+    border: 1px solid color-mix(in oklch, var(--color-brand-400) 30%, var(--color-border));
+    background: color-mix(in oklch, var(--color-brand-500) 5%, var(--color-card));
+  }
+
+  /* 06: Konditionen-Karte */
+  .konditionen-rechts {
+    border-top: 1px solid var(--color-border);
+  }
+  @media (min-width: 1024px) {
+    .konditionen-rechts {
+      border-top: 0;
+      border-left: 1px solid var(--color-border);
+    }
+  }
+  .konditionen-hinweis {
+    border-top: 1px dashed var(--color-border);
+  }
+  .konditionen-chip {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+  }
+
   /* Sprung aus 02: die gewählte Stufe leuchtet kurz auf. */
   .ablauf-karte:target {
     animation: ablauf-ping 1.6s 0.35s ease-out;
@@ -1945,6 +2037,24 @@ const miniFaqs = [
 <script>
   // Der Cal-Klick ist der häufigste Konversionspunkt und verlässt die Domain.
   import { trackPlausible, pushEvent } from '@/lib/leadTracking';
+
+  // 03: fünf Schritte auf- und zuklappen. Beim Laden immer zu, auch mit #angebot in der
+  // Adresse; nur ein Klick (Knopf oder Hero-Link) klappt auf.
+  const more = document.querySelector<HTMLElement>('[data-af-more]');
+  const moreBtn = more?.querySelector<HTMLButtonElement>('[data-af-more-btn]');
+  const morePanel = more?.querySelector<HTMLElement>('.af-more-panel');
+  const setMore = (open: boolean) => {
+    if (!moreBtn || !morePanel) return;
+    moreBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    morePanel.dataset.open = open ? 'true' : 'false';
+    morePanel.toggleAttribute('inert', !open);
+  };
+  moreBtn?.addEventListener('click', () =>
+    setMore(moreBtn.getAttribute('aria-expanded') !== 'true'),
+  );
+  document.querySelectorAll<HTMLAnchorElement>('a[href="#angebot"]').forEach((a) =>
+    a.addEventListener('click', () => setMore(true)),
+  );
 
   document.querySelectorAll<HTMLAnchorElement>('[data-track-cal]').forEach((link) => {
     link.addEventListener('click', () => {

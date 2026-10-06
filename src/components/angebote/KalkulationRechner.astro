@@ -244,6 +244,20 @@ const ampelText = {
     }
   </div>
 
+  <!-- Hinweis zu den Beispielwerten: direkt unter der Karte, als deren Bildunterschrift -->
+  {
+    Astro.slots.has('hinweis') && (
+      <div class="kr-hinweis mx-auto mt-4 flex max-w-5xl gap-3 rounded-2xl px-4 py-3.5 sm:items-center sm:px-5">
+        <span class="bg-brand-500/10 text-brand-600 dark:text-brand-300 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
+          <Icon name="info" size="sm" />
+        </span>
+        <div class="text-foreground-secondary text-[0.85rem] leading-6">
+          <slot name="hinweis" />
+        </div>
+      </div>
+    )
+  }
+
   {
     gemeinsam.length > 0 && (
       <div class="kr-shared mt-10">
@@ -327,6 +341,10 @@ const ampelText = {
     }
   }
 
+  .kr-hinweis {
+    background: color-mix(in oklch, var(--color-brand-500) 5%, var(--color-card));
+    border: 1px solid color-mix(in oklch, var(--color-brand-400) 25%, var(--color-border));
+  }
   .kr-card {
     background: var(--color-card);
     border: 1px solid var(--color-border);

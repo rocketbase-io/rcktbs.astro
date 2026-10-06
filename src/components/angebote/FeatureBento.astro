@@ -20,22 +20,42 @@ export interface BentoFeature {
 
 interface Props {
   features: BentoFeature[];
+  /** Kompakt: kleinere Kacheln, nur Illustration und Titel, ohne Beschreibung. */
+  compact?: boolean;
 }
 
-const { features } = Astro.props;
+const { features, compact = false } = Astro.props;
+
+// Kompakt: Bento auf sechs Spalten (3 · 2 · 3), damit Kacheln breit genug für einzeilige Titel sind.
+const span: Record<BentoFeature['key'], string> = {
+  kunden: 'lg:col-span-2',
+  leistungen: 'lg:col-span-2',
+  vorlagen: 'lg:col-span-2',
+  seite: 'lg:col-span-3',
+  mail: 'lg:col-span-3',
+  nachfassen: 'lg:col-span-2',
+  tracking: 'lg:col-span-2',
+  analyse: 'lg:col-span-2',
+};
 
 const bars = [38, 55, 42, 70, 62, 84];
 ---
 
-<div class="bento grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+<div class:list={['bento grid', compact ? 'bento-compact grid-cols-2 gap-3 lg:grid-cols-6' : 'gap-4 sm:grid-cols-2 lg:grid-cols-4']}>
   {
     features.map((f) => (
       <article
-        class="bento-card af-rise group relative flex flex-col overflow-hidden rounded-[1.75rem] p-6"
+        class:list={[
+          'bento-card af-rise group relative flex flex-col overflow-hidden',
+          compact ? ['rounded-[1.25rem] p-4', span[f.key]] : 'rounded-[1.75rem] p-6',
+        ]}
       >
         {/* Illustration */}
         <div
-          class="bento-visual relative mb-6 flex h-[9.25rem] items-center overflow-hidden"
+          class:list={[
+            'bento-visual relative flex items-center overflow-hidden',
+            compact ? 'mb-3 h-[9rem] py-1.5' : 'mb-6 h-[9.25rem]',
+          ]}
           aria-hidden="true"
         >
           {f.key === 'kunden' && (
@@ -220,14 +240,21 @@ const bars = [38, 55, 42, 70, 62, 84];
 
         <div class="relative">
           <div class="flex items-center gap-2.5">
-            <span class="bento-icon flex h-8 w-8 items-center justify-center rounded-lg">
+            <span class:list={['bento-icon h-8 w-8 shrink-0 items-center justify-center rounded-lg', compact ? 'hidden sm:flex' : 'flex']}>
               <Icon name={f.icon} size="sm" />
             </span>
-            <h3 class="font-display text-foreground text-base font-bold tracking-tight sm:text-lg">
+            <h3
+              class:list={[
+                'font-display text-foreground font-bold tracking-tight',
+                compact
+                  ? 'text-[0.8rem] whitespace-nowrap sm:text-sm lg:text-[0.95rem]'
+                  : 'text-base sm:text-lg',
+              ]}
+            >
               {f.title}
             </h3>
           </div>
-          <p class="text-foreground-secondary mt-2.5 text-sm leading-6">{f.text}</p>
+          {!compact && <p class="text-foreground-secondary mt-2.5 text-sm leading-6">{f.text}</p>}
         </div>
       </article>
     ))
@@ -235,6 +262,22 @@ const bars = [38, 55, 42, 70, 62, 84];
 </div>
 
 <style>
+  /* Kompakt: Illustration maßstäblich verkleinern statt umbrechen. Layoutbreite
+     = Kachelbreite / Faktor, per transform wieder auf Kachelbreite skaliert. */
+  .bento-compact {
+    --bz: 0.62;
+  }
+  @media (min-width: 1024px) {
+    .bento-compact {
+      --bz: 0.84;
+    }
+  }
+  .bento-compact .bento-visual > * {
+    width: calc(100% / var(--bz));
+    flex-shrink: 0;
+    transform: scale(var(--bz));
+    transform-origin: left center;
+  }
   .bento-card {
     background: var(--color-card);
     border: 1px solid var(--color-border);
