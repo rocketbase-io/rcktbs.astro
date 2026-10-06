@@ -1021,7 +1021,7 @@ const miniFaqs = [
         <div id="saw-flip" class="saw-flip" data-saw data-face="steps">
           <div class="saw-flip-inner">
             <div class="saw-face saw-front" data-saw-front>
-              <ol class="relative grid auto-rows-fr gap-3">
+              <ol class="relative grid gap-3 lg:auto-rows-fr">
                 <span class="bg-border absolute top-8 bottom-8 left-[1.6rem] w-px" aria-hidden="true"
                 ></span>
                 {
@@ -1826,9 +1826,45 @@ const miniFaqs = [
   .saw-flip[data-face='form'] .saw-flip-inner {
     transform: rotateY(180deg);
   }
+  /*
+   * Unter lg kein Flip: übereinander gestapelt wäre die Fläche so hoch wie das Formular, und unter
+   * den Schritten stünde Leerraum. Mobil ist nur die aktive Seite im Fluss, sie blendet kurz ein.
+   */
+  @media (max-width: 1023px) {
+    .saw-flip-inner,
+    .saw-flip[data-face='form'] .saw-flip-inner {
+      transform: none;
+      transition: none;
+    }
+    .saw-face {
+      backface-visibility: visible;
+      -webkit-backface-visibility: visible;
+    }
+    .saw-back {
+      display: none;
+      transform: none;
+    }
+    .saw-flip[data-face='form'] .saw-front {
+      display: none;
+    }
+    .saw-flip[data-face='form'] .saw-back,
+    .saw-flip[data-face='steps'] .saw-front {
+      display: block;
+      animation: saw-ein 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+  }
+  @keyframes saw-ein {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
   @media (prefers-reduced-motion: reduce) {
     .saw-flip-inner {
       transition: none;
+    }
+    .saw-face {
+      animation: none !important;
     }
   }
 
@@ -2292,7 +2328,14 @@ const miniFaqs = [
   window.addEventListener('resize', () => {
     if (ablaufForm && !ablaufForm.hidden) ablaufPlatz();
   });
-  ablaufOpen?.addEventListener('click', () => setAblauf(ablaufForm?.hidden === true));
+  // Mobil kein Tausch: „Kontakt aufnehmen" scrollt einfach zum Formular unten.
+  const mobil = window.matchMedia('(max-width: 1023px)');
+  const zumFormular = () =>
+    document.getElementById('kontakt')?.scrollIntoView({ behavior: ruhig.matches ? 'auto' : 'smooth', block: 'start' });
+  ablaufOpen?.addEventListener('click', () => {
+    if (mobil.matches) return zumFormular();
+    setAblauf(ablaufForm?.hidden === true);
+  });
   ablauf?.querySelector('[data-ablauf-close]')?.addEventListener('click', () => setAblauf(false));
 
   // 02: Karte rechts zwischen Ablauf und Formular drehen.
@@ -2315,7 +2358,10 @@ const miniFaqs = [
       else sawOpen?.focus({ preventScroll: true });
     }, 450);
   };
-  sawOpen?.addEventListener('click', () => setSaw(saw?.dataset.face !== 'form'));
+  sawOpen?.addEventListener('click', () => {
+    if (mobil.matches) return zumFormular();
+    setSaw(saw?.dataset.face !== 'form');
+  });
   saw?.querySelector('[data-saw-close]')?.addEventListener('click', () => setSaw(false));
 
   // Hero: Scroll-Hinweis nach dem ersten Scrollen ausblenden (und oben wieder zeigen).
