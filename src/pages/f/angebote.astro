@@ -55,11 +55,11 @@ import { defaultLocale } from '@/i18n/config';
 import { getLocalizedPath } from '@/i18n/index';
 import { contactLinks } from '@/data/rocketbase';
 
-import editor from '@/assets/angebote/v2-editor-bausteine.webp';
+import editor from '@/assets/angebote/v2-editor-praesentation.webp';
 import bausteine from '@/assets/angebote/v2-bausteine-falk.webp';
-import kundeStart from '@/assets/angebote/kunde-umfang-positionen.webp';
-import kundeRechenweg from '@/assets/angebote/kunde-rechenweg.webp';
-import kundeAnnahme from '@/assets/angebote/kunde-annahme.webp';
+import kundeStart from '@/assets/angebote/kunde-umfang-hd.webp';
+import kundeRechenweg from '@/assets/angebote/kunde-rechenweg-hd.webp';
+import kundeAnnahme from '@/assets/angebote/kunde-annahme-hd.webp';
 
 const locale = defaultLocale;
 const workshopUrl = getLocalizedPath('discoveryWorkshop', locale);
@@ -97,11 +97,11 @@ const angebot: ShowcaseStep[] = [
       'Das letzte Angebot wird in Word kopiert, die Zahlen kommen aus Excel. Am Ende heißen drei Dateien „final".',
     text: 'Ihr wählt die Vorlage, Texte und Bilder kommen aus euren Bausteinen, Positionen und Preise direkt aus der Kalkulation. Nichts wird abgetippt. Vorschau für Handy und Desktop, das PDF für die Akte auf Knopfdruck.',
     image: editor,
-    alt: 'Editor des Angebots: links die Bausteine, in der Mitte das Angebot, rechts der ausgewählte Abschnitt mit Texteditor',
+    alt: 'Editor der Angebotsseite: links die Bausteine, in der Mitte die Präsentation, rechts die Bildauswahl für den Abschnitt',
     url: `${APP}/angebote/11328-01/seite`,
     chips: [
       { text: 'Bausteine aus eurer Bibliothek', pos: 'bl' },
-      { text: 'Texte direkt bearbeiten', pos: 'tr' },
+      { text: 'Bilder aus eurer Bibliothek', pos: 'tr' },
     ],
   },
   {
@@ -894,10 +894,10 @@ const miniFaqs = [
         </p>
         <a
           href="#ablauf"
-          class="text-brand-600 dark:text-brand-300 mt-3 inline-flex items-center gap-1.5 text-sm font-semibold underline-offset-4 hover:underline"
+          class="text-brand-600 dark:text-brand-300 mt-3 inline-block text-sm font-semibold underline-offset-4 hover:underline"
         >
-          So kommt ihr dazu: Erstgespräch, Workshop, Baustein
-          <Icon name="arrow-right" size="xs" />
+          So kommt ihr dazu: Erstgespräch, Workshop, Baustein{' '}
+          <Icon name="arrow-right" size="xs" class="inline-block -translate-y-px" />
         </a>
       </div>
       <div class="flex shrink-0 flex-wrap items-center gap-x-5 gap-y-3">
@@ -1303,66 +1303,7 @@ const miniFaqs = [
       />
 
       <div class="af-rise mt-10 lg:mt-12">
-        <UmfangRegler stufen={umfangStufen}>
-        <!-- Konditionen als Footer des Rechners: Anrechnung und Betreuung, zwei Spalten -->
-        <div slot="footer" class="konditionen grid lg:grid-cols-2">
-          <div class="flex flex-col gap-4 p-5 sm:p-7">
-            <div class="flex items-center gap-3">
-              <span class="bg-brand-500/10 text-brand-600 dark:text-brand-300 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
-                <Icon name="check-circle" size="sm" />
-              </span>
-              <p class="font-display text-foreground text-base font-bold tracking-tight sm:text-lg">
-                Der Workshop wird angerechnet.
-              </p>
-            </div>
-            <p class="text-foreground-secondary text-sm leading-6">
-              Bestellt ihr euer Paket innerhalb von <strong class="text-foreground">acht Wochen</strong>{' '}
-              nach dem Workshop, ziehen wir den Workshop-Preis vom Paketpreis ab. Und das Ergebnis
-              gehört euch, auch wenn ihr nicht bestellt.
-            </p>
-            <p class="text-foreground-secondary konditionen-hinweis mt-auto flex gap-2.5 pt-4 text-sm leading-6">
-              <Icon name="clock" size="sm" class="text-brand-500 mt-0.5 shrink-0" />
-              <span>
-                Euer Aufwand dafür: <strong class="text-foreground">sechs Stunden</strong> in drei
-                Terminen. Danach bis zum Rollout rund zwei bis drei Stunden pro Woche.
-              </span>
-            </p>
-          </div>
-          <div class="konditionen-rechts flex flex-col gap-4 p-5 sm:p-7">
-            <div class="flex items-center gap-3">
-              <span class="bg-brand-500/10 text-brand-600 dark:text-brand-300 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
-                <Icon name="shield" size="sm" />
-              </span>
-              <p class="font-display text-foreground text-base font-bold tracking-tight sm:text-lg">
-                Das erste Jahr Betreuung ist enthalten.
-              </p>
-            </div>
-            <p class="text-foreground-secondary text-sm leading-6">
-              Ab dem zweiten Jahr kostet die Betreuung{' '}
-              <strong class="text-foreground">{preise.betriebProzent} % jährlich</strong> von allem,
-              was bis dahin gebaut wurde, monatlich abgerechnet. Kommt später etwas dazu, wächst die
-              Grundlage mit. Der Betrag hängt an dem, was gebaut wurde, und bleibt gleich, wenn euer
-              Team wächst.
-            </p>
-            <ul class="mt-auto flex flex-wrap gap-1.5 pt-1" aria-label="In der Betreuung enthalten">
-              {
-                [
-                  'Hosting in Deutschland, mit Backups',
-                  'Security-Updates',
-                  'Aktualisierte Abhängigkeiten',
-                  'Eine feste Ansprechperson',
-                  'Kleine Änderungen im laufenden Betrieb',
-                ].map((punkt) => (
-                  <li class="konditionen-chip text-foreground inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[0.8rem] font-medium">
-                    <Icon name="check" size="xs" class="text-brand-500" />
-                    {punkt}
-                  </li>
-                ))
-              }
-            </ul>
-          </div>
-        </div>
-        </UmfangRegler>
+        <UmfangRegler stufen={umfangStufen} />
       </div>
 
       <!-- Drei Schritte nebeneinander, Kopf · Ablauf · Ergebnis auf gemeinsamen Zeilen (Subgrid) -->
@@ -1449,6 +1390,65 @@ const miniFaqs = [
           ))
         }
       </ol>
+
+      <!-- Konditionen: Anrechnung und Betreuung in einer Karte, zwei Spalten -->
+      <div class="af-rise konditionen bg-card mt-4 grid rounded-3xl border lg:grid-cols-2">
+        <div class="flex flex-col gap-4 p-5 sm:p-7">
+          <div class="flex items-center gap-3">
+            <span class="bg-brand-500/10 text-brand-600 dark:text-brand-300 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
+              <Icon name="check-circle" size="sm" />
+            </span>
+            <p class="font-display text-foreground text-base font-bold tracking-tight sm:text-lg">
+              Der Workshop wird angerechnet.
+            </p>
+          </div>
+          <p class="text-foreground-secondary text-sm leading-6">
+            Bestellt ihr euer Paket innerhalb von <strong class="text-foreground">acht Wochen</strong>{' '}
+            nach dem Workshop, ziehen wir den Workshop-Preis vom Paketpreis ab. Und das Ergebnis
+            gehört euch, auch wenn ihr nicht bestellt.
+          </p>
+          <p class="text-foreground-secondary konditionen-hinweis mt-auto flex gap-2.5 pt-4 text-sm leading-6">
+            <Icon name="clock" size="sm" class="text-brand-500 mt-0.5 shrink-0" />
+            <span>
+              Euer Aufwand dafür: <strong class="text-foreground">sechs Stunden</strong> in drei
+              Terminen. Danach bis zum Rollout rund zwei bis drei Stunden pro Woche.
+            </span>
+          </p>
+        </div>
+        <div class="konditionen-rechts flex flex-col gap-4 p-5 sm:p-7">
+          <div class="flex items-center gap-3">
+            <span class="bg-brand-500/10 text-brand-600 dark:text-brand-300 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
+              <Icon name="shield" size="sm" />
+            </span>
+            <p class="font-display text-foreground text-base font-bold tracking-tight sm:text-lg">
+              Das erste Jahr Betreuung ist enthalten.
+            </p>
+          </div>
+          <p class="text-foreground-secondary text-sm leading-6">
+            Ab dem zweiten Jahr kostet die Betreuung{' '}
+            <strong class="text-foreground">{preise.betriebProzent}&nbsp;% jährlich</strong> von allem,
+            was bis dahin gebaut wurde, monatlich abgerechnet. Kommt später etwas dazu, wächst die
+            Grundlage mit. Der Betrag hängt an dem, was gebaut wurde, und bleibt gleich, wenn euer
+            Team wächst.
+          </p>
+          <ul class="mt-auto flex flex-wrap gap-1.5 pt-1" aria-label="In der Betreuung enthalten">
+            {
+              [
+                'Hosting in Deutschland, mit Backups',
+                'Security-Updates',
+                'Aktualisierte Abhängigkeiten',
+                'Eine feste Ansprechperson',
+                'Kleine Änderungen im laufenden Betrieb',
+              ].map((punkt) => (
+                <li class="konditionen-chip text-foreground inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[0.8rem] font-medium">
+                  <Icon name="check" size="xs" class="text-brand-500" />
+                  {punkt}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
 
     </div>
   </section>
@@ -1744,6 +1744,9 @@ const miniFaqs = [
     min-height: 0;
     overflow: hidden;
   }
+  .af-more-panel[data-settled='true'] .af-more-inner {
+    overflow: visible;
+  }
 
   /* CTA-Band nach der Kalkulation */
   .cta-band {
@@ -1995,6 +1998,10 @@ const miniFaqs = [
   }
 
   /* 06: Konditionen-Karte */
+  .konditionen {
+    border-color: var(--color-border);
+    box-shadow: 0 24px 55px -36px oklch(30% 0.08 265 / 0.45);
+  }
   .konditionen-rechts {
     border-top: 1px solid var(--color-border);
   }
@@ -2008,7 +2015,7 @@ const miniFaqs = [
     border-top: 1px dashed var(--color-border);
   }
   .konditionen-chip {
-    background: var(--color-card);
+    background: color-mix(in oklch, var(--color-foreground) 4%, var(--color-card));
     border: 1px solid var(--color-border);
   }
 
@@ -2048,7 +2055,13 @@ const miniFaqs = [
     moreBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
     morePanel.dataset.open = open ? 'true' : 'false';
     morePanel.toggleAttribute('inert', !open);
+    // Beschnitt nur während der Animation: offen darf Überstehendes (Pfeile, große Ziffer) sichtbar sein
+    if (!open) delete morePanel.dataset.settled;
+    else if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) morePanel.dataset.settled = 'true';
   };
+  morePanel?.addEventListener('transitionend', (e) => {
+    if (e.target === morePanel && morePanel.dataset.open === 'true') morePanel.dataset.settled = 'true';
+  });
   moreBtn?.addEventListener('click', () =>
     setMore(moreBtn.getAttribute('aria-expanded') !== 'true'),
   );

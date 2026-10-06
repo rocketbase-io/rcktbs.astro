@@ -158,23 +158,10 @@ const stunden = (s: Stufe) => Math.round(s.proAngebot * angeboteProMonat);
       Wo ihr liegt, entscheidet ihr im Workshop selbst: Manche stellen jede Kalkulation vollständig
       ins System, andere nehmen den Kern genau und rechnen den Rest pauschal.
     </p>
-
-    <!-- Footer der Karte: Konditionen, randlos bis an die Kartenkante -->
-    {
-      Astro.slots.has('footer') && (
-        <div class="ur-footer -mx-5 -mb-5 mt-6 rounded-b-[1.75rem] sm:-mx-7 sm:-mb-7 lg:-mx-8 lg:-mb-8">
-          <slot name="footer" />
-        </div>
-      )
-    }
   </div>
 </div>
 
 <style>
-  .ur-footer {
-    border-top: 1px solid var(--color-border);
-    background: color-mix(in oklch, var(--color-foreground) 2.5%, var(--color-card));
-  }
   .ur-card {
     background: var(--color-card);
     border: 1px solid var(--color-border);
