@@ -1,6 +1,9 @@
 import type { ImageMetadata } from 'astro';
 import angebotFunkstille from '@/assets/instagram/angebot-funkstille.jpg';
+import eRechnung2027 from '@/assets/instagram/e-rechnung-2027.jpg';
+import kundenAusDemKopf from '@/assets/instagram/kunden-aus-dem-kopf.jpg';
 import quartalsberichtExcel from '@/assets/instagram/quartalsbericht-excel.jpg';
+import serverSchrankRechenzentrum from '@/assets/instagram/server-schrank-rechenzentrum.jpg';
 import toolsNullUeberblick from '@/assets/instagram/tools-null-ueberblick.jpg';
 
 /**
@@ -29,6 +32,10 @@ import toolsNullUeberblick from '@/assets/instagram/tools-null-ueberblick.jpg';
  *   2. Hier importieren und unter dem Shortcode eintragen.
  */
 export const instagramCovers: Record<string, ImageMetadata> = {
+  // Vorläufige Schlüssel bis zum Veröffentlichen, siehe src/data/instagram.ts.
+  'e-rechnung-2027-5-fragen-an-euch': eRechnung2027,
+  'ein-tag-mit-dem-server-im-bueroschrank': serverSchrankRechenzentrum,
+  'rate-mal-17-gegen-494': kundenAusDemKopf,
   DdJekmNFtUk: angebotFunkstille,
   // Vorläufiger Schlüssel bis zum Veröffentlichen, siehe src/data/instagram.ts.
   'quartalsbericht-3-leute-2-wochen': quartalsberichtExcel,

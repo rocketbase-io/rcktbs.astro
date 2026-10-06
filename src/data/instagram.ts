@@ -93,6 +93,31 @@ export type InstagramPost = InstagramPostMitBeitrag | InstagramPostMitUrl;
 
 export const instagramPosts: InstagramPost[] = [
   {
+    // Vorläufiger Schlüssel bis zum Veröffentlichen (geplant 08.10.). Danach hier
+    // und in coverImages.ts gegen den echten Shortcode tauschen. Kein Blogbeitrag
+    // zum Thema, deshalb geht die Kachel auf die Kontaktseite.
+    code: 'e-rechnung-2027-5-fragen-an-euch',
+    url: '/kontakt/',
+    titel: 'E-Rechnung ab 1.1.2027: Seid ihr dran?',
+    text: 'Ab 1. Januar 2027 müssen Unternehmen mit mehr als 800.000 € Vorjahresumsatz E-Rechnungen ausstellen. Wisst ihr schon, wie das bei euch läuft? Schreibt uns.',
+    hook: 'E-Rechnung ab 1.1.2027: Seid ihr dran?',
+    datum: '2026-10-08',
+  },
+  {
+    // Vorläufiger Schlüssel bis zum Veröffentlichen (geplant 07.10.), siehe oben.
+    code: 'ein-tag-mit-dem-server-im-bueroschrank',
+    postSlug: 'legacy-hosting-hetzner-dsgvo',
+    hook: 'Schrank oder Rechenzentrum: Was ist günstiger?',
+    datum: '2026-10-07',
+  },
+  {
+    // Vorläufiger Schlüssel, bis der echte Shortcode des Posts eingetragen ist.
+    code: 'rate-mal-17-gegen-494',
+    postSlug: 'tool-sprawl-hubspot-pipedrive-lexoffice',
+    hook: 'Welche Kunden tragen bei dir das erste Drittel des Umsatzes?',
+    datum: '2026-10-06',
+  },
+  {
     // Vorläufiger Schlüssel bis zum Veröffentlichen (Hot Take „Gute Tools machen
     // blind“). Danach gegen den echten Shortcode tauschen.
     code: 'hot-take-gute-tools-machen-blind',
