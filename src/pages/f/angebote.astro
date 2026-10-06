@@ -46,14 +46,13 @@ import ModulHub, { type HubNode } from '@/components/angebote/ModulHub.astro';
 import FeatureBento, { type BentoFeature } from '@/components/angebote/FeatureBento.astro';
 import SectionHeader from '@/components/angebote/SectionHeader.astro';
 import FunnelQuiz from '@/components/funnel/FunnelQuiz';
+import { Picture } from 'astro:assets';
+import founderPortrait from '@/assets/rocketbase/founder-marten-priess.jpg';
 import type { FunnelQuizQuestion } from '@/data/funnels';
 import HeuteChaos from '@/components/angebote/HeuteChaos.astro';
 import KalkulationRechner, { type Rechnung } from '@/components/angebote/KalkulationRechner.astro';
 import UmfangRegler, { type Stufe } from '@/components/angebote/UmfangRegler.astro';
 import ShotFrame from '@/components/angebote/ShotFrame.astro';
-import { AngeboteKontakt } from '@/components/angebote/AngeboteKontakt';
-import { Picture } from 'astro:assets';
-import founderPortrait from '@/assets/rocketbase/founder-marten-priess.jpg';
 
 import editor from '@/assets/angebote/v2-editor-praesentation.webp';
 import bausteine from '@/assets/angebote/v2-bausteine-falk.webp';
@@ -682,12 +681,6 @@ const ablauf = [
     meta: 'Umfang nach dem Erstgespräch',
     passiert:
       'Wir nehmen eure Kalkulation auf, mit allen Größen, Preisen, Kosten und Sonderfällen, und skizzieren Angebotsseite und Ablauf. Wie viele Termine es dafür braucht, klären wir nach dem Erstgespräch.',
-    // Mögliche Formen statt fester Stunden: Termine und Umfang richten sich nach dem Bedarf.
-    moeglichkeiten: [
-      { icon: 'clock', was: 'Kompakt an einem Tag' },
-      { icon: 'layers', was: 'Verteilt auf mehrere Termine' },
-      { icon: 'map-pin', was: 'Bei euch vor Ort oder online' },
-    ],
     bekommt: [
       'Eure Kalkulation schriftlich, nachvollziehbar für alle',
       'Skizzen für Angebotsseite und Ablauf',
@@ -1005,91 +998,61 @@ const miniFaqs = [
                 class="transition-transform duration-300 group-hover:translate-y-0.5"
               />
             </a>
-            <button
-              type="button"
-              class="text-foreground-secondary hover:text-foreground inline-flex cursor-pointer items-center gap-2 text-sm font-semibold transition-colors"
-              aria-controls="saw-flip"
-              aria-expanded="false"
-              data-saw-open
+            <a
+              href="#kontakt"
+              class="text-foreground-secondary hover:text-foreground inline-flex items-center gap-2 text-sm font-semibold transition-colors"
             >
               <Icon name="mail" size="sm" />
               Kontakt aufnehmen
-            </button>
+            </a>
           </div>
         </div>
-        <!-- Rechts: Ablauf, per Klick auf „Kontakt aufnehmen" dreht die Karte zum Formular -->
-        <div id="saw-flip" class="saw-flip" data-saw data-face="steps">
-          <div class="saw-flip-inner">
-            <div class="saw-face saw-front" data-saw-front>
-              <ol class="relative grid gap-3 lg:auto-rows-fr">
-                <span class="bg-border absolute top-8 bottom-8 left-[1.6rem] w-px" aria-hidden="true"
-                ></span>
-                {
-                  weg.map((stufe, index) => (
-                    <li class="af-rise relative">
-                      <a
-                        href={`#ablauf-${stufe.number}`}
-                        class:list={[
-                        'group relative flex h-full gap-4 rounded-2xl border p-4 transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-[0_18px_40px_-24px_rgba(70,90,160,0.5)] sm:gap-5 sm:p-5',
-                        index === 2
-                          ? 'border-brand-300 bg-card dark:border-brand-700 shadow-[0_20px_45px_-24px_rgba(70,90,160,0.45)]'
-                          : 'border-border bg-card',
-                      ]}
-                    >
-                      <span
-                        class:list={[
-                          'relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-mono text-xs font-bold',
-                          index === 2
-                            ? 'bg-brand-500 text-white'
-                            : 'bg-brand-500/10 text-brand-600 dark:text-brand-300',
-                        ]}
-                      >
-                        {stufe.number}
-                      </span>
-                      <div class="min-w-0 flex-1">
-                        <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                          <h3 class="font-display text-foreground text-base font-bold tracking-tight sm:text-lg">
-                            {stufe.title}
-                          </h3>
-                          <p class="text-brand-600 dark:text-brand-300 text-xs font-semibold sm:text-sm">
-                            {stufe.meta}
-                          </p>
-                        </div>
-                        <p class="text-foreground-secondary mt-1.5 text-sm leading-6">{stufe.text}</p>
-                      </div>
-                      <Icon
-                        name="chevron-down"
-                        size="sm"
-                        class="text-foreground-muted group-hover:text-brand-500 mt-2 shrink-0 transition-colors"
-                      />
-                      </a>
-                    </li>
-                  ))
-                }
-              </ol>
-            </div>
-            <div class="saw-face saw-back" data-saw-back inert>
-              <button
-                type="button"
-                class="text-foreground-secondary hover:text-foreground mb-3 inline-flex cursor-pointer items-center gap-1.5 text-sm font-semibold transition-colors"
-                data-saw-close
+        <ol class="relative grid gap-3 lg:auto-rows-fr">
+          <span class="bg-border absolute top-8 bottom-8 left-[1.6rem] w-px" aria-hidden="true"
+          ></span>
+          {
+            weg.map((stufe, index) => (
+              <li class="af-rise relative">
+                <a
+                  href={`#ablauf-${stufe.number}`}
+                  class:list={[
+                  'group relative flex h-full gap-4 rounded-2xl border p-4 transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-[0_18px_40px_-24px_rgba(70,90,160,0.5)] sm:gap-5 sm:p-5',
+                  index === 2
+                    ? 'border-brand-300 bg-card dark:border-brand-700 shadow-[0_20px_45px_-24px_rgba(70,90,160,0.45)]'
+                    : 'border-border bg-card',
+                ]}
               >
-                <Icon name="arrow-left" size="sm" />
-                Zurück zum Ablauf
-              </button>
-              <AngeboteKontakt
-                client:visible
-                funnel="angebote"
-                heading="Schreibt uns."
-                text="Name, E-Mail und Telefon genügen, den Rest klären wir im Gespräch."
-                erfolg={{
-                  heading: 'Danke, eure Nachricht ist angekommen.',
-                  text: 'Marten Prieß meldet sich werktags bei euch.',
-                }}
-              />
-            </div>
-          </div>
-        </div>
+                <span
+                  class:list={[
+                    'relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-mono text-xs font-bold',
+                    index === 2
+                      ? 'bg-brand-500 text-white'
+                      : 'bg-brand-500/10 text-brand-600 dark:text-brand-300',
+                  ]}
+                >
+                  {stufe.number}
+                </span>
+                <div class="min-w-0 flex-1">
+                  <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                    <h3 class="font-display text-foreground text-base font-bold tracking-tight sm:text-lg">
+                      {stufe.title}
+                    </h3>
+                    <p class="text-brand-600 dark:text-brand-300 text-xs font-semibold sm:text-sm">
+                      {stufe.meta}
+                    </p>
+                  </div>
+                  <p class="text-foreground-secondary mt-1.5 text-sm leading-6">{stufe.text}</p>
+                </div>
+                <Icon
+                  name="chevron-down"
+                  size="sm"
+                  class="text-foreground-muted group-hover:text-brand-500 mt-2 shrink-0 transition-colors"
+                />
+                </a>
+              </li>
+            ))
+          }
+        </ol>
       </div>
     </div>
   </section>
@@ -1331,7 +1294,7 @@ const miniFaqs = [
     </div>
   </section>
 
-  <!-- CTA vor „Alles drin": Text links, Kontaktformular direkt rechts -->
+  <!-- CTA vor „Alles drin": Text links, Knopf zum Fragebogen unten rechts -->
   <section class="cta-band relative overflow-x-clip py-20 lg:py-24">
     <div
       class="bg-grid-pattern pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_70%_90%_at_80%_50%,black,transparent_75%)] opacity-[0.08]"
@@ -1339,7 +1302,7 @@ const miniFaqs = [
     >
     </div>
     <div
-      class="af-rise relative z-10 container grid max-w-6xl gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,30rem)] lg:items-center lg:gap-16"
+      class="af-rise relative z-10 container grid max-w-6xl gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-16"
     >
       <div class="max-w-xl">
         <h2
@@ -1362,16 +1325,16 @@ const miniFaqs = [
           <Icon name="arrow-right" size="xs" class="inline-block -translate-y-px" />
         </a>
       </div>
-      <AngeboteKontakt
-        client:visible
-        funnel="angebote"
-        heading="Kontakt aufnehmen"
-        text="Marten Prieß meldet sich werktags persönlich und sucht mit euch einen Termin."
-        erfolg={{
-          heading: 'Danke, eure Nachricht ist angekommen.',
-          text: 'Marten Prieß meldet sich werktags bei euch.',
-        }}
-      />
+      <div class="lg:justify-self-end">
+        <Button
+          size="lg"
+          href="#kontakt"
+          class="bg-brand-500 hover:bg-brand-400 text-white shadow-[0_14px_34px_-12px_var(--color-brand-500)]"
+        >
+          <Icon name="mail" size="sm" />
+          Kontakt aufnehmen
+        </Button>
+      </div>
     </div>
   </section>
 
@@ -1429,13 +1392,8 @@ const miniFaqs = [
       }
 
       <!-- Drei Schritte nebeneinander, Kopf · Ablauf · Ergebnis auf gemeinsamen Zeilen (Subgrid) -->
-      <!--
-        „Kontakt aufnehmen“ in Karte 01 legt das Formular über die Fläche von 02 und 03. Die beiden
-        Karten werden nur unsichtbar und behalten ihren Platz: keine Höhe ändert sich, nichts scrollt.
-      -->
-      <div class="relative mt-10" data-ablauf>
       <ol
-        class="ablauf-liste relative grid gap-4 lg:grid-cols-3 lg:grid-rows-[auto_auto_1fr] lg:gap-x-5 lg:gap-y-0"
+        class="ablauf-liste relative mt-10 grid gap-4 lg:grid-cols-3 lg:grid-rows-[auto_auto_1fr] lg:gap-x-5 lg:gap-y-0"
       >
         {
           ablauf.map((stufe, index) => (
@@ -1449,7 +1407,6 @@ const miniFaqs = [
                   ? 'ablauf-start border-brand-300 bg-card dark:border-brand-700 shadow-[0_24px_55px_-28px_rgba(70,90,160,0.55)]'
                   : 'ablauf-folge border-dashed',
               ]}
-              data-ablauf-folge={index > 0 ? 'true' : undefined}
             >
               {/* Kopf */}
               <div>
@@ -1487,28 +1444,13 @@ const miniFaqs = [
                 {index === 0 && (
                   <Button
                     size="lg"
-                    type="button"
+                    href="#kontakt"
                     fullWidth
-                    class="bg-brand-500 hover:bg-brand-400 mt-5 cursor-pointer text-white shadow-[0_14px_34px_-12px_var(--color-brand-500)]"
-                    aria-controls="ablauf-formular"
-                    aria-expanded="false"
-                    data-ablauf-open
+                    class="bg-brand-500 hover:bg-brand-400 mt-5 text-white shadow-[0_14px_34px_-12px_var(--color-brand-500)]"
                   >
                     <Icon name="mail" size="sm" />
                     Kontakt aufnehmen
                   </Button>
-                )}
-                {stufe.moeglichkeiten && (
-                  <ul class="mt-3 grid gap-1.5">
-                    {stufe.moeglichkeiten.map((m) => (
-                      <li class="ws-termin flex items-center gap-3 rounded-xl px-3 py-2">
-                        <Icon name={m.icon} size="sm" class="text-brand-500 shrink-0" />
-                        <span class="text-foreground-secondary block text-[0.8rem] leading-5">
-                          {m.was}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
                 )}
               </div>
 
@@ -1531,54 +1473,6 @@ const miniFaqs = [
         }
 
       </ol>
-
-      <!-- Formular: liegt über der Fläche von 02 und 03 (Position setzt das Skript) -->
-      <div
-        id="ablauf-formular"
-        class="ablauf-form bg-card border-brand-300 dark:border-brand-700 absolute z-10 flex flex-col overflow-y-auto rounded-3xl border p-5 shadow-[0_24px_55px_-28px_rgba(70,90,160,0.55)] sm:p-6 lg:p-8"
-        data-ablauf-form
-        tabindex="-1"
-        hidden
-      >
-        <button
-          type="button"
-          class="text-foreground-secondary hover:text-foreground inline-flex w-fit cursor-pointer items-center gap-1.5 text-sm font-semibold transition-colors"
-          data-ablauf-close
-        >
-          <Icon name="arrow-left" size="sm" />
-          Zurück zu den Schritten
-        </button>
-        <!-- Wer sich meldet, darunter das Formular mit Freitext: füllt die Höhe der Karte -->
-        <div class="my-auto pt-5">
-          <div class="border-border mb-5 flex items-center gap-4 border-b pb-5">
-            <Picture
-              src={founderPortrait}
-              alt="Marten Prieß"
-              widths={[56, 112]}
-              sizes="56px"
-              formats={['avif', 'webp']}
-              class="h-14 w-14 shrink-0 rounded-full object-cover"
-              loading="lazy"
-            />
-            <p class="text-foreground-secondary text-sm leading-6">
-              <span class="text-foreground font-semibold">Marten Prieß</span> meldet sich werktags
-              persönlich und sucht mit euch einen Termin: 30 Minuten, online, kostenlos.
-            </p>
-          </div>
-        <AngeboteKontakt
-          client:visible
-          plain
-          funnel="angebote"
-          heading="Erstgespräch anfragen"
-          text="Name, E-Mail und Telefon genügen."
-          erfolg={{
-            heading: 'Danke, eure Nachricht ist angekommen.',
-            text: 'Marten Prieß meldet sich werktags bei euch.',
-          }}
-        />
-        </div>
-      </div>
-      </div>
 
       <!-- Unter den Karten: wie die drei Schritte aufeinander aufbauen -->
       <p
@@ -1734,14 +1628,14 @@ const miniFaqs = [
     </div>
   </section>
 
-  <!-- KONTAKT: Erstgespräch über das Formular vereinbaren -->
+  <!-- KONTAKT: Erstgespräch vereinbaren, über denselben Fragebogen wie im Hero -->
   <section
     id="kontakt"
-    class="invert-section bg-surface-invert relative scroll-mt-20 overflow-x-clip py-24 lg:py-32"
+    class="kontakt-sec border-border relative scroll-mt-20 overflow-x-clip border-t py-24 lg:py-32"
   >
     <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
       <div
-        class="bg-brand-500/25 absolute -bottom-40 -left-24 h-[34rem] w-[34rem] rounded-full blur-[150px]"
+        class="bg-brand-400/15 absolute -bottom-40 -left-24 h-[34rem] w-[34rem] rounded-full blur-[150px]"
       >
       </div>
       <div
@@ -1750,12 +1644,11 @@ const miniFaqs = [
       </div>
     </div>
     <div
-      class="relative z-10 container grid max-w-6xl gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-start lg:gap-16"
+      class="relative z-10 container grid max-w-6xl gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch lg:gap-16"
     >
-      <div class="af-rise lg:sticky lg:top-24">
-        <p
-          class="text-brand-300 font-mono text-xs font-semibold tracking-[0.2em] uppercase"
-        >
+      <!-- Links: Ablauf in drei Schritten, unten wer sich meldet; so hoch wie der Fragebogen -->
+      <div class="af-rise flex flex-col">
+        <p class="text-brand-600 dark:text-brand-300 font-mono text-xs font-semibold tracking-[0.2em] uppercase">
           Nächster Schritt
         </p>
         <h2
@@ -1765,36 +1658,77 @@ const miniFaqs = [
           Erstgespräch vereinbaren.
         </h2>
         <p class="text-foreground-secondary mt-5 text-lg leading-8">
-          Schreibt uns über das Formular. Marten Prieß meldet sich werktags persönlich und sucht mit
-          euch einen Termin: 30 Minuten, online, kostenlos.
+          Drei kurze Fragen und eure Kontaktdaten, mehr braucht es nicht. So kennen wir eure
+          Ausgangslage schon vor dem Termin.
         </p>
-        <ul class="mt-8 space-y-3">
+
+        <ol class="kontakt-ablauf mt-9 mb-8 space-y-6">
           {
             [
-              'Ihr zeigt uns, wie ihr heute ein Angebot rechnet, gern an einem echten Beispiel.',
-              'Ohne Präsentation von unserer Seite.',
-              'Danach wisst ihr, ob sich ein Workshop für euch lohnt.',
-            ].map((punkt) => (
-              <li class="text-foreground-secondary flex gap-3 text-[0.95rem] leading-7">
-                <Icon name="check" size="sm" class="text-brand-300 mt-1.5 shrink-0" />
-                {punkt}
+              {
+                titel: 'Fragen beantworten',
+                text: 'Wie ihr heute Angebote schreibt, wie viele es sind und wer daran sitzt. Dauert eine Minute.',
+              },
+              {
+                titel: 'Wir melden uns',
+                text: 'Werktags, persönlich, mit einem Vorschlag für den Termin.',
+              },
+              {
+                titel: 'Erstgespräch',
+                text: '30 Minuten, online, kostenlos. Ihr zeigt uns ein echtes Beispiel, ohne Präsentation von unserer Seite. Danach wisst ihr, ob sich ein Workshop lohnt.',
+              },
+            ].map((schritt, i) => (
+              <li class="relative flex gap-4">
+                <span class="bg-card border-brand-300 text-brand-600 dark:text-brand-300 relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border font-mono text-xs font-bold">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div class="pt-1">
+                  <p class="font-display text-foreground font-bold tracking-tight">{schritt.titel}</p>
+                  <p class="text-foreground-secondary mt-1 text-[0.95rem] leading-7">{schritt.text}</p>
+                </div>
               </li>
             ))
           }
-        </ul>
+        </ol>
 
+        <div class="border-border mt-auto flex items-center gap-4 border-t pt-8">
+          <Picture
+            src={founderPortrait}
+            alt="Marten Prieß"
+            widths={[56, 112]}
+            sizes="56px"
+            formats={['avif', 'webp']}
+            class="h-14 w-14 shrink-0 rounded-full object-cover"
+            loading="lazy"
+          />
+          <p class="text-sm leading-6">
+            <span class="text-foreground block font-semibold">Marten Prieß</span>
+            <span class="text-foreground-secondary">Gründer von RocketBase, meldet sich persönlich.</span>
+          </p>
+        </div>
       </div>
 
-      <div class="af-rise">
-        <AngeboteKontakt
-          client:load
+      <div class="af-rise lg:min-h-[38rem]">
+        <FunnelQuiz
+          client:visible
           funnel="angebote"
-          heading="Schreibt uns."
-          text="Name, E-Mail und Telefon genügen, den Rest klären wir im Gespräch."
-          erfolg={{
+          questions={quizFragen}
+          contact={{
+            heading: 'Wohin darf sich Marten Prieß melden?',
+            text: 'Hinterlasst eure Kontaktdaten, Marten Prieß meldet sich werktags persönlich und sucht mit euch einen Termin.',
+          }}
+          success={{
             heading: 'Danke, eure Nachricht ist angekommen.',
             text: 'Marten Prieß meldet sich werktags bei euch.',
           }}
+          submitLabel="Nachricht senden"
+          phoneRequired
+          companyOptional
+          markRequired
+          phoneHint="Telefon für eine kurze Rückfrage. Wir rufen an, wenn es hilft."
+          leadEvent="angebote_lead"
+          compact
+          privacyUrl="/datenschutz/"
         />
       </div>
     </div>
@@ -1802,72 +1736,6 @@ const miniFaqs = [
 </FunnelLayout>
 
 <style>
-  /* 02: Ablauf und Formular als Vorder- und Rückseite einer Karte */
-  .saw-flip {
-    perspective: 1800px;
-  }
-  .saw-flip-inner {
-    display: grid;
-    transform-style: preserve-3d;
-    transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .saw-face {
-    grid-area: 1 / 1;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-  }
-  .saw-front {
-    align-self: center;
-  }
-  .saw-back {
-    transform: rotateY(180deg);
-    align-self: center;
-  }
-  .saw-flip[data-face='form'] .saw-flip-inner {
-    transform: rotateY(180deg);
-  }
-  /*
-   * Unter lg kein Flip: übereinander gestapelt wäre die Fläche so hoch wie das Formular, und unter
-   * den Schritten stünde Leerraum. Mobil ist nur die aktive Seite im Fluss, sie blendet kurz ein.
-   */
-  @media (max-width: 1023px) {
-    .saw-flip-inner,
-    .saw-flip[data-face='form'] .saw-flip-inner {
-      transform: none;
-      transition: none;
-    }
-    .saw-face {
-      backface-visibility: visible;
-      -webkit-backface-visibility: visible;
-    }
-    .saw-back {
-      display: none;
-      transform: none;
-    }
-    .saw-flip[data-face='form'] .saw-front {
-      display: none;
-    }
-    .saw-flip[data-face='form'] .saw-back,
-    .saw-flip[data-face='steps'] .saw-front {
-      display: block;
-      animation: saw-ein 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-  }
-  @keyframes saw-ein {
-    from {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .saw-flip-inner {
-      transition: none;
-    }
-    .saw-face {
-      animation: none !important;
-    }
-  }
-
   /* Hero: Scroll-Hinweis auf der Unterkante */
   .hero-scroll {
     color: var(--color-foreground-secondary);
@@ -2199,11 +2067,25 @@ const miniFaqs = [
     border-color: color-mix(in oklch, var(--color-brand-400) 45%, var(--color-border));
     background: color-mix(in oklch, var(--color-card) 55%, transparent);
   }
-  .ablauf-form:focus {
-    outline: none;
-  }
   .ablauf-folge :global(h3) {
     color: var(--color-foreground-secondary);
+  }
+  /* Kontakt: hell, leicht in Markenfarbe getönt, damit die weiße Fragebogen-Karte trägt */
+  .kontakt-sec {
+    background:
+      radial-gradient(55% 80% at 85% 40%, color-mix(in oklch, var(--color-brand-400) 16%, transparent), transparent 70%),
+      color-mix(in oklch, var(--color-brand-500) 6%, var(--color-background));
+  }
+
+  /* Kontakt: Verbindungslinie zwischen den drei Schritten links */
+  .kontakt-ablauf > li:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    top: 2.5rem;
+    bottom: -1.25rem;
+    left: 1.125rem;
+    width: 1px;
+    background: var(--color-border);
   }
   .konditionen-rechts {
     border-top: 1px solid var(--color-border);
@@ -2245,125 +2127,6 @@ const miniFaqs = [
 </style>
 
 <script>
-  // 06: „Kontakt aufnehmen" tauscht die Karten 02 und 03 gegen das Formular, „Zurück" wieder zurück.
-  const ablauf = document.querySelector<HTMLElement>('[data-ablauf]');
-  const ablaufOpen = ablauf?.querySelector<HTMLButtonElement>('[data-ablauf-open]');
-  const ablaufForm = ablauf?.querySelector<HTMLElement>('[data-ablauf-form]');
-  const ablaufFolge = [...(ablauf?.querySelectorAll<HTMLElement>('[data-ablauf-folge]') ?? [])];
-  const ruhig = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let ablaufBusy = false;
-  const ausblenden = (els: HTMLElement[], dx: number) =>
-    Promise.all(
-      els.map((el, k) =>
-        ruhig.matches
-          ? Promise.resolve()
-          : el.animate(
-              [
-                { opacity: 1, transform: 'none' },
-                { opacity: 0, transform: `translateX(${dx}px) scale(0.97)` },
-              ],
-              { duration: 260, delay: k * 50, easing: 'cubic-bezier(0.4, 0, 1, 1)', fill: 'forwards' },
-            ).finished,
-      ),
-    );
-  const einblenden = (els: HTMLElement[], dx: number) =>
-    Promise.all(
-      els.map((el, k) =>
-        ruhig.matches
-          ? Promise.resolve()
-          : el.animate(
-              [
-                { opacity: 0, transform: `translateX(${dx}px) scale(0.97)` },
-                { opacity: 1, transform: 'none' },
-              ],
-              // backwards: auch während der Verzögerung unsichtbar, sonst blitzt Karte 03 kurz auf
-              { duration: 420, delay: k * 70, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'backwards' },
-            ).finished,
-      ),
-    );
-  // Das Formular deckt genau die Fläche der Karten 02 und 03 ab (relativ zum Wrapper).
-  const ablaufPlatz = () => {
-    if (!ablauf || !ablaufForm || !ablaufFolge.length) return;
-    const basis = ablauf.getBoundingClientRect();
-    const rects = ablaufFolge.map((el) => el.getBoundingClientRect());
-    const top = Math.min(...rects.map((r) => r.top)) - basis.top;
-    const left = Math.min(...rects.map((r) => r.left)) - basis.left;
-    const right = Math.max(...rects.map((r) => r.right)) - basis.left;
-    const bottom = Math.max(...rects.map((r) => r.bottom)) - basis.top;
-    Object.assign(ablaufForm.style, {
-      top: `${top}px`,
-      left: `${left}px`,
-      width: `${right - left}px`,
-      height: `${bottom - top}px`,
-    });
-  };
-  const setAblauf = async (form: boolean) => {
-    if (!ablaufForm || ablaufBusy) return;
-    ablaufBusy = true;
-    ablaufOpen?.setAttribute('aria-expanded', form ? 'true' : 'false');
-    if (form) {
-      ablaufPlatz();
-      await ausblenden(ablaufFolge, 24);
-      ablaufFolge.forEach((el) => {
-        el.style.visibility = 'hidden';
-        el.setAttribute('inert', '');
-        el.getAnimations().forEach((a) => a.cancel());
-      });
-      ablaufForm.hidden = false;
-      await einblenden([ablaufForm], 32);
-      ablaufForm.focus({ preventScroll: true });
-    } else {
-      await ausblenden([ablaufForm], 32);
-      ablaufForm.hidden = true;
-      ablaufForm.getAnimations().forEach((a) => a.cancel());
-      ablaufFolge.forEach((el) => {
-        el.style.visibility = '';
-        el.removeAttribute('inert');
-      });
-      await einblenden(ablaufFolge, 24);
-      ablaufOpen?.focus({ preventScroll: true });
-    }
-    ablaufBusy = false;
-  };
-  window.addEventListener('resize', () => {
-    if (ablaufForm && !ablaufForm.hidden) ablaufPlatz();
-  });
-  // Mobil kein Tausch: „Kontakt aufnehmen" scrollt einfach zum Formular unten.
-  const mobil = window.matchMedia('(max-width: 1023px)');
-  const zumFormular = () =>
-    document.getElementById('kontakt')?.scrollIntoView({ behavior: ruhig.matches ? 'auto' : 'smooth', block: 'start' });
-  ablaufOpen?.addEventListener('click', () => {
-    if (mobil.matches) return zumFormular();
-    setAblauf(ablaufForm?.hidden === true);
-  });
-  ablauf?.querySelector('[data-ablauf-close]')?.addEventListener('click', () => setAblauf(false));
-
-  // 02: Karte rechts zwischen Ablauf und Formular drehen.
-  const saw = document.querySelector<HTMLElement>('[data-saw]');
-  const sawOpen = document.querySelector<HTMLButtonElement>('[data-saw-open]');
-  const sawFront = saw?.querySelector<HTMLElement>('[data-saw-front]');
-  const sawBack = saw?.querySelector<HTMLElement>('[data-saw-back]');
-  const setSaw = (form: boolean) => {
-    if (!saw || !sawFront || !sawBack) return;
-    saw.dataset.face = form ? 'form' : 'steps';
-    sawFront.toggleAttribute('inert', form);
-    sawBack.toggleAttribute('inert', !form);
-    sawOpen?.setAttribute('aria-expanded', form ? 'true' : 'false');
-    // Auf dem Handy liegt die Karte unter dem Text: nach dem Drehen ins Bild holen.
-    if (form && saw.getBoundingClientRect().top > window.innerHeight * 0.6) {
-      saw.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-    window.setTimeout(() => {
-      if (form) sawBack.querySelector<HTMLInputElement>('input:not([type=hidden])')?.focus({ preventScroll: true });
-      else sawOpen?.focus({ preventScroll: true });
-    }, 450);
-  };
-  sawOpen?.addEventListener('click', () => {
-    if (mobil.matches) return zumFormular();
-    setSaw(saw?.dataset.face !== 'form');
-  });
-  saw?.querySelector('[data-saw-close]')?.addEventListener('click', () => setSaw(false));
-
   // Hero: Scroll-Hinweis nach dem ersten Scrollen ausblenden (und oben wieder zeigen).
   const heroScroll = document.querySelector<HTMLElement>('[data-hero-scroll]');
   if (heroScroll) {
