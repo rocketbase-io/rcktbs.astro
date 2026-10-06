@@ -280,6 +280,8 @@ export default async (request: Request, context: Context) => {
 				'eigene-software': 'Angle 3 · Lizenz / Eigene Software',
 				// Brief-Kanal (/b/) — eine Variante pro Branchencluster.
 				'brief-fertigung': 'Brief · Fertigung & Handwerk',
+				// Angebotsbaustein-Funnel (/f/angebote/) — Ziel der Social-Posts.
+				angebote: 'Funnel · Angebotsbaustein (/f/angebote/)',
 			};
 			const utm = lead.utm || {};
 			const angleLabel = FUNNEL_LABELS[lead.funnel] || lead.funnel;

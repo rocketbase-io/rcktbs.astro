@@ -58,6 +58,12 @@ export interface BriefLandingDefinition {
      */
     langSrc?: string;
     langLabel?: string;
+    /**
+     * Weiterführende Seite unter dem Player — für Leser, die nach dem Video
+     * mehr sehen wollen, bevor sie buchen. Bewusst ein Link, kein zweiter
+     * Primärweg: Der Termin bleibt das Ziel der Seite.
+     */
+    weiter?: { href: string; label: string };
   };
   referenzen: {
     heading: string;
@@ -220,6 +226,10 @@ export const briefLandings: BriefLandingDefinition[] = [
       text: 'Knapp zwei Minuten aus einem laufenden Projekt: wie der Kunde das Angebot öffnet, Optionen wählt und zusagt — und zum Schluss, wie es bei Ihnen entsteht und sich kalkuliert. Mit Untertiteln, auch ohne Ton.',
       src: '/screencasts/angebotsprozess-9x16.mp4',
       poster: '/screencasts/angebotsprozess-9x16.jpg',
+      weiter: {
+        href: '/f/angebote/',
+        label: 'Alle Funktionen des Angebotsbausteins ansehen',
+      },
     },
     referenzen: {
       heading: 'Aus vergleichbaren Häusern',

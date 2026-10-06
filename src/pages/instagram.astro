@@ -16,14 +16,32 @@
 import { Picture } from 'astro:assets';
 import PageLayout from '@/layouts/PageLayout.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
-import { ladeInstagramEintraege, mitTracking } from '@/features/instagram/eintraege';
+import {
+  ladeInstagramEintraege,
+  ladeRubrikBeitraege,
+  mitTracking,
+} from '@/features/instagram/eintraege';
+import { instagramKategorien } from '@/data/instagram';
 import { contactLinks } from '@/data/rocketbase';
 import { defaultLocale } from '@/i18n/config';
 
 /** Anzahl der großen Kacheln; alles darüber hinaus wird zur Linkzeile. */
 const KACHEL_ANZAHL = 4;
 
-const eintraege = await ladeInstagramEintraege();
+const alle = await ladeInstagramEintraege();
+
+// Rubriken stehen fest über der Chronologie; ihre Einträge tauchen dort
+// nicht noch einmal auf.
+const rubriken = await Promise.all(
+  (Object.keys(instagramKategorien) as (keyof typeof instagramKategorien)[]).map(async (key) => ({
+    key,
+    ...instagramKategorien[key],
+    eintraege: alle.filter((e) => e.kategorie === key),
+    beitragLinks: await ladeRubrikBeitraege(instagramKategorien[key].beitraege),
+  }))
+).then((liste) => liste.filter((r) => r.eintraege.length > 0));
+
+const eintraege = alle.filter((e) => e.kategorie === null);
 const kacheln = eintraege.slice(0, KACHEL_ANZAHL);
 const weitere = eintraege.slice(KACHEL_ANZAHL);
 
@@ -54,20 +72,123 @@ const beschreibung =
         {titel}
       </h1>
       <p class="text-foreground-secondary mt-5 max-w-2xl text-base leading-7 sm:text-lg">
-        Auf Instagram passt immer nur der kurze Gedanke. Hier steht der lange:
-        zu jedem Post der Artikel, aus dem er stammt.
+        Auf Instagram passt immer nur der kurze Gedanke. Hier steht der lange: zu jedem Post der
+        Artikel, aus dem er stammt.
       </p>
     </div>
   </section>
 
+  <!-- Rubriken: feste Ziele, die unabhängig vom aktuellen Post erreichbar
+       bleiben sollen — zuerst der Angebotsbaustein als Ziel der Angebots-Posts.
+       Erster Eintrag groß (die Funnel-Seite), die Blogbeiträge darunter als schlichte Linkzeilen, damit die Seite im Fokus bleibt. -->
+  {
+    rubriken.map((rubrik) => (
+      <section class="border-border border-b py-12 sm:py-16">
+        <div class="container max-w-5xl">
+          <h2 class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
+            {rubrik.titel}
+          </h2>
+          <p class="text-foreground-secondary mt-3 max-w-2xl text-sm leading-6 sm:text-base">
+            {rubrik.text}
+          </p>
+          <ul class="mt-6 grid gap-6 lg:grid-cols-2">
+            {rubrik.eintraege.map((eintrag) => (
+              <li class="lg:col-span-2">
+                <article class="group border-border bg-card hover:border-border-strong h-full overflow-hidden rounded-[2rem] border shadow-sm transition-[transform,box-shadow,border-color] duration-300 will-change-transform [backface-visibility:hidden] hover:shadow-[0_20px_45px_rgba(34,43,74,0.1)]">
+                  <a
+                    href={mitTracking(eintrag.href)}
+                    data-instagram-link
+                    class="grid h-full grid-cols-1 sm:grid-cols-[18rem_1fr]"
+                  >
+                    {eintrag.bild ? (
+                      <div class="overflow-hidden">
+                        <Picture
+                          src={eintrag.bild}
+                          alt={eintrag.bildAlt}
+                          widths={[320, 512, 640]}
+                          sizes="(min-width: 640px) 18rem, 100vw"
+                          formats={['avif', 'webp']}
+                          class="aspect-[16/10] h-full w-full object-cover object-left-top transition-transform duration-700 group-hover:scale-[1.04] sm:aspect-auto"
+                          loading="lazy"
+                        />
+                      </div>
+                    ) : (
+                      // Platzhalter, bis das Bild aus dem Instagram-Post da ist (coverImages.ts).
+                      <div class="border-brand-300/60 bg-background-secondary relative flex aspect-[4/5] flex-col items-center justify-center gap-3 overflow-hidden border-b border-dashed p-6 text-center sm:border-r sm:border-b-0">
+                        <div
+                          class="bg-grid-pattern pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black_10%,transparent_75%)] opacity-40"
+                          aria-hidden="true"
+                        />
+                        <span class="bg-brand-500/10 text-brand-600 dark:text-brand-300 relative flex h-12 w-12 items-center justify-center rounded-full">
+                          <Icon name="instagram" size="md" />
+                        </span>
+                        <p class="text-foreground-muted relative font-mono text-[11px] font-semibold tracking-[0.18em] uppercase">
+                          Bild folgt
+                        </p>
+                        <p class="text-foreground-secondary relative max-w-[13rem] text-xs leading-5">
+                          Kachel aus dem Instagram-Post zum Angebotsbaustein
+                        </p>
+                      </div>
+                    )}
+                    <div class="flex flex-col p-6 sm:p-8">
+                      <h3 class="font-display text-foreground text-xl leading-snug font-bold text-balance sm:text-2xl">
+                        {eintrag.titel}
+                      </h3>
+                      {eintrag.text && (
+                        <p class="text-foreground-secondary mt-3 text-sm leading-6 sm:text-base">
+                          {eintrag.text}
+                        </p>
+                      )}
+                      <div class="text-brand-600 mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold transition-transform duration-300 group-hover:translate-x-1">
+                        Zur Seite
+                        <Icon name="arrow-right" size="sm" />
+                      </div>
+                    </div>
+                  </a>
+                </article>
+              </li>
+            ))}
+          </ul>
+          {rubrik.beitragLinks.length > 0 && (
+            <ul class="border-border mt-6 border-t">
+              {rubrik.beitragLinks.map((beitrag) => (
+                <li class="border-border border-b">
+                  <a
+                    href={mitTracking(beitrag.href)}
+                    data-instagram-link
+                    class="group hover:bg-background-secondary flex items-baseline justify-between gap-4 py-4 transition-colors"
+                  >
+                    <span class="text-foreground group-hover:text-brand-600 text-base leading-snug font-medium transition-colors">
+                      {beitrag.titel}
+                    </span>
+                    <span class="text-foreground-muted group-hover:text-brand-600 shrink-0 transition-[color,transform] duration-300 group-hover:translate-x-1">
+                      <Icon name="arrow-right" size="sm" />
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </section>
+    ))
+  }
+
   <section class="py-12 sm:py-16">
     <div class="container max-w-5xl">
+      {
+        rubriken.length > 0 && (
+          <h2 class="text-foreground-muted mb-6 text-xs font-semibold tracking-[0.22em] uppercase">
+            Zu den Posts
+          </h2>
+        )
+      }
       <!-- Kacheln: Bild und Text gleich breit; ab lg zwei Kacheln nebeneinander. -->
       <ul class="grid gap-6 lg:grid-cols-2">
         {
           kacheln.map((eintrag) => (
             <li>
-              <article class="group border-border bg-card h-full overflow-hidden rounded-[2rem] border shadow-sm transition-[transform,box-shadow,border-color] duration-300 will-change-transform [backface-visibility:hidden] hover:border-border-strong hover:shadow-[0_20px_45px_rgba(34,43,74,0.1)]">
+              <article class="group border-border bg-card hover:border-border-strong h-full overflow-hidden rounded-[2rem] border shadow-sm transition-[transform,box-shadow,border-color] duration-300 will-change-transform [backface-visibility:hidden] hover:shadow-[0_20px_45px_rgba(34,43,74,0.1)]">
                 <a
                   href={mitTracking(eintrag.href)}
                   data-instagram-link
@@ -146,7 +267,10 @@ const beschreibung =
       <div
         class="border-border text-foreground-muted mt-12 flex flex-wrap items-center justify-between gap-4 border-t pt-8 text-sm"
       >
-        <a href="/blog/" class="hover:text-foreground inline-flex items-center gap-1.5 transition-colors">
+        <a
+          href="/blog/"
+          class="hover:text-foreground inline-flex items-center gap-1.5 transition-colors"
+        >
           Alle Beiträge
           <Icon name="arrow-right" size="xs" />
         </a>

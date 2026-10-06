@@ -33,7 +33,33 @@ interface InstagramPostBasis {
   hook: string;
   /** Erscheinungsdatum (ISO), nur für die Sortierung — neueste zuerst. */
   datum: string;
+  /**
+   * Feste Rubrik über der chronologischen Liste, nur für freie Ziele (eine
+   * Funnel-Seite), die kein eigener Post sind. Echte Posts tragen keine
+   * Kategorie: Sie gehören in die Chronologie, auch wenn ihr Thema zur Rubrik
+   * passt. Welche Blogbeiträge die Rubrik nennt, steht an der Kategorie
+   * (`instagramKategorien[…].beitraege`).
+   */
+  kategorie?: InstagramKategorie;
 }
+
+export type InstagramKategorie = 'angebote';
+
+export const instagramKategorien: Record<
+  InstagramKategorie,
+  {
+    titel: string;
+    text: string;
+    /** Ordnernamen unter src/content/blog/de/, als Linkzeilen unter der Rubrik-Kachel. */
+    beitraege: string[];
+  }
+> = {
+  angebote: {
+    titel: 'Angebotsbaustein',
+    text: 'Was sieht euer Kunde, wenn euer Angebot ankommt? Die Seite dazu und die Beiträge dahinter.',
+    beitraege: ['angebotskalkulation-regel-deckungsbeitrag', 'angebotsprozess-anfrage-bis-zusage'],
+  },
+};
 
 /**
  * Der Regelfall: Der Post verweist auf einen Blogbeitrag. Titel, Beschreibung
@@ -73,6 +99,17 @@ export const instagramPosts: InstagramPost[] = [
     postSlug: 'tool-sprawl-hubspot-pipedrive-lexoffice',
     hook: 'Wie viele Tools habt ihr offen, bis ihr eine Frage zu einem einzigen Kunden beantworten könnt?',
     datum: '2026-10-05',
+  },
+  {
+    // Kein Post, sondern das feste Ziel der Angebots-Posts: die Funnel-Seite.
+    // Der Schlüssel ist frei gewählt (kein Shortcode); Cover in coverImages.ts.
+    code: 'angebotsmodul',
+    url: '/f/angebote/',
+    titel: 'Der Angebotsbaustein: individuell für euch, kalkuliert nach eurer Regel',
+    text: 'Von der Anfrage bis zur Zusage ohne Datei dazwischen: Deckungsbeitrag vor dem Versand, Optionen für den Kunden, Öffnungen sichtbar.',
+    hook: 'Was sieht euer Kunde, wenn euer Angebot ankommt?',
+    datum: '2026-10-05',
+    kategorie: 'angebote',
   },
   {
     // Vorläufiger Schlüssel: Den Shortcode gibt es erst nach dem Veröffentlichen,

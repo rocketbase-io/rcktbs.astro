@@ -78,3 +78,17 @@ export function erzeugeEventId(): string {
     ? crypto.randomUUID()
     : `lead-${Date.now()}-${Math.round(Math.random() * 1e9)}`;
 }
+
+/**
+ * Plausible-Event, falls das Script geladen ist (cookieless, kein Consent nötig).
+ * Bisher gab es keine Custom-Events; der Cal-Klick auf /f/angebote/ ist der erste
+ * Konversionspunkt, der ohne Formular auskommt und sonst unsichtbar bliebe.
+ */
+export function trackPlausible(event: string, props: Record<string, string | number> = {}) {
+  if (typeof window === 'undefined') return;
+  const w = window as unknown as {
+    plausible?: (event: string, options?: { props?: Record<string, string | number> }) => void;
+  };
+  if (typeof w.plausible !== 'function') return;
+  w.plausible(event, { props });
+}

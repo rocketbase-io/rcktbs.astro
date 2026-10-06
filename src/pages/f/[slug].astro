@@ -43,11 +43,14 @@ const clientLogos = [
     <div
       class="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,var(--color-background)_0%,transparent_75%)] opacity-70"
       aria-hidden="true"
-    ></div>
+    >
+    </div>
 
-    <div class="container relative z-10 max-w-3xl">
+    <div class="relative z-10 container max-w-3xl">
       <div class="text-center">
-        <p class="text-brand-600 dark:text-brand-300 text-sm font-semibold tracking-[0.22em] uppercase">
+        <p
+          class="text-brand-600 dark:text-brand-300 text-sm font-semibold tracking-[0.22em] uppercase"
+        >
           {funnel.hero.eyebrow}
         </p>
         <h1
@@ -55,11 +58,13 @@ const clientLogos = [
           class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-4xl lg:text-5xl"
         >
           {funnel.hero.headline}
-          <span class="mt-2 block text-brand-500">
+          <span class="text-brand-500 mt-2 block">
             {funnel.hero.headlineAccent}
           </span>
         </h1>
-        <p class="text-foreground-secondary mx-auto mt-6 max-w-2xl text-base leading-7 sm:text-lg sm:leading-8">
+        <p
+          class="text-foreground-secondary mx-auto mt-6 max-w-2xl text-base leading-7 sm:text-lg sm:leading-8"
+        >
           {funnel.hero.subline}
         </p>
       </div>
@@ -118,7 +123,7 @@ const clientLogos = [
             )}
           </header>
 
-          <div class="mt-8 overflow-hidden rounded-2xl border border-border shadow-lg">
+          <div class="border-border mt-8 overflow-hidden rounded-2xl border shadow-lg">
             {trustVideo.src ? (
               <video
                 class="aspect-video w-full bg-black"
@@ -155,13 +160,15 @@ const clientLogos = [
   }
 
   <!-- DETAILS / VERTIEFUNG (pro Anzeigen-Variante) -->
-  <section class="bg-background-secondary border-border relative overflow-hidden border-y py-16 lg:py-24">
+  <section
+    class="bg-background-secondary border-border relative overflow-hidden border-y py-16 lg:py-24"
+  >
     <div
-      class="bg-grid-pattern pointer-events-none absolute inset-0 opacity-30 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]"
+      class="bg-grid-pattern pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)] opacity-30"
       aria-hidden="true"
     >
     </div>
-    <div class="container relative z-10 max-w-5xl">
+    <div class="relative z-10 container max-w-5xl">
       <header class="mx-auto max-w-3xl text-center">
         <h2
           lang="de"
@@ -183,7 +190,7 @@ const clientLogos = [
           funnel.details.blocks.map((block) => (
             <article class="group border-border bg-card flex flex-col gap-3 rounded-2xl border p-6 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg">
               <div class="flex items-start gap-4">
-                <div class="border-brand-300/70 bg-brand-500/5 text-brand-600 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border transition-colors duration-300 group-hover:border-brand-500 group-hover:bg-brand-500 group-hover:text-on-invert">
+                <div class="border-brand-300/70 bg-brand-500/5 text-brand-600 group-hover:border-brand-500 group-hover:bg-brand-500 group-hover:text-on-invert flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border transition-colors duration-300">
                   <Icon name={block.icon} size="sm" />
                 </div>
                 <h3 class="font-display text-foreground mt-1 text-base font-bold tracking-tight sm:text-lg">
@@ -210,7 +217,7 @@ const clientLogos = [
       </p>
       <a
         href="#quiz"
-        class="bg-foreground text-background mt-8 inline-flex h-12 items-center justify-center gap-2 rounded-md px-6 text-base font-medium transition-all duration-150 ease-out hover:bg-foreground/90 active:scale-[0.98]"
+        class="bg-foreground text-background hover:bg-foreground/90 mt-8 inline-flex h-12 items-center justify-center gap-2 rounded-md px-6 text-base font-medium transition-all duration-150 ease-out active:scale-[0.98]"
       >
         Jetzt starten
         <Icon name="arrow-up-right" size="sm" />

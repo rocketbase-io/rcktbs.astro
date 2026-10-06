@@ -14,6 +14,7 @@ const STATIC_PAGES = [
   { slug: 'referenzen',   title: 'Referenzen',             description: 'Ausgewählte Referenzen mit Hintergrund zu Ausgangslage, Vorgehen und Projektrahmen.' },
   { slug: 'standardsoftware-abloesung', title: 'Standardsoftware ablösen', description: 'Wenn Vertec, Centric oder ein ähnliches System das Wachstum bremst: Ablösung durch eine individuelle Lösung, die zum Prozess passt.' },
   { slug: 'einsatzplanung', title: 'Einsatzplanung & Disposition', description: 'Disposition, Einsatzplanung und Abrechnung raus aus Excel – eine Lösung, die euren realen Ablauf kennt.' },
+  { slug: 'f/angebote',   title: 'Angebotsbaustein',       description: 'Was sieht euer Kunde, wenn euer Angebot ankommt? Kalkulation nach eurer Regel, Deckungsbeitrag vor dem Versand, Angebot als Seite.' },
   { slug: 'discovery-workshop', title: 'Discovery-Workshop', description: 'Strukturierter Außenblick auf Prozesse und Systemlandschaft: Datenflüsse, Mockups und eine priorisierte Handlungsempfehlung. Ab 1.200 €.' },
   { slug: 'kontakt',      title: 'Kontakt',                description: `Sprecht direkt mit Marten Prieß von ${siteConfig.name}.` },
   { slug: 'imprint',      title: 'Impressum',              description: 'Rechtliche Informationen zu RocketBase.' },

@@ -34,4 +34,6 @@ export const instagramCovers: Record<string, ImageMetadata> = {
   'quartalsbericht-3-leute-2-wochen': quartalsberichtExcel,
   // Vorläufiger Schlüssel bis zum Veröffentlichen, siehe src/data/instagram.ts.
   'hot-take-gute-tools-machen-blind': toolsNullUeberblick,
+  // Rubrik „Angebotsbaustein": Bild kommt aus dem Instagram-Post, sobald er steht.
+  // Bis dahin zeigt instagram.astro einen Platzhalter.
 };
