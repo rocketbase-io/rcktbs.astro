@@ -1209,8 +1209,13 @@ const miniFaqs = [
     </div>
   </section>
 
-  <!-- CTA vor „Alles drin": schlichter Aufruf -->
-  <section class="cta-band relative overflow-x-clip py-14 lg:py-16">
+  <!-- CTA vor „Alles drin": schlichter Aufruf, mit Luft zwischen den dunklen Blöcken -->
+  <section class="cta-band relative overflow-x-clip py-20 lg:py-24">
+    <div
+      class="bg-grid-pattern pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_70%_90%_at_80%_50%,black,transparent_75%)] opacity-[0.08]"
+      aria-hidden="true"
+    >
+    </div>
     <div
       class="af-rise relative z-10 container flex max-w-6xl flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-12"
     >
@@ -1353,9 +1358,30 @@ const miniFaqs = [
                 </p>
               </div>
 
-              {/* Ablauf */}
+              {/* Ablauf (Schritt 01: direkt darunter buchen oder schreiben) */}
               <div>
                 <p class="text-foreground-secondary text-sm leading-6">{stufe.passiert}</p>
+                {index === 0 && (
+                  <div class="mt-5 flex flex-col items-center gap-3">
+                    <Button
+                      size="lg"
+                      href={contactLinks.cal}
+                      target="_blank"
+                      class="bg-brand-500 hover:bg-brand-400 w-full text-white shadow-[0_14px_34px_-12px_var(--color-brand-500)]"
+                      data-track-cal="ablauf-schritt-01"
+                    >
+                      Erstgespräch buchen
+                      <Icon name="arrow-up-right" size="sm" />
+                    </Button>
+                    <a
+                      href="#kontakt"
+                      class="text-foreground-secondary hover:text-foreground inline-flex items-center gap-2 text-sm font-semibold underline-offset-4 hover:underline"
+                    >
+                      <Icon name="mail" size="sm" />
+                      Lieber erst schreiben?
+                    </a>
+                  </div>
+                )}
                 {stufe.termine && (
                   <ul class="mt-3 grid gap-1.5">
                     {stufe.termine.map((t) => (
@@ -1450,55 +1476,6 @@ const miniFaqs = [
         </div>
       </div>
 
-    </div>
-  </section>
-
-  <!-- CTA nach „So kommt ihr dazu": der erste Schritt als Aufruf (Texte aus Schritt 01) -->
-  <section class="cta-band relative overflow-x-clip py-14 lg:py-16">
-    <div
-      class="af-rise relative z-10 container flex max-w-6xl flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-12"
-    >
-      <div class="flex max-w-2xl gap-4">
-        <span
-          class="bg-brand-500 mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-white shadow-lg"
-        >
-          <Icon name="phone" size="sm" />
-        </span>
-        <div>
-          <p class="text-foreground-muted font-mono text-xs font-semibold tracking-[0.2em]">
-            SCHRITT 01
-          </p>
-          <h2 class="font-display text-foreground mt-1 text-2xl font-bold tracking-tight sm:text-3xl">
-            Erstgespräch
-          </h2>
-          <p class="text-brand-600 dark:text-brand-300 mt-1 text-sm font-semibold">
-            30 Minuten · online · kostenlos
-          </p>
-          <p class="text-foreground-secondary mt-3 text-[0.95rem] leading-7">
-            Ihr zeigt uns, wie ihr heute ein Angebot rechnet, gern an einem echten Beispiel. Ohne
-            Präsentation von unserer Seite.
-          </p>
-        </div>
-      </div>
-      <div class="flex shrink-0 flex-wrap items-center gap-x-5 gap-y-3">
-        <Button
-          size="lg"
-          href={contactLinks.cal}
-          target="_blank"
-          class="bg-brand-500 hover:bg-brand-400 text-white shadow-[0_14px_34px_-12px_var(--color-brand-500)]"
-          data-track-cal="nach-ablauf"
-        >
-          Erstgespräch buchen
-          <Icon name="arrow-up-right" size="sm" />
-        </Button>
-        <a
-          href="#kontakt"
-          class="text-foreground-secondary hover:text-foreground inline-flex items-center gap-2 text-sm font-semibold underline-offset-4 hover:underline"
-        >
-          <Icon name="mail" size="sm" />
-          Lieber erst schreiben?
-        </a>
-      </div>
     </div>
   </section>
 
@@ -1749,15 +1726,12 @@ const miniFaqs = [
   }
 
   /* CTA-Band nach der Kalkulation */
+  /* CTA-Band zwischen den dunklen Blöcken 04 und 05: hell, deutlich in Markenfarbe getönt */
   .cta-band {
     background:
-      radial-gradient(
-        60% 120% at 100% 50%,
-        color-mix(in oklch, var(--color-brand-400) 18%, transparent),
-        transparent 70%
-      ),
-      color-mix(in oklch, var(--color-brand-500) 6%, var(--color-background));
-    border-block: 1px solid color-mix(in oklch, var(--color-brand-400) 30%, var(--color-border));
+      radial-gradient(55% 140% at 90% 50%, color-mix(in oklch, var(--color-brand-400) 28%, transparent), transparent 70%),
+      radial-gradient(45% 120% at 0% 100%, color-mix(in oklch, var(--color-brand-300) 18%, transparent), transparent 70%),
+      color-mix(in oklch, var(--color-brand-500) 9%, var(--color-background));
   }
 
   @media (prefers-reduced-motion: reduce) {
