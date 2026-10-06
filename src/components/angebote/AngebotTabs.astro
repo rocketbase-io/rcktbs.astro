@@ -67,12 +67,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
   <!-- Stepper -->
   <div class="relative mx-auto max-w-4xl">
     <span
-      class="af-stepline absolute top-[1.35rem] right-[10%] left-[10%] hidden h-px sm:block"
+      class="af-stepline absolute top-[1.1rem] right-[10%] left-[10%] h-px sm:top-[1.35rem]"
       aria-hidden="true"></span>
     <div
       role="tablist"
       aria-label="Schritte mit dem Angebotsbaustein"
-      class="-mx-5 flex snap-x gap-2 overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:gap-0 sm:overflow-visible sm:px-0 sm:pb-0"
+      class="relative grid"
       style={`grid-template-columns: repeat(${steps.length}, minmax(0, 1fr))`}
     >
       {
@@ -85,7 +85,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
             aria-selected={index === 0 ? 'true' : 'false'}
             tabindex={index === 0 ? 0 : -1}
             data-tab
-            class="af-step group flex shrink-0 snap-start items-center gap-2.5 rounded-full px-3 py-2 sm:flex-col sm:gap-2 sm:rounded-none sm:px-1 sm:py-0"
+            class="af-step group flex min-w-0 flex-col items-center gap-1.5 px-0.5 sm:gap-2 sm:px-1"
           >
             <span class="af-step-dot relative flex h-11 w-11 items-center justify-center rounded-full font-mono text-xs font-bold">
               <svg
@@ -97,7 +97,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
               </svg>
               <span class="relative">{pad(index + 1)}</span>
             </span>
-            <span class="af-step-label text-sm font-semibold whitespace-nowrap">
+            <span class="af-step-label max-w-full truncate text-[10px] font-semibold sm:text-sm">
               {step.eyebrow}
             </span>
           </button>
@@ -108,7 +108,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
   <!-- Inhalt -->
   <div
-    class="mt-12 grid items-start gap-10 lg:mt-16 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] lg:gap-14 xl:grid-cols-[minmax(0,26rem)_minmax(0,1fr)]"
+    class="mt-10 grid grid-cols-[minmax(0,1fr)] items-start gap-10 lg:mt-16 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] lg:gap-14 xl:grid-cols-[minmax(0,26rem)_minmax(0,1fr)]"
   >
     <!-- Text-Stapel -->
     <div class="af-stack order-2 lg:order-1">
@@ -219,6 +219,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   }
   .af-stack > * {
     grid-area: 1 / 1;
+    min-width: 0;
   }
 
   /* Stepper */
@@ -230,15 +231,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
     transition: color 300ms ease-out;
   }
   @media (max-width: 639px) {
-    .af-step {
-      border: 1px solid color-mix(in oklch, var(--color-foreground) 15%, transparent);
-    }
-    .af-step[aria-selected='true'] {
-      border-color: var(--color-brand-500);
-    }
     .af-step-dot {
-      height: 2rem;
-      width: 2rem;
+      height: 2.25rem;
+      width: 2.25rem;
     }
   }
   .af-step-dot {

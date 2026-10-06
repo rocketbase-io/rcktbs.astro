@@ -66,8 +66,8 @@ const ampelText = {
 ---
 
 <div class="kr" data-kr>
-  <div class="kr-tabs mx-auto flex max-w-full items-center gap-1 overflow-x-auto rounded-2xl p-1.5 lg:w-fit">
-  <div role="tablist" aria-label="Beispiele nach Branche" class="flex gap-1">
+  <div class="kr-tabs mx-auto max-w-full rounded-2xl p-1.5 sm:w-fit">
+  <div role="tablist" aria-label="Beispiele nach Branche" class="grid grid-cols-2 gap-1 sm:flex">
     {
       rechnungen.map((r, i) => (
         <button
@@ -77,7 +77,7 @@ const ampelText = {
           aria-controls={`kr-panel-${r.key}`}
           aria-selected={i === 0 ? 'true' : 'false'}
           tabindex={i === 0 ? 0 : -1}
-          class="kr-tab flex shrink-0 items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold whitespace-nowrap"
+          class="kr-tab flex min-w-0 items-center justify-center gap-2 rounded-xl px-2.5 py-2.5 text-center text-[0.8rem] leading-tight font-semibold sm:shrink-0 sm:px-4 sm:text-sm sm:whitespace-nowrap"
         >
           <Icon name={r.icon} size="sm" />
           {r.branche}
@@ -366,7 +366,7 @@ const ampelText = {
    * sie wieder unter den Eingaben in der linken Spalte.
    */
   .kr-swap-wrap {
-    order: 3;
+    order: 4;
     margin-top: -0.5rem;
   }
   @media (min-width: 1024px) {
@@ -439,7 +439,7 @@ const ampelText = {
     }
   }
 
-  /* Regel-Knoten: unter lg zwischen den gestapelten Hälften, ab lg mittig auf der Trennlinie */
+  /* Regel-Knoten: unter lg zwischen den gestapelten Hälften (order 2), ab lg mittig auf der Trennlinie */
   .kr-link {
     position: relative;
     z-index: 2;
@@ -447,8 +447,22 @@ const ampelText = {
     flex-direction: column;
     align-items: center;
     gap: 0.4rem;
-    margin: -1.5rem 0 -1.1rem;
+    padding: 0.25rem 0;
     pointer-events: none;
+    /* Mobil zwischen Eingaben (1) und Ergebnis (3); ohne order rutschte er nach oben. */
+    order: 2;
+  }
+  /* Unter lg: Knoten im Fluss zwischen den Hälften, Linie quer hindurch */
+  @media (max-width: 1023px) {
+    .kr-link::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 1px;
+      background: var(--color-border);
+    }
   }
   @media (min-width: 1024px) {
     .kr-link {
@@ -460,6 +474,7 @@ const ampelText = {
     }
   }
   .kr-link-dot {
+    position: relative;
     color: #fff;
     background: var(--color-brand-500);
     box-shadow:
@@ -469,6 +484,7 @@ const ampelText = {
   .kr-link-dot::after {
     content: '';
     position: absolute;
+    inset: 0;
     width: 3rem;
     height: 3rem;
     border-radius: 999px;
@@ -503,8 +519,7 @@ const ampelText = {
     order: 1;
   }
   .kr-result {
-    order: 2;
-    border-top: 1px solid var(--color-border);
+    order: 3;
     background:
       radial-gradient(
         120% 80% at 100% 0%,
@@ -563,7 +578,6 @@ const ampelText = {
       order: 0;
       grid-column: 2;
       grid-row: 1 / span 2;
-      border-top: 0;
       border-left: 1px solid var(--color-border);
     }
   }

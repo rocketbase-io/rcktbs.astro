@@ -115,26 +115,25 @@ const fenster = [
     --app: oklch(58% 0.15 300);
   }
 
-  /* Unter lg: wischbare Reihe statt hohem Raster */
+  /* Unter lg: kompaktes Raster, zwei Spalten, leicht schräg wie Zettel */
   .hc-grid {
-    display: flex;
-    gap: 0.85rem;
-    margin-inline: -1.25rem;
-    padding: 0.75rem 1.25rem 1rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
   }
-  .hc-grid::-webkit-scrollbar {
-    display: none;
+  @media (max-width: 1023px) {
+    .hc-grid > .hc-win:last-child {
+      grid-column: span 2;
+      justify-self: center;
+      width: calc(50% - 0.375rem);
+    }
   }
-  .hc-grid > .hc-win {
-    flex: 0 0 68%;
-    scroll-snap-align: start;
-  }
-  @media (min-width: 640px) {
-    .hc-grid > .hc-win {
-      flex-basis: 40%;
+  @media (max-width: 639px) {
+    .hc-body {
+      display: none;
+    }
+    .hc-pain {
+      padding-top: 0.6rem;
     }
   }
   .hc-win {
