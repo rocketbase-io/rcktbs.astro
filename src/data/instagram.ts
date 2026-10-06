@@ -93,6 +93,14 @@ export type InstagramPost = InstagramPostMitBeitrag | InstagramPostMitUrl;
 
 export const instagramPosts: InstagramPost[] = [
   {
+    // Vorläufiger Schlüssel bis zum Veröffentlichen (Hot Take „Gute Tools machen
+    // blind“). Danach gegen den echten Shortcode tauschen.
+    code: 'hot-take-gute-tools-machen-blind',
+    postSlug: 'tool-sprawl-hubspot-pipedrive-lexoffice',
+    hook: 'Wie viele Tools habt ihr offen, bis ihr eine Frage zu einem einzigen Kunden beantworten könnt?',
+    datum: '2026-10-05',
+  },
+  {
     // Kein Post, sondern das feste Ziel der Angebots-Posts: die Funnel-Seite.
     // Der Schlüssel ist frei gewählt (kein Shortcode); Cover in coverImages.ts.
     code: 'angebotsmodul',
