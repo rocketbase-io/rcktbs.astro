@@ -35,7 +35,8 @@ const leadSchema = z.object({
 }).superRefine((lead, ctx) => {
 	// Auf der Angebotsbaustein-Seite (/f/angebote/) gibt es keine Terminbuchung, Marten ruft
 	// zurück: Telefon ist dort Pflicht, die Firma dafür optional.
-	const angebote = lead.funnel === 'angebote';
+	// Gleiches gilt für die Zahlen-Seite (/f/zahlen/) und die Einsatz-Seite (/f/einsatz/).
+	const angebote = lead.funnel === 'angebote' || lead.funnel === 'zahlen' || lead.funnel === 'einsatz';
 	if (angebote && (lead.phone ?? '').trim().length < 5) {
 		ctx.addIssue({ code: 'custom', path: ['phone'], message: 'Bitte eine Telefonnummer angeben.' });
 	}
@@ -293,6 +294,10 @@ export default async (request: Request, context: Context) => {
 				'brief-fertigung': 'Brief · Fertigung & Handwerk',
 				// Angebotsbaustein-Funnel (/f/angebote/) — Ziel der Social-Posts.
 				angebote: 'Funnel · Angebotsbaustein (/f/angebote/)',
+				// Zahlen & Steuerung (/f/zahlen/, Tür 3).
+				zahlen: 'Funnel · Zahlen & Steuerung (/f/zahlen/)',
+				// Einsatz & Abrechnung (/f/einsatz/, Tür 2).
+				einsatz: 'Funnel · Einsatz & Abrechnung (/f/einsatz/)',
 			};
 			const utm = lead.utm || {};
 			const angleLabel = FUNNEL_LABELS[lead.funnel] || lead.funnel;

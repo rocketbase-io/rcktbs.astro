@@ -10,8 +10,9 @@ import { getLocalizedPath } from '@/i18n/index';
 import { contactLinks } from '@/data/rocketbase';
 import { createServiceSchema, createFAQSchema } from '@/lib/schema';
 
-import workshopBpmn from '@/assets/rocketbase/workshop-bpmn.jpg';
-import workshopMockup from '@/assets/rocketbase/workshop-mockup.jpg';
+import Prozessbild from '@/components/workshop/Prozessbild.astro';
+import Entwurf from '@/components/workshop/Entwurf.astro';
+import '@/components/angebote/frame.css';
 import founderPortrait from '@/assets/rocketbase/founder-marten-priess.jpg';
 
 const locale = defaultLocale;
@@ -101,9 +102,10 @@ const processSteps = [
 ];
 
 const notAWorkshop = [
-  'Kein unverbindliches Sales-Gespräch.',
-  'Keine Pitch-Präsentation unserer Agentur.',
-  'Keine generischen Folien - alles wird an eurem Fall erarbeitet.',
+  { nicht: 'Ein Verkaufsgespräch mit Workshop-Etikett', sondern: 'Arbeit an eurem Ablauf, mit euren Beispielen auf dem Tisch.' },
+  { nicht: 'Eine Präsentation über uns', sondern: 'Ihr erzählt, wir fragen nach und schreiben mit.' },
+  { nicht: 'Generische Folien', sondern: 'Ein Dokument, das nur auf euren Betrieb passt.' },
+  { nicht: 'Ein Projekt, das danach von allein weiterläuft', sondern: 'Ein Festpreis auf dem Tisch, und ihr entscheidet.' },
 ];
 
 const workshopUrl = new URL(Astro.url.pathname, Astro.site).toString();
@@ -192,11 +194,8 @@ const miniFaqs = [
         data-reveal
         class="text-foreground-secondary mx-auto mt-8 max-w-2xl text-lg leading-8 sm:text-xl"
       >
-        Bevor Budget in eine Lösung fließt, solltet ihr wissen, wo ihr wirklich steht. Wir nehmen
-        eure Prozesse auf und legen offen, wo <strong>Lücken, Doppelarbeit und ungenutzte
-        Automatisierung</strong> stecken. Ein Blick von außen, der systemisch denkt und den Finger
-        in die Wunde legt - und die <strong>Lösung gemeinsam mit euch erarbeitet</strong>. Von
-        jemandem, der viele Systemlandschaften in Konzern und Mittelstand von innen kennt.
+        Drei Termine, in denen wir euren Ablauf aufnehmen, wie er wirklich läuft. Am Ende habt ihr
+        ein Prozessbild, erste Entwürfe und einen <strong>Festpreis für die Umsetzung</strong>.
       </p>
       <div
         data-reveal
@@ -211,7 +210,7 @@ const miniFaqs = [
           href="#formate"
           class="text-foreground-secondary hover:text-foreground"
         >
-          Formate &amp; Preise
+          Ablauf &amp; Preis
           <Icon name="chevron-down" size="sm" />
         </Button>
       </div>
@@ -480,7 +479,7 @@ const miniFaqs = [
           <span
             class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase"
           >
-            Formate &amp; Preise
+            Ablauf &amp; Preis
           </span>
           <span class="bg-border h-px flex-1"></span>
         </div>
@@ -603,60 +602,48 @@ const miniFaqs = [
         <h2
           class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl"
         >
-          Zwei Ausschnitte aus echten Workshops.
+          So sieht ein Workshop-Ergebnis aus.
         </h2>
         <p class="text-foreground-secondary mt-6 text-lg leading-8">
-          Nur ein Eindruck - keine vollständigen Ergebnisse. Das tatsächliche
-          Workshop-Dokument ist deutlich umfangreicher.
+          Zwei Ausschnitte, nachgebaut nach echten Workshops. Das ganze Dokument ist deutlich
+          umfangreicher.
         </p>
       </header>
 
-      <div
-        data-reveal
-        class="mx-auto mt-16 grid max-w-4xl gap-12 sm:grid-cols-2 sm:gap-10"
-      >
-        <figure class="group mx-auto w-full max-w-xs">
-          <div class="border-border bg-card overflow-hidden rounded-2xl border shadow-lg transition-all duration-500 ease-out -rotate-2 group-hover:rotate-0 group-hover:-translate-y-1 group-hover:shadow-2xl">
-            <Picture
-              src={workshopBpmn}
-              alt="Ausschnitt eines BPMN-Prozessdiagramms aus einem Discovery-Workshop"
-              widths={[240, 320, 480]}
-              sizes="(max-width: 640px) 80vw, 320px"
-              formats={['avif', 'webp']}
-              class="h-auto w-full object-cover"
-              loading="lazy"
-            />
+      <div data-reveal class="mx-auto mt-16 grid max-w-6xl gap-10 lg:grid-cols-2 lg:gap-8">
+        <figure class="min-w-0">
+          <div class="af-frame">
+            <div class="af-bar" aria-hidden="true">
+              <span class="af-dots"><span></span><span></span><span></span></span>
+              <span class="af-url">workshop · prozessbild</span>
+              <span class="af-dots invisible"><span></span><span></span><span></span></span>
+            </div>
+            <div class="p-3 sm:p-4"><Prozessbild /></div>
           </div>
-          <figcaption class="text-foreground-muted mt-5 flex items-start gap-2 text-sm">
+          <figcaption class="text-foreground-muted mt-5 flex items-start gap-2 text-sm leading-6">
             <Icon name="layers" size="xs" class="text-brand-500 mt-1 shrink-0" />
             <span>
-              <strong class="text-foreground">Prozessbild.</strong>
-              Eine standardisierte Darstellung eurer Abläufe - verständlich für
-              Geschäftsführung, Fachbereich und IT. Gemeinsame Basis statt
-              unterschiedlicher Vorstellungen im Team.
+              <strong class="text-foreground">Prozessbild.</strong>{' '}
+              Euer Ablauf über alle Beteiligten, so wie er wirklich läuft. Rot markiert, wo heute
+              abgetippt oder in Excel gerechnet wird. Lesbar für Geschäftsführung, Fachbereich und IT.
             </span>
           </figcaption>
         </figure>
-
-        <figure class="group mx-auto w-full max-w-xs">
-          <div class="border-border bg-card overflow-hidden rounded-2xl border shadow-lg transition-all duration-500 ease-out rotate-2 group-hover:rotate-0 group-hover:-translate-y-1 group-hover:shadow-2xl">
-            <Picture
-              src={workshopMockup}
-              alt="Ausschnitt eines Mockups aus einem Discovery-Workshop"
-              widths={[240, 320, 480]}
-              sizes="(max-width: 640px) 80vw, 320px"
-              formats={['avif', 'webp']}
-              class="h-auto w-full object-cover"
-              loading="lazy"
-            />
+        <figure class="min-w-0">
+          <div class="af-frame">
+            <div class="af-bar" aria-hidden="true">
+              <span class="af-dots"><span></span><span></span><span></span></span>
+              <span class="af-url">workshop · entwurf</span>
+              <span class="af-dots invisible"><span></span><span></span><span></span></span>
+            </div>
+            <div class="p-3 sm:p-4"><Entwurf /></div>
           </div>
-          <figcaption class="text-foreground-muted mt-5 flex items-start gap-2 text-sm">
+          <figcaption class="text-foreground-muted mt-5 flex items-start gap-2 text-sm leading-6">
             <Icon name="palette" size="xs" class="text-brand-500 mt-1 shrink-0" />
             <span>
-              <strong class="text-foreground">Oberflächen-Entwurf.</strong>
-              Konkrete Skizzen der wichtigsten Bildschirmmasken - damit
-              Stakeholder auf einen Blick verstehen, wie eine Lösung aussehen
-              könnte.
+              <strong class="text-foreground">Oberflächen-Entwurf.</strong>{' '}
+              Die wichtigsten Masken als klickbare Skizze. So sieht jeder im Raum, wie die Lösung
+              arbeiten würde, statt über Konzepte zu reden.
             </span>
           </figcaption>
         </figure>
@@ -760,29 +747,24 @@ const miniFaqs = [
         </article>
 
         <!-- Was dieser Workshop nicht ist -->
-        <article
-          class="border-border bg-card flex flex-col gap-6 rounded-[2rem] border p-8 shadow-sm sm:p-10"
-        >
-          <p
-            class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase"
-          >
-            Klarstellung
-          </p>
-          <h3
-            class="font-display text-foreground mt-1 text-xl font-bold tracking-tight sm:text-2xl"
-          >
+        <article class="border-border bg-card flex flex-col rounded-[2rem] border p-8 shadow-sm sm:p-10">
+          <p class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">Klarstellung</p>
+          <h3 class="font-display text-foreground mt-4 text-xl font-bold tracking-tight sm:text-2xl">
             Was dieser Workshop <span class="text-brand-500">nicht</span> ist.
+            <span class="text-foreground-muted block">Und was stattdessen.</span>
           </h3>
-          <ul class="mt-2 flex flex-col gap-4">
+          <ul class="mt-7 flex flex-1 flex-col justify-between gap-5">
             {
               notAWorkshop.map((item) => (
-                <li class="text-foreground-secondary flex items-start gap-3 text-base leading-7">
-                  <Icon
-                    name="x-circle"
-                    size="sm"
-                    class="text-foreground-muted mt-1.5 shrink-0"
-                  />
-                  <span>{item}</span>
+                <li class="border-border/70 border-t pt-4 first:border-t-0 first:pt-0">
+                  <p class="text-foreground-muted flex items-start gap-2.5 text-[0.95rem] leading-6">
+                    <Icon name="x-circle" size="sm" class="mt-0.5 shrink-0 text-[oklch(60%_0.18_25)]" />
+                    <span class="line-through decoration-[oklch(60%_0.18_25)]/60 decoration-2">{item.nicht}</span>
+                  </p>
+                  <p class="text-foreground mt-1.5 flex items-start gap-2.5 text-[0.95rem] leading-6 font-medium">
+                    <Icon name="check-circle" size="sm" class="text-brand-500 mt-0.5 shrink-0" />
+                    <span>{item.sondern}</span>
+                  </p>
                 </li>
               ))
             }

@@ -20,7 +20,7 @@ export const de = {
     references: 'Referenzen',
     discoveryWorkshop: 'Workshop',
     standardsoftwareAbloesung: 'Standardsoftware ablösen',
-    einsatzplanung: 'Einsatzplanung',
+    einsatzplanung: 'Einsatz & Abrechnung',
   },
 
   common: {

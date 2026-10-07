@@ -1,408 +1,293 @@
 ---
+/**
+ * „Alle Lösungen ansehen“: Übersicht über die drei Türen (Angebot, Einsatz, Zahlen), die Ablösung
+ * als „das Ganze“ und den immer gleichen Weg dorthin. Seit 2026-10-07 neu, ersetzt die alte
+ * Leistungsseite (Leistungsbausteine + typische Vorhaben). Die übrigen Vorhaben stehen kompakt
+ * unter „Was wir außerdem bauen“. Keine Preise auf dieser Seite.
+ */
 import PageLayout from '@/layouts/PageLayout.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
-import RectLight from '@/components/hero-backgrounds/RectLight.astro';
+import Blueprint from '@/components/hero-backgrounds/Blueprint.astro';
+import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
+import SectionHeader from '@/components/angebote/SectionHeader.astro';
+import MiniVisual from '@/components/loesungen/MiniVisual.astro';
+import { Picture } from 'astro:assets';
+import founderPortrait from '@/assets/rocketbase/founder-marten-priess.jpg';
 import { defaultLocale } from '@/i18n/config';
 import { getLocalizedPath } from '@/i18n/index';
-import {
-  contactLinks,
-  discoveryOffer,
-  processSteps,
-  serviceAreas,
-} from '@/data/rocketbase';
+import { contactLinks } from '@/data/rocketbase';
 import { createProfessionalServiceSchema } from '@/lib/schema';
+
 const locale = defaultLocale;
 const contactUrl = getLocalizedPath('contact', locale);
-const workUrl = getLocalizedPath('work', locale);
-const missionUrl = getLocalizedPath('mission', locale);
 const workshopUrl = getLocalizedPath('discoveryWorkshop', locale);
-const standardsoftwareUrl = getLocalizedPath('standardsoftwareAbloesung', locale);
+const einsatzUrl = getLocalizedPath('einsatzplanung', locale);
+const abloesungUrl = getLocalizedPath('standardsoftwareAbloesung', locale);
+
+const tueren = [
+  {
+    nr: '01',
+    kind: 'angebot' as const,
+    titel: 'Angebot & Kalkulation',
+    wenn: 'Wenn die Kalkulation neben dem System liegt und jemand die Summe abtippt.',
+    punkte: ['Angebote rechnen nach eurer Regel', 'Angebotsseite statt PDF, Zusage per Klick', 'Ihr seht, wann der Kunde geöffnet hat'],
+    href: '/angebote/',
+  },
+  {
+    nr: '02',
+    kind: 'einsatz' as const,
+    titel: 'Einsatz & Abrechnung',
+    wenn: 'Wenn geplant wird in Excel, umgeplant per WhatsApp und abgerechnet aus Stundenzetteln.',
+    punkte: ['Plantafel mit Abwesenheiten und Ablauf je Auftrag', 'Leistung erfassen, Rechnung per Klick', 'Mahnwesen mit Vorlagen je Stufe'],
+    href: einsatzUrl,
+  },
+  {
+    nr: '03',
+    kind: 'zahlen' as const,
+    titel: 'Zahlen & Steuerung',
+    wenn: 'Wenn der Monatsabschluss ein Projekt ist und die Zahlen alt sind, wenn sie kommen.',
+    punkte: ['Umsatz und Prognose, live statt am Monatsende', 'Auslastung bis zur einzelnen Person', 'Auslaufende Verträge, solange noch Zeit ist'],
+    href: '/zahlen/',
+  },
+];
+
+const weg = [
+  { nr: '01', titel: 'Erstgespräch', meta: '30 Minuten · kostenlos', text: 'Ihr erzählt, wo es hakt. Wir sagen ehrlich, ob und wie wir helfen können.' },
+  { nr: '02', titel: 'Workshop', meta: 'drei Termine', text: 'Wir nehmen euren Ablauf auf, wie er wirklich läuft. Danach wisst ihr, was die Lösung kann und was sie kostet.' },
+  { nr: '03', titel: 'Umsetzung', meta: 'Baustein für Baustein', text: 'Zuerst der Teil, der am meisten Zeit kostet. Das Tagesgeschäft läuft weiter.' },
+  { nr: '04', titel: 'Betrieb', meta: 'aus einer Hand', text: 'Hosting, Updates und Weiterentwicklung von denen, die es gebaut haben. Im ersten Jahr inklusive.' },
+];
+
+const ausserdem = [
+  { icon: 'layers', titel: 'Interne Plattformen', text: 'Für Produktdaten, Inhalte oder operative Abläufe, die in kein Standardwerkzeug passen.' },
+  { icon: 'globe', titel: 'Schnittstellen', text: 'Wenn eure Systeme miteinander reden sollen, statt dass Daten von Hand wandern.' },
+  { icon: 'users', titel: 'Portale für Kunden', text: 'Bestellen, Rückfragen beantworten, Unterlagen abholen, ohne Mail-Pingpong.' },
+  { icon: 'shield', titel: 'Code-Check', text: 'Eine bestehende Anwendung, der ihr nicht ganz traut: betreiben, härten oder neu aufsetzen?' },
+];
+
+const clientLogos = [
+  { key: 'fkc_logo', name: 'FKC Consulting' },
+  { key: 'diezinger_logo', name: 'Schlosserei Diezinger' },
+  { key: 'statista-logo', name: 'Statista' },
+  { key: 'stage_logo', name: 'Stage Entertainment' },
+  { key: 'bonprix_logo', name: 'bonprix' },
+];
 
 const servicesPageUrl = new URL(Astro.url.pathname, Astro.site).toString();
 const professionalServiceSchema = createProfessionalServiceSchema({
   url: servicesPageUrl,
   description:
-    'Individuelle Softwareentwicklung, Prozessberatung und Plattformarchitektur für den ambitionierten Mittelstand. Von Discovery über Konzeption bis Betrieb aus einer Hand.',
-  services: serviceAreas.map((s) => s.title),
+    'Individuelle Software für inhabergeführte Betriebe: Angebot und Kalkulation, Einsatz und Abrechnung, Zahlen und Steuerung, oder die Ablösung der Branchensoftware. Vom Erstgespräch über den Workshop bis zum Betrieb aus einer Hand.',
+  services: [...tueren.map((t) => t.titel), 'Standardsoftware ablösen'],
 });
-
-const serviceIcons = ['search', 'palette', 'code', 'monitor'];
-
-const useCases = [
-  {
-    icon: 'layers',
-    title: 'Interne Plattformen',
-    text: 'Für Produktdaten, Content oder operative Kernprozesse, zugeschnitten auf euer Geschäft.',
-  },
-  {
-    icon: 'box',
-    title: 'Standardsoftware ablösen',
-    text: 'Wenn ERP, CRM oder Branchensoftware wie Vertec das Wachstum ausbremsen.',
-    href: standardsoftwareUrl,
-  },
-  {
-    icon: 'database',
-    title: 'Kunden-, Produkt- & Stammdaten',
-    text: 'Auswertungen und Datenpflege, zugeschnitten auf eure echten Abläufe statt auf eine Tabellenvorlage.',
-  },
-  {
-    icon: 'archive',
-    title: 'Migration aus Altsystemen',
-    text: 'Aus gewachsenen Altanwendungen oder proprietären Bestandssystemen, inklusive Datenbereinigung.',
-  },
-  {
-    icon: 'users',
-    title: 'Self-Service-Portale',
-    text: 'Admin-Oberflächen und Prozesswerkzeuge für B2B-Teams, die ohne Schulung bedienbar sind.',
-  },
-  {
-    icon: 'globe',
-    title: 'Integrationsprojekte',
-    text: 'Wenn eure Systeme endlich miteinander reden sollen, statt dass Daten von Hand hin- und herwandern.',
-  },
-];
 ---
 
 <PageLayout
-  title="Individualsoftware für den Mittelstand"
-  description="Standardsoftware am Limit, Steuerung über Excel, Tools ohne gemeinsame Zahlen: sechs typische Ausgangslagen und was wir daraus bauen. Erstgespräch direkt mit dem Gründer."
+  title="Lösungen: Angebot, Einsatz, Zahlen oder das Ganze"
+  description="Software für Betriebe, die nicht in Standardlösungen passen: Angebot und Kalkulation, Einsatz und Abrechnung, Zahlen und Steuerung, oder die Ablösung der Branchensoftware. Der erste Schritt ist ein kostenloses Gespräch."
   lang={locale}
   routeId="services"
   extraSchemas={professionalServiceSchema}
 >
   <!-- HERO -->
-  <section
-    class="border-border bg-background-secondary relative flex min-h-[60vh] items-center overflow-hidden border-b py-24 sm:py-32"
-  >
-    <RectLight />
-
-    <div class="container relative z-10 max-w-5xl text-center">
-      <p
-        data-reveal="fade-down"
-        class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase"
-      >
-        Leistungen
-      </p>
+  <section class="relative overflow-x-clip">
+    <Blueprint />
+    <div
+      class="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_60%_55%_at_50%_45%,var(--color-background)_0%,transparent_75%)] opacity-80"
+      aria-hidden="true"
+    >
+    </div>
+    <div class="relative z-10 container max-w-5xl py-20 text-center sm:py-28">
+      <p data-reveal="fade-down" class="text-brand-600 dark:text-brand-300 text-sm font-semibold tracking-[0.22em] uppercase">Lösungen</p>
       <h1
         data-reveal="fade-down"
-        class="font-display text-foreground mt-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl"
+        lang="de"
+        class="font-display text-foreground mt-5 text-4xl leading-[1.08] font-bold tracking-tight text-balance sm:text-5xl lg:text-6xl"
       >
-        Von Prozessanalyse bis Betrieb.
-        <span
-          class="from-brand-500 to-brand-400 mt-2 block bg-gradient-to-r bg-clip-text text-transparent"
-        >
-          Aus einer Hand.
-        </span>
+        Software für Betriebe,
+        <span class="text-brand-500 block">die nicht in Standardlösungen passen.</span>
       </h1>
-      <p
-        data-reveal
-        class="text-foreground-secondary mx-auto mt-8 max-w-2xl text-lg leading-8 sm:text-xl"
-      >
-        <strong>Beratung, Konzept und Umsetzung aus einer Hand</strong> – von der ersten Analyse bis zum
-        <strong>laufenden Betrieb</strong>. Keine Übergaben, bei denen Wissen verloren geht.
+      <p data-reveal class="text-foreground-secondary mx-auto mt-7 max-w-2xl text-lg leading-8">
+        Drei Bereiche, in denen wir am häufigsten gebraucht werden. Ihr könnt mit einem anfangen oder
+        die Branchensoftware ganz ablösen. Der erste Schritt ist immer ein Gespräch.
       </p>
-      <div data-reveal class="mt-10 flex flex-wrap items-center justify-center gap-4">
-        <Button href={contactLinks.cal} target="_blank">
+      <div data-reveal class="mt-9 flex flex-wrap items-center justify-center gap-4">
+        <Button size="lg" href={contactLinks.cal} target="_blank">
           Erstgespräch buchen
           <Icon name="arrow-up-right" size="sm" />
         </Button>
-        <Button variant="link" href={contactUrl}>
-          Lieber schreiben? Zur Kontaktseite
+        <Button variant="link" href="#tueren" class="text-foreground-secondary hover:text-foreground">
+          Die drei Bereiche
+          <Icon name="chevron-down" size="sm" />
+        </Button>
+      </div>
+    </div>
+    <div class="relative z-10">
+      <ClientLogoStrip heading="Aus Projekten mit" logos={clientLogos} variant="light" uniform class="py-10" />
+    </div>
+  </section>
+
+  <!-- 01 DIE DREI TÜREN -->
+  <section id="tueren" class="bg-background relative scroll-mt-16 overflow-x-clip py-24 lg:py-28">
+    <div class="bg-brand-300/10 pointer-events-none absolute top-40 left-1/2 h-[36rem] w-[56rem] -translate-x-1/2 rounded-full blur-[120px]" aria-hidden="true"></div>
+    <div class="relative z-10 container max-w-6xl">
+      <SectionHeader
+        size="md"
+        number="01"
+        eyebrow="Drei Bereiche"
+        title="Wo bei euch die meiste Zeit verloren geht."
+        lead="Jeder Bereich ist für sich ein Einstieg. Mit eigener Seite, echten Ansichten aus Kundenlösungen und dem gleichen Weg: erst reden, dann der Workshop, dann bauen."
+      />
+      <div class="mt-14 grid gap-5 lg:grid-cols-3 lg:gap-y-0">
+        {
+          tueren.map((t) => (
+            <a href={t.href} data-reveal class="group border-border bg-card hover:border-brand-300 flex flex-col overflow-hidden rounded-[1.6rem] border p-4 pb-6 shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:shadow-[0_26px_55px_-28px_oklch(40%_0.1_265_/_0.45)] lg:row-span-6 lg:grid lg:grid-rows-subgrid lg:gap-y-0">
+              <MiniVisual kind={t.kind} />
+              <p class="text-brand-600 dark:text-brand-300 mt-5 px-2 font-mono text-xs font-semibold tracking-[0.2em]">{t.nr}</p>
+              <h3 class="font-display text-foreground mt-2 px-2 text-xl font-bold tracking-tight">{t.titel}</h3>
+              <p class="text-foreground-secondary mt-2 px-2 text-sm leading-6">{t.wenn}</p>
+              <ul class="mt-4 space-y-2 px-2">
+                {t.punkte.map((p) => (
+                  <li class="text-foreground-secondary flex gap-2.5 text-sm leading-6">
+                    <Icon name="check-circle" size="sm" class="text-brand-500 mt-0.5 shrink-0" />
+                    <span>{p}</span>
+                  </li>
+                ))}
+              </ul>
+              <span class="mt-auto px-2 pt-6">
+                <span class="border-brand-300/70 bg-brand-500/5 text-brand-600 group-hover:border-brand-500 group-hover:bg-brand-500 dark:text-brand-200 flex items-center justify-between gap-3 rounded-2xl border py-2.5 pr-2.5 pl-5 text-sm font-semibold transition-colors duration-300 group-hover:text-white">
+                  {t.titel} ansehen
+                  <span class="bg-brand-500 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-white transition-colors duration-300 group-hover:bg-white/20">
+                    <Icon name="arrow-right" size="sm" />
+                  </span>
+                </span>
+              </span>
+            </a>
+          ))
+        }
+      </div>
+
+      <!-- Oder das Ganze -->
+      <a
+        href={abloesungUrl}
+        data-reveal
+        class="group border-brand-300/70 bg-card hover:border-brand-400 dark:border-brand-700 mt-5 grid items-center gap-6 overflow-hidden rounded-[1.6rem] border p-5 shadow-sm transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_26px_55px_-28px_oklch(40%_0.1_265_/_0.45)] md:grid-cols-[minmax(0,1fr)_17rem] md:p-7"
+      >
+        <div>
+          <p class="text-foreground-muted text-xs font-semibold tracking-[0.2em] uppercase">Oder das Ganze</p>
+          <h3 class="font-display text-foreground mt-2 text-2xl font-bold tracking-tight">Standardsoftware ablösen</h3>
+          <p class="text-foreground-secondary mt-2 max-w-xl text-sm leading-6 sm:text-base sm:leading-7">
+            Wenn es mehr ist als ein fehlender Teil: Branchensoftware samt Excel drumherum, Schritt für
+            Schritt abgelöst, im Parallelbetrieb und mit der ganzen Datenhistorie.
+          </p>
+          <span class="text-brand-600 mt-4 inline-flex items-center gap-2 text-sm font-semibold transition-transform duration-300 group-hover:translate-x-1">
+            So läuft eine Ablösung
+            <Icon name="arrow-right" size="sm" />
+          </span>
+        </div>
+        <MiniVisual kind="abloesung" />
+      </a>
+    </div>
+  </section>
+
+  <!-- 02 DER WEG -->
+  <section class="bg-background-secondary border-border relative border-y py-24 lg:py-28">
+    <div class="relative z-10 container max-w-6xl">
+      <SectionHeader
+        size="md"
+        number="02"
+        eyebrow="Der Weg"
+        title="Egal welcher Bereich: Es fängt gleich an."
+        lead="Beratung, Konzept, Umsetzung und Betrieb aus einer Hand. Keine Übergaben, bei denen Wissen verloren geht."
+      />
+      <ol class="relative mt-14 grid gap-4 md:grid-cols-4">
+        <span class="bg-border absolute top-[1.35rem] right-[12%] left-[12%] hidden h-px md:block" aria-hidden="true"></span>
+        {
+          weg.map((s, i) => (
+            <li data-reveal class="relative">
+              <span class:list={['relative z-10 mx-auto flex h-11 w-11 items-center justify-center rounded-full font-mono text-sm font-bold md:mx-0', i === 1 ? 'bg-brand-500 text-white shadow-[0_10px_24px_-10px_var(--color-brand-500)]' : 'border-brand-300 bg-card text-brand-600 border-2']}>
+                {s.nr}
+              </span>
+              <div class="border-border bg-card mt-4 rounded-2xl border p-5 text-center md:text-left">
+                <h3 class="font-display text-foreground text-lg font-bold tracking-tight">{s.titel}</h3>
+                <p class="text-brand-600 dark:text-brand-300 mt-0.5 text-xs font-semibold">{s.meta}</p>
+                <p class="text-foreground-secondary mt-2 text-sm leading-6">{s.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="mt-8 text-center">
+        <a href={workshopUrl} class="text-brand-600 inline-flex items-center gap-2 text-sm font-semibold hover:gap-3">
+          Der Workshop im Detail
+          <Icon name="arrow-right" size="sm" />
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- 03 AUSSERDEM -->
+  <section class="bg-background relative py-24 lg:py-28">
+    <div class="relative z-10 container max-w-6xl">
+      <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:gap-16">
+        <div data-reveal>
+          <SectionHeader size="md" align="left" number="03" eyebrow="Was wir außerdem bauen" title="Nicht jede Anfrage passt in einen Bereich." />
+          <p class="text-foreground-secondary mt-6 text-base leading-7">
+            Manches liegt quer dazu oder ist kleiner. Auch dafür gilt: erst reden, dann sagen wir ehrlich,
+            ob wir die Richtigen sind.
+          </p>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2">
+          {
+            ausserdem.map((a) => (
+              <article data-reveal class="border-border bg-card rounded-2xl border p-5">
+                <span class="border-brand-300/70 bg-brand-500/5 text-brand-600 flex h-10 w-10 items-center justify-center rounded-xl border">
+                  <Icon name={a.icon} size="sm" />
+                </span>
+                <h3 class="font-display text-foreground mt-4 text-base font-bold tracking-tight">{a.titel}</h3>
+                <p class="text-foreground-secondary mt-1.5 text-sm leading-6">{a.text}</p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KONTAKT -->
+  <section class="loes-kontakt border-border relative overflow-x-clip border-t py-20 lg:py-24">
+    <div class="relative z-10 container grid max-w-6xl gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-16">
+      <div data-reveal class="flex items-start gap-5">
+        <Picture src={founderPortrait} alt="Marten Prieß" widths={[64, 128]} sizes="64px" formats={['avif', 'webp']} class="hidden h-16 w-16 shrink-0 rounded-full object-cover sm:block" loading="lazy" />
+        <div>
+          <h2 class="font-display text-foreground text-2xl font-bold tracking-tight text-balance sm:text-3xl">
+            Nicht sicher, welcher Bereich passt?
+          </h2>
+          <p class="text-foreground-secondary mt-3 max-w-xl text-[0.95rem] leading-7">
+            Das klären wir in 30 Minuten. Ihr erzählt, wo es hakt, wir sagen ehrlich, wo wir anfangen
+            würden. Das Gespräch führt Marten Prieß, Gründer von RocketBase, selbst.
+          </p>
+        </div>
+      </div>
+      <div data-reveal class="flex flex-wrap gap-3 lg:justify-end">
+        <Button size="lg" href={contactLinks.cal} target="_blank">
+          Erstgespräch buchen
+          <Icon name="arrow-up-right" size="sm" />
+        </Button>
+        <Button variant="outline" size="lg" href={contactUrl}>
+          Lieber schreiben
           <Icon name="arrow-right" size="sm" />
         </Button>
       </div>
     </div>
   </section>
-
-  <!-- LEISTUNGSBAUSTEINE -->
-  <section class="relative overflow-hidden py-24 lg:py-32">
-    <div class="container relative z-10 max-w-6xl">
-      <header data-reveal class="mx-auto max-w-3xl text-center">
-        <div class="mx-auto flex max-w-md items-center gap-4">
-          <span class="bg-border h-px flex-1" />
-          <span class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold">
-            01
-          </span>
-          <span class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">
-            Leistungsbausteine
-          </span>
-          <span class="bg-border h-px flex-1" />
-        </div>
-        <h2 class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl">
-          Vier Bausteine, die sich an realen Projektverläufen orientieren.
-        </h2>
-        <p class="text-foreground-secondary mt-6 text-lg leading-8">
-          Die vier Schritte folgen dem echten Verlauf eines Projekts: verstehen, priorisieren,
-          bauen, dauerhaft betreiben.
-        </p>
-      </header>
-
-      <div class="mt-16 grid gap-6 md:grid-cols-2">
-        {
-          serviceAreas.map((service, index) => (
-            <article
-              data-reveal
-              class="hover-lift group border-border bg-card hover:border-brand-300 relative overflow-hidden rounded-2xl border p-7 shadow-sm"
-            >
-              <div class="flex items-start justify-between gap-4">
-                <div class="bg-brand-50 text-brand-700 dark:bg-brand-900/30 dark:text-brand-100 group-hover:bg-brand-500 group-hover:text-on-invert group-hover:scale-110 inline-flex h-12 w-12 items-center justify-center rounded-xl transition-all duration-300">
-                  <Icon name={serviceIcons[index] ?? 'box'} size="md" />
-                </div>
-                <span class="text-brand-600 font-mono text-sm font-bold tracking-[0.22em]">
-                  0{index + 1}
-                </span>
-              </div>
-              <h3 class="font-display text-foreground mt-6 text-2xl font-semibold">
-                {service.title}
-              </h3>
-              <p class="text-foreground-secondary mt-3 text-base leading-7">
-                {service.description}
-              </p>
-              <ul class="mt-6 space-y-3">
-                {service.bullets.map((bullet: string) => (
-                  <li class="text-foreground-secondary group/item flex gap-3 text-sm leading-6">
-                    <Icon
-                      name="check-circle"
-                      size="sm"
-                      class="text-brand-500 group-hover/item:scale-110 mt-0.5 shrink-0 transition-transform duration-300"
-                    />
-                    <span>{bullet}</span>
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- USE CASES -->
-  <section class="border-border bg-background-secondary relative overflow-hidden border-y py-24 lg:py-32">
-    <div
-      class="bg-grid-pattern pointer-events-none absolute inset-0 opacity-30 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]"
-      aria-hidden="true"
-    />
-    <div
-      class="bg-brand-300/15 pointer-events-none absolute -left-24 top-1/3 h-96 w-96 rounded-full blur-3xl"
-      aria-hidden="true"
-    />
-
-    <div class="container relative z-10 max-w-6xl">
-      <header data-reveal class="mx-auto max-w-3xl text-center">
-        <div class="mx-auto flex max-w-md items-center gap-4">
-          <span class="bg-border h-px flex-1" />
-          <span class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold">
-            02
-          </span>
-          <span class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">
-            Typische Vorhaben
-          </span>
-          <span class="bg-border h-px flex-1" />
-        </div>
-        <h2 class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl">
-          Lösungen für Prozesse, nicht für Buzzwords.
-        </h2>
-        <p class="text-foreground-secondary mt-6 text-lg leading-8">
-          Wir arbeiten branchenübergreifend. Wichtiger als die Branche ist, wo Durchlaufzeiten
-          kippen und an welchen Stellen Informationen von Hand weitergereicht werden.
-        </p>
-      </header>
-
-      <div class="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {
-          useCases.map((useCase) => {
-            const Tag = useCase.href ? 'a' : 'article';
-            return (
-              <Tag
-                data-reveal
-                href={useCase.href}
-                class="hover-lift group border-border bg-card hover:border-brand-300 relative block overflow-hidden rounded-2xl border p-6 shadow-sm"
-              >
-                <div class="bg-brand-50 text-brand-600 dark:bg-brand-900/30 dark:text-brand-100 group-hover:bg-brand-500 group-hover:text-on-invert group-hover:scale-110 inline-flex h-12 w-12 items-center justify-center rounded-xl transition-all duration-300">
-                  <Icon name={useCase.icon} size="md" />
-                </div>
-                <h3 class="font-display text-foreground mt-5 text-lg font-semibold">
-                  {useCase.title}
-                </h3>
-                <p class="text-foreground-secondary mt-3 text-sm leading-6">{useCase.text}</p>
-                {useCase.href && (
-                  <span class="text-brand-600 mt-4 inline-flex items-center gap-1.5 text-sm font-semibold transition-transform duration-300 group-hover:translate-x-1">
-                    Mehr dazu
-                    <Icon name="arrow-right" size="xs" />
-                  </span>
-                )}
-              </Tag>
-            );
-          })
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- VORGEHEN -->
-  <section class="relative overflow-hidden py-24 lg:py-32">
-    <div class="container relative z-10 max-w-6xl">
-      <header data-reveal class="mx-auto max-w-3xl text-center">
-        <div class="mx-auto flex max-w-md items-center gap-4">
-          <span class="bg-border h-px flex-1" />
-          <span class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold">
-            03
-          </span>
-          <span class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">
-            Vorgehen
-          </span>
-          <span class="bg-border h-px flex-1" />
-        </div>
-        <h2 class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl">
-          So entsteht aus Prozesswissen eine belastbare Softwarelösung.
-        </h2>
-      </header>
-
-      <div class="mt-16 grid gap-4 md:grid-cols-4">
-        {
-          processSteps.map((step, index) => (
-            <article
-              data-reveal
-              class="hover-lift group border-border bg-card hover:border-brand-300 hover:bg-background-secondary relative flex flex-col rounded-2xl border p-6"
-            >
-              <span class="text-brand-500 font-mono text-xs font-semibold tracking-[0.22em] uppercase">
-                Schritt {index + 1}
-              </span>
-              <h3 class="font-display text-foreground mt-3 text-xl font-semibold">{step.title}</h3>
-              <p class="text-foreground-secondary mt-3 text-sm leading-6">{step.description}</p>
-              {index < processSteps.length - 1 && (
-                <Icon
-                  name="arrow-right"
-                  size="md"
-                  class="text-brand-400 group-hover:translate-x-1 group-hover:text-brand-500 absolute top-1/2 -right-3 hidden -translate-y-1/2 transition-all duration-300 md:block"
-                />
-              )}
-            </article>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- DISCOVERY WORKSHOP -->
-  <section class="bg-surface-invert text-on-invert border-border border-t py-24 lg:py-32">
-    <div class="container max-w-6xl">
-      <header data-reveal class="mx-auto max-w-3xl text-center">
-        <div class="mx-auto flex max-w-md items-center gap-4">
-          <span class="bg-white/20 h-px flex-1" />
-          <span class="border-brand-300 text-brand-300 bg-white/5 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold">
-            04
-          </span>
-          <span class="text-on-invert-secondary text-xs font-semibold tracking-[0.22em] uppercase">
-            Produktisierte Vorleistung
-          </span>
-          <span class="bg-white/20 h-px flex-1" />
-        </div>
-        <h2 class="font-display text-on-invert mt-8 text-3xl font-bold tracking-tight sm:text-4xl">
-          {discoveryOffer.title}
-        </h2>
-        <p class="text-on-invert-secondary mt-4 text-xl">{discoveryOffer.subtitle}</p>
-        <p class="text-on-invert-secondary mx-auto mt-6 max-w-2xl text-lg leading-8">
-          Der Workshop schafft eine belastbare Entscheidungsgrundlage, die beiden Seiten gehört.
-          Auch dann, wenn ihr danach mit jemand anderem weiterarbeitet.
-        </p>
-      </header>
-
-      <div
-        data-reveal
-        class="mt-16 rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur sm:p-10"
-      >
-        <p class="text-brand-300 text-xs font-semibold tracking-[0.22em] uppercase">
-          Was ihr bekommt
-        </p>
-        <ul class="mt-6 grid gap-4 sm:grid-cols-2">
-          {
-            discoveryOffer.deliverables.map((item: string) => (
-              <li class="text-on-invert-secondary group flex gap-3 rounded-2xl border border-white/10 bg-white/5 p-4 text-base transition-all duration-300 hover:border-brand-300/40 hover:bg-white/10">
-                <Icon
-                  name="check-circle"
-                  size="sm"
-                  class="text-brand-300 group-hover:scale-110 mt-1 shrink-0 transition-transform duration-300"
-                />
-                <span>{item}</span>
-              </li>
-            ))
-          }
-        </ul>
-        <div class="mt-8 flex flex-wrap items-center gap-4">
-          <Button href={contactLinks.calDiscovery} target="_blank">
-            Workshop anfragen
-            <Icon name="arrow-up-right" size="sm" />
-          </Button>
-          <Button
-            variant="link"
-            href={workshopUrl}
-            class="text-on-invert-secondary hover:text-on-invert"
-          >
-            Details zum Workshop
-            <Icon name="arrow-right" size="sm" />
-          </Button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- BRIDGE: WORK + MISSION -->
-  <section class="border-border bg-background-secondary border-t py-24">
-    <div class="container max-w-5xl">
-      <div class="grid gap-6 md:grid-cols-2">
-        <a
-          href={workUrl}
-          data-reveal="fade-right"
-          class="hover-lift group border-border bg-card hover:border-brand-300 block rounded-3xl border p-8 shadow-sm"
-        >
-          <div class="bg-brand-50 text-brand-700 dark:bg-brand-900/30 dark:text-brand-100 group-hover:bg-brand-500 group-hover:text-on-invert group-hover:scale-110 inline-flex h-12 w-12 items-center justify-center rounded-xl transition-all duration-300">
-            <Icon name="zap" size="md" />
-          </div>
-          <h3 class="font-display text-foreground mt-5 text-2xl font-semibold">
-            So arbeiten wir konkret
-          </h3>
-          <p class="text-foreground-secondary mt-3 text-base leading-7">
-            Discovery, Team, Cloud, Tools, KI – fünf Wechsel, die unsere Projekte heute
-            schneller, leichter und tragfähiger machen.
-          </p>
-          <p class="text-brand-600 mt-5 inline-flex items-center gap-2 text-sm font-semibold">
-            Zur Work-Seite
-            <Icon
-              name="arrow-right"
-              size="sm"
-              class="transition-transform duration-300 group-hover:translate-x-1"
-            />
-          </p>
-        </a>
-
-        <a
-          href={missionUrl}
-          data-reveal="fade-left"
-          class="hover-lift group border-border bg-card hover:border-brand-300 block rounded-3xl border p-8 shadow-sm"
-        >
-          <div class="bg-brand-50 text-brand-700 dark:bg-brand-900/30 dark:text-brand-100 group-hover:bg-brand-500 group-hover:text-on-invert group-hover:scale-110 inline-flex h-12 w-12 items-center justify-center rounded-xl transition-all duration-300">
-            <Icon name="heart" size="md" />
-          </div>
-          <h3 class="font-display text-foreground mt-5 text-2xl font-semibold">
-            Unsere Haltung
-          </h3>
-          <p class="text-foreground-secondary mt-3 text-base leading-7">
-            Acht Prinzipien hinter jedem Projekt – warum wir bestimmte Entscheidungen treffen,
-            und welche Verantwortung wir übernehmen.
-          </p>
-          <p class="text-brand-600 mt-5 inline-flex items-center gap-2 text-sm font-semibold">
-            Zur Mission
-            <Icon
-              name="arrow-right"
-              size="sm"
-              class="transition-transform duration-300 group-hover:translate-x-1"
-            />
-          </p>
-        </a>
-      </div>
-    </div>
-  </section>
 </PageLayout>
+
+<style>
+  .loes-kontakt {
+    background:
+      radial-gradient(55% 140% at 90% 50%, color-mix(in oklch, var(--color-brand-400) 22%, transparent), transparent 70%),
+      color-mix(in oklch, var(--color-brand-500) 7%, var(--color-background));
+  }
+</style>

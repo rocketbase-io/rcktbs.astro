@@ -12,6 +12,7 @@ import Navbar from '@/components/landing/Navbar.astro';
 import LandingFooter from '@/components/landing/LandingFooter.astro';
 import { type Locale, getLocaleFromPath } from '@/i18n/config';
 import type { RouteId } from '@/i18n/routes';
+import type { Thing, WithContext } from 'schema-dts';
 
 interface Props {
   title?: string;
@@ -23,6 +24,8 @@ interface Props {
   includeOrgSchema?: boolean;
   lang?: Locale;
   routeId?: RouteId;
+  /** Zusätzliche JSON-LD-Schemas (Service, FAQ), durchgereicht an BaseLayout. */
+  extraSchemas?: WithContext<Thing> | WithContext<Thing>[];
 }
 
 const {
@@ -35,6 +38,7 @@ const {
   includeOrgSchema = false,
   lang,
   routeId,
+  extraSchemas,
 } = Astro.props;
 
 // Get locale from props or URL path
@@ -51,6 +55,7 @@ const locale = lang || getLocaleFromPath(Astro.url.pathname);
   includeOrgSchema={includeOrgSchema}
   lang={locale}
   routeId={routeId}
+  extraSchemas={extraSchemas}
 >
   <Navbar slot="header" locale={locale} />
 

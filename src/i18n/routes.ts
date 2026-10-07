@@ -107,7 +107,7 @@ export const routes = {
 
   // Die Türen (Sub-Landingpages - nicht als Top-Level-Eintrag, aber im Lösungen-Dropdown der Navbar).
   // Tür 1 (Angebot & Kalkulation) ist /angebote/ (statische Seite, nicht über routes.ts verlinkt),
-  // Tür 3 (Zahlen & Steuerung) läuft bis zur eigenen Seite über den Blog-Post zum Monatsabschluss.
+  // Tür 3 (Zahlen & Steuerung) ist /zahlen/ (ebenfalls statisch).
   standardsoftwareAbloesung: {
     de: 'standardsoftware-abloesung',
     nav: { show: false, order: 51, label: 'nav.standardsoftwareAbloesung' },

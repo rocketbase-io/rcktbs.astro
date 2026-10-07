@@ -1,0 +1,17 @@
+---
+/**
+ * Tür 3: Zahlen & Steuerung. Dieselben Inhalte wie die Anzeigen-Landing
+ * /f/zahlen/, aber mit Navigation, indexiert und ohne Quiz. Inhalt in
+ * components/zahlen/ZahlenPage.astro.
+ */
+import LandingLayout from '@/layouts/LandingLayout.astro';
+import ZahlenPage from '@/components/zahlen/ZahlenPage.astro';
+---
+
+<LandingLayout
+  title="Zahlen & Steuerung: Cockpit für Umsatz, Auslastung und Verträge"
+  description="Umsatz und Prognose, Auslastung bis zur einzelnen Person, Deckungsbeitrag, auslaufende Verträge und Forderungen. Live aus euren Systemen, gerechnet nach euren Regeln. Für Dienstleister ab 30 Leuten."
+  lang="de"
+>
+  <ZahlenPage variant="site" />
+</LandingLayout>

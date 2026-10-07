@@ -71,9 +71,10 @@ ${serviceLines.join('\n')}
 
 ## Einstiege nach Problemlage
 
+- [Zahlen und Steuerung](${base}/zahlen/): Cockpit für Umsatz und Prognose, Auslastung bis zur Person, Deckungsbeitrag, auslaufende Verträge und Forderungen, live aus den vorhandenen Systemen.
 - [Angebot und Kalkulation](${base}/angebote/): Angebote, die sich nach der eigenen Kalkulationsregel selbst rechnen, mit Deckungsbeitrag vor dem Versand, als Angebotsseite beim Kunden und Zusage per Klick.
 - [Standardsoftware ablösen](${base}/standardsoftware-abloesung/): Wenn eine Branchensoftware wie Vertec nicht mehr mitwächst - Vorgehen im Parallelbetrieb statt Big Bang.
-- [Einsatzplanung und grafischer Leitstand](${base}/einsatzplanung/): Wenn Disposition, Einsatzsteuerung und Abrechnung über gewachsene Excel-Welten laufen.
+- [Einsatz und Abrechnung](${base}/einsatzplanung/): Plantafel mit Abwesenheiten, Ablauf je Auftrag, Einsatz je Vertrag, Leistungserfassung, Rechnung und Mahnwesen in einem System, statt Excel und Stundenzettel.
 
 ## Fachbeiträge
 

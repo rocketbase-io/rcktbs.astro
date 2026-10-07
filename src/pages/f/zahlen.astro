@@ -1,0 +1,19 @@
+---
+/**
+ * Anzeigen-Landing für Tür 3 (Zahlen & Steuerung). Inhalt liegt in
+ * components/zahlen/ZahlenPage.astro und wird mit /zahlen/ geteilt.
+ * FunnelLayout: noindex, ohne Navigation, nicht in der Sitemap.
+ * Liegt als statische Datei neben /f/[slug].astro und gewinnt gegen die
+ * dynamische Route; in funnels.ts darf es deshalb keinen Slug „zahlen" geben.
+ */
+import FunnelLayout from '@/layouts/FunnelLayout.astro';
+import ZahlenPage from '@/components/zahlen/ZahlenPage.astro';
+---
+
+<FunnelLayout
+  title="Zahlen & Steuerung: euer Betrieb auf einen Blick, live statt am Monatsende"
+  description="Umsatz und Prognose, Auslastung bis zur Person, Deckungsbeitrag, auslaufende Verträge. Aus euren Systemen, nach euren Regeln gerechnet. Für euren Betrieb entwickelt."
+  headerNote="Zahlen & Steuerung"
+>
+  <ZahlenPage variant="funnel" />
+</FunnelLayout>
