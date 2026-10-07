@@ -12,9 +12,9 @@
  */
 import { chromium } from '@playwright/test';
 import { spawn, type ChildProcess } from 'node:child_process';
-import { mkdir } from 'node:fs/promises';
+import { mkdir, readdir, readFile } from 'node:fs/promises';
 import { createServer } from 'node:net';
-import { resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import sharp from 'sharp';
 
 const OUT_DIR = resolve(process.cwd(), 'public/og-screenshots');
@@ -30,23 +30,55 @@ const OG_HEIGHT = 630;
 
 // Jeder Pfad MIT Schrägstrich am Ende: Seit `trailingSlash: 'always'` in der
 // astro.config.mjs beantwortet der Dev-Server die Form ohne Slash mit einer
-// 404 — der Screenshot wäre dann stillschweigend die Astro-Fehlerseite statt
-// der Seite. Die Bilder im Repo stammen von vor dieser Umstellung, deshalb ist
-// es bis jetzt niemandem aufgefallen.
-const TARGETS: Array<{ path: string; slug: string }> = [
-  { path: '/', slug: 'index' },
-  { path: '/mission/', slug: 'mission' },
-  { path: '/leistungen/', slug: 'leistungen' },
-  { path: '/arbeitsweise/', slug: 'arbeitsweise' },
-  { path: '/referenzen/', slug: 'referenzen' },
-  { path: '/standardsoftware-abloesung/', slug: 'standardsoftware-abloesung' },
-  { path: '/einsatzplanung/', slug: 'einsatzplanung' },
-  { path: '/discovery-workshop/', slug: 'discovery-workshop' },
-  { path: '/kontakt/', slug: 'kontakt' },
-  { path: '/instagram/', slug: 'instagram' },
-  { path: '/impressum/', slug: 'impressum' },
-  { path: '/datenschutz/', slug: 'datenschutz' },
-];
+// 404 — der Screenshot wäre dann stillschweigend die Astro-Fehlerseite.
+//
+// Die Ziele werden automatisch gesammelt (seit 2026-10-07, vorher eine feste
+// Liste, auf der neue Seiten wie /zahlen/ oder die Funnels unter /f/ fehlten):
+//   1. jede statische .astro-Datei unter src/pages (ohne [dynamische], 404, [lang])
+//   2. die Funnel-Slugs aus src/data/funnels.ts         -> /f/<slug>/
+//   3. die Brief-Slugs aus src/data/briefLandings.ts     -> /b/<slug>/
+// /f/ und /b/ sind noindex, werden aber weitergeleitet (Angebot an den Chef,
+// Link per WhatsApp), und dann zeigt die Vorschau genau dieses Bild.
+// Referenz-Details und der ganze Blog (auch die Übersicht) bleiben bei ihren
+// generierten Bildern mit Titel (/og/...), dort gibt es keine Screenshots.
+// Der Slug entspricht dem in SEO.astro: Pfad ohne Rand-Schrägstriche, also
+// /f/zahlen/ -> public/og-screenshots/f/zahlen.jpg.
+//
+// Nur einzelne Seiten aufnehmen:  pnpm og:capture zahlen f/zahlen
+const PAGES_DIR = resolve(process.cwd(), 'src/pages');
+// blog: Übersicht und Beiträge behalten das generierte Template mit Titel (/og/...).
+const SKIP_DIRS = new Set(['og', 'blog']);
+
+async function collectStaticPages(dir: string, prefix = ''): Promise<string[]> {
+  const out: string[] = [];
+  for (const entry of await readdir(dir, { withFileTypes: true })) {
+    if (entry.name.startsWith('[') || entry.name.startsWith('_')) continue;
+    if (entry.isDirectory()) {
+      if (prefix === '' && SKIP_DIRS.has(entry.name)) continue;
+      out.push(...(await collectStaticPages(join(dir, entry.name), `${prefix}${entry.name}/`)));
+      continue;
+    }
+    if (!entry.name.endsWith('.astro') || entry.name === '404.astro') continue;
+    const base = entry.name.replace(/\.astro$/, '');
+    out.push(base === 'index' ? `/${prefix}` : `/${prefix}${base}/`);
+  }
+  return out;
+}
+
+async function slugsFrom(file: string): Promise<string[]> {
+  const src = await readFile(resolve(process.cwd(), file), 'utf8');
+  // Nur Slugs auf oberster Objektebene (4 Leerzeichen Einzug), keine verschachtelten.
+  return [...src.matchAll(/^ {4}slug: '([^']+)'/gm)].map((m) => m[1]);
+}
+
+async function collectTargets(): Promise<Array<{ path: string; slug: string }>> {
+  const paths = new Set(await collectStaticPages(PAGES_DIR));
+  for (const s of await slugsFrom('src/data/funnels.ts')) paths.add(`/f/${s}/`);
+  for (const s of await slugsFrom('src/data/briefLandings.ts')) paths.add(`/b/${s}/`);
+  const all = [...paths].sort().map((path) => ({ path, slug: path.replace(/^\/|\/$/g, '') || 'index' }));
+  const only = process.argv.slice(2).map((a) => a.replace(/^\/|\/$/g, '') || 'index');
+  return only.length ? all.filter((t) => only.includes(t.slug)) : all;
+}
 
 function findFreePort(): Promise<number> {
   return new Promise((res, rej) => {
@@ -65,7 +97,7 @@ function findFreePort(): Promise<number> {
   });
 }
 
-async function waitForReady(url: string, timeoutMs = 30_000): Promise<void> {
+async function waitForReady(url: string, timeoutMs = 60_000): Promise<void> {
   const deadline = Date.now() + timeoutMs;
   while (Date.now() < deadline) {
     try {
@@ -81,9 +113,12 @@ async function waitForReady(url: string, timeoutMs = 30_000): Promise<void> {
 
 async function main() {
   await mkdir(OUT_DIR, { recursive: true });
+  const TARGETS = await collectTargets();
+  console.log(`→ ${TARGETS.length} Seiten: ${TARGETS.map((t) => t.path).join(' ')}`);
 
   const port = await findFreePort();
-  const baseUrl = `http://localhost:${port}`;
+  // gleiche Adresse wie --host; „localhost“ löst je nach System auf ::1 auf
+  let baseUrl = `http://127.0.0.1:${port}`;
   console.log(`→ starting astro dev on port ${port}`);
 
   const child: ChildProcess = spawn(
@@ -92,8 +127,18 @@ async function main() {
     { stdio: ['ignore', 'pipe', 'pipe'] },
   );
 
-  child.stdout?.on('data', (b) => process.stdout.write(`  [dev] ${b}`));
-  child.stderr?.on('data', (b) => process.stderr.write(`  [dev] ${b}`));
+  // Astro startet keinen zweiten Dev-Server im selben Projekt („Dev server already
+  // running at …“). Dann nehmen wir einfach den, der schon läuft.
+  let reuse: (url: string) => void = () => {};
+  const alreadyRunning = new Promise<string>((res) => (reuse = res));
+  const onOutput = (b: Buffer) => {
+    const text = b.toString();
+    process.stdout.write(`  [dev] ${text}`);
+    const m = text.match(/already running at (https?:\/\/[^\s"\\]+)/);
+    if (m) reuse(m[1].replace(/\/$/, ''));
+  };
+  child.stdout?.on('data', onOutput);
+  child.stderr?.on('data', onOutput);
 
   const cleanup = () => {
     if (!child.killed) child.kill('SIGTERM');
@@ -102,13 +147,19 @@ async function main() {
   process.on('SIGTERM', cleanup);
 
   try {
-    await waitForReady(baseUrl);
+    const running = await Promise.race([alreadyRunning, waitForReady(baseUrl).then(() => null)]);
+    if (running) {
+      baseUrl = running;
+      console.log(`→ nutze laufenden Dev-Server ${baseUrl}`);
+      await waitForReady(baseUrl);
+    }
     console.log(`→ dev server ready`);
 
     const browser = await chromium.launch();
     const context = await browser.newContext({
       viewport: { width: CAPTURE_WIDTH, height: CAPTURE_HEIGHT },
-      deviceScaleFactor: 1,
+      // 2x aufnehmen und herunterrechnen: deutlich schärfere Schrift im OG-Bild.
+      deviceScaleFactor: 2,
       colorScheme: 'light',
     });
     const page = await context.newPage();
@@ -152,9 +203,13 @@ async function main() {
         // Private-Mode o. Ä. - dann greift wenigstens das CSS unten.
       }
 
+      // Einblend-Animationen (data-reveal, af-rise) im Endzustand festhalten. Sonst
+      // landet der Hero mitten in der Animation im Bild: Eyebrow noch unsichtbar,
+      // Überschrift nach oben verschoben und gequetscht unter der Navigation.
       const style = document.createElement('style');
       style.textContent =
-        '#consent-banner, .consent-reopener { display: none !important; }';
+        '#consent-banner, .consent-reopener { display: none !important; }' +
+        '[data-reveal], .af-rise { opacity: 1 !important; transform: none !important; transition: none !important; }';
       document.addEventListener('DOMContentLoaded', () => document.head.appendChild(style));
     });
 
@@ -171,6 +226,7 @@ async function main() {
         });
         await page.waitForTimeout(800);
         const outPath = resolve(OUT_DIR, `${slug}.jpg`);
+        await mkdir(dirname(outPath), { recursive: true });
         const rawBuffer = await page.screenshot({
           type: 'png',
           clip: { x: 0, y: 0, width: CAPTURE_WIDTH, height: CAPTURE_HEIGHT },
