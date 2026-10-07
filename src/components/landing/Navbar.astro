@@ -37,15 +37,16 @@ const referencesPath = getLocalizedPath('references', locale);
 const blogPath = getLocalizedPath('blog', locale);
 const servicesPath = getLocalizedPath('services', locale);
 
-// Leistungen-Dropdown: die beiden Schmerz-Einstiege und der bepreiste Workshop.
+// Lösungen-Dropdown: die drei Türen, durch die ein Betrieb einsteigt, plus die Ablöse.
+// Der Workshop hat einen eigenen Top-Level-Eintrag und steht deshalb nicht mehr hier.
 // Die Seiten bleiben in routes.ts auf show:false, damit sie nicht zusätzlich
 // als Top-Level-Einträge erscheinen.
 const serviceLinks = [
   {
-    href: getLocalizedPath('standardsoftwareAbloesung', locale),
-    icon: 'layers',
-    title: t('nav.standardsoftwareAbloesung'),
-    text: 'Wenn Vertec, Centric oder ein gewachsenes System das Wachstum bremst.',
+    href: '/angebote/',
+    icon: 'edit',
+    title: 'Angebot & Kalkulation',
+    text: 'Angebote, die sich nach eurer Regel selbst rechnen. Angebotsseite statt PDF, Zusage per Klick.',
   },
   {
     href: getLocalizedPath('einsatzplanung', locale),
@@ -54,10 +55,17 @@ const serviceLinks = [
     text: 'Disposition, Einsatz und Abrechnung raus aus Excel, rein in einen Leitstand.',
   },
   {
-    href: getLocalizedPath('discoveryWorkshop', locale),
-    icon: 'file-text',
-    title: 'Discovery-Workshop',
-    text: 'Ein Tag, ein Dokument, eine Entscheidung. 2.400 €, das Ergebnis gehört euch.',
+    // Tür 3: bis die eigene Seite steht, führt der Link auf den Blog-Post zum Monatsabschluss.
+    href: `${blogPath}geschaeftszahlen-metabase-individualsoftware/`,
+    icon: 'table',
+    title: 'Zahlen & Steuerung',
+    text: 'Umsatz, Auslastung und auslaufende Verträge live statt am Monatsende aus Excel.',
+  },
+  {
+    href: getLocalizedPath('standardsoftwareAbloesung', locale),
+    icon: 'layers',
+    title: t('nav.standardsoftwareAbloesung'),
+    text: 'Wenn die Branchensoftware, Vertec oder ein gewachsenes System das Wachstum bremst.',
   },
 ] as const;
 
@@ -145,7 +153,7 @@ const featuredReferences = cases
                   class="mt-1 flex items-center justify-between rounded-xl border-t border-border px-3 py-3 text-sm font-semibold text-brand-600 hover:text-brand-500"
                   role="menuitem"
                 >
-                  Alle Leistungen ansehen
+                  Alle Lösungen ansehen
                   <Icon name="arrow-right" size="xs" />
                 </a>
               </div>
@@ -328,7 +336,7 @@ const featuredReferences = cases
               href={servicesPath}
               class="block rounded-lg p-2 text-sm font-semibold text-brand-600 hover:text-brand-500"
             >
-              Alle Leistungen ansehen →
+              Alle Lösungen ansehen →
             </a>
           </div>
         </details>

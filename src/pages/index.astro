@@ -48,31 +48,25 @@ const ladderSteps = [
     title: 'Erstgespräch',
     price: 'kostenlos',
     description:
-      '30 Minuten direkt mit Marten Prieß. Wir hören zu und sagen ehrlich, ob sich ein nächster Schritt lohnt – und welcher.',
+      '30 Minuten direkt mit Marten Prieß. Ihr zeigt uns, wo es klemmt, gern an einem echten Beispiel. Wir sagen ehrlich, ob sich ein nächster Schritt lohnt – und welcher.',
   },
   {
-    title: 'Discovery-Workshop',
-    price: '2.400 €',
+    title: 'Workshop',
+    price: '2.400 € Festpreis',
     description:
-      'Ein Tag mit euren Keyusern. Am Ende steht ein Dokument mit einer Empfehlung und einem Kostenrahmen – es gehört euch, auch ohne Folgeauftrag.',
-  },
-  {
-    title: 'Konzeptphase',
-    price: 'Festpreis, steht im Workshop-Dokument',
-    description:
-      'Mockups der Kernabläufe, Datenmodell und ein Festpreisangebot für die Umsetzung. Danach wisst ihr auf den Euro, was die Lösung kostet.',
+      'Drei Termine: Aufnahme, Abstimmung, Übergabe. Am Ende steht euer Ablauf schriftlich, ein Zielbild für die erste Stufe und ein Festpreis für die Umsetzung. Das Dokument gehört euch, der Betrag wird bei Beauftragung angerechnet.',
   },
   {
     title: 'Umsetzung',
-    price: 'Festpreis',
+    price: 'Festpreis, inkl. Betrieb im ersten Jahr',
     description:
-      'In Wochen, wo wir auf laufenden Bausteinen aus unseren Projekten aufsetzen. Individuell, wo euer Prozess besonders ist.',
+      'In Wochen live, wo wir auf laufenden Bausteinen aus unseren Projekten aufsetzen. Individuell, wo euer Prozess besonders ist. Hosting, Updates und Betrieb im ersten Jahr sind drin.',
   },
   {
     title: 'Betrieb',
-    price: 'monatliche Pauschale, kündbar',
+    price: 'ab Jahr 2 jährliche Pauschale',
     description:
-      'Hosting in Deutschland, Backups, Monitoring, Weiterentwicklung. Die Software gehört euch – ihr zahlt für den Betrieb, nicht für die Nutzung.',
+      'Hosting in Deutschland, Backups, Updates, kleine Anpassungen. Ihr nutzt die Software uneingeschränkt und ohne Lizenzkosten – ihr zahlt für den Betrieb, nicht für die Nutzung.',
   },
 ];
 
@@ -98,27 +92,28 @@ const featuredCases: FeaturedCase[] = featuredSlugs
 // aus Altsystemen und die Bereitschaft zu widersprechen.
 const topStrengths = [strengths[1], strengths[4], strengths[5]];
 
-// "Wofür wir gerufen werden" – genau zwei benannte Situationen, jede führt auf
-// eine eigene, scharfe Sub-Landingpage. Bewusst nur zwei, kein dritter Einstieg.
+// "Wofür wir gerufen werden" – drei Türen, durch die ein Betrieb einsteigt. Jede ist
+// ein Prozess, der heute in Excel, Word oder einer verbogenen Branchensoftware steckt.
+// Tür 3 führt bis zur eigenen Seite auf den Blog-Post zum Monatsabschluss.
 const calledForSituations = [
   {
-    icon: 'box',
-    eyebrow: 'Standardsoftware am Limit',
-    title: 'Vertec, Centric oder ein ähnliches System wächst nicht mehr mit.',
-    text: 'Egal ob bekanntes Branchensystem oder selbst gewachsene Lösung: Über die Jahre so weit verbogen, dass sie eure Arbeit eher behindert als trägt. Ihr arbeitet drumherum statt damit – und jede Stunde, die dafür draufgeht, fehlt in der fakturierbaren Leistung.',
+    icon: 'edit',
+    eyebrow: 'Angebot & Kalkulation',
+    title: 'Die Kalkulation liegt in Excel, das Angebot entsteht in Word. Dazwischen tippt jemand ab.',
+    text: 'Betreuungs-, Wartungs- und Prüfverträge rechnen alle Anbieter nach derselben Regel: Anlagen mal Turnus, Geräte mal Prüfzeit, Mitarbeiter mal Betreuungsgruppe. Entscheidend ist, wie schnell das Angebot steht, ob es sich rechnet und was der Kunde davon sieht.',
     points: [
-      'Updates werden zum Risiko – also bleiben sie aus',
-      'Neben dem teuren System läuft längst eine Excel-Welt mit',
-      'Bei den eigenen Zahlen bleibt ein ungutes Bauchgefühl',
+      'Jede Rückfrage erzeugt eine neue Version, der Stand verteilt sich über Mails',
+      'Was ein Angebot wirklich einbringt, sieht man erst nach dem Auftrag',
+      'Das Angebot geht als PDF raus, und keiner weiß, ob es geöffnet wurde',
     ],
-    href: standardsoftwareUrl,
-    cta: 'Standardsoftware ablösen',
+    href: '/angebote/',
+    cta: 'Angebotsbaustein ansehen',
   },
   {
-    icon: 'table',
-    eyebrow: 'Steuerung über Excel',
+    icon: 'users',
+    eyebrow: 'Einsatz & Abrechnung',
     title: 'Disposition, Einsatzplanung und Abrechnung laufen über Excel.',
-    text: 'Auftrag, Disposition, Einsatz, Erfassung, Abrechnung – die ganze Kette hängt in gewachsenen Tabellen. Mit dem Betrieb wächst der manuelle Aufwand schneller als der Umsatz, und keiner hat den Echtzeit-Überblick.',
+    text: 'Auftrag, Disposition, Einsatz, Erfassung, Abrechnung – die ganze Kette hängt in gewachsenen Tabellen. Mit dem Betrieb wächst der manuelle Aufwand schneller als der Umsatz, und keiner hat den Überblick, wer wann wo ist.',
     points: [
       'Wer wann an was arbeitet, steckt in Köpfen und Tabellen',
       'Abwesenheiten und Auslastung müssen mühsam gepflegt werden',
@@ -126,6 +121,19 @@ const calledForSituations = [
     ],
     href: einsatzplanungUrl,
     cta: 'Einsatzplanung ansehen',
+  },
+  {
+    icon: 'table',
+    eyebrow: 'Zahlen & Steuerung',
+    title: 'Der Monatsabschluss ist ein Projekt, und die Zahlen sind alt, wenn sie da sind.',
+    text: 'Umsatz Ist und Prognose, Auslastung je Team, welche Verträge nächstes Jahr enden: Das steckt in fünf Systemen und einer Excel, die eine Person im Haus versteht. Wer den Betrieb steuern oder übergeben will, braucht die Zahlen live.',
+    points: [
+      'Reports kosten Tage statt Minuten',
+      'Auslaufende Verträge fallen erst auf, wenn sie weg sind',
+      'Bei den eigenen Zahlen bleibt ein ungutes Bauchgefühl',
+    ],
+    href: '/blog/geschaeftszahlen-metabase-individualsoftware/',
+    cta: 'Mehr dazu lesen',
   },
 ];
 
@@ -181,7 +189,7 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
 
 <LandingLayout
   title="Individualsoftware, die euch trägt – statt ausbremst"
-  description="Wenn Standardsoftware wie Vertec oder Centric bremst oder das Geschäft über Excel läuft: individuelle Software, die zum echten Prozess passt. Direkt mit Marten Prieß."
+  description="Wenn ERP, CRM oder Branchensoftware den Standardfall abdecken und Kalkulation, Einsatzplanung und Zahlen daneben in Excel laufen: individuelle Software, die nach euren Regeln rechnet. Direkt mit Marten Prieß."
   includeOrgSchema
   lang={locale}
   routeId="home"
@@ -213,9 +221,11 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
         </h1>
 
         <p class="hero-landing-intro text-foreground-secondary mt-6 text-lg leading-8 max-[760px]:mt-5 max-[760px]:text-base max-[760px]:leading-7">
-          Wenn Vertec oder Centric am Limit ist oder der Betrieb über Excel läuft: Wir bauen die
-          Anwendung, die zu euren Abläufen passt. Der erste Schritt ist ein Tag mit euren Keyusern –
-          am Ende steht ein Dokument mit einer klaren Empfehlung, und es gehört euch.
+          Ihr habt ein ERP, ein CRM oder eine Branchensoftware. Was die nicht kann, läuft daneben in
+          Excel: eure Kalkulation, die Einsatzplanung, die Zahlen für die Steuerung. Wir bauen die
+          Anwendung, die nach euren Regeln arbeitet. Mal den Teil, der fehlt, angebunden an das, was
+          ihr habt. Mal das Ganze, wenn das System mehr bremst als trägt. Der erste Schritt ist ein
+          Gespräch, kostenlos und ohne Folien.
         </p>
 
         <div data-reveal class="hero-landing-actions mt-8 flex flex-wrap items-center gap-4 max-[760px]:mt-6 max-[760px]:gap-3">
@@ -283,16 +293,17 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
       <div data-reveal>
         <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Wofür wir gerufen werden</p>
         <h2 class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
-          Zwei Situationen,
-          <span class="text-brand-500">in denen man uns dazuholt.</span>
+          Drei Stellen,
+          <span class="text-brand-500">an denen man uns dazuholt.</span>
         </h2>
         <p class="text-foreground-secondary mt-6 text-lg leading-8">
           Ihr führt einen Betrieb, der läuft, und merkt an einer konkreten Stelle, dass die Software
-          den nächsten Schritt nicht mehr trägt. Meistens ist es eine von zwei Geschichten:
+          den nächsten Schritt nicht mehr trägt. Meistens ist es eine von drei Stellen im Prozess.
+          Wir fangen dort an und bauen von da aus weiter.
         </p>
       </div>
 
-      <div class="mt-16 grid gap-6 lg:grid-cols-2">
+      <div class="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {
           calledForSituations.map((situation) => (
             <article
@@ -339,7 +350,8 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
           <Icon name="arrow-up-right" size="sm" />
         </Button>
         <p class="text-foreground-muted text-sm leading-7">
-          Passt nichts davon genau? Dann sprecht mit uns, wir sagen ehrlich, was wir sehen.
+          Branchensoftware, Vertec oder ein gewachsenes System am Limit? Dann ist meist eine dieser drei Stellen der Grund.
+          <a href={standardsoftwareUrl} class="text-brand-600 font-semibold hover:text-brand-500">Standardsoftware ablösen</a>
         </p>
       </div>
     </div>
@@ -888,7 +900,7 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
       <div class="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
         <div data-reveal="fade-right">
           <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
-            Presales mit Substanz
+            So fängt es an
           </p>
           <h2 class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
             {discoveryOffer.title}

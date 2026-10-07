@@ -27,16 +27,8 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
-# Legacy rocketbase.io URL redirects (301)
-[[redirects]]
-  from = "/angebote"
-  to = "/f/angebote/"
-  status = 301
-
-[[redirects]]
-  from = "/angebote/"
-  to = "/f/angebote/"
-  status = 301
+# /angebote/ ist seit 2026-10-07 eine eigene, indexierte Seite (Tür 1 in der Navigation);
+# die Weiterleitung auf die Anzeigen-Landing /f/angebote/ ist deshalb entfallen.
 
 # Entwurfsadresse der Funnel-Seite, bevor sie /f/angebote/ ersetzt hat (2026-10-05).
 [[redirects]]

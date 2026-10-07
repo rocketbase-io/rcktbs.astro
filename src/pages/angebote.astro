@@ -1,0 +1,18 @@
+---
+/**
+ * Tür 1: Angebot & Kalkulation. Dieselben Inhalte wie die Anzeigen-Landing
+ * /f/angebote/, aber mit Navigation, indexiert und ohne Quiz: statt dessen
+ * Erstgespräch und Workshop als nächste Schritte. Inhalt in
+ * components/angebote/AngebotePage.astro.
+ */
+import LandingLayout from '@/layouts/LandingLayout.astro';
+import AngebotePage from '@/components/angebote/AngebotePage.astro';
+---
+
+<LandingLayout
+  title="Angebot & Kalkulation: Angebote, die sich nach eurer Regel selbst rechnen"
+  description="Angebote, die sich nach eurer Kalkulation selbst rechnen und beim Kunden als Seite ankommen. Deckungsbeitrag vor dem Versand, Zusage per Klick, Nachfassen automatisch. Für Wartungs-, Prüf- und Servicebetriebe."
+  lang="de"
+>
+  <AngebotePage variant="site" />
+</LandingLayout>

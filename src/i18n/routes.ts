@@ -73,16 +73,18 @@ export const routes = {
     nav: { show: false, order: 98, label: 'nav.components' },
   },
 
-  // Custom page: services
+  // Lösungen-Dropdown (die drei Türen plus Ablöse); die Seite /leistungen/ bleibt die Übersicht
   services: {
     de: 'leistungen',
     nav: { show: true, order: 1, label: 'nav.services' },
   },
 
   // How we work
+  // Arbeitsweise und Mission: nur noch im Footer, nicht in der Hauptnavigation
+  // (entschieden 2026-10-07: oben stehen die Lösungen, der Workshop, Referenzen, Blog)
   work: {
     de: 'arbeitsweise',
-    nav: { show: true, order: 3, label: 'nav.work' },
+    nav: { show: false, order: 3, label: 'nav.work' },
   },
 
   // Referenzen / Case studies
@@ -94,7 +96,7 @@ export const routes = {
   // Mission / Haltung
   mission: {
     de: 'mission',
-    nav: { show: true, order: 5, label: 'nav.mission' },
+    nav: { show: false, order: 5, label: 'nav.mission' },
   },
 
   // Discovery-Workshop: einzige Seite mit Preisen, deshalb direkt in der Hauptnavigation
@@ -103,7 +105,9 @@ export const routes = {
     nav: { show: true, order: 2, label: 'nav.discoveryWorkshop' },
   },
 
-  // Schmerz-Einstiege (Sub-Landingpages - nicht als Top-Level-Eintrag, aber im Leistungen-Dropdown der Navbar)
+  // Die Türen (Sub-Landingpages - nicht als Top-Level-Eintrag, aber im Lösungen-Dropdown der Navbar).
+  // Tür 1 (Angebot & Kalkulation) ist /angebote/ (statische Seite, nicht über routes.ts verlinkt),
+  // Tür 3 (Zahlen & Steuerung) läuft bis zur eigenen Seite über den Blog-Post zum Monatsabschluss.
   standardsoftwareAbloesung: {
     de: 'standardsoftware-abloesung',
     nav: { show: false, order: 51, label: 'nav.standardsoftwareAbloesung' },

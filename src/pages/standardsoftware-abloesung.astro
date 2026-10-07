@@ -26,7 +26,7 @@ const clientLogos = [
 ];
 
 // Der Schmerz – reproduzierbar aus mehreren Ablöseprojekten (vgl. Blogartikel
-// "Wenn Standardsoftware wie Vertec oder Centric an ihre Grenzen stößt").
+// "Wenn Standardsoftware wie Vertec an ihre Grenzen stößt").
 const painPoints = [
   {
     icon: 'alert-triangle',
@@ -50,27 +50,6 @@ const painPoints = [
   },
 ];
 
-// Centric von innen – anonymer Autoritätsbaustein. Erfahrung aus einer Centric-
-// Einführung (Migration von Host-/Informatica-Strukturen) in einem Handels-/
-// Versandunternehmen. Kein Kundenname, keine Wertung über den Kunden – nur die
-// reproduzierbaren technischen Grenzen, die wir dort von innen gesehen haben.
-const centricLimits = [
-  {
-    icon: 'upload',
-    title: 'Saubere Importe fast nur über CSV',
-    text: 'Wer Daten ernsthaft und wiederholbar reinbekommen will, landet praktisch immer beim CSV-Import mit fester Spaltenlogik – moderne, robuste Schnittstellen sind die Ausnahme, nicht die Regel.',
-  },
-  {
-    icon: 'layers',
-    title: 'Dynamische Attribute nur mit Customizing',
-    text: 'Sobald das Datenmodell dynamische Attributierung braucht – Produkte, Varianten, Eigenschaften, die sich nicht in ein starres Schema pressen lassen – geht es nur über Customizing. Und genau dort beginnt wieder die Flickschusterei.',
-  },
-  {
-    icon: 'settings',
-    title: 'Auch der Standard kocht mit Wasser',
-    text: 'Der Eindruck „mit dem großen Produkt wird alles einfacher" hält der Praxis nicht stand. Die spezifischen Kanten eures Geschäfts kosten auch hier Anpassung – nur dass ihr sie auf fremdem Fundament baut.',
-  },
-];
 
 // Zwei mögliche Antworten – ehrlich gerahmt, nicht als Pauschal-Plädoyer.
 const twoAnswers = {
@@ -112,13 +91,13 @@ const phases = [
   },
 ];
 
-const seoTitle = 'Standardsoftware ablösen – Vertec, Centric & Co.';
+const seoTitle = 'Standardsoftware ablösen – Vertec, Branchensoftware & Co.';
 const pageUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
 const serviceSchema = createServiceSchema({
   name: 'Standardsoftware-Ablösung',
   description:
-    'Ablösung gewachsener Standardsoftware (z. B. Vertec oder Centric) durch eine individuelle Lösung, die zum tatsächlichen Geschäftsprozess passt. Pragmatischer Parallelbetrieb statt Big-Bang-Austausch.',
+    'Ablösung gewachsener Standardsoftware (z. B. Vertec oder eine Branchenlösung) durch eine individuelle Lösung, die zum tatsächlichen Geschäftsprozess passt. Pragmatischer Parallelbetrieb statt Big-Bang-Austausch.',
   url: pageUrl,
   serviceType: 'Ablösung von Standardsoftware durch Individualentwicklung',
   areaServed: 'DE',
@@ -146,7 +125,7 @@ const miniFaqs = [
 
 <PageLayout
   title={seoTitle}
-  description="Vertec, Centric oder ein anderes Branchensystem wächst nicht mehr mit? Wir lösen gewachsene Standardsoftware ab: schrittweise, im Parallelbetrieb, ohne Big-Bang."
+  description="Vertec oder eine andere Branchensoftware wächst nicht mehr mit? Wir lösen gewachsene Standardsoftware ab: schrittweise, im Parallelbetrieb, ohne Big-Bang."
   lang={locale}
   routeId="standardsoftwareAbloesung"
   extraSchemas={[
@@ -171,14 +150,14 @@ const miniFaqs = [
         lang="de"
         class="font-display text-foreground mt-6 text-4xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-5xl lg:text-6xl"
       >
-        Wenn Vertec oder Centric das Wachstum
+        Wenn die Branchensoftware das Wachstum
         <span class="mt-2 block text-brand-500">
           eher bremst als trägt.
         </span>
       </h1>
       <p data-reveal class="text-foreground-secondary mx-auto mt-8 max-w-2xl text-lg leading-8 sm:text-xl">
-        Vertec und Centric stehen hier stellvertretend. Das Muster gilt genauso für jedes andere
-        Branchensystem und für über Jahre gewachsene Eigenkonstrukte. Standardsoftware ist gut,
+        Ob Vertec in der Beratung, ein Handwerkerpaket oder ein über Jahre gewachsenes
+        Eigenkonstrukt: Das Muster ist überall dasselbe. Standardsoftware ist gut,
         sie ist eben <strong>für alle</strong> gemacht. Irgendwann arbeitet ihr gegen das System
         statt damit. Wir überführen <strong>eure wichtigsten Abläufe</strong> in eine Lösung, die
         zu eurem tatsächlichen Geschäft passt.
@@ -246,56 +225,6 @@ const miniFaqs = [
         Einzeln rechtfertigt keines dieser Signale, ein etabliertes System über den Haufen zu
         werfen. Treten sie zusammen auf und soll der Betrieb wachsen, sieht das anders aus.
       </p>
-    </div>
-  </section>
-
-  <!-- CENTRIC VON INNEN (Autoritätsbaustein) -->
-  <section class="bg-surface-invert text-on-invert relative overflow-hidden py-24 lg:py-32">
-    <div class="bg-brand-500/10 pointer-events-none absolute -right-32 top-0 h-96 w-96 rounded-full blur-3xl" aria-hidden="true"></div>
-    <div class="container relative z-10 max-w-6xl">
-      <div class="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-16">
-        <div data-reveal="fade-right" class="lg:sticky lg:top-28">
-          <p class="text-brand-300 text-xs font-semibold tracking-[0.22em] uppercase">Aus erster Hand</p>
-          <h2
-            lang="de"
-            class="font-display mt-4 text-3xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-4xl"
-          >
-            Wir haben auch Centric von innen gesehen.
-          </h2>
-          <p class="text-on-invert-secondary mt-6 text-lg leading-8">
-            Nicht aus dem Prospekt: Wir haben eine Centric-Einführung in einem Handels- und
-            Versandunternehmen begleitet – Migration aus gewachsenen Host- und Informatica-Strukturen,
-            Datenbereinigung, Aufbereitung und Transformation in den neuen Standard.
-          </p>
-          <blockquote class="border-brand-300/60 mt-8 border-l-2 pl-5">
-            <p class="text-on-invert text-xl font-semibold leading-snug">
-              „Auch das große Standardprodukt kocht nur mit Wasser."
-            </p>
-            <p class="text-on-invert-secondary mt-3 text-base leading-7">
-              Wir haben beide Seiten von innen erlebt und ordnen im Einzelfall ein, was bei euch
-              trägt. Manchmal ist das der Standard, nicht die Individualsoftware.
-            </p>
-          </blockquote>
-        </div>
-
-        <div data-reveal="fade-left" class="space-y-4">
-          {
-            centricLimits.map((item) => (
-              <article class="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur transition-colors duration-300 hover:border-white/20 sm:p-7">
-                <div class="flex items-start gap-4">
-                  <div class="border-brand-300/40 bg-brand-500/15 text-brand-200 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border">
-                    <Icon name={item.icon} size="md" />
-                  </div>
-                  <div>
-                    <h3 class="text-on-invert text-lg font-bold tracking-tight">{item.title}</h3>
-                    <p class="text-on-invert-secondary mt-2 text-[0.95rem] leading-7">{item.text}</p>
-                  </div>
-                </div>
-              </article>
-            ))
-          }
-        </div>
-      </div>
     </div>
   </section>
 

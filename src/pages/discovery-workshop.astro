@@ -48,55 +48,28 @@ const deliverables = [
   {
     icon: 'file-text',
     title: 'Eine Entscheidung, die euch gehört',
-    text: 'Schriftliche Zusammenfassung mit einer klaren Empfehlung: ausbauen, ablösen oder so lassen, jeweils mit Kostenrahmen und priorisierten nächsten Schritten. Geeignet für interne Weichenstellungen, Aufsichtsrat oder die Weiterarbeit mit uns.',
+    text: 'Schriftliche Zusammenfassung mit einer klaren Empfehlung: ausbauen, ablösen oder so lassen, mit Festpreis für die erste Stufe und priorisierten nächsten Schritten. Geeignet für interne Weichenstellungen, Aufsichtsrat oder die Weiterarbeit mit uns.',
   },
 ];
 
+// Ein Format, ein Preis (entschieden 2026-10-07). Vertieft und Individuell sind raus:
+// Reicht ein Workshop nicht, sagen wir das im dritten Termin und machen einen Vorschlag.
 const formats = [
   {
-    name: 'Standard',
-    duration: '1 Tag',
-    sessions: '2× 3-Stunden-Termine',
+    name: 'Workshop',
+    duration: 'drei Termine',
+    sessions: '3 h + 2 h + 1 h, verteilt über ein bis zwei Wochen',
     price: '2.400 €',
-    summary: 'Der Einstieg: ein Tag, ein Dokument, eine Entscheidung - mit Zeit für mehrere Prozesse und Stakeholder-Sicht.',
+    summary: 'Drei Termine, ein Dokument, ein Festpreis. Der Betrag wird bei Beauftragung der Umsetzung voll angerechnet.',
     includes: [
-      'Zwei 3-Stunden-Termine (wahlweise an einem Tag oder auf zwei Tage verteilt)',
-      'Stakeholder-Interviews und Keyuser-Gespräche',
-      'Abläufe, eingesetzte Tools und Systembrüche, aufgenommen aus Gesprächen und Bildschirm-Demos',
-      'Prozessbilder + Datenflüsse + Oberflächen-Entwürfe',
-      'Schriftliche Ausarbeitung mit Handlungsempfehlungen und Kostenrahmen',
+      'Aufnahme (3 Stunden, gern vor Ort): euer Ablauf von der Anfrage bis zur Rechnung, eingesetzte Tools, Systembrüche, Keyuser-Gespräche',
+      'Abstimmung (2 Stunden, remote, wenige Tage später): Aufgeschriebenes gegenlesen, Lücken schließen, erste Stufe abgrenzen',
+      'Übergabe (1 Stunde, mit Geschäftsführung): Ergebnis vorstellen, Dokument übergeben, Festpreis für die Umsetzung',
+      'Prozessbild, Datenflüsse und Oberflächen-Entwürfe für die Kernabläufe',
+      'Schriftliche Ausarbeitung mit Empfehlung: ausbauen, ablösen oder so lassen',
     ],
-    fit: 'Wenn mehrere Abläufe zusammenspielen und ihr eine belastbare Grundlage für weitreichende Entscheidungen braucht.',
+    fit: 'Wenn ihr wissen wollt, was eine Lösung bei euch leisten muss und was sie kostet, bevor ihr Budget freigebt.',
     featured: true,
-  },
-  {
-    name: 'Vertieft',
-    duration: '2 Tage',
-    sessions: '4× 3-Stunden-Termine',
-    price: '4.500 €',
-    summary: 'Tiefenanalyse mit mehr Interviews, mehr Detail und dem Einstieg in die Systeme selbst statt nur des Blicks auf sie.',
-    includes: [
-      'Vier 3-Stunden-Termine (wahlweise verteilt über bis zu vier Tage)',
-      'Erweiterte Stakeholder- und Keyuser-Runde',
-      'Einstieg in die Datenstrukturen der Umsysteme (Vertec, ERP, Excel-Welten): Felder, Exporte, Datenqualität, Migrierbarkeit',
-      'Mehrere Prozessbilder, Datenmodelle und Mockup-Strecken für verschiedene Abläufe',
-      'Ausführliches Dokument inkl. Handlungsempfehlungen, Roadmap-Vorschlag und Kostenrahmen je Ausbaustufe',
-    ],
-    fit: 'Wenn eine Altsystem-Ablösung, mehrere Abteilungen oder verschachtelte Integrationen im Raum stehen - und ein oberflächlicher Blick nicht reicht.',
-  },
-  {
-    name: 'Individuell',
-    duration: 'nach Zuschnitt',
-    sessions: 'Termine über mehrere Wochen',
-    price: 'nach Vorgespräch',
-    summary: 'Für Vorhaben, die über zwei Tage hinausgehen: mehrere Abteilungen, mehrere Standorte oder eine Ablösung mit vielen Beteiligten.',
-    includes: [
-      'Zuschnitt und Festpreis legen wir im Vorbereitungstermin fest',
-      'Interviews und Workshop-Termine je Bereich, verteilt über mehrere Wochen',
-      'Prozessbilder, Datenmodelle und Mockup-Strecken je Bereich',
-      'Auf Wunsch direkt als Konzeptphase: Mockups, Datenmodell und Festpreisangebot für die Umsetzung',
-    ],
-    fit: 'Wenn absehbar ist, dass es größer wird - und ihr trotzdem mit einer bezahlten, klar umrissenen Analyse statt mit einem Blankoscheck starten wollt.',
   },
 ];
 
@@ -105,25 +78,25 @@ const processSteps = [
     number: '01',
     icon: 'monitor',
     title: 'Vorbereitung',
-    text: 'Etwa 30 Minuten online zur Ausgangslage: Wir klären, was der Workshop adressieren soll. Danach bekommt ihr Agenda und eine kurze Liste mit Fragen oder benötigten Unterlagen - der Workshop startet beim Kern.',
+    text: 'Etwa 30 Minuten online zur Ausgangslage, meist das Erstgespräch. Danach bekommt ihr Agenda und eine kurze Liste mit Fragen oder benötigten Unterlagen - der Workshop startet beim Kern.',
   },
   {
     number: '02',
     icon: 'users',
-    title: 'Workshop',
-    text: 'Remote, hybrid oder bei euch vor Ort. Prozesse aufnehmen, Engpässe identifizieren, erste Lösungsskizzen entwickeln.',
+    title: 'Aufnahme · 3 Stunden',
+    text: 'Gern bei euch vor Ort. Wir gehen den Ablauf durch, wie er wirklich läuft: wer was womit macht, wo abgetippt wird, welche Regel hinter den Zahlen steckt. Keyuser dabei, echte Beispiele auf dem Tisch.',
   },
   {
     number: '03',
     icon: 'layers',
-    title: 'Nachbereitung',
-    text: 'Wir erstellen Prozessbilder, Datenflüsse, Oberflächen-Entwürfe und die schriftliche Zusammenfassung mit Handlungsempfehlungen.',
+    title: 'Abstimmung · 2 Stunden',
+    text: 'Wenige Tage später, remote. Wir lesen gemeinsam gegen, was wir aufgeschrieben haben, schließen Lücken und grenzen die erste Stufe ab. Danach entstehen Prozessbild, Entwürfe und das Dokument.',
   },
   {
     number: '04',
     icon: 'check-circle',
-    title: 'Übergabe',
-    text: 'Review-Termin mit Durchsprache der Ergebnisse. Danach gehört das Dokument euch - ohne Bindung.',
+    title: 'Übergabe · 1 Stunde',
+    text: 'Mit der Geschäftsführung. Wir stellen das Ergebnis vor, übergeben das Dokument und nennen den Festpreis für die Umsetzung. Danach gehört das Dokument euch - ohne Bindung.',
   },
 ];
 
@@ -143,14 +116,9 @@ const workshopServiceSchema = createServiceSchema({
   areaServed: 'DE',
   offers: [
     {
-      name: 'Standard',
+      name: 'Workshop',
       price: '2400',
-      description: '1 Tag, 2× 3-Stunden-Termine – ausreichend Zeit für mehrere Prozesse und Stakeholder-Sicht.',
-    },
-    {
-      name: 'Vertieft',
-      price: '4500',
-      description: '2 Tage, 4× 3-Stunden-Termine – Tiefenanalyse inkl. erweitertem Ergebnisdokument.',
+      description: 'Drei Termine (3 h Aufnahme, 2 h Abstimmung, 1 h Übergabe), Dokument mit Empfehlung und Festpreis für die Umsetzung.',
     },
   ],
 });
@@ -162,11 +130,11 @@ const miniFaqs = [
   },
   {
     q: 'Kann ich das Dokument intern weiterverwenden?',
-    a: 'Ja, uneingeschränkt. Das Ergebnis gehört euch und eignet sich als Arbeitsgrundlage für interne Planung oder die Zusammenarbeit mit uns. Der Workshop legt keinen finalen Projektpreis fest - er zeigt, was vorhanden ist, wo die Engpässe liegen und wie eine Lösung aussehen könnte. Daraus lässt sich nach Themen-Priorisierung ein Paketpreis oder eine Range schnüren, die man dann auch mit anderen Angeboten vergleichen könnte.',
+    a: 'Ja, uneingeschränkt. Das Ergebnis gehört euch und eignet sich als Arbeitsgrundlage für interne Planung oder die Zusammenarbeit mit uns. Der Workshop endet mit einem Festpreis für die erste Stufe der Umsetzung. Das Dokument beschreibt, was vorhanden ist, wo die Engpässe liegen und wie die Lösung aussieht - damit lässt es sich auch mit anderen Angeboten vergleichen.',
   },
   {
-    q: 'Standard oder Vertieft - woran mache ich das fest?',
-    a: 'An der Tiefe, nicht an der Firmengröße. Standard nimmt Abläufe, eingesetzte Tools und Systembrüche aus Gesprächen und Bildschirm-Demos auf - das reicht, um zu verstehen, zu priorisieren und eine Richtung mit Kostenrahmen festzulegen. Vertieft steigt zusätzlich in die Datenstrukturen der Umsysteme ein: Welche Felder gibt es in Vertec oder dem ERP, was lässt sich sauber exportieren, wie gut sind die Bestandsdaten, was davon ist migrierbar? Faustregel: Geht es ums Einordnen, wählt Standard. Steht eine Ablösung oder Migration im Raum, bei der Bestandsdaten übernommen werden sollen, wählt Vertieft - dort entscheidet die Datenqualität über den Projektpreis.',
+    q: 'Reicht ein Workshop immer?',
+    a: 'Für den Einstieg ja. Drei Termine reichen, um einen Ablauf aufzunehmen, die erste Stufe abzugrenzen und einen Festpreis dafür zu nennen. Wenn im Workshop sichtbar wird, dass es größer ist - mehrere Abteilungen, eine Ablösung mit Datenübernahme aus Vertec oder dem ERP, mehrere Standorte - sagen wir das im dritten Termin und machen einen Vorschlag, wie wir die Analyse vertiefen. Das Dokument aus dem Workshop behaltet ihr in jedem Fall.',
   },
   {
     q: 'Vor Ort, remote oder hybrid?',
@@ -174,18 +142,18 @@ const miniFaqs = [
   },
   {
     q: 'Bei uns läuft schon eine Anwendung, der wir nicht ganz trauen. Passt der Workshop dafür?',
-    a: 'Dafür gibt es die technische Variante: den Code-Check. Ein Tag im Standard-Format, aber statt Prozessaufnahme schauen wir in Code, Zugriffe, Datenhaltung und Betrieb einer bestehenden Anwendung, egal ob sie ein Dienstleister, ein ehemaliger Kollege oder ihr selbst mit KI-Werkzeugen gebaut habt. Geprüft wird entlang OWASP ASVS, am Ende steht eine schriftliche Empfehlung: betreiben, härten oder neu aufsetzen. Ein Penetrationstest ist das nicht; wenn ihr einen braucht, sagen wir das im Dokument. Sprecht uns im Erstgespräch darauf an.',
+    a: 'Dafür gibt es die technische Variante: den Code-Check. Gleicher Rahmen wie der Workshop, aber statt Prozessaufnahme schauen wir in Code, Zugriffe, Datenhaltung und Betrieb einer bestehenden Anwendung, egal ob sie ein Dienstleister, ein ehemaliger Kollege oder ihr selbst mit KI-Werkzeugen gebaut habt. Geprüft wird entlang OWASP ASVS, am Ende steht eine schriftliche Empfehlung: betreiben, härten oder neu aufsetzen. Ein Penetrationstest ist das nicht; wenn ihr einen braucht, sagen wir das im Dokument. Sprecht uns im Erstgespräch darauf an.',
   },
   {
     q: 'Was, wenn wir uns danach gegen eine Zusammenarbeit entscheiden?',
-    a: 'Das wäre schade, aber in Ordnung. Der Workshop ist eigenständig wertvoll und soll es auch bleiben - gleichzeitig ist er eine Voraussetzung für ein tiefgreifendes Konzept und eine belastbare Aufwandsschätzung. Ohne diese Grundlage einfach loszulegen und zu schauen, wo man landet, funktioniert erfahrungsgemäß nicht. Nach einer ausführlichen Analyse - die meist bereits mit dem Workshop abgeschlossen ist - können wir einen Festpreis oder eine verlässliche Range festlegen, die für beide Seiten planbar ist.',
+    a: 'Das wäre schade, aber in Ordnung. Der Workshop ist eigenständig wertvoll und soll es auch bleiben - gleichzeitig ist er eine Voraussetzung für ein tiefgreifendes Konzept und eine belastbare Aufwandsschätzung. Ohne diese Grundlage einfach loszulegen und zu schauen, wo man landet, funktioniert erfahrungsgemäß nicht. Mit dem Workshop ist diese Analyse abgeschlossen, und der Festpreis für die Umsetzung steht im Dokument. Beauftragt ihr innerhalb von acht Wochen, rechnen wir die 2.400 € voll an.',
   },
 ];
 ---
 
 <PageLayout
   title="Discovery-Workshop für Entscheider"
-  description="Strukturierter Außenblick auf Prozesse und Systemlandschaft: Datenflüsse, Mockups und eine priorisierte Handlungsempfehlung. Ein Tag, ein Dokument, eine Entscheidung - 2.400 €."
+  description="Strukturierter Außenblick auf Prozesse und Systemlandschaft: Datenflüsse, Mockups und eine Empfehlung mit Festpreis. Drei Termine, ein Dokument, ein Festpreis - 2.400 €, bei Beauftragung angerechnet."
   lang={locale}
   routeId="discoveryWorkshop"
   extraSchemas={[
@@ -279,10 +247,10 @@ const miniFaqs = [
           lang="de"
           class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-4xl"
         >
-          Danach wisst ihr, was zu tun ist - und was es ungefähr kostet.
+          Danach wisst ihr, was zu tun ist - und was es kostet.
         </h2>
         <p class="text-foreground-secondary mt-6 text-lg leading-8">
-          Ein Tag, ein Dokument, eine Entscheidung. Am Ende stehen Unterlagen, mit denen
+          Drei Termine, ein Dokument, ein Festpreis. Am Ende stehen Unterlagen, mit denen
           Fachbereich, IT und Geschäftsführung gleichermaßen arbeiten können.
         </p>
       </header>
@@ -519,17 +487,17 @@ const miniFaqs = [
         <h2
           class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl"
         >
-          Zwei Formate mit Festpreis. Eins nach Maß.
+          Ein Format. Ein Festpreis.
         </h2>
         <p class="text-foreground-secondary mt-6 text-lg leading-8">
-          Alle Preise zzgl. USt. Anreise- und Reisezeitkosten werden bei
-          Vor-Ort-Workshops individuell vereinbart.
+          Preis zzgl. USt., fällig bei Buchung. Wird die Umsetzung innerhalb von acht Wochen
+          beauftragt, wird der Betrag voll angerechnet. Anreise bei Vor-Ort-Terminen nach Pauschale.
         </p>
       </header>
 
       <div
         data-reveal
-        class="mt-16 grid gap-6 md:grid-cols-3 md:gap-7"
+        class="mt-16 grid gap-6 md:grid-cols-[1.15fr_0.85fr] md:gap-7"
       >
         {
           formats.map((format) => (
@@ -582,6 +550,34 @@ const miniFaqs = [
             </article>
           ))
         }
+        <article class="border-border bg-card flex flex-col rounded-2xl border p-7 shadow-sm sm:p-8">
+          <h3 class="font-display text-foreground text-xl font-bold tracking-tight">
+            Und wenn es größer ist?
+          </h3>
+          <p class="text-foreground-secondary mt-4 text-[0.95rem] leading-7">
+            Dann sehen wir das im Workshop. Mehrere Abteilungen, eine Ablösung mit Datenübernahme
+            aus Vertec oder dem ERP, mehrere Standorte: Das sagen wir im dritten Termin offen und
+            machen einen Vorschlag, wie wir die Analyse vertiefen - mit eigenem Festpreis.
+          </p>
+          <p class="text-foreground-secondary mt-4 text-[0.95rem] leading-7">
+            Das Dokument aus dem Workshop behaltet ihr in jedem Fall, auch wenn ihr danach mit
+            jemand anderem weiterarbeitet.
+          </p>
+          <ul class="mt-6 flex flex-col gap-3">
+            <li class="text-foreground flex items-start gap-2.5 text-sm leading-6">
+              <Icon name="check-circle" size="sm" class="text-brand-500 mt-0.5 shrink-0" />
+              <span>Umsetzung zum Festpreis, Betrieb im ersten Jahr inklusive</span>
+            </li>
+            <li class="text-foreground flex items-start gap-2.5 text-sm leading-6">
+              <Icon name="check-circle" size="sm" class="text-brand-500 mt-0.5 shrink-0" />
+              <span>Ab dem zweiten Jahr eine jährliche Pauschale für Hosting, Updates, Backups und kleine Anpassungen</span>
+            </li>
+            <li class="text-foreground flex items-start gap-2.5 text-sm leading-6">
+              <Icon name="check-circle" size="sm" class="text-brand-500 mt-0.5 shrink-0" />
+              <span>Keine Lizenzkosten, keine Laufzeitbindung über den Betrieb hinaus</span>
+            </li>
+          </ul>
+        </article>
       </div>
     </div>
   </section>

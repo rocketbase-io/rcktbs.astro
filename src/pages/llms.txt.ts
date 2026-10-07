@@ -66,12 +66,13 @@ ${serviceLines.join('\n')}
 - [Arbeitsweise](${base}/arbeitsweise/): Wie Projekte zugeschnitten und umgesetzt werden, inklusive FAQ.
 - [Referenzen](${base}/referenzen/): Umgesetzte Projekte mit Ausgangslage, Vorgehen und Ergebnis.
 - [Mission](${base}/mission/): Haltung und Prinzipien hinter der Arbeit.
-- [Discovery-Workshop](${base}/discovery-workshop/): Strukturierter Klärungsschritt vor einem Projekt.
+- [Workshop](${base}/discovery-workshop/): Drei Termine, ein Dokument, ein Festpreis für die Umsetzung; 2.400 €, bei Beauftragung angerechnet.
 - [Kontakt](${base}/kontakt/): Erstgespräch vereinbaren.
 
 ## Einstiege nach Problemlage
 
-- [Standardsoftware ablösen](${base}/standardsoftware-abloesung/): Wenn ein Branchensystem wie Vertec oder Centric nicht mehr mitwächst - Vorgehen im Parallelbetrieb statt Big Bang.
+- [Angebot und Kalkulation](${base}/angebote/): Angebote, die sich nach der eigenen Kalkulationsregel selbst rechnen, mit Deckungsbeitrag vor dem Versand, als Angebotsseite beim Kunden und Zusage per Klick.
+- [Standardsoftware ablösen](${base}/standardsoftware-abloesung/): Wenn eine Branchensoftware wie Vertec nicht mehr mitwächst - Vorgehen im Parallelbetrieb statt Big Bang.
 - [Einsatzplanung und grafischer Leitstand](${base}/einsatzplanung/): Wenn Disposition, Einsatzsteuerung und Abrechnung über gewachsene Excel-Welten laufen.
 
 ## Fachbeiträge

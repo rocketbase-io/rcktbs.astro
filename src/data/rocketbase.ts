@@ -27,7 +27,7 @@ export const strengths = [
   {
     title: 'Direkt, mit Widerspruch',
     description:
-      'Ihr schreibt in einen Channel, in dem die Leute sitzen, die es bauen. Und ihr hört es, wenn eine Anforderung in die falsche Richtung läuft, statt sie einfach umgesetzt zu bekommen.',
+      'Ihr sprecht mit denen, die es bauen, nicht mit einem Projektleiter dazwischen. Und wenn ein Wunsch in die falsche Richtung läuft, sagen wir das, bevor wir ihn umsetzen.',
   },
 ];
 
@@ -558,16 +558,16 @@ export const processSteps = [
 ];
 
 export const discoveryOffer = {
-  title: 'Discovery-Workshop',
-  subtitle: 'Ein Tag, ein Dokument, eine Entscheidung.',
+  title: 'Workshop',
+  subtitle: 'Drei Termine, ein Dokument, ein Festpreis.',
   description:
-    'Wir sitzen mit euren Keyusern zusammen, nehmen die dringendsten Baustellen auf und entwerfen ein Zielbild für die erste Ausbaustufe. Am Ende steht eine Empfehlung mit Kostenrahmen: ausbauen, ablösen oder so lassen. Ein Tag, 2.400 €, und das Dokument gehört euch, auch wenn ihr danach mit jemand anderem weiterarbeitet.',
+    'Aufnahme bei euch, Abstimmung wenige Tage später, Übergabe mit der Geschäftsführung: zusammen etwa ein halber Tag eurer Zeit. Am Ende steht euer Ablauf aufgeschrieben, ein Zielbild für die erste Stufe und ein Festpreis für die Umsetzung. 2.400 €, bei Beauftragung voll angerechnet, und das Dokument gehört euch, auch wenn ihr danach mit jemand anderem weiterarbeitet.',
   deliverables: [
-    'Bestandsaufnahme der dringendsten Engpässe',
+    'Euer Ablauf, aufgeschrieben, mit den Stellen, an denen Zeit verloren geht',
     'Quickwins, die sich kurzfristig umsetzen lassen',
-    'Zielbild für die erste Ausbaustufe',
-    'Mockups oder Prozessskizzen für die Kernabläufe',
-    'Eine Empfehlung mit Kostenrahmen: ausbauen, ablösen oder so lassen',
+    'Zielbild und Entwürfe für die erste Ausbaustufe',
+    'Eine Empfehlung: ausbauen, ablösen oder so lassen',
+    'Festpreis für die Umsetzung, einmalig, inklusive Betrieb im ersten Jahr',
   ],
 };
 
