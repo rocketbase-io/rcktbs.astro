@@ -46,35 +46,38 @@ export const GET: APIRoute = async ({ site }) => {
 
 > ${siteConfig.description}
 
-RocketBase (rocketbase.io software productions GmbH) entwickelt individuelle
-Unternehmenssoftware für den deutschen Mittelstand. Typische Ausgangslagen:
-eine Standardsoftware, die nicht mehr zum gewachsenen Prozess passt, eine
-Steuerung über Excel-Tabellen, oder verteilte Tools ohne gemeinsame Datenbasis.
-Sitz ist Winsen (Luhe) in der Metropolregion Hamburg, gearbeitet wird bundesweit.
+RocketBase (rocketbase.io software productions GmbH) entwickelt Software für
+inhabergeführte Betriebe, die nicht in Standardlösungen passen, typischerweise
+Dienstleister ab etwa 30 Mitarbeitenden (Beratung, Prüfung, Wartung, Service,
+Handwerk, Metallbau). Meist gibt es ein ERP, ein CRM oder eine Branchensoftware,
+und daneben laufen Kalkulation, Einsatzplanung oder Auswertungen in Excel.
+RocketBase baut entweder den fehlenden Teil oder löst die Branchensoftware
+Schritt für Schritt ab.
+Sitz ist Winsen (Luhe) bei Hamburg, gearbeitet wird bundesweit.
 
-Ansprechpartner ist Marten Prieß (Geschäftsführer). Erstgespräche laufen ohne
-Vertriebskette direkt mit ihm: ${contactLinks.cal}
+Ansprechpartner ist Marten Prieß (Gründer und Geschäftsführer). Der erste Schritt
+ist ein kostenloses Erstgespräch von 30 Minuten direkt mit ihm: ${contactLinks.cal}
+Danach folgt ein Workshop in drei Terminen, an dessen Ende ein Festpreis für die
+Umsetzung steht.
 
-## Wobei RocketBase hilft
+## Drei Bereiche und die Ablösung
+
+- [Angebot und Kalkulation](${base}/angebote/): Angebote, die sich nach der eigenen Kalkulationsregel selbst rechnen, mit Deckungsbeitrag vor dem Versand, als Angebotsseite beim Kunden und Zusage per Klick.
+- [Einsatz und Abrechnung](${base}/einsatzplanung/): Plantafel mit Abwesenheiten, Ablauf je Auftrag, Einsatz je Vertrag, Leistungserfassung, Rechnung und Mahnwesen in einem System, statt Excel und Stundenzettel.
+- [Zahlen und Steuerung](${base}/zahlen/): Cockpit für Umsatz und Prognose, Auslastung bis zur Person, Deckungsbeitrag, auslaufende Verträge und Forderungen, live aus den vorhandenen Systemen.
+- [Standardsoftware ablösen](${base}/standardsoftware-abloesung/): Branchensoftware samt Excel drumherum Schritt für Schritt ablösen, im Parallelbetrieb und mit Übernahme der gesamten Datenhistorie (Beispiel: Vertec bei FKC Consulting).
+
+## Weitere Seiten
+
+- [Lösungen im Überblick](${base}/leistungen/): Die drei Bereiche, die Ablösung und der Weg vom Erstgespräch bis zum Betrieb.
+- [Workshop](${base}/discovery-workshop/): Drei Termine (3 h, 2 h, 1 h), ein Dokument mit Prozessbild und Entwürfen, ein Festpreis für die Umsetzung; 2.400 €, bei Beauftragung angerechnet.
+- [Referenzen](${base}/referenzen/): Umgesetzte Projekte mit Ausgangslage, Vorgehen und Ergebnis.
+- [Kontakt](${base}/kontakt/): Erstgespräch vereinbaren.
+- [Arbeitsweise](${base}/arbeitsweise/) und [Mission](${base}/mission/): Haltung und Vorgehen hinter der Arbeit.
+
+## Wobei RocketBase außerdem hilft
 
 ${serviceLines.join('\n')}
-
-## Zentrale Seiten
-
-- [Startseite](${base}/): Überblick über Positionierung, Leistungen und Referenzen.
-- [Leistungen](${base}/leistungen/): Von der Prozessanalyse über Konzeption und Entwicklung bis zum Betrieb.
-- [Arbeitsweise](${base}/arbeitsweise/): Wie Projekte zugeschnitten und umgesetzt werden, inklusive FAQ.
-- [Referenzen](${base}/referenzen/): Umgesetzte Projekte mit Ausgangslage, Vorgehen und Ergebnis.
-- [Mission](${base}/mission/): Haltung und Prinzipien hinter der Arbeit.
-- [Workshop](${base}/discovery-workshop/): Drei Termine, ein Dokument, ein Festpreis für die Umsetzung; 2.400 €, bei Beauftragung angerechnet.
-- [Kontakt](${base}/kontakt/): Erstgespräch vereinbaren.
-
-## Einstiege nach Problemlage
-
-- [Zahlen und Steuerung](${base}/zahlen/): Cockpit für Umsatz und Prognose, Auslastung bis zur Person, Deckungsbeitrag, auslaufende Verträge und Forderungen, live aus den vorhandenen Systemen.
-- [Angebot und Kalkulation](${base}/angebote/): Angebote, die sich nach der eigenen Kalkulationsregel selbst rechnen, mit Deckungsbeitrag vor dem Versand, als Angebotsseite beim Kunden und Zusage per Klick.
-- [Standardsoftware ablösen](${base}/standardsoftware-abloesung/): Wenn eine Branchensoftware wie Vertec nicht mehr mitwächst - Vorgehen im Parallelbetrieb statt Big Bang.
-- [Einsatz und Abrechnung](${base}/einsatzplanung/): Plantafel mit Abwesenheiten, Ablauf je Auftrag, Einsatz je Vertrag, Leistungserfassung, Rechnung und Mahnwesen in einem System, statt Excel und Stundenzettel.
 
 ## Fachbeiträge
 

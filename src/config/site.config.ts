@@ -51,7 +51,7 @@ const env = import.meta.env;
 const siteConfig: SiteConfig = {
   name: 'RocketBase',
   description:
-    'Individuelle Unternehmenssoftware für den Mittelstand. Von der Prozessanalyse bis zum Betrieb, direkt mit Marten Prieß.',
+    'Software für inhabergeführte Betriebe, die nicht in Standardlösungen passen: Angebot und Kalkulation, Einsatz und Abrechnung, Zahlen und Steuerung. Direkt mit Marten Prieß.',
   url: env.SITE_URL || env.PUBLIC_SITE_URL || 'https://rocketbase.io',
   ogImage: '/og-default.png',
   author: 'Marten Prieß',
