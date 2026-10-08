@@ -81,3 +81,71 @@ Leads einsehen: Netlify-Dashboard → Blobs, oder `netlify blobs:list funnel-lea
 
 Die Antwort-IDs (`problem`/`impact`, z. B. `altsystem`, `gt250`) eignen sich für
 Audiences pro Problem-Kategorie und für wertbasierte Optimierung.
+
+Seit Oktober 2026 gehen alle Quiz-Events zusätzlich an **Plausible** (Custom
+Events mit denselben Namen und Props). Ohne GTM wären sie sonst unsichtbar.
+Dazugekommen, nur für die Abbruch-Analyse:
+
+| Event | Wann | Props |
+| --- | --- | --- |
+| `funnel_schritt_erreicht` | Frage 2..n angezeigt (einmal pro Schritt) | `funnel`, `step`, `question` |
+| `funnel_kontakt_erreicht` | Kontaktschritt angezeigt | `funnel`, `step` |
+| `funnel_fehler` | Absenden gescheitert | `funnel`, `art`: `validierung` \| `netz` |
+
+Abbruch liest sich in Plausible als Differenz der eindeutigen Besucher:
+Pageview → `funnel_quiz_start` → `funnel_schritt_erreicht` (step=2, 3, …) →
+`funnel_kontakt_erreicht` → `funnel_lead`. Verweildauer pro Seite liefert
+Plausible selbst (Engagement-Tracking der aktuellen Script-Version), ein
+eigenes Ereignis dafür wäre doppelt.
+
+## Brief und persönliche Mail: Ereignisse pro Kennung (/b/ und /f/-Türen)
+
+Die `?r=`-Kennung ist kanalunabhängig: Sie hängt am QR-Code des Briefs und am
+Link in der persönlichen Mail, egal ob der auf `/b/angebot` oder auf eine der
+drei Türen (`/f/angebote`, `/f/einsatz`, `/f/zahlen`) zeigt. Für Mail-Links:
+`https://rocketbase.io/f/angebote/?r=<kennung>`.
+
+Jedes Ereignis geht an zwei Stellen: **Plausible** (immer, anonym, mit
+`funnel` als Property — Trichter über alle Empfänger) und das **Sales-Backend**
+`/api/public/funnel-events` (nur mit Kennung — Sicht pro Firma).
+Logik in `src/lib/funnelTracking.ts` und `src/lib/engagement.ts`, eingehängt
+über die Prop `funnel` des `FunnelLayout` (`brief-<slug>` bzw. `tuer-<slug>`).
+Die Seiten brauchen keine Tracking-Attribute: beobachtet werden alle `<video>`,
+alle `<section id>` und alle Klicks auf Buttons, Tabs, Links, Regler.
+`data-track="name"` an einem Element überschreibt den automatisch gebauten
+Namen.
+
+| Event | Wann | Payload |
+| --- | --- | --- |
+| `page_view` | Seite geladen | `url`, `referrer`, `utm`, `device`, `viewport`, … |
+| `video_sichtbar` | Video-Sektion zu 40 % im Viewport | – |
+| `video_start` | Play gedrückt | `dauer` (Sekunden gesamt) |
+| `video_25` / `_50` / `_75` | Viertelmarken erreicht | `sekunden` |
+| `video_ende` | Video zu Ende gesehen | `sekunden` |
+| `termin_sichtbar` | Termin-Sektion zu 40 % im Viewport | – |
+| `termin_klick` | Fallback-Link geklickt oder Slot im Embed gewählt | `weg`: `link` \| `embed` |
+| `termin_gebucht` | Cal.com meldet `bookingSuccessfulV2` (nur Embed) | `weg` |
+| `telefon_klick` | `tel:`-Link geklickt | – |
+| `weiter_klick` | "Weiter"-Link unter dem Video | `ziel` |
+| `sektion_sichtbar` | Sektion mit `id` zu 40 % im Viewport (einmal je Sektion) | `sektion` |
+| `interaktion` | Klick auf Button/Tab/Link/Regler (einmal je Element) | `sektion`, `element` |
+| `quiz_start` / `quiz_schritt` / `quiz_kontakt` / `quiz_lead` | Quiz auf den Türen, nur Backend (Plausible hat die `funnel_*`-Events) | `step`, `question`, `answer` |
+| `verweildauer` | Tab verlassen/versteckt, ab 2 s sichtbarer Zeit | `sekunden`, `scroll` (0–100 %) |
+
+Alle Ereignisse außer `verweildauer` werden pro Seitenaufruf nur einmal
+gemeldet (bei `sektion_sichtbar`, `interaktion`, `video_*` und `quiz_schritt`
+einmal je Sektion/Element/Video/Schritt); `verweildauer` darf mit höherem Wert erneut kommen, das Backend
+nimmt das Maximum.
+
+**Scanner erkennen:** Ein `page_view` ohne `verweildauer` innerhalb weniger
+Minuten nach Versand ist ein Mail-Security-Scanner, kein Mensch. Erst
+`verweildauer` ≥ 2 s oder ein `video_*`-Ereignis ist eine echte Öffnung.
+
+**Plausible:** Custom Events erscheinen erst im Dashboard, wenn sie dort unter
+Site Settings → Goals als Custom Event angelegt sind (gleicher Name). Für die
+Trichter-Ansicht: Pageview `/b/angebot/` → `video_start` → `video_50` → `termin_klick`
+als Funnel anlegen (Plausible Funnels, Business-Plan).
+
+**Backend:** `rcktbs-sales` muss die neuen Event-Namen annehmen und anzeigen
+(bisher nur `page_view` → „Aufruf"). Sinnvolle Darstellung pro Firma: eine
+Zeile pro Öffnung mit den erreichten Stufen statt eine Zeile pro Ereignis.

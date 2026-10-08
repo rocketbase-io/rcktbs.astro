@@ -48,6 +48,7 @@ const clientLogos = [
   title={landing.meta.title}
   description={landing.meta.description}
   headerNote="Sie haben Post von uns"
+  funnel={`brief-${landing.slug}`}
 >
   <!-- HERO -->
   <section class="relative overflow-hidden pt-12 pb-14 sm:pt-16 lg:pt-20">
@@ -129,6 +130,7 @@ const clientLogos = [
             <p class="mt-5">
               <a
                 href={landing.video.weiter.href}
+                data-brief-weiter
                 class="text-brand-600 hover:text-brand-700 inline-flex items-center gap-2 text-sm font-semibold transition-colors"
               >
                 {landing.video.weiter.label}
@@ -215,7 +217,7 @@ const clientLogos = [
        enden am häufigsten in keiner von beiden.
        `kontakt`/`erfolg` bleiben in den Daten und BriefKontakt.tsx bleibt
        liegen — falls eine andere Landing das Formular doch braucht. -->
-  <section class="py-16 lg:py-20">
+  <section id="termin" class="py-16 lg:py-20">
     <div class="container max-w-3xl">
       <BriefTermin
         client:load
@@ -223,22 +225,9 @@ const clientLogos = [
         calLabel={landing.termin.calLabel}
         heading={landing.termin.heading}
         text={landing.termin.text}
+        funnel={`brief-${landing.slug}`}
       />
     </div>
   </section>
 
-  <!-- Stiller Tracking-Versuch: meldet dem Sales-Backend, dass diese Landing
-       geoeffnet wurde, sofern der QR-Code eine Kennung mitgebracht hat (?r=).
-       Der Slug reist ueber ein data-Attribut mit, weil das Modulskript keinen
-       Zugriff auf Astro-Props hat. Schlaegt der Aufruf fehl, passiert nichts --
-       fuer den Besucher ist er unsichtbar. -->
-  <span data-brief-funnel={`brief-${landing.slug}`} hidden></span>
 </FunnelLayout>
-
-<script>
-  import { meldeSeitenaufruf } from '@/lib/funnelTracking';
-
-  const traeger = document.querySelector<HTMLElement>('[data-brief-funnel]');
-  const funnel = traeger?.dataset.briefFunnel;
-  if (funnel) meldeSeitenaufruf(funnel);
-</script>

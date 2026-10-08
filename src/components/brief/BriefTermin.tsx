@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import Cal from '@calcom/embed-react';
+import Cal, { getCalApi } from '@calcom/embed-react';
 import { CalendarClock, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { buttonVariants } from '@/components/ui/form/Button/button.variants';
 import { beiConsentAenderung, hatConsent } from '@/lib/consent';
 import { leseBriefRef } from '@/lib/briefRef';
+import { meldeEreignis } from '@/lib/funnelTracking';
 
 /**
  * Terminbuchung — der Primärweg auf der Brief-Landingpage.
@@ -31,6 +32,8 @@ interface BriefTerminProps {
   calLabel: string;
   heading: string;
   text?: string;
+  /** Name der Strecke fürs Tracking, z. B. `brief-angebot`. */
+  funnel?: string;
 }
 
 /** Aus der vollen URL den `namespace/event`-Teil ziehen, den der Embed erwartet. */
@@ -42,7 +45,7 @@ function calLink(url: string): string | null {
   }
 }
 
-export function BriefTermin({ calUrl, calLabel, heading, text }: BriefTerminProps) {
+export function BriefTermin({ calUrl, calLabel, heading, text, funnel }: BriefTerminProps) {
   const [embedErlaubt, setEmbedErlaubt] = useState(false);
   // Erst nach dem Mount entscheiden: localStorage gibt es beim SSR nicht, und
   // ein Server-Render mit "erlaubt" würde beim Hydrieren springen.
@@ -56,6 +59,40 @@ export function BriefTermin({ calUrl, calLabel, heading, text }: BriefTerminProp
     setBereit(true);
     return beiConsentAenderung(pruefen);
   }, []);
+
+  // Buchung im Embed mitbekommen: Das iframe gehört cal.com, ein Klick darin
+  // ist für uns unsichtbar. Die Embed-API meldet aber zwei Dinge, die zählen:
+  // `navigatedToBooker` (ein Slot wurde gewählt, das Buchungsformular ist
+  // offen — das Gegenstück zum Klick auf den Fallback-Link) und
+  // `bookingSuccessfulV2`, der einzige Punkt, an dem aus "Seite gesehen" ein
+  // Termin wird.
+  useEffect(() => {
+    if (!embedErlaubt || !funnel) return;
+    let aktiv = true;
+    void getCalApi()
+      .then((cal) => {
+        if (!aktiv) return;
+        // Welcher der beiden bei einem reinen Event-Type-Embed feuert, hängt
+        // von der Cal.com-Version ab — deshalb beide. `meldeEreignis` zählt
+        // ohnehin nur einmal pro Seitenaufruf.
+        cal('on', {
+          action: 'navigatedToBooker',
+          callback: () => meldeEreignis(funnel, 'termin_klick', { weg: 'embed' }),
+        });
+        cal('on', {
+          action: '__routeChanged',
+          callback: () => meldeEreignis(funnel, 'termin_klick', { weg: 'embed' }),
+        });
+        cal('on', {
+          action: 'bookingSuccessfulV2',
+          callback: () => meldeEreignis(funnel, 'termin_gebucht', { weg: 'embed' }),
+        });
+      })
+      .catch(() => {});
+    return () => {
+      aktiv = false;
+    };
+  }, [embedErlaubt, funnel]);
 
   // Kein separater `cal('ui', …)`-Aufruf: Der feuert, bevor die <Cal>-Komponente
   // ihren iframe erzeugt hat, und quittiert das mit
@@ -124,6 +161,7 @@ export function BriefTermin({ calUrl, calLabel, heading, text }: BriefTerminProp
             target="_blank"
             rel="noopener noreferrer"
             className={cn(buttonVariants({ size: 'lg' }))}
+            onClick={() => funnel && meldeEreignis(funnel, 'termin_klick', { weg: 'link' })}
           >
             <CalendarClock aria-hidden="true" />
             {calLabel}

@@ -12,6 +12,7 @@ import {
   trackMetaLead,
   trackPlausible,
 } from '@/lib/leadTracking';
+import { meldeEreignis, type FunnelEreignis } from '@/lib/funnelTracking';
 
 interface FunnelQuizProps {
   funnel: string;
@@ -46,6 +47,14 @@ interface QuizAnswer {
   answer: string;
   detail?: string;
 }
+
+/** Quiz-Ereignisse, die das Sales-Backend pro Firma festhält. */
+const BACKEND_EVENTS: Record<string, FunnelEreignis> = {
+  funnel_quiz_start: 'quiz_start',
+  funnel_step_complete: 'quiz_schritt',
+  funnel_kontakt_erreicht: 'quiz_kontakt',
+  funnel_lead: 'quiz_lead',
+};
 
 export function FunnelQuiz({
   funnel,
@@ -83,11 +92,46 @@ export function FunnelQuiz({
     utmRef.current = sammleAttribution();
   }, []);
 
+  // Jedes Quiz-Ereignis geht an alle Senken: dataLayer (GTM/Meta, falls
+  // konfiguriert), Plausible (immer, cookieless) und — nur mit `?r=`-Kennung
+  // aus Brief oder persönlicher Mail — ans Sales-Backend, damit im CRM steht,
+  // welche Antworten die Firma gegeben hat, auch wenn sie nicht absendet.
+  // Ohne Plausible wären die Schritte unsichtbar, sobald kein GTM läuft — und
+  // genau dann fehlt die Antwort auf "an welcher Frage steigen die Leute aus".
+  function melde(event: string, props: Record<string, string | number> = {}) {
+    pushEvent(event, { funnel, ...props });
+    trackPlausible(event, { funnel, ...props });
+    const backend = BACKEND_EVENTS[event];
+    if (backend) {
+      meldeEreignis(funnel, backend, props, {
+        plausible: false,
+        schluessel: String(props.step ?? ''),
+      });
+    }
+  }
+
   function trackStart() {
     if (startedRef.current) return;
     startedRef.current = true;
-    pushEvent('funnel_quiz_start', { funnel });
+    melde('funnel_quiz_start');
   }
+
+  // Erreichte Schritte als eigene Ereignisse: Plausible zeigt pro Ereignis
+  // eindeutige Besucher, damit liest sich der Abbruch direkt als Differenz
+  // zwischen "Schritt 2 erreicht" und "Schritt 3 erreicht". Der Kontaktschritt
+  // ist der kritische — wer ihn sieht und nicht absendet, ist der Verlust, den
+  // Formular-Änderungen beeinflussen können.
+  const erreichtRef = useRef<Set<number>>(new Set());
+  useEffect(() => {
+    if (erreichtRef.current.has(step)) return;
+    erreichtRef.current.add(step);
+    if (step === 0) return; // Schritt 1 ist der Seitenaufruf, den zählt Plausible selbst
+    melde(contactStep ? 'funnel_kontakt_erreicht' : 'funnel_schritt_erreicht', {
+      step: step + 1,
+      ...(currentQuestion ? { question: currentQuestion.id } : {}),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step]);
 
   // Nur scrollen, wenn der Kartenkopf aus dem Bild gerutscht ist (etwa mobil nach einer langen
   // Frage). Sonst springt die Seite bei jeder Auswahl ein Stück, obwohl die Karte schon sichtbar ist.
@@ -125,8 +169,7 @@ export function FunnelQuiz({
       return;
     }
 
-    pushEvent('funnel_step_complete', {
-      funnel,
+    melde('funnel_step_complete', {
       step: step + 1,
       question: currentQuestion.id,
       answer: option.id,
@@ -143,11 +186,11 @@ export function FunnelQuiz({
       ...prev,
       [currentQuestion.id]: { ...existing, detail: freeText.trim() },
     }));
-    pushEvent('funnel_step_complete', {
-      funnel,
+    melde('funnel_step_complete', {
       step: step + 1,
       question: currentQuestion.id,
       answer: existing.optionId,
+      detail: freeText.trim() ? 'ja' : 'nein',
     });
     goToStep(step + 1);
   }
@@ -180,10 +223,9 @@ export function FunnelQuiz({
 
       if (data.success) {
         setSubmitted(true);
-        pushEvent('funnel_lead', {
-          funnel,
-          problem: answers[questions[0]?.id]?.optionId,
-          impact: answers[questions[1]?.id]?.optionId,
+        melde('funnel_lead', {
+          problem: answers[questions[0]?.id]?.optionId ?? '',
+          impact: answers[questions[1]?.id]?.optionId ?? '',
         });
         if (leadEvent) {
           pushEvent(leadEvent, { funnel });
@@ -197,9 +239,11 @@ export function FunnelQuiz({
           ? (Object.values(data.errors).flat().join(' ') as string)
           : 'Etwas ist schiefgelaufen. Bitte versucht es erneut.';
         setFormError(errors);
+        melde('funnel_fehler', { art: 'validierung' });
       }
     } catch {
       setFormError('Senden fehlgeschlagen. Bitte prüft eure Verbindung und versucht es erneut.');
+      melde('funnel_fehler', { art: 'netz' });
     } finally {
       setSubmitting(false);
     }
