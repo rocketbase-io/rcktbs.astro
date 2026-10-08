@@ -18,7 +18,6 @@
 import FunnelLayout from '@/layouts/FunnelLayout.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Blueprint from '@/components/hero-backgrounds/Blueprint.astro';
-import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
 import { BriefTermin } from '@/components/brief/BriefTermin';
 import { briefLandings } from '@/data/briefLandings';
 
@@ -30,18 +29,6 @@ export function getStaticPaths() {
 }
 
 const { landing } = Astro.props;
-
-// Referenztexte kommen aus rocketbase.ts — die Variante wählt nur die Slugs.
-// So bleibt der Inhalt an einer Stelle gepflegt und driftet nicht gegen die
-// Website-Referenzen ab.
-const clientLogos = [
-  { key: 'bonprix_logo', name: 'bonprix' },
-  { key: 'statista-logo', name: 'Statista' },
-  { key: 'stage_logo', name: 'Stage Entertainment' },
-  { key: 'fkc_logo', name: 'FKC Consulting' },
-  { key: 'mavox_logo', name: 'MAVOX Winterdienst' },
-  { key: 'sam', name: 'Smart Active Media' },
-];
 ---
 
 <FunnelLayout

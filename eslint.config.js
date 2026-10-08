@@ -58,4 +58,11 @@ export default [
       'no-console': ['warn', { allow: ['warn', 'error'] }],
     },
   },
+  {
+    // CLI-Werkzeuge: Die Konsole ist hier die Ausgabe, kein vergessenes Debugging.
+    files: ['scripts/**/*.ts'],
+    rules: {
+      'no-console': 'off',
+    },
+  },
 ];

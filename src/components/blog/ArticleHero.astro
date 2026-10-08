@@ -23,7 +23,6 @@ const {
   title,
   description,
   publishedAt,
-  updatedAt,
   author = 'Team',
   tags = [],
   image,
@@ -32,7 +31,7 @@ const {
   doors = [],
 } = Astro.props;
 
-// Monat und Jahr statt nur Jahr. updatedAt geht nur ins Schema (dateModified), nicht in die Anzeige.
+// Monat und Jahr statt nur Jahr. updatedAt bleibt in den Props (Schema/dateModified im Layout), wird hier nicht angezeigt.
 const monatJahr = (d: Date) => d.toLocaleDateString('de-DE', { month: 'long', year: 'numeric', timeZone: 'UTC' });
 
 const authorSlug = author

@@ -130,7 +130,6 @@ export function FunnelQuiz({
       step: step + 1,
       ...(currentQuestion ? { question: currentQuestion.id } : {}),
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step]);
 
   // Nur scrollen, wenn der Kartenkopf aus dem Bild gerutscht ist (etwa mobil nach einer langen

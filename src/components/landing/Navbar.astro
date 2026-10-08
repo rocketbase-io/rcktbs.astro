@@ -11,7 +11,7 @@ import ThemeToggle from '@/components/layout/ThemeToggle.astro';
 import LanguageSwitcher from '@/components/i18n/LanguageSwitcher.astro';
 import rocketbaseLogo from '@/assets/rocketbase/logo.svg';
 import { type Locale, getLocaleFromPath } from '@/i18n/config';
-import { useTranslations, getLocalizedPath, getNavRoutes } from '@/i18n/index';
+import { useTranslations, getLocalizedPath, getNavRoutes, type TranslationKey } from '@/i18n/index';
 import { cases } from '@/data/rocketbase';
 import bonprixCaseImage from '@/assets/references/teaser-bonprix.jpeg';
 import statistaCaseImage from '@/assets/references/teaser-statista.jpeg';
@@ -119,7 +119,7 @@ const featuredReferences = cases
               aria-haspopup="true"
               data-nav-dropdown-trigger
             >
-              {t(label as any)}
+              {t(label as TranslationKey)}
               <svg class="h-3.5 w-3.5 transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-nav-dropdown-chevron>
                 <path d="M6 9l6 6 6-6" />
               </svg>
@@ -174,7 +174,7 @@ const featuredReferences = cases
               aria-haspopup="true"
               data-nav-dropdown-trigger
             >
-              {t(label as any)}
+              {t(label as TranslationKey)}
               <svg class="h-3.5 w-3.5 transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-nav-dropdown-chevron>
                 <path d="M6 9l6 6 6-6" />
               </svg>
@@ -230,7 +230,7 @@ const featuredReferences = cases
               aria-haspopup="true"
               data-nav-dropdown-trigger
             >
-              {t(label as any)}
+              {t(label as TranslationKey)}
               <svg class="h-3.5 w-3.5 transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" data-nav-dropdown-chevron>
                 <path d="M6 9l6 6 6-6" />
               </svg>
@@ -285,7 +285,7 @@ const featuredReferences = cases
             href={getLocalizedPath(routeId, locale)}
             class="text-sm font-medium text-foreground-muted hover:text-foreground transition-colors"
           >
-            {t(label as any)}
+            {t(label as TranslationKey)}
           </a>
         )
       ))}
@@ -318,7 +318,7 @@ const featuredReferences = cases
       routeId === 'services' ? (
         <details class="group" data-mobile-accordion>
           <summary class="flex cursor-pointer items-center justify-between list-none text-base font-medium text-foreground-secondary hover:text-foreground transition-colors [&::-webkit-details-marker]:hidden">
-            <span>{t(label as any)}</span>
+            <span>{t(label as TranslationKey)}</span>
             <svg class="h-4 w-4 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M6 9l6 6 6-6" />
             </svg>
@@ -352,7 +352,7 @@ const featuredReferences = cases
       ) : routeId === 'references' ? (
         <details class="group" data-mobile-accordion>
           <summary class="flex cursor-pointer items-center justify-between list-none text-base font-medium text-foreground-secondary hover:text-foreground transition-colors [&::-webkit-details-marker]:hidden">
-            <span>{t(label as any)}</span>
+            <span>{t(label as TranslationKey)}</span>
             <svg class="h-4 w-4 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M6 9l6 6 6-6" />
             </svg>
@@ -391,7 +391,7 @@ const featuredReferences = cases
       ) : routeId === 'blog' && featuredBlogPosts.length > 0 ? (
         <details class="group" data-mobile-accordion>
           <summary class="flex cursor-pointer items-center justify-between list-none text-base font-medium text-foreground-secondary hover:text-foreground transition-colors [&::-webkit-details-marker]:hidden">
-            <span>{t(label as any)}</span>
+            <span>{t(label as TranslationKey)}</span>
             <svg class="h-4 w-4 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M6 9l6 6 6-6" />
             </svg>
@@ -435,7 +435,7 @@ const featuredReferences = cases
           href={getLocalizedPath(routeId, locale)}
           class="text-base font-medium text-foreground-secondary hover:text-foreground transition-colors"
         >
-          {t(label as any)}
+          {t(label as TranslationKey)}
         </a>
       )
     ))}
