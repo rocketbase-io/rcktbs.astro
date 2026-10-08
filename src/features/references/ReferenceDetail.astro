@@ -1,4 +1,6 @@
 ---
+import PassendeLoesung from '@/components/blog/PassendeLoesung.astro';
+import { referenzTueren } from '@/data/tueren';
 import { Picture, getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import PageLayout from '@/layouts/PageLayout.astro';
@@ -94,6 +96,7 @@ const caseImages = {
 
 const hasImage = item.slug in caseImages;
 const clientLogo = logoMap[caseLogoKey[item.slug] ?? ''];
+const loesungen = referenzTueren[item.slug] ?? [];
 const otherCases = allCases.filter((entry) => entry.slug !== item.slug).slice(0, 2);
 
 const contextBlocks = [
@@ -623,6 +626,17 @@ const resolvedScreenshots = await Promise.all(
       </script>
     </section>
   )}
+
+  <!-- Passende Lösung: aus dieser Referenz entstandene Türen (data/tueren.ts) -->
+  {
+    loesungen.length > 0 && (
+      <section class="border-border bg-background-secondary border-y py-16 lg:py-20">
+        <div class="container max-w-6xl">
+          <PassendeLoesung doors={loesungen} heading={loesungen.length > 1 ? 'Daraus entstandene Lösungen' : 'Daraus entstandene Lösung'} />
+        </div>
+      </section>
+    )
+  }
 
   <!-- Weitere Referenzen -->
   <section class="border-t border-border bg-background-secondary py-24 lg:py-32">

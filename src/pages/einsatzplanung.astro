@@ -6,13 +6,25 @@
  * (Links, Suchmaschinen), der Inhalt ist seit 2026-10-07 neu.
  */
 import LandingLayout from '@/layouts/LandingLayout.astro';
+import { einsatzFaqs } from '@/components/einsatz/faqs';
+import { createServiceSchema, createFAQSchema } from '@/lib/schema';
 import EinsatzPage from '@/components/einsatz/EinsatzPage.astro';
+
+const serviceSchema = createServiceSchema({
+  name: 'Einsatz und Abrechnung',
+  description: 'Plantafel mit Abwesenheiten, Ablauf je Auftrag, Einsatz je Vertrag, Leistungserfassung, Rechnung und Mahnwesen in einem System, nach dem Ablauf des Betriebs gebaut.',
+  url: new URL(Astro.url.pathname, Astro.site).toString(),
+  serviceType: 'Individualsoftware für Einsatzplanung, Leistungserfassung und Abrechnung',
+  areaServed: 'DE',
+});
+const faqSchema = createFAQSchema(einsatzFaqs.map((f) => ({ question: f.q, answer: f.a })));
 ---
 
 <LandingLayout
   title="Einsatz & Abrechnung: Plantafel, Ablauf, Leistung und Rechnung in einem System"
   description="Plantafel mit Abwesenheiten, Ablauf je Auftrag, Einsatz je Vertrag, Leistungserfassung, Rechnung und Mahnwesen. Nach eurem Ablauf gebaut, statt Excel und Stundenzettel. Für Betriebe ab 30 Leuten."
   lang="de"
+  extraSchemas={[serviceSchema, faqSchema]}
   routeId="einsatzplanung"
 >
   <EinsatzPage variant="site" />

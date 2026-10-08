@@ -6,13 +6,25 @@
  * components/angebote/AngebotePage.astro.
  */
 import LandingLayout from '@/layouts/LandingLayout.astro';
+import { angeboteFaqs } from '@/components/angebote/faqs';
+import { createServiceSchema, createFAQSchema } from '@/lib/schema';
 import AngebotePage from '@/components/angebote/AngebotePage.astro';
+
+const serviceSchema = createServiceSchema({
+  name: 'Angebotsbaustein: Angebot und Kalkulation',
+  description: 'Angebote, die nach der eigenen Kalkulationsregel rechnen und beim Kunden als Seite statt PDF ankommen: Deckungsbeitrag vor dem Versand, Zusage per Klick, Nachfassen automatisch. Individuell für den Betrieb aufgebaut.',
+  url: new URL(Astro.url.pathname, Astro.site).toString(),
+  serviceType: 'Individualsoftware für Angebotserstellung und Kalkulation',
+  areaServed: 'DE',
+});
+const faqSchema = createFAQSchema(angeboteFaqs.map((f) => ({ question: f.q, answer: f.a })));
 ---
 
 <LandingLayout
   title="Angebot & Kalkulation: Angebote, die sich nach eurer Regel selbst rechnen"
   description="Angebote, die sich nach eurer Kalkulation selbst rechnen und beim Kunden als Seite ankommen. Deckungsbeitrag vor dem Versand, Zusage per Klick, Nachfassen automatisch. Für Wartungs-, Prüf- und Servicebetriebe."
   lang="de"
+  extraSchemas={[serviceSchema, faqSchema]}
 >
   <AngebotePage variant="site" />
 </LandingLayout>

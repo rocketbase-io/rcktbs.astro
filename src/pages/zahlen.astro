@@ -5,13 +5,25 @@
  * components/zahlen/ZahlenPage.astro.
  */
 import LandingLayout from '@/layouts/LandingLayout.astro';
+import { zahlenFaqs } from '@/components/zahlen/faqs';
+import { createServiceSchema, createFAQSchema } from '@/lib/schema';
 import ZahlenPage from '@/components/zahlen/ZahlenPage.astro';
+
+const serviceSchema = createServiceSchema({
+  name: 'Zahlen und Steuerung',
+  description: 'Cockpit für Umsatz und Prognose, Auslastung bis zur einzelnen Person, Deckungsbeitrag und auslaufende Verträge, live aus den vorhandenen Systemen.',
+  url: new URL(Astro.url.pathname, Astro.site).toString(),
+  serviceType: 'Individuelles Management-Cockpit und Reporting',
+  areaServed: 'DE',
+});
+const faqSchema = createFAQSchema(zahlenFaqs.map((f) => ({ question: f.q, answer: f.a })));
 ---
 
 <LandingLayout
   title="Zahlen & Steuerung: Cockpit für Umsatz, Auslastung und Verträge"
   description="Umsatz und Prognose, Auslastung bis zur einzelnen Person, Deckungsbeitrag, auslaufende Verträge und Forderungen. Live aus euren Systemen, gerechnet nach euren Regeln. Für Dienstleister ab 30 Leuten."
   lang="de"
+  extraSchemas={[serviceSchema, faqSchema]}
 >
   <ZahlenPage variant="site" />
 </LandingLayout>

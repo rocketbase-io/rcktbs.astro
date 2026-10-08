@@ -9,6 +9,7 @@ import { getCollection } from 'astro:content';
 import { defaultLocale } from '@/i18n/config';
 import { useTranslations } from '@/i18n/index';
 import { getReadingTime } from '@/lib/utils';
+import { tueren, type TuerId } from '@/data/tueren';
 
 const locale = defaultLocale;
 const t = useTranslations(locale);
@@ -30,6 +31,14 @@ const remainingFeatured = posts.filter(
 );
 const nonFeatured = posts.filter((post) => !post.data.featured);
 const otherPosts = [...remainingFeatured, ...nonFeatured];
+
+// Filter nach Tür (Frontmatter `doors`). Nur Türen, zu denen es Artikel gibt.
+const filterTueren = (Object.keys(tueren) as TuerId[])
+  .map((id) => ({ id, ...tueren[id], anzahl: posts.filter((p) => p.data.doors.includes(id)).length }))
+  .filter((t) => t.anzahl > 0);
+const eyebrow = (post: (typeof posts)[number]) =>
+  post.data.doors.length ? post.data.doors.map((d) => tueren[d].titel).join(' · ') : post.data.tags[0];
+const monatJahr = (d: Date) => d.toLocaleDateString('de-DE', { month: 'long', year: 'numeric', timeZone: 'UTC' });
 
 const getPostUrl = (postId: string) => {
   const slug = postId.replace(`${locale}/`, '');
@@ -64,8 +73,35 @@ const getPostUrl = (postId: string) => {
   </section>
 
   <!-- Posts Grid -->
-  <section class="py-16 bg-background-secondary">
+  <section class="py-16 bg-background-secondary" data-blog-filter>
     <div class="mx-auto max-w-6xl px-6">
+      {filterTueren.length > 0 && (
+        <div class="mb-10">
+          <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Nach Thema filtern">
+            <span class="text-foreground-muted mr-1 text-sm font-semibold">Thema:</span>
+            <button type="button" class="blog-chip" data-filter="" aria-pressed="true">Alle <span class="blog-chip-n">{posts.length}</span></button>
+            {filterTueren.map((t) => (
+              <button type="button" class="blog-chip" data-filter={t.id} aria-pressed="false">
+                {t.titel} <span class="blog-chip-n">{t.anzahl}</span>
+              </button>
+            ))}
+          </div>
+          {filterTueren.map((t) => (
+            <a href={t.href} class="blog-door group" data-door-hint={t.id} hidden>
+              <span class="bg-brand-500/10 text-brand-600 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
+                <Icon name={t.icon} size="sm" />
+              </span>
+              <span class="min-w-0 flex-1">
+                <span class="text-foreground block text-sm font-bold">{t.titel}</span>
+                <span class="text-foreground-secondary block text-sm">{t.text}</span>
+              </span>
+              <span class="text-brand-600 inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold transition-transform group-hover:translate-x-1">
+                Zur Lösung <Icon name="arrow-right" size="xs" />
+              </span>
+            </a>
+          ))}
+        </div>
+      )}
       {posts.length === 0 ? (
         <div class="text-center py-16">
           <div class="mx-auto w-16 h-16 rounded-full bg-background flex items-center justify-center mb-4">
@@ -76,7 +112,7 @@ const getPostUrl = (postId: string) => {
       ) : (
         <div class="space-y-10">
           {featuredPost && (
-            <article class="group overflow-hidden rounded-[2rem] border border-border bg-card shadow-[0_22px_55px_rgba(34,43,74,0.08)] transition-[transform,box-shadow] duration-500 hover:shadow-[0_30px_70px_rgba(34,43,74,0.12)] hover:border-border-strong will-change-transform [backface-visibility:hidden]">
+            <article data-doors={featuredPost.data.doors.join(' ')} class="group overflow-hidden rounded-[2rem] border border-border bg-card shadow-[0_22px_55px_rgba(34,43,74,0.08)] transition-[transform,box-shadow] duration-500 hover:shadow-[0_30px_70px_rgba(34,43,74,0.12)] hover:border-border-strong will-change-transform [backface-visibility:hidden]">
               <a href={getPostUrl(featuredPost.id)} class="grid gap-0 md:grid-cols-2 md:items-stretch">
                 {featuredPost.data.image ? (
                   <div class="overflow-hidden">
@@ -114,7 +150,7 @@ const getPostUrl = (postId: string) => {
 
                   <div class="mt-6 flex flex-wrap items-center gap-3 text-xs text-foreground-subtle">
                     <time datetime={featuredPost.data.publishedAt.toISOString()}>
-                      {featuredPost.data.publishedAt.getFullYear()}
+                      {monatJahr(featuredPost.data.publishedAt)}
                     </time>
                     <span>·</span>
                     <span>{getReadingTime(featuredPost.body ?? '')} Min. Lesezeit</span>
@@ -132,7 +168,7 @@ const getPostUrl = (postId: string) => {
           {otherPosts.length > 0 && (
             <div class="grid gap-6 md:grid-cols-2">
               {otherPosts.map((post) => (
-                <article class="group flex h-full flex-col overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:shadow-[0_20px_45px_rgba(34,43,74,0.1)] hover:border-border-strong will-change-transform [backface-visibility:hidden]">
+                <article data-doors={post.data.doors.join(' ')} class="group flex h-full flex-col overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:shadow-[0_20px_45px_rgba(34,43,74,0.1)] hover:border-border-strong will-change-transform [backface-visibility:hidden]">
                   <a href={getPostUrl(post.id)} class="flex h-full flex-col">
                     {post.data.image ? (
                       <div class="overflow-hidden">
@@ -148,11 +184,7 @@ const getPostUrl = (postId: string) => {
                       </div>
                     ) : (
                       <div class="flex aspect-[16/10] flex-col justify-between bg-[linear-gradient(160deg,rgba(243,245,249,0.96),rgba(229,234,242,0.92))] p-7 dark:bg-[linear-gradient(160deg,rgba(36,43,57,0.92),rgba(26,31,42,0.9))]">
-                        {post.data.tags.length > 0 && (
-                          <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
-                            {post.data.tags[0]}
-                          </p>
-                        )}
+                        <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">{eyebrow(post)}</p>
                         <p class="font-display text-foreground text-2xl leading-snug font-bold tracking-tight">
                           {post.data.title}
                         </p>
@@ -160,11 +192,7 @@ const getPostUrl = (postId: string) => {
                     )}
 
                     <div class="flex flex-1 flex-col p-6 lg:p-7">
-                      {post.data.tags.length > 0 && (
-                        <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
-                          {post.data.tags[0]}
-                        </p>
-                      )}
+                      <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">{eyebrow(post)}</p>
                       <h2 class="text-foreground mt-3 text-xl font-semibold leading-snug lg:text-2xl">
                         {post.data.title}
                       </h2>
@@ -174,7 +202,7 @@ const getPostUrl = (postId: string) => {
                       <div class="mt-auto pt-6">
                         <div class="flex flex-wrap items-center gap-3 text-xs text-foreground-subtle">
                           <time datetime={post.data.publishedAt.toISOString()}>
-                            {post.data.publishedAt.getFullYear()}
+                            {monatJahr(post.data.publishedAt)}
                           </time>
                           <span>·</span>
                           <span>{getReadingTime(post.body ?? '')} Min. Lesezeit</span>
@@ -193,3 +221,71 @@ const getPostUrl = (postId: string) => {
 
   <LandingFooter slot="footer" />
 </BaseLayout>
+
+<style>
+  .blog-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    background: var(--color-card);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-foreground-secondary);
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .blog-chip:hover {
+    border-color: var(--color-brand-400);
+  }
+  .blog-chip[aria-pressed='true'] {
+    background: var(--color-brand-500);
+    border-color: var(--color-brand-500);
+    color: white;
+  }
+  .blog-chip-n {
+    font-size: 0.72rem;
+    opacity: 0.7;
+  }
+  .blog-door {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 1.1rem;
+    border-radius: 1rem;
+    border: 1px solid color-mix(in oklch, var(--color-brand-400) 45%, var(--color-border));
+    background: var(--color-card);
+  }
+  article[data-doors][hidden],
+  .blog-door[hidden] {
+    display: none !important;
+  }
+  @media (max-width: 640px) {
+    .blog-door {
+      flex-wrap: wrap;
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-blog-filter]');
+  if (root) {
+    const chips = root.querySelectorAll<HTMLButtonElement>('[data-filter]');
+    const apply = (id: string) => {
+      chips.forEach((c) => c.setAttribute('aria-pressed', c.dataset.filter === id ? 'true' : 'false'));
+      root.querySelectorAll<HTMLElement>('article[data-doors]').forEach((a) => {
+        a.hidden = !!id && !(a.dataset.doors ?? '').split(' ').includes(id);
+      });
+      root.querySelectorAll<HTMLElement>('[data-door-hint]').forEach((h) => (h.hidden = h.dataset.doorHint !== id));
+      const url = new URL(location.href);
+      if (id) url.searchParams.set('thema', id);
+      else url.searchParams.delete('thema');
+      history.replaceState(null, '', url);
+    };
+    chips.forEach((c) => c.addEventListener('click', () => apply(c.dataset.filter ?? '')));
+    const start = new URL(location.href).searchParams.get('thema');
+    if (start && root.querySelector(`[data-filter="${CSS.escape(start)}"]`)) apply(start);
+  }
+</script>

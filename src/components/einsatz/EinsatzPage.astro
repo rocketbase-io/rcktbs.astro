@@ -12,6 +12,8 @@
  * Keine Preise auf dieser Seite, auch kein „Festpreis“. Der Workshop wird genannt, seine
  * Konditionen stehen nur auf /discovery-workshop/.
  */
+import { einsatzFaqs } from './faqs';
+import BlogQuerverweis from '@/components/blog/BlogQuerverweis.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Blueprint from '@/components/hero-backgrounds/Blueprint.astro';
@@ -150,32 +152,7 @@ const weg = [
   },
 ];
 
-const miniFaqs = [
-  {
-    q: 'Ist das nicht mit Standardsoftware günstiger gelöst?',
-    a: 'Für manche Betriebe ja. Wenn euer Ablauf branchenüblich ist, passt ein Standard-Tool. Sobald eure Planung Besonderheiten hat, etwa Fremdvergaben mitten im Ablauf, eigene Qualifikationen oder Kontingente je Vertrag, landet ihr wieder bei Workarounds und einer Excel daneben. Dann lohnt eine Lösung, die euren Ablauf abbildet.',
-  },
-  {
-    q: 'Wir haben schon ein ERP. Muss das weg?',
-    a: 'Nein. Meist bleibt das ERP oder die Buchhaltung für Belege und Finanzen, und die Planung, Erfassung und Abrechnung bekommen ein Zuhause, das zu euch passt. Rechnungen gehen als ZUGFeRD oder per Schnittstelle dorthin, wo sie heute hin müssen. Manchmal ist es auch das Ganze. Das klären wir im Workshop.',
-  },
-  {
-    q: 'Funktioniert das auch mobil, in der Werkstatt oder beim Kunden?',
-    a: 'Ja. Erfassen auf Tablet oder Handy, mit Foto-Nachweis, Anmelden per Karte oder Chip in der Werkstatt. Was draußen passiert, ist sofort im System und nicht erst am Monatsende auf einem Stundenzettel.',
-  },
-  {
-    q: 'Müssen wir unsere Abläufe umstellen?',
-    a: 'Nein. Im Workshop nehmen wir den Ablauf auf, wie er wirklich läuft, und bauen um ihn herum. Umgestellt wird Schritt für Schritt, während das Tagesgeschäft weiterläuft.',
-  },
-  {
-    q: 'Wir sind weder Handwerk noch Beratung. Passt das trotzdem?',
-    a: 'Vermutlich ja. Planen, ausführen, erfassen, abrechnen gibt es in Wartung, Service, Prüfung, Montage, Facility und Logistik genauso. Im Erstgespräch ordnen wir ein, ob euer Fall dazu passt.',
-  },
-  {
-    q: 'Was kostet das?',
-    a: 'Das hängt davon ab, welcher Teil zuerst kommt und was angebunden werden muss. Genau das klärt der Workshop. Danach wisst ihr, was die Umsetzung kostet, bevor ihr irgendetwas beauftragt.',
-  },
-];
+const miniFaqs = einsatzFaqs;
 ---
 
 <!-- HERO -->
@@ -546,6 +523,9 @@ const miniFaqs = [
     </div>
   </div>
 </section>
+
+<!-- Blog: zwei Artikel zu dieser Tür, nur auf der indexierten Seite -->
+{!istFunnel && <BlogQuerverweis tuer="einsatz" />}
 
 <!-- KONTAKT -->
 <section id="kontakt" class="kontakt-sec relative scroll-mt-20 overflow-x-clip py-24 lg:py-32">

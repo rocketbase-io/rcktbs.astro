@@ -61,7 +61,7 @@ export const de = {
     meta: {
       title: 'Kontakt: Erstgespräch zu Individualsoftware',
       description:
-        'Kostenloses 30-Minuten-Erstgespräch zu Individualsoftware, Standardsoftware-Ablösung und Prozessdigitalisierung – ohne Vertriebskette, direkt mit Marten Prieß. Raum Hamburg und bundesweit remote.',
+        '30 Minuten, kostenlos, direkt mit Marten Prieß: Ihr erzählt, wo Excel, Branchensoftware oder Handarbeit euch bremsen, wir sagen ehrlich, ob und wie wir helfen. Aus Winsen bei Hamburg, bundesweit remote.',
     },
     hero: {
       badge: 'Direkter Kontakt',

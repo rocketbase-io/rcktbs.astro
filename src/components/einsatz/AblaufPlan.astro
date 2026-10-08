@@ -130,7 +130,7 @@ const montageVerzug = fmtTag(verzug[8].start + verzug[8].dauer);
                       {b.dauer.toLocaleString('de-DE')} T
                     </text>
                   )}
-                  {b.status === 'fertig' && b.w <= 40 && <text x={b.x + b.w / 2} y={b.y + BAR / 2 + 4} text-anchor="middle" font-size="11" font-weight="700" fill="white">✓</text>}
+                  {b.status === 'fertig' && 40 >= b.w && <text x={b.x + b.w / 2} y={b.y + BAR / 2 + 4} text-anchor="middle" font-size="11" font-weight="700" fill="white">✓</text>}
                 </g>
               );
             })}

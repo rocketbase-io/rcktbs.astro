@@ -9,6 +9,8 @@ import AuthorBio from '@/components/blog/AuthorBio.astro';
 import PostCTA from '@/components/blog/PostCTA.astro';
 import ShareButtons from '@/components/blog/ShareButtons.astro';
 import RelatedPosts from '@/components/blog/RelatedPosts.astro';
+import PassendeLoesung from '@/components/blog/PassendeLoesung.astro';
+import type { TuerId } from '@/data/tueren';
 import { defaultLocale, type Locale } from '@/i18n/config';
 import { useTranslations } from '@/i18n/index';
 import { createBlogPostSchema, createBreadcrumbSchema } from '@/lib/schema';
@@ -28,6 +30,8 @@ interface Props {
   slug?: string;
   locale?: Locale;
   readingTime?: number;
+  /** Türen aus dem Frontmatter, für „Passende Lösung“ am Ende. */
+  doors?: TuerId[];
   cta?: {
     eyebrow?: string;
     headline?: string;
@@ -48,6 +52,7 @@ const {
   slug = '',
   locale = defaultLocale,
   readingTime,
+  doors = [],
   cta,
 } = Astro.props;
 
@@ -122,6 +127,7 @@ const articleSchemas: WithContext<Thing>[] = [blogPostingSchema, breadcrumbSchem
     image={image}
     imageAlt={imageAlt}
     readingTime={readingTime}
+    doors={doors}
   />
 
   <article class="py-12">
@@ -159,6 +165,9 @@ const articleSchemas: WithContext<Thing>[] = [blogPostingSchema, breadcrumbSchem
           <ShareButtons title={title} url={fullUrl} />
         </div>
       </footer>
+
+      <!-- Passende Lösung: Brücke vom Artikel zur Tür (Frontmatter `doors`) -->
+      <PassendeLoesung doors={doors} class="mt-12" />
 
       <!-- Author bio -->
       <AuthorBio author={author} />

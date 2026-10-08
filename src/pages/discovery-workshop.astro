@@ -1,4 +1,5 @@
 ---
+import BlogQuerverweis from '@/components/blog/BlogQuerverweis.astro';
 import PageLayout from '@/layouts/PageLayout.astro';
 import { Picture } from 'astro:assets';
 import Button from '@/components/ui/form/Button/Button.astro';
@@ -847,6 +848,9 @@ const miniFaqs = [
       </div>
     </div>
   </section>
+
+  <!-- Blog: Artikel zum Thema Workshop / Vorgehen -->
+  <BlogQuerverweis tuer="workshop" titel="Warum wir mit dem Workshop anfangen" />
 
   <!-- CTA -->
   <section class="border-border bg-background-secondary border-t py-24">

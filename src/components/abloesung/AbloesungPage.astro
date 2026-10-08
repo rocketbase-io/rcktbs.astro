@@ -10,6 +10,7 @@
  *
  * Keine Preise, auch kein „Festpreis“. Vertec wird nur im Zusammenhang mit FKC genannt.
  */
+import BlogQuerverweis from '@/components/blog/BlogQuerverweis.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Blueprint from '@/components/hero-backgrounds/Blueprint.astro';
@@ -441,6 +442,9 @@ const weg = [
     </div>
   </div>
 </section>
+
+<!-- Blog: zwei Artikel zu diesem Thema -->
+<BlogQuerverweis tuer="abloesung" />
 
 <!-- KONTAKT -->
 <section id="kontakt" class="kontakt-sec relative scroll-mt-20 overflow-x-clip py-24 lg:py-32">
