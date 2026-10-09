@@ -13,6 +13,7 @@ import {
   trackPlausible,
 } from '@/lib/leadTracking';
 import { meldeEreignis, type FunnelEreignis } from '@/lib/funnelTracking';
+import { leseBriefRef } from '@/lib/briefRef';
 
 interface FunnelQuizProps {
   funnel: string;
@@ -48,11 +49,19 @@ interface QuizAnswer {
   detail?: string;
 }
 
-/** Quiz-Ereignisse, die das Sales-Backend pro Firma festhält. */
+/**
+ * Quiz-Ereignisse, die das Sales-Backend pro Firma festhält — und das ist nur die Abgabe.
+ *
+ * Start, Schritt und erreichter Kontaktschritt gehen ausschließlich an Plausible: Das sind
+ * Trichter-Fragen über alle Besucher ("an welcher Frage steigen die Leute aus"), und genau
+ * dafür ist Plausible da. Im CRM wäre jeder Schritt eine eigene Zeile und eine eigene
+ * Slack-Meldung — ein einziger Besucher löste damit fünf aus, und ein Kanal, den man
+ * stummschaltet, meldet gar nichts mehr.
+ *
+ * Was das CRM braucht, sind zwei Tatsachen: Die Firma hat den Link geöffnet (`page_view`,
+ * gemeldet vom `FunnelLayout`) und sie hat abgeschickt (`quiz_lead`, hier).
+ */
 const BACKEND_EVENTS: Record<string, FunnelEreignis> = {
-  funnel_quiz_start: 'quiz_start',
-  funnel_step_complete: 'quiz_schritt',
-  funnel_kontakt_erreicht: 'quiz_kontakt',
   funnel_lead: 'quiz_lead',
 };
 
@@ -81,6 +90,10 @@ export function FunnelQuiz({
   const [formError, setFormError] = useState<string | null>(null);
   const startedRef = useRef(false);
   const utmRef = useRef<Record<string, string>>({});
+  // Die `?r=`-Kennung aus Brief oder persoenlicher Mail. Einmal beim Mount gelesen und in
+  // einem Ref gehalten: `leseBriefRef` sichert sie in `sessionStorage`, also ueberlebt sie
+  // auch mehrere interne Klicks bis hierher.
+  const letterRefRef = useRef<string>('');
   const cardRef = useRef<HTMLDivElement>(null);
 
   const totalSteps = questions.length + 1;
@@ -90,6 +103,7 @@ export function FunnelQuiz({
 
   useEffect(() => {
     utmRef.current = sammleAttribution();
+    letterRefRef.current = leseBriefRef();
   }, []);
 
   // Jedes Quiz-Ereignis geht an alle Senken: dataLayer (GTM/Meta, falls
@@ -215,6 +229,8 @@ export function FunnelQuiz({
       JSON.stringify(questions.map((q) => answers[q.id]).filter(Boolean))
     );
     formData.set('utm', JSON.stringify(attribution));
+    // Ohne das Feld kommt der Lead im CRM firmenlos an, obwohl der Brief ihn benennt.
+    if (letterRefRef.current) formData.set('letterRef', letterRefRef.current);
 
     try {
       const response = await fetch(endpoint, { method: 'POST', body: formData });

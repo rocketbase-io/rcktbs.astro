@@ -5,7 +5,7 @@ import { cn } from '@/lib/cn';
 import { buttonVariants } from '@/components/ui/form/Button/button.variants';
 import { beiConsentAenderung, hatConsent } from '@/lib/consent';
 import { leseBriefRef } from '@/lib/briefRef';
-import { meldeEreignis } from '@/lib/funnelTracking';
+import { trackPlausible } from '@/lib/leadTracking';
 
 /**
  * Terminbuchung — der Primärweg auf der Brief-Landingpage.
@@ -72,21 +72,13 @@ export function BriefTermin({ calUrl, calLabel, heading, text, funnel }: BriefTe
     void getCalApi()
       .then((cal) => {
         if (!aktiv) return;
-        // Welcher der beiden bei einem reinen Event-Type-Embed feuert, hängt
-        // von der Cal.com-Version ab — deshalb beide. `meldeEreignis` zählt
-        // ohnehin nur einmal pro Seitenaufruf.
-        cal('on', {
-          action: 'navigatedToBooker',
-          callback: () => meldeEreignis(funnel, 'termin_klick', { weg: 'embed' }),
-        });
-        cal('on', {
-          action: '__routeChanged',
-          callback: () => meldeEreignis(funnel, 'termin_klick', { weg: 'embed' }),
-        });
-        cal('on', {
-          action: 'bookingSuccessfulV2',
-          callback: () => meldeEreignis(funnel, 'termin_gebucht', { weg: 'embed' }),
-        });
+        // Klick und Buchung gehen nur noch an Plausible (über `trackPlausible` im
+        // jeweiligen Handler), nicht mehr ans CRM. Zwei Gründe: Der Klick ist ein
+        // Zwischenschritt — dort gehört die Trichter-Frage hin, nicht eine Zeile je Firma.
+        // Und die Buchung ist über ein Browser-Ereignis ohnehin unzuverlässig: Es feuert
+        // nur, wenn das Embed benutzt wird und die Seite offen bleibt, und sagt nichts über
+        // eine spätere Verschiebung oder Absage. Das gehört an einen Cal.com-Webhook
+        // (noch offen), nicht an den Browser.
       })
       .catch(() => {});
     return () => {
@@ -161,7 +153,7 @@ export function BriefTermin({ calUrl, calLabel, heading, text, funnel }: BriefTe
             target="_blank"
             rel="noopener noreferrer"
             className={cn(buttonVariants({ size: 'lg' }))}
-            onClick={() => funnel && meldeEreignis(funnel, 'termin_klick', { weg: 'link' })}
+            onClick={() => funnel && trackPlausible('termin_klick', { funnel, weg: 'link' })}
           >
             <CalendarClock aria-hidden="true" />
             {calLabel}

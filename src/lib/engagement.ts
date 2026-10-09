@@ -1,14 +1,17 @@
 /**
- * Verhalten auf einer Landingpage beobachten und als Ereignisse melden.
+ * Verhalten auf einer Landingpage beobachten und an Plausible melden.
  *
  * Gilt für den Brief-Kanal (/b/) und die drei Türen (/f/angebote, /f/einsatz,
  * /f/zahlen), wenn sie per persönlicher Mail mit `?r=`-Kennung verlinkt sind.
  *
  * Warum das nötig ist: Ein `page_view` sagt nur, dass die Seite geladen wurde.
- * Nach einer Absage ist die eigentliche Frage, ob der Inhalt nicht überzeugt
- * hat oder gar nicht angesehen wurde — und die beantwortet erst, ob das Video
- * lief, welche Abschnitte im Bild waren und ob jemand den Rechner, die Tabs
- * oder das Quiz angefasst hat.
+ * Die eigentliche Frage ist, ob der Inhalt nicht überzeugt hat oder gar nicht
+ * angesehen wurde — und die beantwortet erst, ob das Video lief, welche
+ * Abschnitte im Bild waren und ob jemand den Rechner oder die Tabs angefasst hat.
+ *
+ * **Das geht an Plausible, nicht ans CRM.** Es ist eine Trichter-Frage über alle
+ * Besucher, keine Tatsache über eine Firma. Ins CRM gehören nur die beiden
+ * Ereignisse, die eine Entscheidung tragen: geöffnet und abgeschickt.
  *
  * Die Seiten müssen dafür nichts wissen: Beobachtet werden alle `<video>`,
  * alle `<section id>` und alle Klicks auf Buttons, Tabs, Links und
@@ -21,7 +24,36 @@
  * mitreißt.
  */
 
-import { meldeEreignis } from '@/lib/funnelTracking';
+import { trackPlausible } from '@/lib/leadTracking';
+
+/**
+ * Jedes Ereignis nur einmal je Seitenaufruf.
+ *
+ * Ein Video, das zurückgespult wird, ein Abschnitt, der zweimal ins Bild scrollt, ein
+ * doppelt gebundener Listener — ohne diese Sperre zählt dieselbe Handlung mehrfach.
+ */
+const gemeldet = new Set<string>();
+
+/**
+ * Verhalten geht ausschließlich an Plausible, nicht ans CRM.
+ *
+ * Ins CRM gehört, was eine Entscheidung trägt: Die Firma hat den Link geöffnet, und sie hat
+ * abgeschickt. Video-Fortschritt, sichtbare Abschnitte und Klicks sind dagegen eine
+ * Trichter-Frage über alle Besucher ("wo brechen die Leute ab") — und genau dafür ist
+ * Plausible da, cookielos und ohne Zeile je Firma. Im CRM wäre jedes davon eine eigene
+ * Zeile und eine eigene Slack-Meldung; ein einziger Besucher löste damit fünf aus.
+ */
+function melde(
+  funnel: string,
+  event: string,
+  props: Record<string, string | number> = {},
+  opt: { schluessel?: string } = {}
+): void {
+  const key = opt.schluessel ? `${event}:${opt.schluessel}` : event;
+  if (gemeldet.has(key)) return;
+  gemeldet.add(key);
+  trackPlausible(event, { funnel, ...props });
+}
 
 export function verfolgeEngagement(funnel: string): void {
   if (typeof window === 'undefined') return;
@@ -42,7 +74,7 @@ export function verfolgeEngagement(funnel: string): void {
       let maxSekunden = 0;
 
       v.addEventListener('play', () => {
-        meldeEreignis(
+        melde(
           funnel,
           'video_start',
           { video: name, dauer: Math.round(v.duration || 0) },
@@ -55,7 +87,7 @@ export function verfolgeEngagement(funnel: string): void {
         const anteil = v.currentTime / v.duration;
         for (const [grenze, ereignis] of marken) {
           if (anteil >= grenze) {
-            meldeEreignis(
+            melde(
               funnel,
               ereignis,
               { video: name, sekunden: Math.round(v.currentTime) },
@@ -65,7 +97,7 @@ export function verfolgeEngagement(funnel: string): void {
         }
       });
       v.addEventListener('ended', () => {
-        meldeEreignis(
+        melde(
           funnel,
           'video_ende',
           { video: name, sekunden: Math.round(v.duration || maxSekunden) },
@@ -90,9 +122,9 @@ export function verfolgeEngagement(funnel: string): void {
           for (const e of eintraege) {
             if (!e.isIntersecting) continue;
             const id = (e.target as HTMLElement).id;
-            meldeEreignis(funnel, 'sektion_sichtbar', { sektion: id }, { schluessel: id });
-            if (id === 'video') meldeEreignis(funnel, 'video_sichtbar', {}, { plausible: false });
-            if (id === 'termin') meldeEreignis(funnel, 'termin_sichtbar', {}, { plausible: false });
+            melde(funnel, 'sektion_sichtbar', { sektion: id }, { schluessel: id });
+            if (id === 'video') melde(funnel, 'video_sichtbar');
+            if (id === 'termin') melde(funnel, 'termin_sichtbar');
             io.unobserve(e.target);
           }
         },
@@ -123,11 +155,11 @@ export function verfolgeEngagement(funnel: string): void {
 
         const href = el.getAttribute('href') ?? '';
         if (href.startsWith('tel:')) {
-          meldeEreignis(funnel, 'telefon_klick');
+          melde(funnel, 'telefon_klick');
           return;
         }
         if (el.hasAttribute('data-brief-weiter')) {
-          meldeEreignis(funnel, 'weiter_klick', { ziel: href });
+          melde(funnel, 'weiter_klick', { ziel: href });
           return;
         }
         // Rechtliches und Footer sind kein Interesse am Produkt. Das Quiz
@@ -138,7 +170,7 @@ export function verfolgeEngagement(funnel: string): void {
         const sektion = el.closest('section[id]')?.id ?? '';
         const name = el.dataset.track ?? beschriftung(el);
         if (!name) return;
-        meldeEreignis(
+        melde(
           funnel,
           'interaktion',
           { sektion, element: name },
@@ -155,8 +187,7 @@ export function verfolgeEngagement(funnel: string): void {
   // Gezählt wird nur sichtbare Zeit: Ein Tab, der im Hintergrund offen bleibt,
   // ist kein Interesse. Gemeldet beim Verlassen bzw. beim ersten Verstecken;
   // ein zweiter Bericht mit höherem Wert ist erlaubt, das Backend nimmt das
-  // Maximum. sendBeacon in `meldeEreignis` sorgt dafür, dass der Bericht das
-  // Schließen des Tabs überlebt.
+  // Maximum. Plausible schickt den Bericht beim Verstecken des Tabs noch raus.
   try {
     let sichtbarSeit = document.visibilityState === 'visible' ? Date.now() : 0;
     let summe = 0;
@@ -181,7 +212,7 @@ export function verfolgeEngagement(funnel: string): void {
       // Unter zwei Sekunden ist es ein Scanner oder ein Fehlklick — nicht wert,
       // eine Zeile im CRM zu belegen.
       if (sekunden < 2) return;
-      meldeEreignis(funnel, 'verweildauer', {
+      melde(funnel, 'verweildauer', {
         sekunden,
         scroll: Math.max(maxScroll, scrollTiefe()),
       });
