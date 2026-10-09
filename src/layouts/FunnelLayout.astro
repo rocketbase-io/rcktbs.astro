@@ -19,16 +19,9 @@ interface Props {
    * angeboten wird.
    */
   headerNote?: string;
-  /**
-   * Name der Strecke fürs Tracking, z. B. `brief-angebot` oder `tuer-angebote`.
-   * Gesetzt, meldet die Seite Aufruf und Verhalten (Video, Sektionen, Klicks,
-   * Verweildauer) — an Plausible immer, ans Sales-Backend nur mit `?r=`-Kennung
-   * aus Brief oder persönlicher Mail. Siehe src/lib/engagement.ts.
-   */
-  funnel?: string;
 }
 
-const { title, description, headerNote = 'Kostenlose Ersteinschätzung', funnel } = Astro.props;
+const { title, description, headerNote = 'Kostenlose Ersteinschätzung' } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
@@ -51,8 +44,6 @@ const year = new Date().getFullYear();
   </header>
 
   <slot />
-
-  {funnel && <span data-funnel-track={funnel} hidden></span>}
 
   <footer slot="footer" class="border-border bg-background-secondary border-t py-8">
     <div class="container flex flex-col items-center justify-between gap-4 sm:flex-row">
@@ -82,14 +73,14 @@ const year = new Date().getFullYear();
 </BaseLayout>
 
 <script>
-  // Stiller Tracking-Versuch, siehe FunnelLayout-Prop `funnel`. Der Name
-  // reist über ein data-Attribut, weil das Modulskript keine Astro-Props sieht.
-  import { meldeSeitenaufruf } from '@/lib/funnelTracking';
+  // Stiller Tracking-Versuch: Aufruf und Verhalten gehen an Plausible immer,
+  // ans Sales-Backend nur mit `?r=`-Kennung. Siehe src/lib/engagement.ts.
+  import { meldeSeitenaufruf, streckeAusPfad } from '@/lib/funnelTracking';
   import { verfolgeEngagement } from '@/lib/engagement';
 
-  const funnel = document.querySelector<HTMLElement>('[data-funnel-track]')?.dataset.funnelTrack;
-  if (funnel) {
-    meldeSeitenaufruf(funnel);
-    verfolgeEngagement(funnel);
-  }
+  // Der Name kommt aus dem Pfad, nicht aus der `funnel`-Prop: Sonst trägt jede Stelle
+  // ihren eigenen, und Öffnung und Abgabe stehen im Board unter zwei Strecken.
+  const funnel = streckeAusPfad();
+  meldeSeitenaufruf(funnel);
+  verfolgeEngagement(funnel);
 </script>

@@ -12,11 +12,17 @@ import {
   trackMetaLead,
   trackPlausible,
 } from '@/lib/leadTracking';
-import { meldeEreignis, type FunnelEreignis } from '@/lib/funnelTracking';
+import { meldeEreignis, streckeAusPfad, type FunnelEreignis } from '@/lib/funnelTracking';
 import { leseBriefRef } from '@/lib/briefRef';
 
 interface FunnelQuizProps {
-  funnel: string;
+  /**
+   * Label für Plausible und das Meta-Pixel. Ans Sales-Backend geht immer die
+   * Strecke aus dem Pfad (`streckeAusPfad`), nie dieser Wert — sonst trügen
+   * Öffnung und Abgabe im Board zwei verschiedene Namen. Ohne Angabe ist beides
+   * dasselbe, und genau das ist der Normalfall.
+   */
+  funnel?: string;
   questions: FunnelQuizQuestion[];
   contact: { heading: string; text: string };
   success: { heading: string; text: string; calUrl?: string; calLabel?: string };
@@ -66,7 +72,7 @@ const BACKEND_EVENTS: Record<string, FunnelEreignis> = {
 };
 
 export function FunnelQuiz({
-  funnel,
+  funnel: funnelLabel,
   questions,
   contact,
   success,
@@ -94,6 +100,11 @@ export function FunnelQuiz({
   // einem Ref gehalten: `leseBriefRef` sichert sie in `sessionStorage`, also ueberlebt sie
   // auch mehrere interne Klicks bis hierher.
   const letterRefRef = useRef<string>('');
+  // Ohne eigene Beschriftung ist das Plausible-Label die Strecke selbst, damit eine
+  // Aufrufstelle nicht aus Versehen einen dritten Namen einführt. Erst im Effect
+  // gesetzt: beim statischen Render gibt es keinen Pfad, und ein dort berechneter
+  // Wert wäre für jede Seite derselbe.
+  const funnelRef = useRef<string>(funnelLabel ?? '');
   const cardRef = useRef<HTMLDivElement>(null);
 
   const totalSteps = questions.length + 1;
@@ -104,7 +115,8 @@ export function FunnelQuiz({
   useEffect(() => {
     utmRef.current = sammleAttribution();
     letterRefRef.current = leseBriefRef();
-  }, []);
+    funnelRef.current = funnelLabel ?? streckeAusPfad();
+  }, [funnelLabel]);
 
   // Jedes Quiz-Ereignis geht an alle Senken: dataLayer (GTM/Meta, falls
   // konfiguriert), Plausible (immer, cookieless) und — nur mit `?r=`-Kennung
@@ -113,11 +125,15 @@ export function FunnelQuiz({
   // Ohne Plausible wären die Schritte unsichtbar, sobald kein GTM läuft — und
   // genau dann fehlt die Antwort auf "an welcher Frage steigen die Leute aus".
   function melde(event: string, props: Record<string, string | number> = {}) {
+    const funnel = funnelRef.current;
     pushEvent(event, { funnel, ...props });
     trackPlausible(event, { funnel, ...props });
     const backend = BACKEND_EVENTS[event];
     if (backend) {
-      meldeEreignis(funnel, backend, props, {
+      // Ans Backend mit dem Pfad-Namen, zu Plausible oben mit der `funnel`-Prop: Das CRM
+      // soll Öffnung und Abgabe unter derselben Strecke führen, Plausible behält seine
+      // fachliche Beschriftung.
+      meldeEreignis(streckeAusPfad(), backend, props, {
         plausible: false,
         schluessel: String(props.step ?? ''),
       });
@@ -216,7 +232,10 @@ export function FunnelQuiz({
 
     const form = event.currentTarget;
     const formData = new FormData(form);
-    formData.set('funnel', funnel);
+    // Der Streckenname kommt aus dem Pfad, damit Abgabe und Öffnung im Board
+    // dieselbe Strecke tragen. Die `funnel`-Prop bleibt für Plausible und die
+    // fachliche Beschriftung zuständig.
+    formData.set('funnel', streckeAusPfad());
     formData.set('page', window.location.href);
 
     const eventId = erzeugeEventId();
@@ -243,8 +262,8 @@ export function FunnelQuiz({
           impact: answers[questions[1]?.id]?.optionId ?? '',
         });
         if (leadEvent) {
-          pushEvent(leadEvent, { funnel });
-          trackPlausible('Lead', { funnel });
+          pushEvent(leadEvent, { funnel: funnelRef.current });
+          trackPlausible('Lead', { funnel: funnelRef.current });
         }
         // Browser-Pixel-Lead mit derselben eventId wie das CAPI-Event (Dedup)
         trackMetaLead(eventId);
