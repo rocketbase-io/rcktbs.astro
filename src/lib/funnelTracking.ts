@@ -44,6 +44,31 @@ const API_BASE = import.meta.env.PUBLIC_SALES_API_URL as string | undefined;
 const ENDPOINT = '/api/public/funnel-events';
 
 /**
+ * Der Name der Strecke, abgeleitet aus dem Pfad: `/f/angebote/` → `f/angebote`.
+ *
+ * **Warum der Pfad und kein gepflegter Name.** Vorher trug jede Stelle ihren eigenen:
+ * das Layout `tuer-angebote`, das Kontaktformular fest verdrahtet `angebote`, die
+ * dynamische Route ihren `slug`. Keiner wusste vom anderen — im Board stand die Abgabe
+ * unter einer anderen Strecke als die Öffnung, die zu ihr führte, und die Formulare auf
+ * `/f/zahlen` und `/f/einsatz` meldeten beide `angebote`. Der Pfad ist immer da, immer
+ * eindeutig, und Öffnung und Abgabe teilen ihn zwangsläufig.
+ *
+ * Das `f/` bzw. `b/` bleibt stehen: Es unterscheidet die Anzeigen-Tür von der
+ * Brief-Landing, ohne ein künstliches Wort wie `tuer-`. Slashes am Rand fallen weg,
+ * damit der Name im Board nicht wie ein Pfad aussieht — die Spalte „Seite" zeigt den
+ * ohnehin.
+ *
+ * Kampagnen-Wellen (`brief-welle-01`) sind davon unberührt: Dort ist die Welle die
+ * Aussage, nicht die Seite, und sie wird weiterhin explizit gesetzt.
+ */
+export function streckeAusPfad(pfad?: string): string {
+  // Ohne Argument der aktuelle Pfad — aber nur im Browser: Die Funktion wird auch
+  // beim statischen Render einer Insel aufgerufen, wo es kein `window` gibt.
+  const roh = pfad ?? (typeof window === 'undefined' ? '' : window.location.pathname);
+  return roh.replace(/^\/+|\/+$/g, '') || 'start';
+}
+
+/**
  * Ereignisse, die das Backend kennt. Die Namen sind der Vertrag mit dem CRM
  * (rcktbs-sales) — wer hier umbenennt, muss dort die Anzeige nachziehen.
  *

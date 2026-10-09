@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { ArrowRight, Check, Loader2, ShieldCheck } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { leseBriefRef } from '@/lib/briefRef';
+import { streckeAusPfad } from '@/lib/funnelTracking';
 import { buttonVariants } from '@/components/ui/form/Button/button.variants';
 import { Input } from '@/components/ui/form/Input/Input';
 import {
@@ -66,7 +67,10 @@ export function AngeboteKontakt({
     setSubmitting(true);
 
     const formData = new FormData(event.currentTarget);
-    formData.set('funnel', funnel);
+    // Der Streckenname kommt aus dem Pfad, damit Abgabe und Öffnung im Board
+    // dieselbe Strecke tragen. Die `funnel`-Prop bleibt für Plausible und die
+    // fachliche Beschriftung zuständig.
+    formData.set('funnel', streckeAusPfad());
     formData.set('page', window.location.href);
     // Der Endpoint erwartet das Feld; hier gibt es kein Quiz.
     formData.set('answers', '[]');

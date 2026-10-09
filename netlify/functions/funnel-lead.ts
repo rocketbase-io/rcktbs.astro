@@ -37,7 +37,16 @@ const leadSchema = z.object({
 	// Auf der Angebotsbaustein-Seite (/f/angebote/) gibt es keine Terminbuchung, Marten ruft
 	// zurück: Telefon ist dort Pflicht, die Firma dafür optional.
 	// Gleiches gilt für die Zahlen-Seite (/f/zahlen/) und die Einsatz-Seite (/f/einsatz/).
-	const angebote = lead.funnel === 'angebote' || lead.funnel === 'zahlen' || lead.funnel === 'einsatz';
+	//
+	// Geprüft wird gegen die Strecke, also den Pfad (`f/angebote`), den
+	// `streckeAusPfad` liefert. Die alten Kurznamen (`angebote`) bleiben
+	// erlaubt, damit ein Lead aus einem noch offenen Tab nicht an der
+	// falschen Pflichtfeld-Regel scheitert.
+	const RUECKRUF_STRECKEN = new Set([
+		'f/angebote', 'f/zahlen', 'f/einsatz',
+		'angebote', 'zahlen', 'einsatz',
+	]);
+	const angebote = RUECKRUF_STRECKEN.has(lead.funnel);
 	if (angebote && (lead.phone ?? '').trim().length < 5) {
 		ctx.addIssue({ code: 'custom', path: ['phone'], message: 'Bitte eine Telefonnummer angeben.' });
 	}
@@ -335,10 +344,15 @@ export default async (request: Request, context: Context) => {
 				// Brief-Kanal (/b/) — eine Variante pro Branchencluster.
 				'brief-fertigung': 'Brief · Fertigung & Handwerk',
 				// Angebotsbaustein-Funnel (/f/angebote/) — Ziel der Social-Posts.
+				// Schlüssel ist die Strecke aus dem Pfad; die Kurznamen bleiben als
+				// Alias, solange noch Leads aus alten Tabs eintreffen können.
+				'f/angebote': 'Funnel · Angebotsbaustein (/f/angebote/)',
 				angebote: 'Funnel · Angebotsbaustein (/f/angebote/)',
 				// Zahlen & Steuerung (/f/zahlen/, Tür 3).
+				'f/zahlen': 'Funnel · Zahlen & Steuerung (/f/zahlen/)',
 				zahlen: 'Funnel · Zahlen & Steuerung (/f/zahlen/)',
 				// Einsatz & Abrechnung (/f/einsatz/, Tür 2).
+				'f/einsatz': 'Funnel · Einsatz & Abrechnung (/f/einsatz/)',
 				einsatz: 'Funnel · Einsatz & Abrechnung (/f/einsatz/)',
 			};
 			const utm = lead.utm || {};
