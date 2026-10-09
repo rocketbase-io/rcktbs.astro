@@ -58,6 +58,17 @@ wären sie weg, mit `deliveredAt` gestempelt und für den Nachlieferer unsichtba
 Scheitert die Zustellung, trägt die Plunk-Mail den Hinweis „Noch nicht im CRM"; die Daten
 stehen dann wie bisher darunter.
 
+**Die Mail geht weiterhin bei jedem Lead raus**, nicht nur im Fehlerfall — Slack und Mail laufen
+parallel. Das ist Absicht, solange die Slack-Kette noch nicht lange genug läuft: Ein `201` sagt
+nur, dass der Lead gespeichert wurde, nicht dass dich eine Meldung erreicht hat (der Webhook kann
+fehlen, und die Sperrfrist greift pro Firma × Strecke × Ereignisart).
+
+**Ein Plunk-Fehlschlag steht jetzt im Log.** Vorher wurde die Antwort nur abgewartet, nie
+angesehen: Ein deaktivierter Account antwortet 401/403, und `fetch` wertet das nicht als Fehler —
+der `catch` greift nur bei Netzwerkabbruch. Die Mails liefen still ins Leere, die Function-Logs
+blieben leer, und es fiel erst beim Blick ins Plunk-Dashboard auf. Gleiches gilt jetzt für
+`contact.ts`, wo es keine Slack-Meldung als zweites Netz gibt.
+
 **Env (Netlify):** `PUBLIC_SALES_API_URL` — dieselbe Variable, die der Browser-Pfad
 (`funnelTracking.ts`) schon nutzt, also nichts Neues einzutragen. Ist keine gesetzt, bleibt der
 Lead im Blob liegen und wird nur geloggt. `SALES_API_URL` überschreibt sie, falls die

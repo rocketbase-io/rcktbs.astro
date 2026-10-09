@@ -123,7 +123,12 @@ export default async (request: Request, _context: Context) => {
 			const timeout = setTimeout(() => controller.abort(), 8000);
 
 			try {
-				await fetch('https://next-api.useplunk.com/v1/send', {
+				// Antwort auswerten, nicht nur abwarten: Ein deaktivierter Account oder ein
+				// abgelaufener Key antwortet 401/403, und `fetch` wertet das nicht als Fehler --
+				// der `catch` unten greift nur bei Netzwerkabbruch oder Timeout. Eine
+				// Kontaktanfrage ist hier das einzige Signal; ohne diese Pruefung geht sie
+				// still verloren, und die Logs melden nichts.
+				const plunkResponse = await fetch('https://next-api.useplunk.com/v1/send', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
@@ -150,11 +155,18 @@ export default async (request: Request, _context: Context) => {
 					}),
 					signal: controller.signal,
 				});
+				if (!plunkResponse.ok) {
+					console.error(
+						`Plunk email rejected: HTTP ${plunkResponse.status} ${await plunkResponse.text()}`,
+					);
+				}
 			} catch (emailError) {
 				console.error('Plunk email error:', emailError);
 			} finally {
 				clearTimeout(timeout);
 			}
+		} else {
+			console.warn('Plunk not configured (PLUNK_SECRET_KEY / CONTACT_NOTIFICATION_EMAIL)');
 		}
 
 		return json({ success: true });
