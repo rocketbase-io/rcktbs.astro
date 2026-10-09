@@ -1,6 +1,7 @@
 import type { Context } from '@netlify/functions';
 import { getStore } from '@netlify/blobs';
 import { z } from 'zod';
+import { deliverToSales, type StoredLead } from '../lib/sales-delivery';
 
 const answerSchema = z.object({
 	questionId: z.string().max(100),
@@ -210,28 +211,60 @@ export default async (request: Request, context: Context) => {
 		};
 		const userAgent = request.headers.get('user-agent') || undefined;
 
-		// Lead dauerhaft ablegen - E-Mail ist nur die Benachrichtigung.
+		// Lead dauerhaft ablegen, BEVOR irgendetwas anderes passiert.
 		// Abrufbar über das Netlify-Dashboard (Blobs) oder `netlify blobs:list funnel-leads`.
+		//
+		// Dieser Schritt ist als einziger fehlerkritisch: Der Blob ist die haltbare
+		// Warteschlange, aus der `funnel-redeliver` nachliefert, wenn das CRM gerade
+		// redeployed wird oder offline ist. Scheitert er, gibt es nichts zum Nachliefern —
+		// dann muss der Besucher erneut absenden können, statt ein "Danke" zu sehen, hinter
+		// dem nichts steht. Vorher wurde der Fehler nur geloggt und die Antwort blieb
+		// `success: true`: ein bezahlter Lead war weg, und niemand hat es gemerkt.
+		const store = getStore('funnel-leads');
+		const day = receivedAt.slice(0, 10);
+		const submissionId = `${day}/${receivedAt}-${crypto.randomUUID().slice(0, 8)}`;
+		const stored: StoredLead = {
+			receivedAt,
+			funnel: lead.funnel,
+			company: lead.company,
+			name: lead.name,
+			email: lead.email,
+			phone: lead.phone,
+			answers: lead.answers,
+			attribution: lead.utm,
+			letterRef: lead.letterRef,
+			page: lead.page,
+			geo,
+			userAgent,
+			deliveredAt: null,
+		};
 		try {
-			const store = getStore('funnel-leads');
-			const day = receivedAt.slice(0, 10);
-			const key = `${day}/${receivedAt}-${crypto.randomUUID().slice(0, 8)}`;
-			await store.setJSON(key, {
-				receivedAt,
-				funnel: lead.funnel,
-				company: lead.company,
-				name: lead.name,
-				email: lead.email,
-				phone: lead.phone,
-				answers: lead.answers,
-				attribution: lead.utm,
-				letterRef: lead.letterRef,
-				page: lead.page,
-				geo,
-				userAgent,
-			});
+			await store.setJSON(submissionId, stored);
 		} catch (blobError) {
 			console.error('Blob store error:', blobError);
+			return json(
+				{
+					success: false,
+					errors: { form: ['Ein unerwarteter Fehler ist aufgetreten.'] },
+				},
+				500,
+			);
+		}
+
+		// Ans CRM zustellen - best-effort. Gelingt es nicht, bleibt `deliveredAt: null`
+		// stehen und `funnel-redeliver` versucht es alle zehn Minuten erneut; über
+		// `submissionId` ist das idempotent.
+		const delivery = await deliverToSales(stored, submissionId);
+		if (delivery.ok) {
+			try {
+				await store.setJSON(submissionId, { ...stored, deliveredAt: new Date().toISOString() });
+			} catch (stampError) {
+				// Der Lead ist im CRM; nur der Stempel fehlt. Der Nachlieferer schickt ihn
+				// dann ein zweites Mal, was das Backend über `submissionId` verwirft.
+				console.error('Blob stamp error:', stampError);
+			}
+		} else {
+			console.error('Sales delivery failed:', delivery.reason);
 		}
 
 		// Meta Conversions API - serverseitiges Lead-Event (best-effort).
@@ -309,7 +342,15 @@ export default async (request: Request, context: Context) => {
 					<strong>Kam über:</strong> ${angleLabel}
 					${lead.letterRef ? `<br /><strong>Brief-Kennung:</strong> <code>${lead.letterRef}</code>` : ''}
 					${campaignBits ? `<br /><strong>Kampagne/Anzeige:</strong> ${campaignBits}` : ''}
-				</div>`;
+				</div>
+				${
+					delivery.ok
+						? ''
+						: `<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:12px 16px;margin-bottom:16px">
+					<strong>Noch nicht im CRM.</strong> Der Lead liegt gesichert in Netlify Blobs und wird
+					automatisch nachgeliefert. Falls er dort nicht auftaucht, stehen die Daten unten.
+				</div>`
+				}`;
 
 			const controller = new AbortController();
 			const timeout = setTimeout(() => controller.abort(), 8000);

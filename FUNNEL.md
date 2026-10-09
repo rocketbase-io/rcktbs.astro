@@ -31,6 +31,41 @@ gespeichert.
 
 Leads einsehen: Netlify-Dashboard → Blobs, oder `netlify blobs:list funnel-leads`.
 
+### Zustellung ins CRM
+
+Jeder Lead geht zusätzlich an **rcktbs-sales** (`POST /api/public/funnel-events`) und landet
+dort im Rückmeldungs-Board (`/funnel-submissions`) — mit Antworten, Kontaktdaten und Herkunft.
+
+Die Reihenfolge ist der ganze Punkt:
+
+1. **Blob schreiben.** Als einziger Schritt fehlerkritisch: Scheitert er, antwortet die
+   Function 500 und der Besucher kann erneut absenden. Vorher wurde der Fehler nur geloggt und
+   die Antwort blieb `success: true` — ein bezahlter Lead war weg, ohne Spur.
+2. **Zustellen**, best-effort. `201` heißt angekommen, dann wird `deliveredAt` gestempelt.
+3. **Nachliefern.** `funnel-redeliver.ts` läuft alle zehn Minuten über die Blobs mit
+   `deliveredAt: null` (höchstens 50 je Lauf, höchstens 14 Tage zurück). Ein Redeploy des
+   Backends oder ein Ausfall kostet damit nichts, er verzögert nur.
+
+Wiederholen ist gefahrlos: Die Blob-Id reist als `submissionId` mit, und das Backend hält sie
+`UNIQUE` — weder eine zweite Abgabe noch ein zweites Ereignis entsteht.
+
+**Erst das Backend deployen, dann die Website.** Als angekommen gilt nur ein `201`. Ein `204`
+kommt von einem Backend-Stand vor dem Rückmeldungs-Board: Der behandelt die Abgabe als nacktes
+Ereignis und verwirft sie ohne `?r=` sogar ganz. Deshalb zählt `204` hier als Fehlschlag — die
+Leads sammeln sich im Blob und werden nachgeliefert, sobald das Backend steht. Andersherum
+wären sie weg, mit `deliveredAt` gestempelt und für den Nachlieferer unsichtbar.
+
+Scheitert die Zustellung, trägt die Plunk-Mail den Hinweis „Noch nicht im CRM"; die Daten
+stehen dann wie bisher darunter.
+
+**Env (Netlify):** `PUBLIC_SALES_API_URL` — dieselbe Variable, die der Browser-Pfad
+(`funnelTracking.ts`) schon nutzt, also nichts Neues einzutragen. Ist keine gesetzt, bleibt der
+Lead im Blob liegen und wird nur geloggt. `SALES_API_URL` überschreibt sie, falls die
+Zustellung einmal auf einen anderen Host zeigen soll; `SALES_API_TOKEN` setzt optional den
+`X-Api-Token`-Header.
+
+Der Vertrag steht in `rcktbs-sales`: `docs/vertrieb/quiz-funnel.md`.
+
 ## Offene To-dos
 
 ### Vor dem Kampagnenstart
@@ -60,8 +95,8 @@ Leads einsehen: Netlify-Dashboard → Blobs, oder `netlify blobs:list funnel-lea
 - [ ] **Meta Conversions API** server-seitig aus `funnel-lead.ts` feuern
   (umgeht iOS-Tracking-Verluste; Datenbasis `fbclid`/`_fbp`/`_fbc`/E-Mail liegt
   bereits bei jedem Lead)
-- [ ] **Lead-Export** (z. B. CSV aus den Blobs) oder Weiterleitung ins CRM/Slack,
-  sobald das Volumen es rechtfertigt
+- [x] **Weiterleitung ins CRM** (2026-10-09): Leads gehen an rcktbs-sales, mit
+  Blob als haltbarer Warteschlange und Nachlieferer — siehe „Zustellung ins CRM" oben
 - [ ] **KI-Klassifizierung der Freitext-Antworten** („Etwas anderes"-Option):
   asynchron server-seitig in der Function nachrüsten, falls der Freitext-Anteil
   relevant wird — nicht im Klickpfad (Latenz/Conversion)
