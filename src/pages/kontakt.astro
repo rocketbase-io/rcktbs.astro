@@ -5,6 +5,7 @@ import Button from '@/components/ui/form/Button/Button.astro';
 import Input from '@/components/ui/form/Input/Input.astro';
 import Textarea from '@/components/ui/form/Textarea/Textarea.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import ContactAttribution from '@/components/patterns/ContactAttribution.astro';
 import { defaultLocale } from '@/i18n/config';
 import { getLocalizedPath, useTranslations } from '@/i18n/index';
 import { contactLinks } from '@/data/rocketbase';
@@ -318,8 +319,9 @@ const workshopUrl = getLocalizedPath('discoveryWorkshop', locale);
 
               <div class="hidden" aria-hidden="true">
                 <input type="text" name="honeypot" tabindex="-1" autocomplete="off" />
-                <input type="hidden" name="renderedAt" id="contact-rendered-at" value="" />
               </div>
+
+              <ContactAttribution />
 
               <div class="flex flex-col gap-4 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
                 <div id="form-message" class="hidden text-sm"></div>
@@ -405,14 +407,6 @@ const workshopUrl = getLocalizedPath('discoveryWorkshop', locale);
 
     if (!(form instanceof HTMLFormElement) || !(button instanceof HTMLButtonElement) || !(message instanceof HTMLDivElement)) {
       return;
-    }
-
-    // Beim Init stempeln, nicht beim Absenden - sonst waere die gemessene
-    // Dauer immer null. Steht innerhalb dieser Funktion, damit
-    // astro:after-swap ihn nach einer Client-Navigation neu setzt.
-    const renderedAt = document.getElementById('contact-rendered-at');
-    if (renderedAt instanceof HTMLInputElement) {
-      renderedAt.value = String(Date.now());
     }
 
     form.addEventListener('submit', async (e) => {

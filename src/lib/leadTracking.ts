@@ -45,6 +45,22 @@ export function trackMetaLead(eventId: string) {
 }
 
 /** Sammelt UTM-Parameter, Click-IDs und Referrer aus der aktuellen URL. */
+const ATTRIBUTION_KEY = 'rb-attribution';
+
+/**
+ * Herkunft der Sitzung: zuerst aus der URL, sonst aus dem, was beim Einstieg gemerkt wurde.
+ *
+ * **Warum gemerkt wird.** Die Kampagnen-Parameter stehen nur an der Einstiegsseite. Beim Quiz
+ * fiel das nie auf, weil Formular und Einstieg dieselbe Seite sind — beim Kontaktformular ist
+ * genau das nicht so: Wer über eine Anzeige auf `/f/angebote` landet und dann auf „Kontakt"
+ * klickt, hat in der URL nichts mehr stehen. Ohne die Sicherung käme die Anfrage im Board ohne
+ * Quelle an, und die Frage „welche Anzeige bringt Anfragen" wäre für genau die Besucher
+ * unbeantwortbar, die sich am gründlichsten umgesehen haben.
+ *
+ * Gemerkt wird die **erste** Herkunft der Sitzung: Ein späterer interner Klick darf die Anzeige
+ * nicht überschreiben, die den Besuch ausgelöst hat. Fehlschläge sind egal (Private Mode) — dann
+ * gilt wie bisher nur die aktuelle URL. Gleiche Mechanik wie `briefRef.ts`, aus demselben Grund.
+ */
 export function sammleAttribution(): Record<string, string> {
   const params = new URLSearchParams(window.location.search);
   const attribution: Record<string, string> = {};
@@ -52,6 +68,28 @@ export function sammleAttribution(): Record<string, string> {
     const value = params.get(key);
     if (value) attribution[key] = value;
   }
+
+  if (Object.keys(attribution).length > 0) {
+    // Der Referrer gehört zum Einstieg und wird mitgesichert, nicht der einer
+    // Folgeseite — sonst stünde dort die eigene Domain.
+    if (document.referrer) attribution.referrer = document.referrer;
+    try {
+      if (!window.sessionStorage.getItem(ATTRIBUTION_KEY)) {
+        window.sessionStorage.setItem(ATTRIBUTION_KEY, JSON.stringify(attribution));
+      }
+    } catch {
+      // Private Mode o. Ä. — die Herkunft lebt dann nur für diesen Seitenaufruf.
+    }
+    return attribution;
+  }
+
+  try {
+    const gemerkt = window.sessionStorage.getItem(ATTRIBUTION_KEY);
+    if (gemerkt) return JSON.parse(gemerkt) as Record<string, string>;
+  } catch {
+    // Unlesbar oder gesperrt: unten ohne Kampagnen-Daten weiter.
+  }
+
   if (document.referrer) attribution.referrer = document.referrer;
   return attribution;
 }
