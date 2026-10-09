@@ -263,8 +263,12 @@ export default async (request: Request, context: Context) => {
 				// dann ein zweites Mal, was das Backend über `submissionId` verwirft.
 				console.error('Blob stamp error:', stampError);
 			}
-		} else {
-			console.error('Sales delivery failed:', delivery.reason);
+		}
+		// Der Grund gehört in die Mail: Sie ist im Fehlerfall das Einzige, was den Lead noch
+		// sichtbar macht, und "503" sagt etwas anderes als "SALES_API_URL fehlt".
+		const deliveryReason = delivery.ok ? '' : delivery.reason;
+		if (!delivery.ok) {
+			console.error('Sales delivery failed:', deliveryReason);
 		}
 
 		// Meta Conversions API - serverseitiges Lead-Event (best-effort).
@@ -300,7 +304,12 @@ export default async (request: Request, context: Context) => {
 		const plunkSecretKey = Netlify.env.get('PLUNK_SECRET_KEY');
 		const contactEmail = Netlify.env.get('CONTACT_NOTIFICATION_EMAIL');
 
-		if (plunkSecretKey && contactEmail) {
+		// Die Mail ist der Notnagel, nicht der Meldeweg. Angekommene Leads meldet das CRM
+		// nach Slack; eine zweite Benachrichtigung pro Lead ist nur Lärm — und sie kostet:
+		// Formular-POSTs von Bots ohne JavaScript lösten jedes Mal eine Mail aus, bis der
+		// Plunk-Account wegen des Volumens gesperrt wurde. Erreicht der Lead das CRM nicht,
+		// ist die Mail dagegen das Einzige, was ihn noch sichtbar macht.
+		if (!delivery.ok && plunkSecretKey && contactEmail) {
 			const answersHtml = lead.answers
 				.map(
 					(a) => `
@@ -343,20 +352,22 @@ export default async (request: Request, context: Context) => {
 					${lead.letterRef ? `<br /><strong>Brief-Kennung:</strong> <code>${lead.letterRef}</code>` : ''}
 					${campaignBits ? `<br /><strong>Kampagne/Anzeige:</strong> ${campaignBits}` : ''}
 				</div>
-				${
-					delivery.ok
-						? ''
-						: `<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:12px 16px;margin-bottom:16px">
-					<strong>Noch nicht im CRM.</strong> Der Lead liegt gesichert in Netlify Blobs und wird
-					automatisch nachgeliefert. Falls er dort nicht auftaucht, stehen die Daten unten.
-				</div>`
-				}`;
+				<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:12px 16px;margin-bottom:16px">
+					<strong>Noch nicht im CRM.</strong> ${deliveryReason}<br />
+					Der Lead liegt gesichert in Netlify Blobs und wird automatisch nachgeliefert.
+					Taucht er dort nicht auf, stehen die Daten unten.
+				</div>`;
 
 			const controller = new AbortController();
 			const timeout = setTimeout(() => controller.abort(), 8000);
 
 			try {
-				await fetch('https://next-api.useplunk.com/v1/send', {
+				// Die Antwort wird ausgewertet, nicht nur abgewartet: Ein deaktivierter Account
+				// oder ein abgelaufener Key antwortet 401/403, und `fetch` wertet das nicht als
+				// Fehler -- der `catch` unten greift nur bei Netzwerkabbruch oder Timeout. Ohne
+				// diese Pruefung liefen die Mails still ins Leere, die Function loggte nichts,
+				// und es fiel erst auf, als jemand das Plunk-Dashboard oeffnete.
+				const plunkResponse = await fetch('https://next-api.useplunk.com/v1/send', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
@@ -382,11 +393,20 @@ export default async (request: Request, context: Context) => {
 					}),
 					signal: controller.signal,
 				});
+				if (!plunkResponse.ok) {
+					console.error(
+						`Plunk email rejected: HTTP ${plunkResponse.status} ${await plunkResponse.text()}`,
+					);
+				}
 			} catch (emailError) {
 				console.error('Plunk email error:', emailError);
 			} finally {
 				clearTimeout(timeout);
 			}
+		} else {
+			// Auch das gehoert ins Log: Eine fehlende Konfiguration sieht sonst genauso aus wie
+			// eine erfolgreich verschickte Mail.
+			console.warn('Plunk not configured (PLUNK_SECRET_KEY / CONTACT_NOTIFICATION_EMAIL)');
 		}
 
 		return json({ success: true });
