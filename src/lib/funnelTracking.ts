@@ -44,30 +44,25 @@ const API_BASE = import.meta.env.PUBLIC_SALES_API_URL as string | undefined;
 const ENDPOINT = '/api/public/funnel-events';
 
 /**
- * Ereignisse, die das Backend neben `page_view` kennt. Die Namen sind der
- * Vertrag mit dem CRM (rcktbs-sales) — wer hier umbenennt, muss dort die
- * Anzeige nachziehen.
+ * Ereignisse, die das Backend kennt. Die Namen sind der Vertrag mit dem CRM
+ * (rcktbs-sales) — wer hier umbenennt, muss dort die Anzeige nachziehen.
+ *
+ * **Bewusst kurz.** Ins CRM gehört, was eine Entscheidung trägt: Die Firma hat den Link
+ * geöffnet, und sie hat abgeschickt. Alles dazwischen — Quiz-Schritte, Video-Fortschritt,
+ * sichtbare Sektionen, der Klick auf den Termin-Knopf — ist eine Trichter-Frage über alle
+ * Besucher und geht ausschließlich an Plausible (`trackPlausible`). Im CRM wäre jeder
+ * Schritt eine eigene Zeile je Firma und eine eigene Slack-Meldung; ein einziger Besucher
+ * löste damit fünf aus, und ein Kanal, den man stummschaltet, meldet gar nichts mehr.
+ *
+ * `form_submit` deckt das Kontaktformular ab, `email_open` / `email_click` sind für die
+ * Mail-Strecke reserviert — der Backend-Resolver und die i18n-Labels kennen sie bereits.
  */
 export type FunnelEreignis =
   | 'page_view'
-  | 'video_sichtbar'
-  | 'video_start'
-  | 'video_25'
-  | 'video_50'
-  | 'video_75'
-  | 'video_ende'
-  | 'termin_sichtbar'
-  | 'termin_klick'
-  | 'termin_gebucht'
-  | 'telefon_klick'
-  | 'weiter_klick'
-  | 'sektion_sichtbar'
-  | 'interaktion'
-  | 'quiz_start'
-  | 'quiz_schritt'
-  | 'quiz_kontakt'
   | 'quiz_lead'
-  | 'verweildauer';
+  | 'form_submit'
+  | 'email_open'
+  | 'email_click';
 
 type Payload = Record<string, unknown>;
 
@@ -87,8 +82,42 @@ interface Optionen {
  * View-Transition-Wechsel, ein doppelt eingebundenes Skript oder ein Video,
  * das zurückgespult und erneut gestartet wird, würden sonst dieselbe Handlung
  * mehrfach zählen. `verweildauer` ist die Ausnahme — siehe `meldeEreignis`.
+ *
+ * Reicht für Verhalten, nicht für die Öffnung: Das Set lebt nur so lange wie die Seite.
+ * `page_view` sperrt deshalb zusätzlich über die Sitzung — siehe unten.
  */
 const gemeldet = new Set<string>();
+
+/**
+ * Was in dieser Sitzung schon gemeldet wurde — über Seitenwechsel hinweg.
+ *
+ * Das `Set` oben lebt nur, solange die Seite geladen ist: Astro rendert statisch, also
+ * startet das Modul bei jedem internen Klick neu, und derselbe Besuch erzeugte bisher pro
+ * besuchter Funnel-Seite einen eigenen `page_view`. Im CRM las sich das als "drei Aufrufe",
+ * wo einer stattfand, und der Abend-Digest zählte sie mit.
+ *
+ * Nur für `page_view` gedacht, nicht für Verhalten: Dass jemand das Video ein zweites Mal
+ * startet, ist eine eigene Handlung und soll auf einer neuen Seite wieder zählen dürfen.
+ */
+const SITZUNGS_PREFIX = 'rb-funnel-seen:';
+
+function inDieserSitzungGemeldet(schluessel: string): boolean {
+  try {
+    return window.sessionStorage.getItem(SITZUNGS_PREFIX + schluessel) !== null;
+  } catch {
+    // Private-Mode o. Ä.: Dann greift nur die Einmal-Zählung dieses Seitenaufrufs. Lieber
+    // eine Meldung zu viel als eine verlorene Öffnung.
+    return false;
+  }
+}
+
+function merkeFuerDieseSitzung(schluessel: string): void {
+  try {
+    window.sessionStorage.setItem(SITZUNGS_PREFIX + schluessel, '1');
+  } catch {
+    // Siehe oben — ohne Storage bleibt es bei der Einmal-Zählung pro Seitenaufruf.
+  }
+}
 
 /** Grobe Geräteklasse statt User-Agent — siehe Modul-Kommentar. */
 function geraeteKlasse(): string {
@@ -142,13 +171,9 @@ export function meldeEreignis(
   opt: Optionen = {}
 ): void {
   if (typeof window === 'undefined') return;
-  // `verweildauer` kommt beim Verlassen und darf nach einem Tab-Wechsel ein
-  // zweites Mal mit höherem Wert kommen; das Backend nimmt das Maximum.
-  if (event !== 'verweildauer') {
-    const key = opt.schluessel ? `${event}:${opt.schluessel}` : event;
-    if (gemeldet.has(key)) return;
-    gemeldet.add(key);
-  }
+  const key = opt.schluessel ? `${event}:${opt.schluessel}` : event;
+  if (gemeldet.has(key)) return;
+  gemeldet.add(key);
 
   if (opt.plausible !== false) {
     // Plausible: Props müssen flach sein (string | number). Zahlen aus dem
@@ -191,6 +216,15 @@ export function meldeSeitenaufruf(funnel: string): void {
 
   const ref = leseBriefRef();
   if (!ref || !API_BASE) return;
+
+  // Einmal je Strecke und Sitzung, nicht je Seitenaufruf: Wer von `/f/angebote` auf eine
+  // andere Funnel-Seite klickt, hat die Strecke einmal geöffnet, nicht zweimal. Der
+  // Schlüssel trägt die Strecke mit, damit eine zweite Strecke in derselben Sitzung ihre
+  // eigene Öffnung behält. Eine Wiederkehr morgen ist eine neue Sitzung und zählt wieder —
+  // und das ist eine echte Aussage.
+  const sitzungsSchluessel = `page_view:${funnel}`;
+  if (inDieserSitzungGemeldet(sitzungsSchluessel)) return;
+  merkeFuerDieseSitzung(sitzungsSchluessel);
   gemeldet.add('page_view');
 
   sende(

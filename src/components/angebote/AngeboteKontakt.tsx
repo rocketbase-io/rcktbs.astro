@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { ArrowRight, Check, Loader2, ShieldCheck } from 'lucide-react';
 import { cn } from '@/lib/cn';
+import { leseBriefRef } from '@/lib/briefRef';
 import { buttonVariants } from '@/components/ui/form/Button/button.variants';
 import { Input } from '@/components/ui/form/Input/Input';
 import {
@@ -48,10 +49,14 @@ export function AngeboteKontakt({
   const [submitted, setSubmitted] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const attributionRef = useRef<Record<string, string>>({});
+  // Die `?r=`-Kennung aus Brief oder persoenlicher Mail, ueber `sessionStorage` auch nach
+  // mehreren internen Klicks noch da.
+  const letterRefRef = useRef<string>('');
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     attributionRef.current = sammleAttribution();
+    letterRefRef.current = leseBriefRef();
   }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -69,6 +74,8 @@ export function AngeboteKontakt({
     const eventId = erzeugeEventId();
     formData.set('eventId', eventId);
     formData.set('utm', JSON.stringify(ergaenzeMetaCookies(attributionRef.current)));
+    // Ohne das Feld kommt der Lead im CRM firmenlos an, obwohl der Brief ihn benennt.
+    if (letterRefRef.current) formData.set('letterRef', letterRefRef.current);
 
     try {
       const response = await fetch(endpoint, { method: 'POST', body: formData });
