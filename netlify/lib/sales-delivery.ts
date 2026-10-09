@@ -102,9 +102,15 @@ export const deliverToSales = async (
 	submissionId: string,
 	timeoutMs = 8000,
 ): Promise<DeliveryResult> => {
-	const base = Netlify.env.get('SALES_API_URL');
+	// `PUBLIC_SALES_API_URL` ist dieselbe Adresse, die `funnelTracking.ts` im Browser
+	// benutzt — eine zweite Variable für denselben Wert wäre Doppelpflege, und eine davon
+	// würde beim nächsten Umzug vergessen. Das `PUBLIC_`-Präfix ist Astros Marker für
+	// "darf ins Browser-Bundle" und stört hier nicht: Die Function läuft serverseitig und
+	// liest jede Variable, der Wert ist ohnehin öffentlich. `SALES_API_URL` bleibt als
+	// Override, falls die Zustellung einmal auf einen anderen Host zeigen soll.
+	const base = Netlify.env.get('SALES_API_URL') || Netlify.env.get('PUBLIC_SALES_API_URL');
 	if (!base) {
-		return { ok: false, reason: 'SALES_API_URL not configured' };
+		return { ok: false, reason: 'neither SALES_API_URL nor PUBLIC_SALES_API_URL configured' };
 	}
 
 	const token = Netlify.env.get('SALES_API_TOKEN');
@@ -120,8 +126,18 @@ export const deliverToSales = async (
 			body: JSON.stringify(buildSalesPayload(lead, submissionId)),
 			signal: controller.signal,
 		});
-		if (res.status === 201 || res.status === 204) {
+		// Nur 201 heißt angekommen. **204 ist bewusst ein Fehlschlag**, obwohl der alte
+		// Endpunkt genau das antwortete: Ein Backend, das die Abgabe versteht, bestätigt sie
+		// mit 201 — ein 204 kommt von einem Stand vor dem Rückmeldungs-Board, der den Lead
+		// als nacktes Ereignis behandelt und ihn ohne `?r=` sogar verwirft. Würden wir das
+		// als Erfolg stempeln, wäre der Lead weg und der Nachlieferer käme nie wieder
+		// darauf zurück. Lieber wiederholen, bis das Backend deployed ist — das ist über
+		// `submissionId` ohnehin folgenlos.
+		if (res.status === 201) {
 			return { ok: true };
+		}
+		if (res.status === 204) {
+			return { ok: false, reason: 'HTTP 204 — backend predates the submission contract' };
 		}
 		return { ok: false, reason: `HTTP ${res.status}` };
 	} catch (error) {
