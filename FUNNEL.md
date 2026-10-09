@@ -49,11 +49,20 @@ Die Reihenfolge ist der ganze Punkt:
 Wiederholen ist gefahrlos: Die Blob-Id reist als `submissionId` mit, und das Backend hält sie
 `UNIQUE` — weder eine zweite Abgabe noch ein zweites Ereignis entsteht.
 
+**Erst das Backend deployen, dann die Website.** Als angekommen gilt nur ein `201`. Ein `204`
+kommt von einem Backend-Stand vor dem Rückmeldungs-Board: Der behandelt die Abgabe als nacktes
+Ereignis und verwirft sie ohne `?r=` sogar ganz. Deshalb zählt `204` hier als Fehlschlag — die
+Leads sammeln sich im Blob und werden nachgeliefert, sobald das Backend steht. Andersherum
+wären sie weg, mit `deliveredAt` gestempelt und für den Nachlieferer unsichtbar.
+
 Scheitert die Zustellung, trägt die Plunk-Mail den Hinweis „Noch nicht im CRM"; die Daten
 stehen dann wie bisher darunter.
 
-**Env (Netlify):** `SALES_API_URL` (ohne sie bleibt der Lead im Blob liegen und wird nur
-geloggt), optional `SALES_API_TOKEN` für den `X-Api-Token`-Header.
+**Env (Netlify):** `PUBLIC_SALES_API_URL` — dieselbe Variable, die der Browser-Pfad
+(`funnelTracking.ts`) schon nutzt, also nichts Neues einzutragen. Ist keine gesetzt, bleibt der
+Lead im Blob liegen und wird nur geloggt. `SALES_API_URL` überschreibt sie, falls die
+Zustellung einmal auf einen anderen Host zeigen soll; `SALES_API_TOKEN` setzt optional den
+`X-Api-Token`-Header.
 
 Der Vertrag steht in `rcktbs-sales`: `docs/vertrieb/quiz-funnel.md`.
 

@@ -29,8 +29,8 @@
 
 # Zeitplan und Pfad stehen als `export const config` in der jeweiligen Function (Netlify
 # Functions v2), nicht hier — `funnel-redeliver` läuft deshalb alle zehn Minuten, ohne dass
-# diese Datei davon weiß. Env-Variablen für die CRM-Zustellung: SALES_API_URL (ohne die
-# bleibt der Lead im Blob liegen) und optional SALES_API_TOKEN.
+# diese Datei davon weiß. Die CRM-Zustellung nutzt PUBLIC_SALES_API_URL (dieselbe Variable
+# wie der Browser-Pfad), optional überschrieben durch SALES_API_URL, plus SALES_API_TOKEN.
 
 # /angebote/ ist seit 2026-10-07 eine eigene, indexierte Seite (Tür 1 in der Navigation);
 # die Weiterleitung auf die Anzeigen-Landing /f/angebote/ ist deshalb entfallen.
