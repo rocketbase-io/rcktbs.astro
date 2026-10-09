@@ -30,12 +30,61 @@ export interface StoredLead {
 	page?: string;
 	geo?: { city?: string; country?: string; subdivision?: string };
 	userAgent?: string;
+	/**
+	 * Welche Art Abgabe das war. Steht im Blob und nicht als Konstante in dieser Datei,
+	 * weil `funnel-redeliver` den gespeicherten Stand erneut zustellt: Eine Konstante
+	 * machte aus jeder nachgelieferten Kontaktanfrage ein `quiz_lead`, und im Board wäre
+	 * der Unterschied genau dann weg, wenn das CRM kurz nicht erreichbar war.
+	 *
+	 * Fehlt das Feld, ist es ein Blob von vor dieser Änderung — und die gab es nur aus
+	 * dem Quiz.
+	 */
+	event?: 'quiz_lead' | 'form_submit';
+	/**
+	 * Freitext des Absenders (Kontaktformular). Das Quiz hat ihn nicht: Dort ist jede
+	 * Aussage eine Antwort mit Frage daneben.
+	 */
+	message?: string;
+	/** Betreff des Kontaktformulars, sofern ausgefüllt. */
+	subject?: string;
 	/** Gesetzt, sobald das CRM den Lead bestätigt hat. `null`/fehlend = noch offen. */
 	deliveredAt?: string | null;
 }
 
-/** Was das CRM als Ereignisart erwartet. Quiz und Kontaktformular sind beides Abgaben. */
-const EVENT = 'quiz_lead';
+/**
+ * Was im Board unter „Antworten" steht.
+ *
+ * <p>Beim Quiz sind das die Frage/Antwort-Paare. Beim Kontaktformular gibt es keine Fragen,
+ * sondern einen getippten Text — der reist als ein Paar mit, statt ein eigenes Feld zu
+ * bekommen: Das CRM zeigt diese Liste bereits an, und ein zweites Textfeld quer durch
+ * Vertrag, Tabelle und Sheet zu ziehen, hätte denselben Satz an einer zweiten Stelle
+ * angezeigt. Der Betreff steht davor, weil er die Überschrift der Nachricht ist.
+ */
+const answersFor = (lead: StoredLead) => {
+	if (lead.event === 'form_submit') {
+		const rows: { q: string; label: string; a: string; answerLabel: string }[] = [];
+		if (lead.subject) {
+			rows.push({ q: 'subject', label: 'Betreff', a: lead.subject, answerLabel: lead.subject });
+		}
+		if (lead.message) {
+			rows.push({
+				q: 'message',
+				label: 'Nachricht',
+				a: lead.message,
+				answerLabel: lead.message,
+			});
+		}
+		return rows;
+	}
+	return lead.answers.map((a) => ({
+		q: a.questionId,
+		label: a.question,
+		a: a.optionId,
+		// Der Freitext gehört zur Antwort, nicht daneben: Wer "Sonstiges" wählt und
+		// ausschreibt, hat genau das geantwortet.
+		answerLabel: a.detail ? `${a.answer} — ${a.detail}` : a.answer,
+	}));
+};
 
 /**
  * Baut den Request-Body für `POST /api/public/funnel-events`.
@@ -47,7 +96,9 @@ const EVENT = 'quiz_lead';
 export const buildSalesPayload = (lead: StoredLead, submissionId: string) => {
 	const utm = lead.attribution ?? {};
 	return {
-		event: EVENT,
+		// Ohne Angabe `quiz_lead`: Blobs von vor dem Kontaktformular-Pfad tragen das Feld
+		// nicht, und die kamen alle aus dem Quiz.
+		event: lead.event ?? 'quiz_lead',
 		funnel: lead.funnel,
 		submissionId,
 		receivedAt: lead.receivedAt,
@@ -69,14 +120,7 @@ export const buildSalesPayload = (lead: StoredLead, submissionId: string) => {
 			// fbclid bevorzugt, sonst Googles gclid.
 			clickId: utm.fbclid || utm.gclid,
 		},
-		answers: lead.answers.map((a) => ({
-			q: a.questionId,
-			label: a.question,
-			a: a.optionId,
-			// Der Freitext gehört zur Antwort, nicht daneben: Wer "Sonstiges" wählt und
-			// ausschreibt, hat genau das geantwortet.
-			answerLabel: a.detail ? `${a.answer} — ${a.detail}` : a.answer,
-		})),
+		answers: answersFor(lead),
 		payload: {
 			path: lead.page,
 			referrer: utm.referrer,
