@@ -42,7 +42,7 @@ const artColor: Record<string, string> = {
     <span class="af-url">{url}</span>
     <span class="af-dots invisible"><span></span><span></span><span></span></span>
   </div>
-  <div class="grid gap-3 p-3 sm:p-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
+  <div class="grid grid-cols-[minmax(0,1fr)] gap-3 p-3 sm:p-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
     <div class="z-card p-3 sm:p-4">
       <div class="flex flex-wrap items-center justify-between gap-2">
         <div>
@@ -64,8 +64,8 @@ const artColor: Record<string, string> = {
       <ul class="mt-2">
         {leistungen.map((l) => (
           <li>
-            <label class:list={['flex min-h-11 cursor-pointer items-center gap-3 border-t py-2', !l.an && 'e-row-off']} style="border-color: var(--z-line)" data-row>
-              <span class="z-muted w-10 shrink-0 text-[0.7rem]">{l.datum}</span>
+            <label class:list={['flex min-h-11 cursor-pointer items-center gap-2 border-t py-2 sm:gap-3', !l.an && 'e-row-off']} style="border-color: var(--z-line)" data-row>
+              <span class="z-muted w-9 shrink-0 text-[0.68rem] sm:w-10 sm:text-[0.7rem]">{l.datum}</span>
               <span class="min-w-0 flex-1">
                 <span class="flex items-center gap-1.5 text-[0.75rem] font-semibold">
                   <span class="z-dot" style={`background:${artColor[l.art]}`} />
@@ -73,7 +73,7 @@ const artColor: Record<string, string> = {
                 </span>
                 <span class="z-label block truncate">{l.text}{l.hinweis && ` · ${l.hinweis}`}</span>
               </span>
-              <span class="w-[4.5rem] shrink-0 text-right text-[0.75rem] font-semibold whitespace-nowrap">{menge(l.menge)} {l.einheit}</span>
+              <span class="w-14 shrink-0 text-right text-[0.72rem] leading-tight font-semibold sm:w-[4.5rem] sm:text-[0.75rem]">{menge(l.menge)} {l.einheit}</span>
               <input
                 type="checkbox"
                 class="e-check"

@@ -235,6 +235,11 @@
   cursor: pointer;
   flex-shrink: 0;
 }
+/*
+ * Die Fingerfläche liefert das umgebende <label> (min-h-11, volle Zeilenbreite).
+ * Ein zusätzliches Pseudoelement am Kästchen hat die intrinsische Breite der
+ * Zeile vergrößert und die Karte über den Rahmen geschoben - deshalb keines.
+ */
 .e-check:checked {
   background: var(--z-blue);
   border-color: var(--z-blue);
