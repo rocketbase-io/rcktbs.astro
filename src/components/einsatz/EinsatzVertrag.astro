@@ -45,12 +45,12 @@ const status = (z: Zeile) => (z.geplant === z.soll ? { icon: '=', cls: 'e-eq', l
         <p class="z-label">Vertragsstunden gegen eingeplante Termine, je Baustein und Monat</p>
       </div>
       <div class="z-seg" aria-hidden="true">
-        <button type="button" aria-pressed="true">Vor Ort</button>
-        <button type="button">Remote</button>
+        <span data-active>Vor Ort</span>
+        <span>Remote</span>
       </div>
     </div>
 
-    <div class="mt-3 overflow-x-auto">
+    <div class="mt-3 hidden sm:block sm:overflow-x-auto">
       <table class="w-full min-w-[46rem] border-collapse text-[0.72rem]">
         <thead>
           <tr class="z-muted text-left">
@@ -116,6 +116,60 @@ const status = (z: Zeile) => (z.geplant === z.soll ? { icon: '=', cls: 'e-eq', l
         </tfoot>
       </table>
     </div>
+
+    {/*
+      Sechs Monatsspalten passen auf dem Handy nicht nebeneinander. Statt die Tabelle
+      zu quetschen, bekommt jeder Vertragsbaustein eine Karte: Soll gegen geplant oben,
+      die Monate darunter als schmale Spur. Die Zeile "Freie Kapazität" steht als
+      eigener Block am Ende - sie trägt die Aussage und darf nicht wegscrollen.
+    */}
+    <div class="mt-3 space-y-2 sm:hidden">
+      {zeilen.map((z) => {
+        const st = status(z);
+        return (
+          <div class="z-card p-2.5">
+            <div class="flex items-start justify-between gap-2">
+              <div class="min-w-0">
+                <p class="text-[0.78rem] font-semibold">{z.baustein}</p>
+                <p class="z-label truncate">{z.kunde}</p>
+              </div>
+              <span class="flex shrink-0 items-center gap-1.5 text-[0.72rem]">
+                <span class="font-semibold whitespace-nowrap">{z.soll} · {z.geplant} Std.</span>
+                <span class:list={['e-badge', st.cls]} title={st.label}>{st.icon}</span>
+              </span>
+            </div>
+            <div class="mt-2 grid grid-cols-6 gap-1">
+              {z.zellen.map((c, m) => (
+                <div class="text-center">
+                  <p class="z-label">{monate[m]}</p>
+                  {c ? (
+                    <p class="text-[0.72rem] font-semibold">{c.std}</p>
+                  ) : (
+                    <p class="z-muted text-[0.72rem]">–</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+
+      <div class="z-card p-2.5">
+        <p class="text-[0.78rem] font-semibold">Freie Kapazität, alle Verträge</p>
+        <div class="mt-2 grid grid-cols-6 gap-1">
+          {frei.map((d, m) => (
+            <div class="text-center">
+              <p class="z-label">{monate[m]}</p>
+              <p class:list={['text-[0.72rem] font-semibold whitespace-nowrap', d < 0 ? 'z-over' : 'z-up']}>
+                {d < 0 ? '−' : '+'}{fmt(Math.abs(d))}
+              </p>
+            </div>
+          ))}
+        </div>
+        <p class="z-label mt-2">Negative Werte heißen: in dem Monat ist mehr eingeplant als Kapazität da ist.</p>
+      </div>
+    </div>
+
     <p class="z-label mt-3 flex flex-wrap items-center gap-x-4 gap-y-1">
       <span class="flex items-center gap-1.5"><span class="e-badge e-eq">=</span>Vertrag eingeplant</span>
       <span class="flex items-center gap-1.5"><span class="e-badge e-low">↓</span>noch Stunden offen</span>
