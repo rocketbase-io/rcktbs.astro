@@ -431,7 +431,7 @@ const weg = [
       {
         abloesungFaqs.map((item) => (
           <details class="group border-border bg-card rounded-2xl border p-5 shadow-sm transition-shadow duration-300 open:shadow-lg sm:p-6">
-            <summary class="flex cursor-pointer list-none items-start gap-4 [&::-webkit-details-marker]:hidden">
+            <summary class="flex min-h-11 cursor-pointer list-none items-start gap-4 py-0.5 [&::-webkit-details-marker]:hidden">
               <h3 class="font-display text-foreground flex-1 text-base font-bold tracking-tight sm:text-lg">{item.q}</h3>
               <Icon name="chevron-down" size="sm" class="text-foreground-muted mt-1 shrink-0 transition-transform duration-300 group-open:rotate-180" />
             </summary>

@@ -351,12 +351,18 @@ export function FunnelQuiz({
               >
                 {compact ? (
                   <>
+                    {/*
+                      size="lg" ist hier Pflicht, nicht Geschmack: md rendert 14 px
+                      Schrift, und unter 16 px zoomt iOS Safari beim Fokus die ganze
+                      Seite. Betrifft das wichtigste Formular der Funnel-Seiten.
+                    */}
                     <div className="grid gap-x-4 gap-y-3 sm:grid-cols-2">
-                      <Input label="Name" name="name" type="text" required autoComplete="name" requiredMark={markRequired} />
+                      <Input label="Name" name="name" type="text" size="lg" required autoComplete="name" requiredMark={markRequired} />
                       <Input
                         label="E-Mail"
                         name="email"
                         type="email"
+                        size="lg"
                         required
                         autoComplete="email"
                         inputMode="email"
@@ -366,6 +372,7 @@ export function FunnelQuiz({
                         label={phoneRequired || markRequired ? 'Telefon' : 'Telefon (optional)'}
                         name="phone"
                         type="tel"
+                        size="lg"
                         required={phoneRequired}
                         autoComplete="tel"
                         inputMode="tel"
@@ -375,6 +382,7 @@ export function FunnelQuiz({
                         label={companyOptional && !markRequired ? 'Firma (optional)' : 'Firma'}
                         name="company"
                         type="text"
+                        size="lg"
                         required={!companyOptional}
                         autoComplete="organization"
                         requiredMark={markRequired}
@@ -572,7 +580,7 @@ function StepHeader({
         <button
           type="button"
           onClick={onBack}
-          className="text-foreground-muted hover:text-foreground -ml-1 flex items-center gap-1 rounded-md px-1 py-1 text-sm transition-colors"
+          className="text-foreground-muted hover:text-foreground -ml-2 flex min-h-11 items-center gap-1 rounded-md px-2 py-2 text-sm transition-colors"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           Zurück
