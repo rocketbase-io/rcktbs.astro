@@ -68,7 +68,7 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
 ---
 
 <div class="kr" data-kr>
-  <div class="kr-tabs mx-auto max-w-full rounded-2xl p-1.5 sm:w-fit">
+  <div class="kr-tabs sticky top-16 z-20 mx-auto max-w-full rounded-2xl p-1.5 sm:static sm:w-fit">
   <div role="tablist" aria-label="Beispiele nach Branche" class="grid grid-cols-2 gap-1 sm:flex">
     {
       rechnungen.map((r, i) => (
@@ -163,7 +163,22 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
                 Ergebnis rutschen können (siehe .kr-swap-wrap). */}
             {r.regler && (
               <div class="kr-swap-wrap px-6 pb-6 sm:px-8 sm:pb-8 lg:pr-14">
-                <div class="kr-swap mt-5 rounded-2xl p-4">
+                {/*
+                  Mobil liegen die Stellschrauben rund 400 px unter dem Preis: wer hier
+                  tippt, sieht die Wirkung nicht. Diese Zeile spiegelt Branche und Preis
+                  direkt über den Knöpfen, damit beides im selben Bild steht. Der Name
+                  der Branche steht dabei nochmal, weil die Auswahl weit oben liegt und
+                  bis hierher längst aus dem Blick ist.
+                */}
+                <div class="kr-echo mt-5 flex items-center justify-between gap-3 rounded-xl px-3 py-2 lg:hidden">
+                  <span class="text-foreground-muted min-w-0 truncate text-[11px] font-semibold tracking-[0.1em] uppercase">
+                    {r.branche}
+                  </span>
+                  <span class="text-foreground font-display shrink-0 text-lg font-bold whitespace-nowrap tabular-nums" data-preis>
+                    {r.ergebnis[0].wert}
+                  </span>
+                </div>
+                <div class="kr-swap mt-2.5 rounded-2xl p-4 lg:mt-5">
                   <p class="text-foreground-muted text-[11px] font-semibold tracking-[0.14em] uppercase">
                     {r.regler.label}
                   </p>
@@ -171,7 +186,7 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
                     {r.regler.optionen.map((o, k) => (
                       <button
                         type="button"
-                        class="kr-swap-btn flex-1 rounded-xl px-3 py-2 text-left"
+                        class="kr-swap-btn w-full rounded-xl px-3 py-2 text-left sm:w-auto sm:flex-1"
                         data-swap={String(k)}
                         aria-pressed={k === 0 ? 'true' : 'false'}
                       >
@@ -284,12 +299,15 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
 
 <style>
   .kr-tabs {
-    background: color-mix(in oklch, var(--color-foreground) 5%, transparent);
+    /* Klebt mobil oben; deshalb deckend statt transparent, sonst scheint der
+       Inhalt durch. Ab sm steht die Leiste wieder normal im Fluss. */
+    background: color-mix(in oklch, var(--color-foreground) 5%, var(--color-background));
     border: 1px solid var(--color-border);
-    scrollbar-width: none;
   }
-  .kr-tabs::-webkit-scrollbar {
-    display: none;
+  @media (min-width: 640px) {
+    .kr-tabs {
+      background: color-mix(in oklch, var(--color-foreground) 5%, transparent);
+    }
   }
   .kr-auto {
     color: var(--color-brand-700);
@@ -391,6 +409,10 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
       margin-top: -1rem;
       align-self: start;
     }
+  }
+  .kr-echo {
+    background: color-mix(in oklch, var(--color-brand-500) 8%, transparent);
+    border: 1px solid color-mix(in oklch, var(--color-brand-400) 35%, var(--color-border));
   }
   .kr-swap {
     background: color-mix(in oklch, var(--color-brand-500) 5%, transparent);
@@ -524,8 +546,16 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
     color: var(--color-brand-200);
   }
   @media (max-width: 1023px) {
+    /*
+     * Das Label saß neben dem Knoten und hatte dort keinen Platz. Mobil steht es
+     * darunter - ohne es bleibt nur ein nacktes Blitz-Icon ohne Aussage.
+     */
     .kr-link-label {
-      display: none;
+      position: absolute;
+      top: 3.25rem;
+      left: 50%;
+      translate: -50% 0;
+      white-space: nowrap;
     }
   }
 
@@ -609,16 +639,6 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
 </style>
 
 <script>
-  const centerInList = (tab: HTMLElement | undefined, smooth: boolean) => {
-    const list = tab?.closest<HTMLElement>('.kr-tabs');
-    if (!tab || !list || list.scrollWidth <= list.clientWidth) return;
-    const t = tab.getBoundingClientRect();
-    const l = list.getBoundingClientRect();
-    list.scrollTo({
-      left: list.scrollLeft + (t.left - l.left) - (l.width - t.width) / 2,
-      behavior: smooth ? 'smooth' : 'auto',
-    });
-  };
   document.querySelectorAll<HTMLElement>('[data-kr]').forEach((root) => {
     const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role=tab]')];
     const panels = [...root.querySelectorAll<HTMLElement>('[role=tabpanel]')];
@@ -633,9 +653,7 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
         panel.hidden = !on;
         panel.dataset.active = on ? 'true' : 'false';
       });
-      const tab = tabs[index];
-      if (focus) tab?.focus();
-      centerInList(tab, true);
+      if (focus) tabs[index]?.focus();
     };
 
     // Stellschrauben je Panel: Option wählen, alle abhängigen Werte nachziehen.
@@ -663,7 +681,8 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
       }
       if (!optionen.length || !basis) return;
 
-      const preisEl = panel.querySelector<HTMLElement>('[data-preis]');
+      // Der Preis steht zweimal im Panel: im Ergebnis und mobil über den Stellschrauben.
+      const preisEls = panel.querySelectorAll<HTMLElement>('[data-preis]');
       const kennzahlEl = panel.querySelector<HTMLElement>('[data-kennzahl]');
       const kostenEl = panel.querySelector<HTMLElement>('[data-kosten]');
       const dbEl = panel.querySelector<HTMLElement>('[data-db]');
@@ -685,7 +704,9 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
       const apply = (i: number) => {
         const o = optionen[i];
         if (!o || !basis) return;
-        if (preisEl) preisEl.textContent = o.preis ?? basis.preis;
+        preisEls.forEach((el) => {
+          el.textContent = o.preis ?? basis.preis;
+        });
         if (kennzahlEl) kennzahlEl.textContent = o.kennzahl ?? basis.kennzahl;
         if (kostenEl) kostenEl.textContent = o.kosten;
         if (dbEl) dbEl.textContent = `${o.db} · ${o.dbProzent} %`;

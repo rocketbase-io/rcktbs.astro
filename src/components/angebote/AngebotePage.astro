@@ -724,7 +724,7 @@ const istFunnel = variant === 'funnel';
   -->
   <section
     data-hero
-    class:list={["relative overflow-x-clip lg:flex lg:flex-col", istFunnel ? "lg:min-h-[calc(100svh-3.5rem)]" : "pt-16 lg:min-h-[100svh]"]}
+    class:list={["relative overflow-x-clip lg:flex lg:flex-col", istFunnel ? "lg:min-h-[calc(100svh-3.5rem)]" : "pt-24 sm:pt-20 lg:min-h-[100svh] lg:pt-16"]}
   >
     <Blueprint />
     <div
@@ -746,7 +746,7 @@ const istFunnel = variant === 'funnel';
         <h1
           data-reveal="fade-down"
           lang="de"
-          class="font-display text-foreground mt-3 text-[2.6rem] leading-[1.05] sm:mt-5 font-bold tracking-tight text-balance sm:text-6xl xl:text-[4.25rem]"
+          class="font-display text-foreground mt-3 text-[2.05rem] leading-[1.08] sm:mt-5 font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-6xl sm:leading-[1.05] xl:text-[4.25rem]"
         >
           Euer Angebot
           <span class="text-brand-500 block">rechnet sich selbst.</span>
@@ -873,7 +873,7 @@ const istFunnel = variant === 'funnel';
   <!-- HEUTE: der Ist-Zustand, kurz, damit sich Leser wiedererkennen -->
   <section
     id="heute"
-    class="heute-sec border-border relative scroll-mt-14 overflow-x-clip border-b pt-16 pb-12 sm:py-20 lg:py-24"
+    class="heute-sec border-border relative scroll-mt-20 overflow-x-clip border-b pt-16 pb-12 sm:py-20 lg:py-24"
   >
     <div class="container grid max-w-6xl grid-cols-[minmax(0,1fr)] gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-center lg:gap-16">
       <div class="af-rise">
@@ -927,7 +927,7 @@ const istFunnel = variant === 'funnel';
   <!-- 01 DIE KALKULATION: direkt nach dem Ist-Zustand, der eigentliche Unterschied -->
   <section
     id="kalkulation"
-    class="bg-background relative scroll-mt-16 overflow-x-clip py-24 lg:py-36"
+    class="bg-background relative scroll-mt-20 overflow-x-clip py-24 lg:py-36"
   >
     <div
       class="bg-brand-300/10 pointer-events-none absolute top-40 left-1/2 h-[40rem] w-[60rem] -translate-x-1/2 rounded-full blur-[120px]"
@@ -1243,7 +1243,7 @@ const istFunnel = variant === 'funnel';
   <!-- 04 DER BAUSTEIN IN AKTION: Beleg mit echten Screenshots, fünf Schritte -->
   <section
     id="angebot"
-    class="invert-section bg-surface-invert relative scroll-mt-16 overflow-x-clip py-20 lg:py-28"
+    class="invert-section bg-surface-invert relative scroll-mt-20 overflow-x-clip py-20 lg:py-28"
   >
     <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
       <div
@@ -1380,7 +1380,7 @@ const istFunnel = variant === 'funnel';
   <!-- 06 DER WEG ZUM BAUSTEIN: ausführlich -->
   <section
     id="ablauf"
-    class="bg-background-secondary border-border relative scroll-mt-16 overflow-x-clip border-b py-16 lg:py-24"
+    class="bg-background-secondary border-border relative scroll-mt-20 overflow-x-clip border-b py-16 lg:py-24"
   >
     <div class="relative z-10 container max-w-6xl">
       <SectionHeader
@@ -1616,7 +1616,7 @@ const istFunnel = variant === 'funnel';
         {
           miniFaqs.map((item) => (
             <details class="group border-border bg-card rounded-2xl border p-5 shadow-sm transition-shadow duration-300 open:shadow-lg sm:p-6">
-              <summary class="flex cursor-pointer list-none items-start gap-4 [&::-webkit-details-marker]:hidden">
+              <summary class="flex min-h-11 cursor-pointer list-none items-start gap-4 py-0.5 [&::-webkit-details-marker]:hidden">
                 <h3 class="font-display text-foreground flex-1 text-base font-bold tracking-tight sm:text-lg">
                   {item.q}
                 </h3>
