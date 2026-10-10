@@ -57,7 +57,7 @@ const teams = [
         <thead>
           <tr class="z-muted text-[0.7rem]">
             <th class="py-1 font-medium">Kategorie</th>
-            <th class="py-1 text-right font-medium">Anzahl</th>
+            <th class="hidden py-1 text-right font-medium sm:table-cell">Anzahl</th>
             <th class="py-1 text-right font-medium">Vertragswert 2026</th>
             <th class="py-1 text-right font-medium">Anteil</th>
           </tr>
@@ -67,9 +67,9 @@ const teams = [
             kategorien.map((r) => (
               <tr class="border-t" style="border-color: var(--z-line)">
                 <td class="py-1.5 font-semibold">{r.k}</td>
-                <td class="py-1.5 text-right underline decoration-dotted underline-offset-2">{r.n}</td>
-                <td class="py-1.5 text-right">{r.wert}</td>
-                <td class="py-1.5 text-right">{r.anteil.toFixed(1).replace('.', ',')} %</td>
+                <td class="hidden py-1.5 text-right underline decoration-dotted underline-offset-2 sm:table-cell">{r.n}</td>
+                <td class="py-1.5 text-right whitespace-nowrap">{r.wert}</td>
+                <td class="py-1.5 text-right whitespace-nowrap">{r.anteil.toFixed(1).replace('.', ',')} %</td>
               </tr>
             ))
           }
@@ -77,9 +77,9 @@ const teams = [
         <tfoot>
           <tr class="border-t-2" style="border-color: var(--z-line)">
             <td class="pt-2 font-bold">Gesamt</td>
-            <td class="pt-2 text-right font-bold">728</td>
-            <td class="pt-2 text-right font-bold">5,08 Mio. €</td>
-            <td class="pt-2 text-right font-bold">100 %</td>
+            <td class="hidden pt-2 text-right font-bold sm:table-cell">728</td>
+            <td class="pt-2 text-right font-bold whitespace-nowrap">5,08 Mio. €</td>
+            <td class="pt-2 text-right font-bold whitespace-nowrap">100 %</td>
           </tr>
         </tfoot>
       </table>
@@ -88,11 +88,11 @@ const teams = [
 
       <div class="z-card p-3 sm:p-4">
         <p class="flex items-center gap-1.5 text-sm font-bold"><Icon name="layers" size="xs" class="z-muted" /> Kunden nach Klassifizierung</p>
-        <div class="mt-3 flex items-center gap-4">
+        <div class="mt-3 flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
           <svg viewBox="0 0 120 120" class="h-28 w-28 shrink-0 -rotate-90" aria-hidden="true">
             {ring.map((s) => <circle cx="60" cy="60" r={R} fill="none" stroke={s.color} stroke-width="16" stroke-dasharray={s.dash} stroke-dashoffset={s.offset} />)}
           </svg>
-          <ul class="min-w-0 flex-1 space-y-1.5 text-[0.78rem]">
+          <ul class="w-full min-w-0 flex-1 space-y-1.5 text-[0.78rem]">
             {
               ring.map((s) => (
                 <li class="flex items-center gap-2">
@@ -117,7 +117,7 @@ const teams = [
           <thead>
             <tr class="z-muted text-[0.68rem]">
               <th class="py-1 font-medium">Team</th>
-              <th class="py-1 text-right font-medium">Kunden</th>
+              <th class="hidden py-1 text-right font-medium sm:table-cell">Kunden</th>
               <th class="py-1 text-right font-medium">Ist</th>
               <th class="py-1 text-right font-medium">Prognose</th>
             </tr>
@@ -127,9 +127,9 @@ const teams = [
               teams.map((t) => (
                 <tr class="border-t" style="border-color: var(--z-line)">
                   <td class="py-1.5">{t.team}</td>
-                  <td class="py-1.5 text-right">{t.kunden}</td>
-                  <td class="py-1.5 text-right">{t.ist}</td>
-                  <td class="py-1.5 text-right font-semibold">{t.prognose}</td>
+                  <td class="hidden py-1.5 text-right sm:table-cell">{t.kunden}</td>
+                  <td class="py-1.5 text-right whitespace-nowrap">{t.ist}</td>
+                  <td class="py-1.5 text-right font-semibold whitespace-nowrap">{t.prognose}</td>
                 </tr>
               ))
             }

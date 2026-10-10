@@ -139,7 +139,14 @@
     display: none;
   }
   .af-url {
-    font-size: 0.62rem;
+    font-size: 0.68rem;
+  }
+  /*
+   * Die zweite Punktegruppe ist nur da, um die URL optisch zu zentrieren. Auf dem
+   * Handy kostet sie rund 28 px, die der Adresse fehlen - dort entfällt sie.
+   */
+  .af-dots.invisible {
+    display: none;
   }
 }
 

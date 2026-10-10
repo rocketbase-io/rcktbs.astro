@@ -65,7 +65,7 @@ const hundred = (100 / SCALE) * 100;
           const gesamt = r.name === 'Gesamt';
           return (
             <li
-              class:list={['grid grid-cols-[minmax(0,9.5rem)_minmax(0,1fr)_3rem] items-center gap-3 sm:grid-cols-[minmax(0,12rem)_minmax(0,1fr)_3.25rem]', gesamt && 'mt-3 border-t pt-3']}
+              class:list={['grid grid-cols-[minmax(0,1fr)_3.5rem] items-center gap-x-3 gap-y-1.5 sm:grid-cols-[minmax(0,12rem)_minmax(0,1fr)_3.25rem]', gesamt && 'mt-3 border-t pt-3']}
               style={gesamt ? 'border-color: var(--z-line)' : undefined}
               data-row
               data-fest={JSON.stringify(a)}
@@ -73,14 +73,14 @@ const hundred = (100 / SCALE) * 100;
             >
               <div class="min-w-0">
                 <p class:list={['truncate text-xs sm:text-[0.82rem]', gesamt ? 'font-bold' : 'font-medium']}>{r.name}</p>
-                <p class="z-label truncate underline decoration-dotted underline-offset-2" data-label>{a.label}</p>
+                <p class="z-label underline decoration-dotted underline-offset-2" data-label>{a.label}</p>
               </div>
-              <div class="z-bar-track">
+              <div class="z-bar-track order-2 col-span-2 sm:order-none sm:col-span-1">
                 <span class="z-bar-fill" data-fill data-tone={a.tone} style={`width:${a.fill}%`} />
                 <span class="z-bar-over" data-over style={`left:${hundred}%;width:${a.over}%`} />
                 <span class="z-hundred" style={`left:${hundred}%`} />
               </div>
-              <p class:list={['text-right text-xs sm:text-sm', gesamt ? 'font-bold' : 'font-semibold']} data-pct>
+              <p class:list={['order-1 self-start text-right text-xs sm:order-none sm:self-auto sm:text-sm', gesamt ? 'font-bold' : 'font-semibold']} data-pct>
                 {a.p} %
               </p>
             </li>
