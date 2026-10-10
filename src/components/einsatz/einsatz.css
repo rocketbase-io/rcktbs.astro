@@ -23,9 +23,10 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  min-height: 2.75rem;
   font-size: 0.75rem;
   font-weight: 700;
-  padding: 0.45rem 0.85rem;
+  padding: 0.45rem 0.95rem;
   border-radius: 999px;
   border: 1px solid color-mix(in oklch, var(--e-late) 60%, transparent);
   background: color-mix(in oklch, var(--e-late) 14%, transparent);
@@ -101,11 +102,45 @@
 }
 
 /* Plantafel */
+.e-days {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+}
 .e-lane {
   position: relative;
   display: grid;
   grid-template-columns: repeat(10, minmax(0, 1fr));
   height: 2.15rem;
+}
+
+/*
+ * Auf dem Handy passen keine zehn Tage in 300 px. Statt die Blöcke neu zu rechnen,
+ * wird die Spur auf doppelte Breite gezogen und rechts abgeschnitten: sichtbar
+ * bleibt exakt KW 16, also die Woche mit der Krankmeldung. Blockpositionen stehen
+ * in Prozent und stimmen dadurch unverändert.
+ */
+@media (max-width: 639px) {
+  .e-board {
+    overflow: hidden;
+  }
+  .e-days,
+  .e-lane {
+    width: 200%;
+  }
+  .e-wk2 {
+    visibility: hidden;
+  }
+  /*
+   * Die Arbeitsgang-Nummer steht schon in der Gruppenüberschrift. Auf dem Handy
+   * kostet sie je Block rund 36 px, die der Auftragsname dringender braucht.
+   */
+  .e-block b {
+    display: none;
+  }
+  .e-block {
+    gap: 0;
+    padding: 0 0.35rem;
+  }
 }
 .e-lane > i {
   border-left: 1px solid var(--z-line);
@@ -191,9 +226,9 @@
 /* Leistung → Rechnung */
 .e-check {
   appearance: none;
-  width: 1.05rem;
-  height: 1.05rem;
-  border-radius: 0.3rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 0.35rem;
   border: 1.5px solid var(--z-muted);
   display: inline-grid;
   place-content: center;
@@ -206,8 +241,8 @@
 }
 .e-check:checked::after {
   content: '';
-  width: 0.5rem;
-  height: 0.28rem;
+  width: 0.6rem;
+  height: 0.34rem;
   border: 2px solid white;
   border-top: 0;
   border-right: 0;
@@ -232,7 +267,9 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: center;
   gap: 0.15rem;
+  min-height: 2.75rem;
   padding: 0.6rem 0.75rem;
   border-radius: 0.75rem;
   border: 1px solid var(--z-line);

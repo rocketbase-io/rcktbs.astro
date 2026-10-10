@@ -93,17 +93,14 @@ const mark = (t: string) => t.replace(/\{([^}]+)\}/g, '<span class="e-var">$1</s
     <span class="af-dots invisible"><span></span><span></span><span></span></span>
   </div>
   <div class="grid gap-3 p-3 sm:p-5 lg:grid-cols-[15rem_minmax(0,1fr)]">
-    <div role="tablist" aria-label="Mahnstufe" class="flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible lg:pb-0">
+    <div role="tablist" aria-label="Mahnstufe" class="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:flex lg:flex-col">
       {stufen.map((s, i) => (
-        <button type="button" role="tab" class="e-stage min-w-[9.5rem] lg:min-w-0" aria-selected={i === 0 ? 'true' : 'false'} data-stufe={s.id}>
-          <span class="flex w-full items-center justify-between gap-2">
-            <span class="flex items-center gap-2 text-[0.78rem] font-bold">
-              <span class="z-dot" style={`background:${s.ton}`} />
-              {s.titel}
-            </span>
-            <span class="z-label">{s.tag}</span>
+        <button type="button" role="tab" class="e-stage lg:min-w-0" aria-selected={i === 0 ? 'true' : 'false'} data-stufe={s.id}>
+          <span class="flex items-center gap-2 text-[0.78rem] font-bold">
+            <span class="z-dot shrink-0" style={`background:${s.ton}`} />
+            <span class="min-w-0">{s.titel}</span>
           </span>
-          <span class="z-label pl-[1.05rem]">{s.offen} {s.offen === 1 ? 'Rechnung' : 'Rechnungen'} in dieser Stufe</span>
+          <span class="z-label pl-[1.05rem]">{s.tag} · {s.offen} {s.offen === 1 ? 'Rechnung' : 'Rechnungen'}</span>
         </button>
       ))}
     </div>

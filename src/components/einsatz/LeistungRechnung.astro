@@ -51,10 +51,20 @@ const artColor: Record<string, string> = {
         </div>
         <span class="z-label">abrechenbar?</span>
       </div>
+
+      {/*
+        Auf dem Handy steht die Rechnung unter der Liste - wer hier abhakt, sieht die
+        Neuberechnung sonst nicht. Diese Zeile spiegelt die Brutto-Summe direkt über
+        den Kästchen, damit Ursache und Wirkung im selben Bild liegen.
+      */}
+      <div class="z-card mt-2 flex items-center justify-between gap-2 px-2.5 py-1.5 lg:hidden" style="background: var(--z-panel)">
+        <span class="z-label">Rechnungsbetrag</span>
+        <span class="text-[0.8rem] font-bold whitespace-nowrap" data-brutto>{eur(netto * 1.19)}</span>
+      </div>
       <ul class="mt-2">
         {leistungen.map((l) => (
           <li>
-            <label class:list={['flex cursor-pointer items-center gap-3 border-t py-2', !l.an && 'e-row-off']} style="border-color: var(--z-line)" data-row>
+            <label class:list={['flex min-h-11 cursor-pointer items-center gap-3 border-t py-2', !l.an && 'e-row-off']} style="border-color: var(--z-line)" data-row>
               <span class="z-muted w-10 shrink-0 text-[0.7rem]">{l.datum}</span>
               <span class="min-w-0 flex-1">
                 <span class="flex items-center gap-1.5 text-[0.75rem] font-semibold">
@@ -63,7 +73,7 @@ const artColor: Record<string, string> = {
                 </span>
                 <span class="z-label block truncate">{l.text}{l.hinweis && ` · ${l.hinweis}`}</span>
               </span>
-              <span class="w-16 shrink-0 text-right text-[0.75rem] font-semibold">{menge(l.menge)} {l.einheit}</span>
+              <span class="w-[4.5rem] shrink-0 text-right text-[0.75rem] font-semibold whitespace-nowrap">{menge(l.menge)} {l.einheit}</span>
               <input
                 type="checkbox"
                 class="e-check"
@@ -102,7 +112,7 @@ const artColor: Record<string, string> = {
         <p class="flex justify-between"><span class="z-muted">MwSt. 19 %</span><span data-mwst>{eur(netto * 0.19)}</span></p>
         <p class="flex justify-between text-sm font-bold"><span>Brutto</span><span data-brutto>{eur(netto * 1.19)}</span></p>
       </div>
-      <button type="button" class="mt-3 inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-[0.75rem] font-bold text-white transition-colors" style="background: var(--z-blue)" data-senden>
+      <button type="button" class="mt-3 inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-[0.75rem] font-bold text-white transition-colors" style="background: var(--z-blue)" data-senden>
         <Icon name="mail" size="xs" />
         <span data-senden-text>Rechnung erstellen und versenden</span>
       </button>
@@ -141,7 +151,10 @@ const artColor: Record<string, string> = {
       if (list) list.innerHTML = items.join('');
       root.querySelector('[data-netto]')!.textContent = eur(netto);
       root.querySelector('[data-mwst]')!.textContent = eur(netto * 0.19);
-      root.querySelector('[data-brutto]')!.textContent = eur(netto * 1.19);
+      // Brutto steht zweimal auf der Seite: in der Rechnung und mobil über der Liste.
+      root.querySelectorAll('[data-brutto]').forEach((el) => {
+        el.textContent = eur(netto * 1.19);
+      });
       reset();
     };
     root.querySelectorAll<HTMLInputElement>('input.e-check').forEach((cb) => cb.addEventListener('change', () => update(cb.dataset.id)));

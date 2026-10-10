@@ -92,6 +92,73 @@ const zettel = [
 </div>
 
 <style>
+  /*
+   * Unter 640 px bricht die Collage zusammen: vier rotierte, prozentual platzierte
+   * Karten überlappen sich in 327 px, der Klebezettel ragt oben heraus und die
+   * Schrift landet bei 8 px. Auf dem Handy daher kein Stapel, sondern echter
+   * Fluss - Excel-Karte voll breit, darunter Zettel und Telefon nebeneinander.
+   */
+  @media (max-width: 639px) {
+    .he {
+      height: auto;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.6rem;
+      overflow: visible;
+    }
+    .he > * {
+      position: static !important;
+      width: 100% !important;
+      max-width: none !important;
+      transform: none !important;
+    }
+    .he-card {
+      grid-column: span 2;
+    }
+    .he-note {
+      grid-column: span 2;
+      order: -1;
+      align-self: start;
+      justify-self: end;
+      width: auto !important;
+      max-width: 72% !important;
+    }
+    .he-paper,
+    .he-phone {
+      align-self: start;
+    }
+    .he-xlbar {
+      font-size: 0.7rem;
+    }
+    .he-grid th,
+    .he-grid td {
+      font-size: 0.68rem;
+      padding: 0.25rem 0.22rem;
+    }
+    /* Im Telefon-Mockup sitzen die kleinsten Schriften der Seite: anheben. */
+    .he-phone .he-in,
+    .he-phone .he-out {
+      font-size: 0.72rem;
+    }
+    .he-phone .he-in b {
+      font-size: 0.7rem;
+    }
+    .he-chathead span,
+    .he-chathead .block {
+      font-size: 0.68rem !important;
+    }
+    .he-screen .flex.items-center span {
+      font-size: 0.66rem;
+    }
+    .he-paper p,
+    .he-paper .he-line span {
+      font-size: 0.72rem !important;
+    }
+    .he-stamp {
+      font-size: 0.7rem !important;
+    }
+  }
+
   .he-card {
     background: var(--color-card);
     border: 1px solid var(--color-border);

@@ -16,6 +16,9 @@ const { url = 'app.euer-betrieb.de/auftragsplanung' } = Astro.props;
 
 const tage = ['Mo 13', 'Di 14', 'Mi 15', 'Do 16', 'Fr 17', 'Mo 20', 'Di 21', 'Mi 22', 'Do 23', 'Fr 24'];
 const HEUTE = 2;
+// Auf dem Handy zeigt die Tafel nur KW 16 - dort spielt die Krankmeldung.
+// Woche 2 wird per CSS ausgeblendet, damit Markup und Skript identisch bleiben.
+const WOCHE1 = 5;
 
 type Block = { von: number; bis: number; nr: string; text: string; std?: string; affected?: boolean };
 type Abs = { von: number; bis: number; art: 'U' | 'S' | 'K'; sick?: boolean };
@@ -73,13 +76,13 @@ const absLabel = { U: 'Urlaub', S: 'Berufsschule', K: 'krank' } as const;
       </button>
     </div>
 
-    <div class="mt-3 overflow-x-auto">
-      <div class="min-w-[40rem]">
-        <div class="grid grid-cols-[6.5rem_minmax(0,1fr)] border-b" style="border-color: var(--z-line)">
+    <div class="mt-3 sm:overflow-x-auto">
+      <div class="e-board sm:min-w-[40rem]">
+        <div class="grid grid-cols-[3.5rem_minmax(0,1fr)] border-b sm:grid-cols-[6.5rem_minmax(0,1fr)]" style="border-color: var(--z-line)">
           <span></span>
-          <div class="grid grid-cols-10">
+          <div class="e-days">
             {tage.map((t, i) => (
-              <span class:list={['py-1.5 text-center text-[0.66rem] font-semibold', i === HEUTE ? 'text-[color:var(--z-blue)]' : 'z-muted']}>{t}</span>
+              <span class:list={['py-1.5 text-center text-[0.66rem] font-semibold', i >= WOCHE1 && 'e-wk2', i === HEUTE ? 'text-[color:var(--z-blue)]' : 'z-muted']}>{t}</span>
             ))}
           </div>
         </div>
@@ -90,11 +93,11 @@ const absLabel = { U: 'Urlaub', S: 'Berufsschule', K: 'krank' } as const;
               {g.gang}
             </p>
             {g.personen.map((p) => (
-              <div class="grid grid-cols-[6.5rem_minmax(0,1fr)] border-b" style="border-color: var(--z-line)">
-                <span class="flex items-center pl-2 text-[0.75rem] font-semibold">{p.name}</span>
+              <div class="grid grid-cols-[3.5rem_minmax(0,1fr)] border-b sm:grid-cols-[6.5rem_minmax(0,1fr)]" style="border-color: var(--z-line)">
+                <span class="flex items-center pl-2 text-[0.72rem] font-semibold sm:text-[0.75rem]">{p.name}</span>
                 <div class="e-lane">
                   {tage.map((_, i) => (
-                    <i data-today={i === HEUTE ? '' : undefined} />
+                    <i class:list={[i >= WOCHE1 && 'e-wk2']} data-today={i === HEUTE ? '' : undefined} />
                   ))}
                   {p.blocks.map((b) => (
                     <span class="e-block" style={`${pos(b.von, b.bis)}; background:${g.color}`} data-affected={b.affected ? '' : undefined}>
