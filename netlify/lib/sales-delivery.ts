@@ -59,6 +59,7 @@ export interface StoredLead {
 }
 
 /**
+ * Was im Board unter „Antworten" steht.
  *
  * <p>Beim Quiz sind das die Frage/Antwort-Paare. Beim Kontaktformular gibt es keine Fragen,
  * sondern einen getippten Text — der reist als ein Paar mit, statt ein eigenes Feld zu
@@ -131,6 +132,14 @@ export const buildSalesPayload = (lead: StoredLead, submissionId: string) => {
 			path: lead.page,
 			referrer: utm.referrer,
 			geoCity: lead.geo?.city,
+			// Der Verdacht reist mit, sonst steht er nur im Blob: Seit Abgaben mit Verdacht
+			// trotzdem zugestellt werden, sieht eine Karte ohne dieses Feld genauso aus wie
+			// eine echte Anfrage — und „kein JavaScript" ist die einzige Auskunft darüber,
+			// ob ein Mensch das Formular ausgefüllt hat. Im `payload`, weil der frei getypt
+			// ist und das Board ihn schon aufklappbar anzeigt; ein eigenes Vertragsfeld
+			// hätte Tabelle, DTO und Sheet angefasst für eine Angabe, die man beim
+			// Nachsehen braucht, nicht beim Überfliegen.
+			...(lead.hasSpamVerdacht ? { spamVerdacht: true } : {}),
 		},
 	};
 };

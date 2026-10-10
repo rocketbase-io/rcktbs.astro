@@ -27,14 +27,6 @@ const contactSchema = z.object({
 	page: z.string().max(2000).optional(),
 });
 
-const escapeHtml = (value: string): string =>
-	value
-		.replace(/&/g, '&amp;')
-		.replace(/</g, '&lt;')
-		.replace(/>/g, '&gt;')
-		.replace(/"/g, '&quot;')
-		.replace(/'/g, '&#39;');
-
 /**
  * Warum kein Captcha: Bots, die Formulare abgrasen, fuehren kein JavaScript
  * aus - sie schicken `renderedAt` gar nicht erst mit. Das allein trennt sie
@@ -139,12 +131,6 @@ export default async (request: Request, context: Context) => {
 		// Seite, das im CRM nie auftauchte, obwohl sie dieselben Kontaktdaten trägt wie ein
 		// Quiz-Lead und denselben Rückruf auslöst.
 		//
-		// **Verdächtiges geht nicht ins CRM.** Die Mail bekommt es weiterhin mit `[SPAM?]` im
-		// Betreff — eine Mailregel sortiert sie weg, und ein falsch markierter Lead ist trotzdem
-		// da. Eine Karte im Board dagegen müsste jemand von Hand wegräumen, und das Board lebt
-		// davon, dass jede Karte eine Entscheidung verlangt.
-		const verdaechtig = flags.length > 0;
-
 		const receivedAt = new Date().toISOString();
 		const stored: StoredLead = {
 			receivedAt,
@@ -174,11 +160,6 @@ export default async (request: Request, context: Context) => {
 			deliveredAt: null,
 		};
 
-		let delivery: { ok: boolean; reason?: string } = {
-			ok: false,
-			reason: 'als Spam-Verdacht nicht zugestellt',
-		};
-
 		// Blob+Sales immer — auch mit `hasSpamVerdacht: true`. Nur `[SPAM?]` = kein
 		// JavaScript → Bots ohne JS-Ausführung. Plunk ist jetzt nur noch ein Error-Fallback
 		// für das Sales-Backend selbst (nicht mehr pro Anfrage).
@@ -200,7 +181,7 @@ export default async (request: Request, context: Context) => {
 			);
 		}
 
-		delivery = await deliverToSales(stored, submissionId);
+		const delivery = await deliverToSales(stored, submissionId);
 		if (delivery.ok) {
 			try {
 				await store.setJSON(submissionId, { ...stored, deliveredAt: new Date().toISOString() });
