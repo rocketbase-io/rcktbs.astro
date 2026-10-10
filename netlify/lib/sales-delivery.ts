@@ -49,10 +49,16 @@ export interface StoredLead {
 	subject?: string;
 	/** Gesetzt, sobald das CRM den Lead bestätigt hat. `null`/fehlend = noch offen. */
 	deliveredAt?: string | null;
+	/**
+	 * Vom Kontaktformular-Prüfer gesetzt: `true` wenn `suspicionOf` Flaggen
+	 * lieferte — vor allem "kein JavaScript" = Bots ohne JS-Ausführung.
+	 * Steht direkt im Blob-JSON, damit `funnel-redeliver` und das Board
+	 * den Grund nachlesen können statt `deliveredAt: null` zu raten.
+	 */
+	hasSpamVerdacht?: boolean;
 }
 
 /**
- * Was im Board unter „Antworten" steht.
  *
  * <p>Beim Quiz sind das die Frage/Antwort-Paare. Beim Kontaktformular gibt es keine Fragen,
  * sondern einen getippten Text — der reist als ein Paar mit, statt ein eigenes Feld zu

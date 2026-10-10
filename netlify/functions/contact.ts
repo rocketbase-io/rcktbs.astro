@@ -179,106 +179,38 @@ export default async (request: Request, context: Context) => {
 			reason: 'als Spam-Verdacht nicht zugestellt',
 		};
 
-		if (!verdaechtig) {
-			// Der Blob ist die haltbare Warteschlange, aus der `funnel-redeliver` nachliefert.
-			// Als einziger Schritt fehlerkritisch: Scheitert er, gibt es nichts zum Nachliefern,
-			// und der Absender soll erneut absenden können statt ein „Danke" zu sehen, hinter
-			// dem nichts steht.
-			const store = getStore('funnel-leads');
-			const day = receivedAt.slice(0, 10);
-			const submissionId = `${day}/${receivedAt}-${crypto.randomUUID().slice(0, 8)}`;
-			try {
-				await store.setJSON(submissionId, stored);
-			} catch (blobError) {
-				console.error('Blob store error:', blobError);
-				return json(
-					{
-						success: false,
-						errors: { form: ['Ein unerwarteter Fehler ist aufgetreten.'] },
-					},
-					500,
-				);
-			}
+		// Blob+Sales immer — auch mit `hasSpamVerdacht: true`. Nur `[SPAM?]` = kein
+		// JavaScript → Bots ohne JS-Ausführung. Plunk ist jetzt nur noch ein Error-Fallback
+		// für das Sales-Backend selbst (nicht mehr pro Anfrage).
+		stored.hasSpamVerdacht = flags.length > 0;
 
-			delivery = await deliverToSales(stored, submissionId);
-			if (delivery.ok) {
-				try {
-					await store.setJSON(submissionId, { ...stored, deliveredAt: new Date().toISOString() });
-				} catch (stampError) {
-					// Die Anfrage ist im CRM, nur der Stempel fehlt. Der Nachlieferer schickt sie
-					// erneut, was das Backend über `submissionId` verwirft.
-					console.error('Blob stamp error:', stampError);
-				}
-			} else {
-				console.error('Sales delivery failed:', delivery.reason);
-			}
+		const store = getStore('funnel-leads');
+		const day = receivedAt.slice(0, 10);
+		const submissionId = `${day}/${receivedAt}-${crypto.randomUUID().slice(0, 8)}`;
+		try {
+			await store.setJSON(submissionId, stored);
+		} catch (blobError) {
+			console.error('Blob store error:', blobError);
+			return json(
+				{
+					success: false,
+					errors: { form: ['Ein unerwarteter Fehler ist aufgetreten.'] },
+				},
+				500,
+			);
 		}
 
-		const plunkSecretKey = Netlify.env.get('PLUNK_SECRET_KEY');
-		const contactEmail = Netlify.env.get('CONTACT_NOTIFICATION_EMAIL');
-
-		// Die Mail ist der Notnagel, nicht der Meldeweg: Angekommene Anfragen meldet das CRM
-		// nach Slack. Eine zweite Benachrichtigung je Anfrage wäre nur Lärm — und beim Quiz
-		// hat genau das den Plunk-Account einmal über das Volumen gesperrt.
-		if (!delivery.ok && plunkSecretKey && contactEmail) {
-			const marker = flags.length > 0 ? '[SPAM?] ' : '';
-			const emailSubject = result.data.subject
-				? `${marker}Kontaktanfrage: ${result.data.subject}`
-				: `${marker}Kontaktanfrage von ${result.data.name}`;
-
-			const controller = new AbortController();
-			const timeout = setTimeout(() => controller.abort(), 8000);
-
+		delivery = await deliverToSales(stored, submissionId);
+		if (delivery.ok) {
 			try {
-				// Antwort auswerten, nicht nur abwarten: Ein deaktivierter Account oder ein
-				// abgelaufener Key antwortet 401/403, und `fetch` wertet das nicht als Fehler --
-				// der `catch` unten greift nur bei Netzwerkabbruch oder Timeout. Eine
-				// Kontaktanfrage ist hier das einzige Signal; ohne diese Pruefung geht sie
-				// still verloren, und die Logs melden nichts.
-				const plunkResponse = await fetch('https://next-api.useplunk.com/v1/send', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${plunkSecretKey}`,
-					},
-					body: JSON.stringify({
-						to: contactEmail,
-						from: 'kontakt@rocketbase.io',
-						subject: emailSubject,
-						body: `
-              ${
-								flags.length > 0
-									? `<p style="background:#fef3c7;border:1px solid #fcd34d;border-radius:6px;padding:10px 14px">
-                       <strong>Verdacht auf Spam:</strong> ${escapeHtml(flags.join(', '))}<br />
-                       Nicht ans CRM zugestellt — diese Mail ist der einzige Weg.
-                     </p>`
-									: `<p style="background:#fff7ed;border:1px solid #fed7aa;border-radius:6px;padding:10px 14px">
-                       <strong>Noch nicht im CRM.</strong> ${escapeHtml(delivery.reason ?? '')}<br />
-                       Die Anfrage liegt gesichert in Netlify Blobs und wird automatisch
-                       nachgeliefert.
-                     </p>`
-							}
-              <p><strong>Name:</strong> ${escapeHtml(result.data.name)}</p>
-              <p><strong>E-Mail:</strong> ${escapeHtml(result.data.email)}</p>
-              ${result.data.subject ? `<p><strong>Betreff:</strong> ${escapeHtml(result.data.subject)}</p>` : ''}
-              <p><strong>Nachricht:</strong></p>
-              <p style="white-space: pre-wrap">${escapeHtml(result.data.message)}</p>
-            `,
-					}),
-					signal: controller.signal,
-				});
-				if (!plunkResponse.ok) {
-					console.error(
-						`Plunk email rejected: HTTP ${plunkResponse.status} ${await plunkResponse.text()}`,
-					);
-				}
-			} catch (emailError) {
-				console.error('Plunk email error:', emailError);
-			} finally {
-				clearTimeout(timeout);
+				await store.setJSON(submissionId, { ...stored, deliveredAt: new Date().toISOString() });
+			} catch (stampError) {
+				// Die Anfrage ist im CRM, nur der Stempel fehlt. Der Nachlieferer schickt sie
+				// erneut, was das Backend über `submissionId` verwirft.
+				console.error('Blob stamp error:', stampError);
 			}
 		} else {
-			console.warn('Plunk not configured (PLUNK_SECRET_KEY / CONTACT_NOTIFICATION_EMAIL)');
+			console.error('Sales delivery failed:', delivery.reason);
 		}
 
 		return json({ success: true });
