@@ -41,7 +41,7 @@ const span: Record<BentoFeature['key'], string> = {
 const bars = [38, 55, 42, 70, 62, 84];
 ---
 
-<div class:list={['bento grid', compact ? 'bento-compact grid-cols-2 gap-3 lg:grid-cols-6' : 'gap-4 sm:grid-cols-2 lg:grid-cols-4']}>
+<div class:list={['bento grid', compact ? 'bento-compact gap-3 sm:grid-cols-2 lg:grid-cols-6' : 'gap-4 sm:grid-cols-2 lg:grid-cols-4']}>
   {
     features.map((f) => (
       <article
@@ -247,7 +247,7 @@ const bars = [38, 55, 42, 70, 62, 84];
               class:list={[
                 'font-display text-foreground font-bold tracking-tight',
                 compact
-                  ? 'text-[0.8rem] whitespace-nowrap sm:text-sm lg:text-[0.95rem]'
+                  ? 'text-[0.95rem] sm:text-sm sm:whitespace-nowrap lg:text-[0.95rem]'
                   : 'text-base sm:text-lg',
               ]}
             >
@@ -265,7 +265,28 @@ const bars = [38, 55, 42, 70, 62, 84];
   /* Kompakt: Illustration maßstäblich verkleinern statt umbrechen. Layoutbreite
      = Kachelbreite / Faktor, per transform wieder auf Kachelbreite skaliert. */
   .bento-compact {
-    --bz: 0.62;
+    --bz: 1;
+  }
+  /*
+   * Die Schriftgrade in den Illustrationen sind für den 0,62-Maßstab gewählt.
+   * Mobil wird nicht mehr verkleinert, also wirken 9-10 px zu klein - hier
+   * angehoben, ab sm gilt wieder der Originalwert.
+   */
+  @media (max-width: 639px) {
+    .bento-compact .bento-visual .text-\[9px\] {
+      font-size: 11px;
+    }
+    .bento-compact .bento-visual .text-\[10px\] {
+      font-size: 11.5px;
+    }
+    .bento-compact .bento-visual .text-\[11px\] {
+      font-size: 12px;
+    }
+  }
+  @media (min-width: 640px) {
+    .bento-compact {
+      --bz: 0.62;
+    }
   }
   @media (min-width: 1024px) {
     .bento-compact {

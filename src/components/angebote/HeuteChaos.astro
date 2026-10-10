@@ -135,6 +135,21 @@ const fenster = [
     .hc-pain {
       padding-top: 0.6rem;
     }
+    /*
+     * Zweispaltig blieben je Karte rund 113 px für den Dateinamen - "Angebot_
+     * Beispiel_2026.docx" verlor dabei ein Drittel. Ohne die Fensterinhalte
+     * (siehe oben) ist einspaltig ohnehin die ehrlichere Darstellung.
+     */
+    .hc-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .hc-grid > .hc-win:last-child {
+      grid-column: auto;
+      width: 100%;
+    }
+    .hc-file {
+      font-size: 12px;
+    }
   }
   .hc-win {
     position: relative;

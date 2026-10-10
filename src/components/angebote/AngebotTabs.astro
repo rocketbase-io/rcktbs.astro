@@ -72,8 +72,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
     <div
       role="tablist"
       aria-label="Schritte mit dem Angebotsbaustein"
-      class="relative grid"
-      style={`grid-template-columns: repeat(${steps.length}, minmax(0, 1fr))`}
+      class="af-steps relative grid"
+      style={`--af-steps: ${steps.length}`}
     >
       {
         steps.map((step, index) => (
@@ -97,7 +97,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
               </svg>
               <span class="relative">{pad(index + 1)}</span>
             </span>
-            <span class="af-step-label text-[10px] font-semibold whitespace-nowrap max-[379px]:text-[9.5px] max-[379px]:tracking-tight sm:text-sm">
+            <span class="af-step-label hidden text-[10px] font-semibold whitespace-nowrap sm:inline sm:text-sm">
               {step.eyebrow}
             </span>
           </button>
@@ -223,6 +223,13 @@ const pad = (n: number) => String(n).padStart(2, '0');
   }
 
   /* Stepper */
+  /*
+   * Die Spaltenzahl kommt als Variable aus dem Markup, nicht als Inline-Style:
+   * so lässt sie sich hier überhaupt noch pro Breakpoint anfassen.
+   */
+  .af-steps {
+    grid-template-columns: repeat(var(--af-steps), minmax(0, 1fr));
+  }
   .af-stepline {
     background: color-mix(in oklch, var(--color-foreground) 15%, transparent);
   }
