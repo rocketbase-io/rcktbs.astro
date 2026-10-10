@@ -64,7 +64,7 @@ const fenster = [
               </div>
             )}
             {f.key === 'pdf' && (
-              <div class="hc-pdf">
+              <div class="hc-pdfview">
                 <span class="hc-page">
                   <i style="width: 70%" />
                   <i style="width: 50%" />
@@ -121,7 +121,7 @@ const fenster = [
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.75rem;
   }
-  @media (max-width: 1023px) {
+  @media (min-width: 640px) and (max-width: 1023px) {
     .hc-grid > .hc-win:last-child {
       grid-column: span 2;
       justify-self: center;
@@ -143,9 +143,30 @@ const fenster = [
     .hc-grid {
       grid-template-columns: minmax(0, 1fr);
     }
-    .hc-grid > .hc-win:last-child {
-      grid-column: auto;
+    /*
+     * Gleich breite Karten untereinander lesen sich wie eine ordentliche Liste -
+     * das Gegenteil der Aussage. Je Karte eine andere Breite und abwechselnd
+     * links und rechts ausgerichtet, dann wirkt es wieder wie hingeworfene
+     * Zettel. Die Breiten sind bewusst krumm, nicht gerastert.
+     */
+    .hc-grid > .hc-win {
+      grid-column: 1;
       width: 100%;
+      justify-self: start;
+    }
+    .hc-grid > .hc-win:nth-child(2) {
+      width: 88%;
+      justify-self: end;
+    }
+    .hc-grid > .hc-win:nth-child(3) {
+      width: 80%;
+    }
+    .hc-grid > .hc-win:nth-child(4) {
+      width: 93%;
+      justify-self: end;
+    }
+    .hc-grid > .hc-win:nth-child(5) {
+      width: 85%;
     }
     .hc-file {
       font-size: 12px;
@@ -300,8 +321,8 @@ const fenster = [
     }
   }
 
-  /* PDF */
-  .hc-pdf {
+  /* PDF-Vorschau im Fensterinhalt (nicht die Farbklasse .hc-pdf der Karte) */
+  .hc-pdfview {
     position: relative;
     display: flex;
     align-items: center;
