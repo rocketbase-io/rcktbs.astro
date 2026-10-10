@@ -25,7 +25,7 @@ const fragen = [
       <p class="font-display text-[0.95rem] font-bold tracking-tight sm:text-base">Oktober</p>
       <p class="font-mono text-[0.6rem] opacity-60">2026</p>
     </div>
-    <div class="mt-2 grid grid-cols-7 gap-[3px] text-center font-mono text-[0.58rem] sm:text-[0.64rem]">
+    <div class="mt-2 grid grid-cols-7 gap-[3px] text-center font-mono text-[0.72rem] sm:text-[0.64rem]">
       {wochentage.map((w) => <span class="pb-1 opacity-50">{w}</span>)}
       {Array.from({ length: OFFSET }).map(() => <span />)}
       {
@@ -46,7 +46,7 @@ const fragen = [
       <span class="h-2.5 w-2.5 shrink-0 rounded-sm bg-[oklch(52%_0.13_150)]"></span>
       <span class="truncate">Auswertung_Sept_final_v3.xlsx</span>
     </p>
-    <div class="mt-2 grid grid-cols-3 gap-px font-mono text-[0.58rem] sm:text-[0.62rem]">
+    <div class="mt-2 grid grid-cols-3 gap-px font-mono text-[0.72rem] sm:text-[0.62rem]">
       <span class="hk-cell">Umsatz</span><span class="hk-cell text-right">412.380</span><span class="hk-cell hk-err">#BEZUG!</span>
       <span class="hk-cell">Stunden</span><span class="hk-cell text-right">6.214</span><span class="hk-cell text-right opacity-50">?</span>
     </div>
@@ -63,6 +63,37 @@ const fragen = [
 </div>
 
 <style>
+  /*
+   * Unter 640 px überlappen sich Kalender (74 %) und Sprechblasen (46 %) um rund
+   * 65 px, der Dateikasten läuft aus seiner Karte. Auf dem Handy daher gestapelt
+   * und ohne Rotation, mit Schriftgraden über der Lesbarkeitsgrenze.
+   */
+  @media (max-width: 639px) {
+    .hk {
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+    .hk > * {
+      position: static !important;
+      width: 100% !important;
+      max-width: none !important;
+      transform: none !important;
+    }
+    .hk-q {
+      align-self: flex-end;
+      max-width: 85% !important;
+      font-size: 0.8rem !important;
+    }
+    .hk-cal {
+      font-size: 0.72rem;
+    }
+    .hk-file {
+      font-size: 0.72rem;
+    }
+  }
+
   .hk-cal,
   .hk-file {
     background: var(--color-card);

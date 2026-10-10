@@ -73,7 +73,10 @@
   background: var(--z-panel);
   gap: 2px;
 }
-.z-seg button {
+.z-seg button,
+.z-seg span {
+  display: inline-flex;
+  align-items: center;
   font-size: 0.72rem;
   font-weight: 600;
   padding: 0.25rem 0.6rem;
@@ -83,8 +86,14 @@
     background 0.2s ease,
     color 0.2s ease;
 }
+/* Bedienbare Schalter brauchen eine Fingerfläche, rein dekorative nicht. */
+.z-seg button {
+  min-height: 2.75rem;
+  padding-inline: 0.8rem;
+}
 .z-seg button[aria-pressed='true'],
-.z-seg button[aria-selected='true'] {
+.z-seg button[aria-selected='true'],
+.z-seg span[data-active] {
   background: var(--z-blue);
   color: white;
 }
@@ -141,11 +150,13 @@
 .z-person-tab {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.45rem;
-  white-space: nowrap;
+  min-height: 2.75rem;
+  min-width: 0;
   font-size: 0.78rem;
   font-weight: 600;
-  padding: 0.35rem 0.75rem 0.35rem 0.35rem;
+  padding: 0.35rem 0.5rem;
   border-radius: 999px;
   border: 1px solid transparent;
   color: var(--z-muted);
@@ -207,5 +218,61 @@
   .z-bar-fill,
   .z-bar-over {
     transition: none;
+  }
+}
+
+/*
+ * Diagrammtext in den Nachbauten.
+ * Die SVGs sind 640-720 Einheiten breit und werden auf dem Handy in rund 280 px
+ * gezeichnet, also auf etwa 0,44 verkleinert. Ein font-size von 10 landet dadurch
+ * bei 4,4 px. Die Schriftgrade stehen deshalb hier und nicht im Markup: mobil so
+ * groß, dass nach dem Verkleinern gut 11 px übrig bleiben, ab sm wieder dezent.
+ */
+.zd-ax {
+  font-size: 29px;
+}
+/*
+ * Die Zahl über jedem Balken: auf dem Handy kollidieren zwölf davon und stoßen
+ * oben an den Rand. Dort tragen Achse und Balkenhöhe die Aussage, ab sm kommen
+ * die Werte zurück.
+ */
+.zd-val {
+  display: none;
+}
+/*
+ * Die Achsenbeschriftung ist mobil knapp dreimal so groß wie vorgesehen und stößt
+ * dadurch links aus dem Diagramm. Statt die Geometrie zu ändern (was den Desktop
+ * mitzöge), rückt nur das Label nach innen.
+ */
+.zd-ax[text-anchor='end'] {
+  translate: 30px 0;
+}
+
+/* Zwölf Monatslabels kollidieren bei dieser Schriftgröße - mobil jedes zweite. */
+.zd-odd {
+  display: none;
+}
+@media (min-width: 640px) {
+  .zd-ax {
+    font-size: 10px;
+  }
+  .zd-val {
+    display: initial;
+    font-size: 9px;
+  }
+  .zd-odd {
+    display: initial;
+  }
+  .zd-ax[text-anchor='end'] {
+    translate: none;
+  }
+}
+
+/* Personenumschalter: mobil drei gleich breite Felder, ab sm die Pillenreihe. */
+@media (min-width: 640px) {
+  .z-person-tab {
+    justify-content: flex-start;
+    white-space: nowrap;
+    padding: 0.35rem 0.75rem 0.35rem 0.35rem;
   }
 }

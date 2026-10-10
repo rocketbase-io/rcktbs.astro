@@ -160,7 +160,7 @@ const miniFaqs = zahlenFaqs;
 <!-- HERO -->
 <section
   data-hero
-  class:list={['relative overflow-x-clip lg:flex lg:flex-col', istFunnel ? 'lg:min-h-[calc(100svh-3.5rem)]' : 'pt-16 lg:min-h-[100svh]']}
+  class:list={['relative overflow-x-clip lg:flex lg:flex-col', istFunnel ? 'lg:min-h-[calc(100svh-3.5rem)]' : 'pt-24 sm:pt-20 lg:min-h-[100svh] lg:pt-16']}
 >
   <Blueprint />
   <div
@@ -179,7 +179,7 @@ const miniFaqs = zahlenFaqs;
       <h1
         data-reveal="fade-down"
         lang="de"
-        class="font-display text-foreground mt-3 text-[2.6rem] leading-[1.05] font-bold tracking-tight text-balance sm:mt-5 sm:text-6xl xl:text-[4.25rem]"
+        class="font-display text-foreground mt-3 text-[2.05rem] leading-[1.08] font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:mt-5 sm:text-6xl sm:leading-[1.05] xl:text-[4.25rem]"
       >
         Euer Betrieb auf einen Blick.
         <span class="text-brand-500 block">Live, nicht am Monatsende.</span>
@@ -251,7 +251,7 @@ const miniFaqs = zahlenFaqs;
 </section>
 
 <!-- HEUTE: der Ist-Zustand -->
-<section id="heute" class="heute-sec border-border relative scroll-mt-14 overflow-x-clip border-b pt-16 pb-12 sm:py-20 lg:py-24">
+<section id="heute" class="heute-sec border-border relative scroll-mt-20 overflow-x-clip border-b pt-16 pb-12 sm:py-20 lg:py-24">
   <div class="container grid max-w-6xl grid-cols-[minmax(0,1fr)] gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-center lg:gap-16">
     <div class="af-rise">
       <p class="inline-flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.2em] text-[oklch(58%_0.19_25)] uppercase">
@@ -284,7 +284,7 @@ const miniFaqs = zahlenFaqs;
 </section>
 
 <!-- 01 DAS COCKPIT -->
-<section id="cockpit" class="bg-background relative scroll-mt-16 overflow-x-clip py-24 lg:py-32">
+<section id="cockpit" class="bg-background relative scroll-mt-20 overflow-x-clip py-24 lg:py-32">
   <div class="bg-brand-300/10 pointer-events-none absolute top-40 left-1/2 h-[40rem] w-[60rem] -translate-x-1/2 rounded-full blur-[120px]" aria-hidden="true"></div>
   <div class="relative z-10 container max-w-7xl">
     <SectionHeader
@@ -436,7 +436,7 @@ const miniFaqs = zahlenFaqs;
 </section>
 
 <!-- 07 SO KOMMT IHR DAZU -->
-<section id="ablauf" class="bg-background-secondary border-border relative scroll-mt-16 border-b py-20 lg:py-24">
+<section id="ablauf" class="bg-background-secondary border-border relative scroll-mt-20 border-b py-20 lg:py-24">
   <div class="relative z-10 container max-w-6xl">
     <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-16">
       <div class="af-rise">
@@ -500,7 +500,7 @@ const miniFaqs = zahlenFaqs;
       {
         miniFaqs.map((item) => (
           <details class="group border-border bg-card rounded-2xl border p-5 shadow-sm transition-shadow duration-300 open:shadow-lg sm:p-6">
-            <summary class="flex cursor-pointer list-none items-start gap-4 [&::-webkit-details-marker]:hidden">
+            <summary class="flex min-h-11 cursor-pointer list-none items-start gap-4 py-0.5 [&::-webkit-details-marker]:hidden">
               <h3 class="font-display text-foreground flex-1 text-base font-bold tracking-tight sm:text-lg">{item.q}</h3>
               <Icon name="chevron-down" size="sm" class="text-foreground-muted mt-1 shrink-0 transition-transform duration-300 group-open:rotate-180" />
             </summary>
