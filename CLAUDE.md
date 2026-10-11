@@ -113,15 +113,29 @@ Deliberately small — all of it lives in `contact.ts`. No captcha, no third-par
 service, no extra stores.
 
 Only a filled honeypot is dropped, silently, with the same response a genuine
-sender gets. Everything else is *delivered* — `suspicionOf()` just prefixes the
-subject with `[SPAM?]` and names the reasons at the top of the mail. A false
-positive therefore costs a filter rule, never a lead, which is why the checks
-can stay blunt.
+sender gets. Everything else is *delivered* — `suspicionOf()` just flags the
+lead with `hasSpamVerdacht` and names the reasons. A false positive therefore
+costs a filter rule, never a lead, which is why the checks can stay blunt.
 
 The load-bearing signal is a hidden `renderedAt` field stamped by JS in
-`kontakt.astro`: form scrapers don't run JavaScript, so they omit it entirely.
-Stamp it on init (not submit), inside `initContactForm()` so `astro:after-swap`
-re-stamps it.
+`ContactAttribution.astro`: form scrapers don't run JavaScript, so they omit it
+entirely. Stamp it on init (not submit), inside the component's own module
+script so `astro:after-swap` re-stamps it.
 
-Grep Netlify logs for `[contact:verdacht]` to see what is being flagged before
-tightening anything.
+Since 2026-10-11 a missing `renderedAt` no longer passes silently. It gets the
+two-step gate in `netlify/lib/human-check.ts`: the response is an HTML page with
+the data in an HMAC-signed hidden field and a second button. Scrapers POST once
+and never render the answer, so they stop here; a human clicks once more. No
+mail, no link, no captcha — the second POST *is* the check. The signed payload
+wins over anything the second request sends, otherwise the page would be an open
+relay. The `[SPAM?]` flagging stays as a second layer behind it.
+
+Both the no-JS and the JS path must keep working: `/api/contact` answers HTML to
+the former (confirmation, thanks, errors) and JSON to the latter. The form has a
+real `action`/`method`, so it submits without JavaScript — that is deliberate and
+what makes the gate necessary in the first place.
+
+Grep Netlify logs for `[contact:verdacht]` to see what is being flagged, and for
+`[contact:zwischenschritt]` to see how often the gate fires — the gap between
+that count and the deliveries that follow is what the gate actually stops.
+Check both before tightening anything.
