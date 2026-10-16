@@ -36,7 +36,8 @@ const leadSchema = z.object({
 }).superRefine((lead, ctx) => {
 	// Auf der Angebotsbaustein-Seite (/f/angebote/) gibt es keine Terminbuchung, Marten ruft
 	// zurück: Telefon ist dort Pflicht, die Firma dafür optional.
-	// Gleiches gilt für die Zahlen-Seite (/f/zahlen/) und die Einsatz-Seite (/f/einsatz/).
+	// Gleiches gilt für die Zahlen-Seite (/f/zahlen/), die Einsatz-Seite (/f/einsatz/)
+	// und die Ablösung (/f/abloesung/, seit 2026-10-16).
 	//
 	// Geprüft wird gegen die Strecke, also den Pfad (`f/angebote`), den
 	// `streckeAusPfad` liefert. Die alten Kurznamen (`angebote`) bleiben
@@ -44,6 +45,9 @@ const leadSchema = z.object({
 	// falschen Pflichtfeld-Regel scheitert.
 	const RUECKRUF_STRECKEN = new Set([
 		'f/angebote', 'f/zahlen', 'f/einsatz',
+		'f/abloesung',
+		// Backup der alten Funnel-Fassungen (seit 2026-10-16 unter /f/*-old/).
+		'f/angebote-old', 'f/zahlen-old', 'f/einsatz-old',
 		'angebote', 'zahlen', 'einsatz',
 	]);
 	const angebote = RUECKRUF_STRECKEN.has(lead.funnel);
@@ -354,6 +358,12 @@ export default async (request: Request, context: Context) => {
 				// Einsatz & Abrechnung (/f/einsatz/, Tür 2).
 				'f/einsatz': 'Funnel · Einsatz & Abrechnung (/f/einsatz/)',
 				einsatz: 'Funnel · Einsatz & Abrechnung (/f/einsatz/)',
+				// Standardsoftware-Ablösung (/f/abloesung/), neu seit 2026-10-16.
+				'f/abloesung': 'Funnel · Standardsoftware-Ablösung (/f/abloesung/)',
+				// Backup der alten Fassungen, falls Anzeigen noch darauf zeigen sollen.
+				'f/angebote-old': 'Funnel · Angebotsbaustein, alte Fassung (/f/angebote-old/)',
+				'f/zahlen-old': 'Funnel · Zahlen & Steuerung, alte Fassung (/f/zahlen-old/)',
+				'f/einsatz-old': 'Funnel · Einsatz & Abrechnung, alte Fassung (/f/einsatz-old/)',
 			};
 			const utm = lead.utm || {};
 			const angleLabel = FUNNEL_LABELS[lead.funnel] || lead.funnel;
