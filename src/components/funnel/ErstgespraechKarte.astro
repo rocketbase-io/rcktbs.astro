@@ -25,9 +25,14 @@ interface Props {
   href?: string;
   id?: string;
   class?: string;
+  /**
+   * Steht neben einem anderen Block (ab xl zweispaltig): Die Karte gibt ihr eigenes
+   * Zweispalten-Layout ab xl auf und stapelt Text und Rahmenbox, damit nichts quetscht.
+   */
+  schmal?: boolean;
 }
 
-const { zitat, text, href = '#kontakt', id, class: className } = Astro.props;
+const { zitat, text, href = '#kontakt', id, class: className, schmal = false } = Astro.props;
 
 const rahmen = [
   { icon: 'clock', text: '30 Minuten' },
@@ -41,6 +46,7 @@ const rahmen = [
   id={id}
   class:list={[
     'gespraech af-rise mx-auto grid max-w-4xl scroll-mt-28 gap-8 rounded-[2rem] p-6 sm:p-9 lg:grid-cols-[minmax(0,1fr)_17rem] lg:gap-12 lg:p-12',
+    schmal && 'xl:max-w-none xl:grid-cols-1 xl:gap-6 xl:p-9',
     className,
   ]}
 >
@@ -57,10 +63,14 @@ const rahmen = [
         loading="lazy"
       />
       <div class="min-w-0">
-        <p class="text-brand-600 dark:text-brand-300 font-mono text-[11px] font-semibold tracking-[0.2em] uppercase">
+        <p
+          class="text-brand-600 dark:text-brand-300 font-mono text-[11px] font-semibold tracking-[0.2em] uppercase"
+        >
           Euer Erstgespräch mit
         </p>
-        <p class="font-display text-foreground mt-1 text-lg leading-tight font-bold tracking-tight sm:text-xl">
+        <p
+          class="font-display text-foreground mt-1 text-lg leading-tight font-bold tracking-tight sm:text-xl"
+        >
           Marten Prieß
         </p>
         <p class="text-foreground-secondary text-sm leading-5">Gründer von RocketBase</p>
@@ -77,7 +87,10 @@ const rahmen = [
 
   <!-- Rechts (mobil unten): der Rahmen und der Knopf -->
   <div class="gespraech-seite flex flex-col gap-5 rounded-3xl p-5 sm:p-6">
-    <ul class="grid grid-cols-2 gap-x-4 gap-y-3 lg:grid-cols-1" aria-label="Rahmen des Erstgesprächs">
+    <ul
+      class="grid grid-cols-2 gap-x-4 gap-y-3 lg:grid-cols-1"
+      aria-label="Rahmen des Erstgesprächs"
+    >
       {
         rahmen.map((chip) => (
           <li class="text-foreground flex items-center gap-2.5 text-sm font-medium whitespace-nowrap">
@@ -94,7 +107,7 @@ const rahmen = [
         size="lg"
         href={href}
         fullWidth
-        class="bg-brand-500 hover:bg-brand-400 text-white whitespace-nowrap shadow-[0_14px_34px_-12px_var(--color-brand-500)]"
+        class="bg-brand-500 hover:bg-brand-400 whitespace-nowrap text-white shadow-[0_14px_34px_-12px_var(--color-brand-500)]"
       >
         <Icon name="mail" size="sm" />
         Kontakt aufnehmen

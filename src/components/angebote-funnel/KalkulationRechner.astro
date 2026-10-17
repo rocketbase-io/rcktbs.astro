@@ -75,9 +75,9 @@ const ampelText = {
 const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis') : '';
 ---
 
-<div class="kr" data-kr>
-  <div class="kr-tabs sticky top-16 z-20 mx-auto max-w-full rounded-2xl p-1.5 sm:static sm:w-fit">
-    <div role="tablist" aria-label="Beispiele nach Branche" class="grid grid-cols-2 gap-1 sm:flex">
+<div class="kr" data-kr data-szene>
+  <div class="kr-tabs sticky top-16 z-20 mx-auto max-w-full rounded-2xl p-1.5 lg:static lg:w-fit">
+    <div role="tablist" aria-label="Beispiele nach Branche" class="grid grid-cols-2 gap-1 lg:flex">
       {
         rechnungen.map((r, i) => (
           <button
@@ -87,7 +87,7 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
             aria-controls={`kr-panel-${r.key}`}
             aria-selected={i === 0 ? 'true' : 'false'}
             tabindex={i === 0 ? 0 : -1}
-            class="kr-tab flex min-w-0 items-center justify-center gap-2 rounded-xl px-2.5 py-2.5 text-center text-[0.8rem] leading-tight font-semibold sm:shrink-0 sm:px-4 sm:text-sm sm:whitespace-nowrap"
+            class="kr-tab flex min-w-0 items-center justify-center gap-2 rounded-xl px-2.5 py-2.5 text-center text-[0.8rem] leading-tight font-semibold lg:shrink-0 lg:px-4 lg:text-sm lg:whitespace-nowrap"
           >
             <Icon name={r.icon} size="sm" />
             {r.branche}
@@ -141,17 +141,28 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
               </p>
               <dl class="mt-4 grid grid-cols-2 gap-1.5">
                 {r.eingaben.map((e) => (
-                  <div class="kr-k-row rounded-lg px-2.5 py-2" data-eingabe={e.label}>
+                  <div
+                    class="kr-k-row rounded-lg px-2.5 py-2"
+                    style={`--d: ${r.eingaben.indexOf(e) * 60}ms`}
+                    data-eingabe={e.label}
+                  >
                     <dt class="text-foreground-muted text-[11px] leading-4">
                       {e.label}
                       {e.auto && (
                         <>
-                          <Icon name="zap" size="xs" class="text-brand-500 ml-1 inline-block align-[-2px]" />
+                          <Icon
+                            name="zap"
+                            size="xs"
+                            class="text-brand-500 ml-1 inline-block align-[-2px]"
+                          />
                           <span class="sr-only">berechnet</span>
                         </>
                       )}
                     </dt>
-                    <dd class="text-foreground mt-0.5 font-mono text-sm font-semibold tabular-nums" data-eingabe-wert>
+                    <dd
+                      class="text-foreground mt-0.5 font-mono text-sm font-semibold tabular-nums"
+                      data-eingabe-wert
+                    >
                       {e.wert}
                     </dd>
                   </div>
@@ -164,7 +175,9 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
                 <Icon name="zap" size="xs" />
               </span>
               <p class="text-foreground-secondary text-xs leading-5">
-                <span class="text-foreground block text-[11px] font-semibold tracking-[0.14em] uppercase">Eure Regel</span>
+                <span class="text-foreground block text-[11px] font-semibold tracking-[0.14em] uppercase">
+                  Eure Regel
+                </span>
                 {r.regel}
               </p>
             </div>
@@ -173,14 +186,20 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
               <p class="kr-label">Ergebnis</p>
               <div class="mt-2 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                 <p class="text-foreground-secondary text-sm">{r.ergebnis[0]?.label}</p>
-                <p class="font-display text-foreground text-3xl font-bold tracking-tight tabular-nums" data-preis>
+                <p
+                  class="font-display text-foreground text-3xl font-bold tracking-tight tabular-nums"
+                  data-preis
+                >
                   {r.ergebnis[0]?.wert}
                 </p>
               </div>
               {r.ergebnis[1] && (
                 <div class="mt-1 flex items-baseline justify-between gap-4">
                   <p class="text-foreground-secondary text-sm">{r.ergebnis[1].label}</p>
-                  <p class="text-foreground font-mono text-sm font-semibold tabular-nums" data-kennzahl>
+                  <p
+                    class="text-foreground font-mono text-sm font-semibold tabular-nums"
+                    data-kennzahl
+                  >
                     {r.ergebnis[1].wert}
                   </p>
                 </div>
@@ -195,14 +214,20 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
               <div class="kr-db mt-4 rounded-2xl p-3.5" data-ampel={r.ampel}>
                 <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                   <p class="text-foreground text-sm font-semibold">Bleibt übrig</p>
-                  <p class="text-foreground font-mono text-sm font-bold whitespace-nowrap tabular-nums" data-db>
+                  <p
+                    class="text-foreground font-mono text-sm font-bold whitespace-nowrap tabular-nums"
+                    data-db
+                  >
                     {r.db} · {r.dbProzent} %
                   </p>
                 </div>
                 <div class="kr-bar mt-2.5 h-2 overflow-hidden rounded-full" aria-hidden="true">
                   <span class="kr-bar-fill block h-full rounded-full" />
                 </div>
-                <p class="kr-ampel mt-2.5 inline-flex items-center gap-2 text-xs font-semibold" data-ampeltext>
+                <p
+                  class="kr-ampel mt-2.5 inline-flex items-center gap-2 text-xs font-semibold"
+                  data-ampeltext
+                >
                   <span class="kr-dot" aria-hidden="true" />
                   {ampelText[r.ampel]}
                 </p>
@@ -222,7 +247,9 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
                         aria-pressed={k === 0 ? 'true' : 'false'}
                       >
                         <span class="text-foreground text-sm font-semibold">{o.name}</span>
-                        {o.wert && <span class="text-foreground-muted font-mono text-xs">{o.wert}</span>}
+                        {o.wert && (
+                          <span class="text-foreground-muted font-mono text-xs">{o.wert}</span>
+                        )}
                       </button>
                     ))}
                   </div>
@@ -232,7 +259,10 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
             {hinweis && (
               <div class="kr-hinweis flex gap-3 px-5 py-4">
                 <Icon name="info" size="sm" class="text-brand-500 mt-0.5 shrink-0" />
-                <div class="text-foreground-secondary text-[0.85rem] leading-6" set:html={hinweis} />
+                <div
+                  class="text-foreground-secondary text-[0.85rem] leading-6"
+                  set:html={hinweis}
+                />
               </div>
             )}
           </div>
@@ -251,7 +281,9 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
                   {r.grundlage}
                 </p>
               )}
-              <p class="font-display text-foreground mt-2 text-2xl font-bold tracking-tight">{r.satz}</p>
+              <p class="font-display text-foreground mt-2 text-2xl font-bold tracking-tight">
+                {r.satz}
+              </p>
               <dl class="mt-6 space-y-2">
                 {r.eingaben.map((e, j) => (
                   <div class="kr-row" style={`--d: ${j * 60}ms`} data-eingabe={e.label}>
@@ -291,7 +323,11 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
                         aria-pressed={k === 0 ? 'true' : 'false'}
                       >
                         <span class="text-foreground block text-sm font-semibold">{o.name}</span>
-                        {o.wert && <span class="text-foreground-muted block font-mono text-xs">{o.wert}</span>}
+                        {o.wert && (
+                          <span class="text-foreground-muted block font-mono text-xs">
+                            {o.wert}
+                          </span>
+                        )}
                       </button>
                     ))}
                   </div>
@@ -331,7 +367,10 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
                 ))}
                 <div class="flex items-baseline justify-between gap-4">
                   <dt class="text-foreground-secondary text-sm">Kosten</dt>
-                  <dd class="text-foreground font-mono text-base font-semibold tabular-nums" data-kosten>
+                  <dd
+                    class="text-foreground font-mono text-base font-semibold tabular-nums"
+                    data-kosten
+                  >
                     {r.kosten}
                   </dd>
                 </div>
@@ -340,16 +379,23 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
               <div class="kr-db mt-6 rounded-2xl p-4" data-ampel={r.ampel}>
                 <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                   <p class="text-foreground text-sm font-semibold">
-                    Bleibt übrig <span class="text-foreground-muted font-normal">(Deckungsbeitrag)</span>
+                    Bleibt übrig{' '}
+                    <span class="text-foreground-muted font-normal">(Deckungsbeitrag)</span>
                   </p>
-                  <p class="text-foreground font-mono text-sm font-bold whitespace-nowrap tabular-nums" data-db>
+                  <p
+                    class="text-foreground font-mono text-sm font-bold whitespace-nowrap tabular-nums"
+                    data-db
+                  >
                     {r.db} · {r.dbProzent} %
                   </p>
                 </div>
                 <div class="kr-bar mt-3 h-2 overflow-hidden rounded-full" aria-hidden="true">
                   <span class="kr-bar-fill block h-full rounded-full" />
                 </div>
-                <p class="kr-ampel mt-3 inline-flex items-center gap-2 text-xs font-semibold" data-ampeltext>
+                <p
+                  class="kr-ampel mt-3 inline-flex items-center gap-2 text-xs font-semibold"
+                  data-ampeltext
+                >
                   <span class="kr-dot" aria-hidden="true" />
                   {ampelText[r.ampel]}
                 </p>
@@ -359,7 +405,10 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
             {hinweis && (
               <div class="kr-hinweis flex gap-3 px-8 py-4 lg:col-span-2">
                 <Icon name="info" size="sm" class="text-brand-500 mt-0.5 shrink-0" />
-                <div class="text-foreground-secondary text-[0.85rem] leading-6" set:html={hinweis} />
+                <div
+                  class="text-foreground-secondary text-[0.85rem] leading-6"
+                  set:html={hinweis}
+                />
               </div>
             )}
           </div>
@@ -385,7 +434,9 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
                 <Icon name={g.icon} size="sm" class="text-brand-500 shrink-0" />
                 {g.titel}
               </p>
-              <p class="text-foreground-secondary mt-2 hidden text-sm leading-6 sm:block">{g.text}</p>
+              <p class="text-foreground-secondary mt-2 hidden text-sm leading-6 sm:block">
+                {g.text}
+              </p>
             </li>
           ))}
         </ul>
@@ -404,7 +455,7 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
     background: color-mix(in oklch, var(--color-foreground) 5%, var(--color-background));
     border: 1px solid var(--color-border);
   }
-  @media (min-width: 640px) {
+  @media (min-width: 1024px) {
     .kr-tabs {
       background: color-mix(in oklch, var(--color-foreground) 5%, transparent);
     }
@@ -523,7 +574,9 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-width: 8.5rem;
+    flex: 1 1 auto;
+    min-width: max-content;
+    white-space: nowrap;
     background: var(--color-card);
     border: 1px solid var(--color-border);
     cursor: pointer;
@@ -573,9 +626,18 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
     border-radius: 0.75rem;
     background: color-mix(in oklch, var(--color-foreground) 4%, transparent);
   }
-  .kr-panel[data-active='true'] .kr-row {
+  :global(html.szenen-ready)
+    .kr:not([data-szene='an'])
+    :is(.kr-row, .kr-k-row, .kr-bar-fill, .kr-db, .kr-swap) {
+    opacity: 0;
+  }
+  .kr[data-szene='an'] .kr-panel[data-active='true'] :is(.kr-row, .kr-k-row) {
     animation: kr-row 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: var(--d);
+    animation-delay: var(--d, 0ms);
+  }
+  .kr[data-szene='an'] .kr-panel[data-active='true'] :is(.kr-db, .kr-swap) {
+    animation: kr-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: 0.6s;
   }
   @keyframes kr-row {
     from {
@@ -673,8 +735,8 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
     width: var(--db);
     background: var(--ok);
   }
-  .kr-panel[data-active='true'] .kr-bar-fill {
-    animation: kr-bar 0.9s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+  .kr[data-szene='an'] .kr-panel[data-active='true'] .kr-bar-fill {
+    animation: kr-bar 0.9s 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
   @keyframes kr-bar {
     from {
@@ -706,9 +768,22 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
 </style>
 
 <script>
+  import { szenenStarten, hochzaehlen } from '@/lib/szene';
+
   document.querySelectorAll<HTMLElement>('[data-kr]').forEach((root) => {
     const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role=tab]')];
     const panels = [...root.querySelectorAll<HTMLElement>('[role=tabpanel]')];
+    const bewegt = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Der Preis zählt hoch, wenn die Szene anläuft und bei jedem Tabwechsel.
+    const zaehlen = (panel: HTMLElement) => {
+      if (!bewegt) return;
+      panel.querySelectorAll<HTMLElement>('[data-preis]').forEach((el) => hochzaehlen(el, 900));
+    };
+    root.addEventListener('szene:an', () => {
+      const aktiv = panels.find((p) => p.dataset.active === 'true');
+      if (aktiv) zaehlen(aktiv);
+    });
 
     const select = (index: number, focus = false) => {
       tabs.forEach((tab, i) => {
@@ -719,6 +794,7 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
         if (!panel) return;
         panel.hidden = !on;
         panel.dataset.active = on ? 'true' : 'false';
+        if (on && root.dataset.szene === 'an') zaehlen(panel);
       });
       if (focus) tabs[index]?.focus();
     };
@@ -788,7 +864,9 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
         zeilen.forEach(({ label, el, start }) => {
           el.textContent = o.setzt?.[label] ?? start;
         });
-        btns.forEach((b) => b.setAttribute('aria-pressed', b.dataset.swap === String(i) ? 'true' : 'false'));
+        btns.forEach((b) =>
+          b.setAttribute('aria-pressed', b.dataset.swap === String(i) ? 'true' : 'false')
+        );
       };
 
       btns.forEach((b) => b.addEventListener('click', () => apply(Number(b.dataset.swap))));
@@ -814,4 +892,5 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
       });
     });
   });
+  szenenStarten();
 </script>
