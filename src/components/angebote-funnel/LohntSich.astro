@@ -1,0 +1,190 @@
+---
+/**
+ * „Lohnt sich das bei euch?“: ein Regler, eine Zahl, ein Monat. Angebote im Monat mal 90
+ * Minuten Abtippen, Nachrechnen und Nachfassen ergibt die Stunden, die heute neben dem
+ * System verloren gehen. Bewusst grob und bewusst ohne Preis, Umfang oder Termin: Was es bei
+ * euch wirklich ist, klärt das Erstgespräch. Ohne JS steht das Beispiel mit 30 Angeboten.
+ *
+ * Flacher Streifen über die volle Breite: ab lg Regler, Ergebnis und Monatsraster in einer
+ * Zeile, darunter steht die Marten-Karte. (Neben der Karte wurde der Block zu hoch gezogen.)
+ */
+const START = 30;
+const MINUTEN_JE_ANGEBOT = 90;
+const stunden = (START * MINUTEN_JE_ANGEBOT) / 60;
+const tage = Math.round(stunden / 8);
+---
+
+<div class="ls rounded-3xl p-5 sm:p-6 lg:p-7" data-ls data-minuten={MINUTEN_JE_ANGEBOT}>
+  <div
+    class="grid gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.9fr)_minmax(0,1fr)] lg:items-center lg:gap-8"
+  >
+    <!-- Regler -->
+    <div>
+      <p
+        class="text-brand-600 dark:text-brand-300 font-mono text-[11px] font-semibold tracking-[0.2em] uppercase"
+      >
+        Kurz überschlagen
+      </p>
+      <label
+        for="ls-range"
+        class="font-display text-foreground mt-2 block text-lg leading-snug font-bold tracking-tight"
+      >
+        Wie viele Angebote schreibt ihr im Monat?
+      </label>
+      <div class="mt-4 flex items-center gap-4">
+        <input
+          id="ls-range"
+          type="range"
+          min="5"
+          max="150"
+          step="5"
+          value={START}
+          class="ls-range w-full"
+          data-ls-range
+          aria-describedby="ls-ergebnis"
+        />
+        <output
+          class="ls-out font-display text-foreground min-w-[3ch] text-right text-2xl font-bold tabular-nums"
+          data-ls-out
+        >
+          {START}
+        </output>
+      </div>
+    </div>
+
+    <!-- Ergebnis -->
+    <div id="ls-ergebnis" class="ls-ergebnis rounded-2xl p-4">
+      <p class="text-foreground-secondary text-sm leading-5">Heute gehen dafür ungefähr</p>
+      <p
+        class="font-display text-foreground mt-1 text-3xl font-bold tracking-tight tabular-nums sm:text-4xl"
+      >
+        <span data-ls-stunden>{stunden.toLocaleString('de-DE')}</span> Stunden
+      </p>
+      <p class="text-foreground-secondary mt-1 text-sm leading-5">
+        ins Abtippen, Nachrechnen und Nachfassen.
+      </p>
+    </div>
+
+    <!-- Ein Monat mit 20 Arbeitstagen, die verlorenen eingefärbt -->
+    <div class="ls-monat" aria-hidden="true">
+      <p class="text-foreground text-sm leading-5 font-semibold">
+        Rund <span data-ls-tage>{tage}</span> von 20 Arbeitstagen
+      </p>
+      <div class="ls-tage mt-3" data-ls-raster>
+        {
+          Array.from({ length: 20 }, (_, i) => (
+            <span class:list={['ls-tag', i < tage && 'ls-tag-weg']} />
+          ))
+        }
+      </div>
+      <p
+        class="text-foreground-muted mt-2 flex items-center gap-1.5 text-[10px] font-semibold tracking-[0.12em] uppercase"
+      >
+        <span class="ls-legende"><i></i></span>gehen dafür im Monat drauf
+      </p>
+    </div>
+  </div>
+  <p class="text-foreground-muted mt-5 text-xs leading-5">
+    Grobe Rechnung mit 90 Minuten je Angebot. Ob sich ein Baustein bei euch lohnt, klären wir im
+    Gespräch.
+  </p>
+</div>
+
+<style>
+  .ls {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 24px 55px -40px oklch(30% 0.08 265 / 0.5);
+  }
+  .ls-ergebnis {
+    background: color-mix(in oklch, var(--color-brand-500) 6%, var(--color-background-secondary));
+    border: 1px solid color-mix(in oklch, var(--color-brand-400) 35%, var(--color-border));
+  }
+  .ls-tage {
+    display: grid;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    gap: 0.3rem;
+  }
+  .ls-tag {
+    aspect-ratio: 1;
+    border-radius: 0.3rem;
+    background: color-mix(in oklch, var(--color-foreground) 8%, transparent);
+    transition:
+      background 0.3s ease,
+      scale 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .ls-tag-weg {
+    background: oklch(64% 0.17 35);
+    scale: 0.92;
+  }
+  .ls-legende {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .ls-legende i {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 0.15rem;
+    background: oklch(64% 0.17 35);
+  }
+  .ls-range {
+    appearance: none;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: linear-gradient(
+      to right,
+      var(--color-brand-500) 0%,
+      var(--color-brand-500) var(--p, 17%),
+      color-mix(in oklch, var(--color-foreground) 10%, transparent) var(--p, 17%)
+    );
+    outline: none;
+    cursor: pointer;
+  }
+  .ls-range::-webkit-slider-thumb {
+    appearance: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 999px;
+    background: var(--color-card);
+    border: 2px solid var(--color-brand-500);
+    box-shadow: 0 6px 16px -6px var(--color-brand-500);
+  }
+  .ls-range::-moz-range-thumb {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 999px;
+    background: var(--color-card);
+    border: 2px solid var(--color-brand-500);
+  }
+  .ls-range:focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 4px;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-ls]').forEach((root) => {
+    const minuten = Number(root.dataset.minuten) || 90;
+    const range = root.querySelector<HTMLInputElement>('[data-ls-range]');
+    const out = root.querySelector<HTMLElement>('[data-ls-out]');
+    const stundenEl = root.querySelector<HTMLElement>('[data-ls-stunden]');
+    const tageEl = root.querySelector<HTMLElement>('[data-ls-tage]');
+    const tagEls = [...root.querySelectorAll<HTMLElement>('.ls-tag')];
+    if (!range || !out || !stundenEl || !tageEl) return;
+    const zeichne = () => {
+      const n = Number(range.value);
+      const min = Number(range.min);
+      const max = Number(range.max);
+      range.style.setProperty('--p', `${((n - min) / (max - min)) * 100}%`);
+      out.textContent = String(n);
+      const stunden = (n * minuten) / 60;
+      stundenEl.textContent = stunden.toLocaleString('de-DE', { maximumFractionDigits: 1 });
+      const tage = Math.max(1, Math.round(stunden / 8));
+      tageEl.textContent = String(tage);
+      tagEls.forEach((t, i) => t.classList.toggle('ls-tag-weg', i < tage));
+    };
+    range.addEventListener('input', zeichne);
+    zeichne();
+  });
+</script>
