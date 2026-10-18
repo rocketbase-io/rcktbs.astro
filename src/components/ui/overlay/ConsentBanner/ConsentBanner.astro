@@ -644,13 +644,72 @@ const configJson = JSON.stringify(consentConfig);
 
   /* ─── Responsive ─── */
   @media (max-width: 640px) {
-    .consent-banner-inner {
+    /* Auf dem Handy ist der Banner eine Karte in der Mitte mit abgedunkeltem
+       Hintergrund. Als Zeile unten lag er über dem Quiz der Funnel-Seiten und
+       wurde meist einfach ignoriert; dann lief das Pixel nie. Auf dem Desktop
+       bleibt die Zeile unten, dort stört eine Karte in der Mitte mehr. */
+    .consent-banner--bottom {
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      background: rgba(15, 18, 28, 0.55);
+      transform: none;
+      opacity: 0;
+      pointer-events: none;
+      touch-action: none;
+      transition: opacity var(--transition-slow);
+    }
+
+    .consent-banner--bottom[hidden] {
+      display: none;
+    }
+
+    .consent-banner--visible.consent-banner--bottom {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .consent-banner--bottom .consent-banner-inner {
       flex-direction: column;
       align-items: stretch;
+      gap: 1rem;
+      width: 100%;
+      max-width: 24rem;
+      padding: 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: 1.25rem;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+    }
+
+    .consent-banner-content {
+      min-width: 0;
+    }
+
+    .consent-banner-heading {
+      font-size: 1.0625rem;
+    }
+
+    .consent-banner-description {
+      font-size: 0.875rem;
+      line-height: 1.5;
     }
 
     .consent-banner-actions {
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.625rem;
+    }
+
+    .consent-banner-actions > * {
+      min-height: 2.75rem;
+      font-size: 0.9375rem;
+    }
+
+    #consent-customize {
+      grid-column: 1 / -1;
+      min-height: 2.25rem;
     }
   }
 
