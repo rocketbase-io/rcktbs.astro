@@ -46,6 +46,20 @@
   to = "/f/angebote/"
   status = 301
 
+# Tor 4 heißt seit dem 18.10.2026 „eigene Software" statt „Standardsoftware ablösen" und liegt
+# unter /f/eigene-software/. Zwei Vorgänger zeigen dorthin: die frühere Adresse /f/abloesung/ und
+# die dünne Template-Seite, die bis dahin unter /f/eigene-software/ lag („Fünf Abos – und keins
+# passt richtig?", Angle 3 aus funnels.ts). Begründung in rcktbs-sales, docs/vertrieb/tor-hooks.md.
+[[redirects]]
+  from = "/f/abloesung"
+  to = "/f/eigene-software/"
+  status = 301
+
+[[redirects]]
+  from = "/f/abloesung/"
+  to = "/f/eigene-software/"
+  status = 301
+
 [[redirects]]
   from = "/imprint"
   to = "/impressum/"

@@ -1,11 +1,12 @@
 /**
- * FAQs der Ablösungs-Funnel-Seite (/f/abloesung/). Einfache Sprache, kurze Sätze.
+ * FAQs der Funnel-Seite für eigene Software (/f/eigene-software/, bis 2026-10-18
+ * /f/abloesung/). Einfache Sprache, kurze Sätze.
  * Die ausführliche Fassung für die indexierte Seite liegt in components/abloesung/faqs.ts.
  */
 export const abloesungFaqs = [
   {
-    q: 'Müssen wir alles auf einmal ablösen?',
-    a: 'Nein. Das Neue läuft neben dem alten Programm. Ein Bereich nach dem anderen zieht um, meist zuerst der, der am meisten Zeit kostet. Abgeschaltet wird erst, wenn das Neue alles trägt. Der Betrieb steht dabei nie still.',
+    q: 'Müssen wir dafür alles auf einmal umstellen?',
+    a: 'Nein. Das Neue läuft neben dem alten Programm. Ein Abschnitt nach dem anderen zieht um, meist zuerst der, der am meisten Zeit kostet. Abgeschaltet wird erst, wenn das Neue alles trägt. Der Betrieb steht dabei nie still.',
   },
   {
     q: 'Was passiert mit unseren alten Daten?',
@@ -16,8 +17,12 @@ export const abloesungFaqs = [
     a: 'Am Anfang oft ja. Die ehrliche Rechnung zählt aber auch die Stunden, die jeden Tag in Tricks, Nachpflege und Excel daneben fließen. Und die Lizenz für ein Programm, das ihr nicht mehr updatet. Ob es sich bei euch lohnt, klären wir im Gespräch. Vor dem Start wisst ihr, was es kostet.',
   },
   {
-    q: 'Wann ist Ablösen die falsche Entscheidung?',
+    q: 'Wann ist eigene Software die falsche Entscheidung?',
     a: 'Wenn euer Ablauf so ist wie in der ganzen Branche und ein gutes Programm ihn abbildet. Oder wenn das Programm nur am Rand mitläuft. Dann ist eine eigene Lösung teuer und bringt wenig. Das sagen wir euch im Erstgespräch auch so.',
+  },
+  {
+    q: 'Was heißt „ist schon gebaut"?',
+    a: 'Angebote mit Kalkulation, Einsatzplanung, Leistungserfassung, Rechnungen, Auswertungen: Diese Teile laufen bei anderen Betrieben und sind die Grundlage. Darauf setzen wir auf und programmieren, was bei euch anders ist. Deshalb geht der erste Abschnitt in vier bis sechs Wochen live und nicht in einem Jahr.',
   },
   {
     q: 'Wer kümmert sich um Betrieb und Updates?',

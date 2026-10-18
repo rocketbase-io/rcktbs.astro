@@ -1,6 +1,12 @@
 ---
 /**
- * Anzeigen-Landing für die Standardsoftware-Ablösung: /f/abloesung/ (neu seit 2026-10-16).
+ * Anzeigen-Landing für eigene Software: /f/eigene-software/ (Adresse und Haltung seit
+ * 2026-10-18, vorher /f/abloesung/ mit „Standardsoftware ablösen").
+ *
+ * Der Einstieg ist die Frage von 2024, die FKC und Diezinger gebracht hat: „Braucht ihr eine
+ * Software, die es so noch nicht gibt?" Dazu, was es 2024 nicht gab: Vieles ist gebaut, und KI
+ * beim Programmieren macht den Rest bezahlbar. Das Ablösen bleibt der Weg, ist aber nicht mehr
+ * das Versprechen. Begründung: rcktbs-sales, docs/vertrieb/tor-hooks.md.
  * Die ausführliche, indexierte Seite /standardsoftware-abloesung/ hängt weiter an
  * components/abloesung/. Die Visuals (Landschaft, Ablöseplan, Datenübernahme) sind Kopien von dort.
  *
@@ -60,28 +66,28 @@ const clientLogos = [
 const quizFragen: FunnelQuizQuestion[] = [
   {
     id: 'system',
-    question: 'Welches Programm bremst euch heute?',
-    hint: 'Das, gegen das ihr am meisten arbeitet.',
+    question: 'Womit arbeitet ihr heute?',
+    hint: 'Das Programm, um das herum der Rest läuft.',
     options: [
       {
         id: 'branchensoftware',
-        label: 'Unsere Branchensoftware',
-        description: 'Für unsere Branche gemacht, passt aber nur halb.',
+        label: 'Eine Branchensoftware',
+        description: 'Für unsere Branche gemacht, trifft unseren Ablauf zur Hälfte.',
       },
       {
         id: 'erp',
         label: 'Ein ERP oder eine Warenwirtschaft',
-        description: 'Groß, teuer, und trotzdem Excel daneben.',
+        description: 'Trägt den Kern, der Rest läuft in Excel.',
       },
       {
         id: 'mehrere',
         label: 'Mehrere Programme nebeneinander',
-        description: 'Jedes kann ein Stück, keins das Ganze.',
+        description: 'Jedes kann ein Stück, das Ganze kennt nur der Kopf.',
       },
       {
         id: 'excel',
         label: 'Vor allem Excel und Mail',
-        description: 'Gewachsen über Jahre, kennen zwei Leute.',
+        description: 'Über Jahre gewachsen, zwei Leute kennen sich aus.',
       },
       {
         id: 'sonstiges',
@@ -93,14 +99,14 @@ const quizFragen: FunnelQuizQuestion[] = [
   },
   {
     id: 'wo',
-    question: 'Wo tut es am meisten weh?',
+    question: 'Was wolltet ihr schon immer anders machen?',
     hint: 'Eine Antwort reicht.',
     options: [
       { id: 'angebote', label: 'Angebote und Kalkulation' },
       { id: 'einsatz', label: 'Planung und Abrechnung' },
       { id: 'zahlen', label: 'Auswertungen und Zahlen' },
-      { id: 'daneben', label: 'Vieles läuft neben dem Programm, in Excel und Mail' },
-      { id: 'ueberall', label: 'Überall ein bisschen' },
+      { id: 'daneben', label: 'Das, was heute neben dem Programm läuft' },
+      { id: 'ueberall', label: 'Den ganzen Ablauf, Stück für Stück' },
     ],
   },
   {
@@ -147,11 +153,11 @@ const antworten = [
     label: 'Manchmal richtig',
     titel: 'Im Standard bleiben',
     text: 'Ein Zusatz dazu, die Tricks aufräumen, eine Auswertung daneben. Oft schneller und erst mal günstiger. Wenn euer Ablauf so ist wie überall, ist das die richtige Wahl.',
-    note: 'Wenn ein Ablauf kein Vorteil gegenüber anderen ist, muss er nicht eigen sein. Das sagen wir im Erstgespräch auch so.',
+    note: 'Ein Ablauf, der kein Vorsprung ist, muss nicht eigen sein. Das sagen wir im Erstgespräch auch so.',
   },
   {
-    label: 'Wenn der Ablauf euer Vorteil ist',
-    titel: 'Ablösen, Schritt für Schritt',
+    label: 'Wenn der Ablauf euer Vorsprung ist',
+    titel: 'Eigenes bauen, Schritt für Schritt',
     text: 'Den Standard behalten, wo er passt: Buchhaltung, Lohn, alles, was bei euch läuft wie bei tausend anderen. Das, womit ihr Geld verdient, bekommt ein eigenes Programm.',
     note: 'Keine Zusatzfelder mit Fragezeichen, keine Liste mit Sonderfällen. Euer Ablauf steckt im System, nicht im Kopf von zwei Leuten.',
   },
@@ -166,17 +172,17 @@ const istFunnel = variant === 'funnel';
 // „Von heute bis dahin“: Strecke und Einwände der Funnel-Fassung (ersetzt dort die FAQ).
 const strecke = {
   stationen: [
-    { wann: 'Heute', titel: 'Tricks im Programm, Excel daneben', text: 'Das Lieferdatum steht im Bemerkungsfeld, die Kalkulation in einer Excel. Updates traut sich keiner, die Wartung kostet weiter.' },
-    { wann: 'Woche 1 bis 2', titel: 'Erstgespräch und Aufnahme', text: 'Dreißig Minuten über euer Programm. Dann nehmen wir auf, welcher Bereich zuerst umzieht und welche Daten mit müssen, und ihr bekommt einen Festpreis.' },
-    { wann: 'Danach, 4 bis 6 Wochen', titel: 'Der erste Bereich zieht um', text: 'Programmiert zum Festpreis, meist zuerst der Bereich, der am meisten Zeit kostet. Die weiteren folgen, je nach Programm in ein bis vier Monaten. Das alte läuft so lange weiter.' },
+    { wann: 'Heute', titel: 'Der Ablauf steckt in Köpfen und Excel', text: 'Das Lieferdatum steht im Bemerkungsfeld, die Kalkulation in einer Excel. Was euch von anderen unterscheidet, kennt euer Programm nicht.' },
+    { wann: 'Woche 1 bis 2', titel: 'Erstgespräch und Aufnahme', text: 'Dreißig Minuten darüber, wie ihr arbeiten wollt. Dann nehmen wir auf, welcher Abschnitt zuerst umzieht und welche Daten mit müssen, und ihr bekommt einen Festpreis.' },
+    { wann: 'Danach, 4 bis 6 Wochen', titel: 'Der erste Abschnitt läuft', text: 'Programmiert zum Festpreis, meist zuerst der Abschnitt, der am meisten Zeit kostet. Die weiteren folgen, je nach Programm in ein bis vier Monaten. Das alte läuft so lange weiter.' },
   ] as const,
   einwaende: [
-    { satz: 'Das dauert ewig.', antwort: 'Der erste Bereich zieht nach vier bis sechs Wochen um. Das Ganze dauert je nach Programm ein bis vier Monate, und das alte läuft so lange weiter.' },
+    { satz: 'Das dauert ewig.', antwort: 'Der erste Abschnitt läuft nach vier bis sechs Wochen. Das Ganze dauert je nach Programm ein bis vier Monate, und das alte läuft so lange weiter.' },
     { satz: 'Dafür haben wir keine Zeit.', antwort: 'Zwei bis drei Stunden pro Woche von euch: ein Termin, dazu Ausprobieren.' },
-    { satz: 'Wir hängen mit allen Daten im alten Programm.', antwort: 'Die Daten ziehen mit. Erst der Bereich, dann die Historie, geprüft gegen das Alte.' },
+    { satz: 'Wir hängen mit allen Daten im alten Programm.', antwort: 'Die Daten ziehen mit. Erst der Abschnitt, dann die Historie, geprüft gegen das Alte.' },
     { satz: 'Dann steht der Betrieb still.', antwort: 'Das Neue läuft neben dem alten Programm. Abgeschaltet wird erst, wenn alles trägt.' },
-    { satz: 'Vielleicht ist Bleiben besser.', antwort: 'Oft ja. Das sagen wir im Erstgespräch genauso klar, obwohl wir an der Ablösung verdienen.' },
-    { satz: 'Ist das nicht wieder Software von der Stange?', antwort: 'Nein. Wir setzen auf dem auf, was bei anderen Betrieben schon läuft, und programmieren, was bei euch anders ist. Nichts zum Konfigurieren, keine Grenzen. Mit unserer Erfahrung und KI beim Programmieren geht das schnell und bleibt bezahlbar.' },
+    { satz: 'Vielleicht ist Bleiben besser.', antwort: 'Oft ja. Das sagen wir im Erstgespräch genauso klar, obwohl wir am Bauen verdienen.' },
+    { satz: 'Gibt es das nicht längst fertig?', antwort: 'Die Hälfte schon: Angebote, Planung, Rechnungen, Auswertungen laufen bei anderen Betrieben. Darauf setzen wir auf und programmieren, was bei euch anders ist. Mit unserer Erfahrung und KI beim Programmieren geht das schnell und bleibt bezahlbar.' },
     { satz: 'Das ist sicher teuer.', antwort: 'Den Rahmen hört ihr im Erstgespräch, den Festpreis nach der Aufnahme. Programmiert wird erst, wenn ihr ihn kennt.' },
   ],
 };
@@ -206,7 +212,7 @@ const strecke = {
         data-reveal="fade-down"
         class="text-brand-600 dark:text-brand-300 text-sm font-semibold tracking-[0.22em] uppercase"
       >
-        Standardsoftware ablösen
+        Eigene Software
       </p>
       <h1
         data-reveal="fade-down"
@@ -216,13 +222,13 @@ const strecke = {
         {
           istFunnel ? (
             <>
-              Eure Abläufe in der Software. Nicht umgekehrt.
-              <span class="text-brand-500 block">Wir bauen sie euch. Das alte Programm läuft weiter.</span>
+              Braucht ihr eine Software, die es so noch nicht gibt?
+              <span class="text-brand-500 block">Vieles davon ist heute schon gebaut.</span>
             </>
           ) : (
             <>
-        Raus aus der Branchensoftware.
-        <span class="text-brand-500 block">Ohne Stillstand.</span>
+        Software, die es so noch nicht gibt.
+        <span class="text-brand-500 block">Wir bauen sie euch.</span>
             </>
           )
         }
@@ -231,9 +237,9 @@ const strecke = {
         data-reveal
         class="text-foreground-muted mt-6 hidden flex-wrap items-center justify-center gap-x-2.5 gap-y-2 text-sm font-medium sm:flex lg:justify-start"
       >
-        <span>Schluss mit</span>
+        <span>Gebaut für</span>
         {
-          ['verschobenen Updates', 'Zusatzfeldern', 'Excel daneben'].map((alt) => (
+          ['euren Ablauf', 'eure Regeln', 'euer Geschäft'].map((alt) => (
             <span class="hero-alt border-border rounded-md border px-2 py-0.5">{alt}</span>
           ))
         }
@@ -245,9 +251,9 @@ const strecke = {
         data-reveal
         class="text-foreground-secondary mx-auto mt-4 max-w-lg text-base leading-7 sm:mt-7 sm:text-lg sm:leading-8 lg:mx-0"
       >
-        Euer Programm passt nur noch mit Tricks zu eurem Ablauf. Wir bauen euch ein eigenes. Schritt
-        für Schritt, das alte läuft so lange weiter.
-        <span class="hidden lg:inline"> Und alle Daten kommen mit.</span>
+        Erzählt uns, wie ihr arbeiten wollt. Wir sagen euch, was davon heute geht, was schon
+        gebaut ist und womit man anfängt.
+        <span class="hidden lg:inline"> Das alte Programm läuft so lange weiter.</span>
       </p>
         )
       }
@@ -307,19 +313,19 @@ const strecke = {
       <h2
         class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight text-balance sm:text-4xl lg:text-[2.35rem] lg:leading-[1.15]"
       >
-        Angepasst, bis nichts mehr geht.{' '}
-        <span class="text-foreground-muted">Bezahlt wird trotzdem.</span>
+        Euer Ablauf ist euer Vorsprung.{' '}
+        <span class="text-foreground-muted">Im Standard ist er ein Sonderfall.</span>
       </h2>
       <p class="text-foreground-secondary mt-5 text-[0.95rem] leading-7">
-        Die Branchensoftware ist für alle gemacht. Also für niemanden ganz. Euer Ablauf passt nur
-        mit Zusatzfeldern rein. Updates traut sich keiner. Die Wartung kostet weiter.
+        Die Branchensoftware ist für alle gemacht. Euer Ablauf passt nur mit Zusatzfeldern hinein,
+        und was wirklich zählt, rechnet jemand daneben.
       </p>
       <p class="text-foreground-secondary mt-4 hidden text-[0.95rem] leading-7 lg:block">
-        Daneben wächst Excel: Kalkulation, Einsatzplan, Auswertung für die Bank. Und wie gerechnet
+        Also wächst Excel daneben: Kalkulation, Einsatzplan, Auswertung für die Bank. Wie gerechnet
         wird, wissen zwei Leute im Haus.
       </p>
       <p class="text-foreground mt-4 text-[0.95rem] leading-7 font-semibold">
-        Irgendwann arbeitet ihr gegen das System statt damit.
+        Genau das, womit ihr Geld verdient, kennt euer Programm am schlechtesten.
       </p>
     </div>
     <div class="szene-auf order-1 lg:order-2" data-szene>
@@ -340,8 +346,8 @@ const strecke = {
       size="md"
       number="01"
       eyebrow="Vorher, nachher"
-      title="Aus acht Programmen wird eins. Nicht über Nacht."
-      lead="Stück für Stück in eine Anwendung. Buchhaltung und Lohn bleiben und werden angebunden."
+      title="Aus acht Programmen wird eins. Stück für Stück."
+      lead="Ein Abschnitt nach dem anderen zieht um. Buchhaltung und Lohn bleiben und werden angebunden."
     />
     <div
       class="szene-auf mx-auto mt-10 max-w-6xl lg:mt-14"
@@ -362,7 +368,7 @@ const strecke = {
     <SectionHeader
       size="md"
       number="02"
-      eyebrow="Ablöseplan"
+      eyebrow="Der Weg dahin"
       title="Das Tagesgeschäft läuft weiter."
       lead="Das Neue geht Bereich für Bereich live, das Alte läuft so lange mit. Erst wenn alles stimmt, kommt der Stichtag."
     />
@@ -463,8 +469,8 @@ const strecke = {
       invert
       number="05"
       eyebrow="Ehrlich gesagt"
-      title="Nicht jede Branchensoftware muss weg."
-      lead="Wir verdienen an der Ablösung. Trotzdem sagen wir es klar: Oft ist Bleiben besser. Es kommt darauf an, ob euer Ablauf euer Vorteil ist."
+      title="Nicht jeder Ablauf braucht eigene Software."
+      lead="Wir verdienen daran, sie zu bauen. Trotzdem sagen wir es klar: Oft ist Bleiben besser. Es kommt darauf an, ob euer Ablauf euer Vorsprung ist."
     />
     <div class="mt-10 grid gap-4 md:grid-cols-2 lg:mt-14" data-szene data-szene-kinder>
       {
@@ -527,7 +533,7 @@ const strecke = {
           start={8}
           minutenJe={400}
           wofuer="in Zusatzfelder, Excel daneben und Nachpflege."
-          annahme="Grobe Rechnung mit 20 Minuten je Person und Arbeitstag. Ob sich Ablösen bei euch lohnt, klären wir im Gespräch."
+          annahme="Grobe Rechnung mit 20 Minuten je Person und Arbeitstag. Ob sich eigene Software bei euch lohnt, klären wir im Gespräch."
         />
       </div>
       <!-- Nur auf der indexierten Seite: Im Funnel führt das Quiz zum Gespräch, die Karte wäre ein zweiter Weg. -->
@@ -536,8 +542,8 @@ const strecke = {
           <ErstgespraechKarte
             id="ablauf-01"
             class="w-full max-w-none"
-            zitat="Erzählt mir, wo ihr gegen euer System arbeitet. Nach 30 Minuten wisst ihr, ob sich Ablösen bei euch lohnt."
-            text="Ihr erzählt, womit ihr heute arbeitet und wo ihr gegen das Programm arbeitet. Ich sage euch ehrlich, ob Ablösen sich lohnt oder Bleiben besser ist."
+            zitat="Erzählt mir, wie ihr arbeiten wollt. Nach 30 Minuten wisst ihr, was davon heute geht."
+            text="Ihr erzählt, womit ihr heute arbeitet und was anders laufen soll. Ich sage euch ehrlich, was davon schon gebaut ist, was dazukommt und ob Bleiben besser ist."
           />
         )
       }
@@ -552,7 +558,7 @@ const strecke = {
       size="md"
       number="07"
       eyebrow="Häufige Fragen"
-      title="Was vor einer Ablösung gefragt wird."
+      title="Was vorher gefragt wird."
     />
     <div class="mt-10 flex flex-col gap-4 lg:mt-12">
       {
