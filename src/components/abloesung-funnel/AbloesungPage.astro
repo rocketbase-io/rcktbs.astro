@@ -18,7 +18,11 @@
  *   Kontakt       Dasselbe Quiz-Formular noch einmal
  *
  * Nicht hier (steht auf /standardsoftware-abloesung/): die drei Bausteine mit Links auf die
- * Tür-Seiten, der Link zur Referenz. Ein Funnel führt nirgendwohin außer zum Formular.
+ * Tür-Seiten, der Link zur Referenz.
+ *
+ * Fassung 2026-10-18: Grafiken laufen beim Hereinscrollen selbst durch (Landschaft heute → 6 → 12
+ * Monate, Meilensteine, Datenübernahme-Reiter), Texte auf einen Satz je Abschnitt, Vertrauensband
+ * und Lohnt-sich-Streifen wie auf den anderen Funnels. Ein Funnel führt nirgendwohin außer zum Formular.
  * Texte in einfacher Sprache. Keine Preise, kein „Festpreis“. Vertec nur bei FKC.
  */
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
@@ -27,6 +31,9 @@ import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
 import SectionHeader from '@/components/angebote-funnel/SectionHeader.astro';
 import FunnelQuiz from '@/components/funnel/FunnelQuiz';
 import ErstgespraechKarte from '@/components/funnel/ErstgespraechKarte.astro';
+import LohntSich from '@/components/funnel/LohntSich.astro';
+import VertrauensBand from '@/components/funnel/VertrauensBand.astro';
+import '@/styles/szene.css';
 import { Picture } from 'astro:assets';
 import founderPortrait from '@/assets/rocketbase/founder-marten-priess.jpg';
 import fkcKanban from '@/assets/references/fkc-sales-kanban.png';
@@ -124,7 +131,10 @@ const quizProps = {
 };
 
 const fkcFakten = [
-  { zahl: '3 → 20+', text: 'Jahre Kundengeschichte. Im alten Programm lagen drei, heute liegen über zwanzig in einer Anwendung.' },
+  {
+    zahl: '3 → 20+',
+    text: 'Jahre Kundengeschichte. Im alten Programm lagen drei, heute liegen über zwanzig in einer Anwendung.',
+  },
   { zahl: '1', text: 'Programm vom Vertrieb über Kalkulation und Termine bis zur Rechnung.' },
   { zahl: 'Web', text: 'Angebote als Seite mit Optionen und Summe, während andere PDFs schicken.' },
 ];
@@ -199,8 +209,8 @@ const istFunnel = variant === 'funnel';
         data-reveal
         class="text-foreground-secondary mx-auto mt-4 max-w-lg text-base leading-7 sm:mt-7 sm:text-lg sm:leading-8 lg:mx-0"
       >
-        Euer Programm passt nur noch mit Tricks zu eurem Ablauf. Wir bauen euch ein eigenes.
-        Schritt für Schritt, das alte läuft so lange weiter.
+        Euer Programm passt nur noch mit Tricks zu eurem Ablauf. Wir bauen euch ein eigenes. Schritt
+        für Schritt, das alte läuft so lange weiter.
         <span class="hidden lg:inline"> Und alle Daten kommen mit.</span>
       </p>
       <p
@@ -231,7 +241,13 @@ const istFunnel = variant === 'funnel';
     >
       <span class="hero-scroll-icon flex"><Icon name="chevron-down" size="sm" /></span>
     </a>
-    <ClientLogoStrip heading="Aus Projekten mit" logos={clientLogos} variant="light" uniform class="py-10 lg:py-11" />
+    <ClientLogoStrip
+      heading="Aus Projekten mit"
+      logos={clientLogos}
+      variant="light"
+      uniform
+      class="py-10 lg:py-11"
+    />
   </div>
 </section>
 
@@ -244,7 +260,9 @@ const istFunnel = variant === 'funnel';
     class="container grid max-w-6xl grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-center lg:gap-16"
   >
     <div class="af-rise order-2 lg:order-1">
-      <p class="inline-flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.2em] text-[oklch(58%_0.19_25)] uppercase">
+      <p
+        class="inline-flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.2em] text-[oklch(58%_0.19_25)] uppercase"
+      >
         <span class="h-1.5 w-1.5 rounded-full bg-current"></span>
         Kommt euch das bekannt vor?
       </p>
@@ -266,14 +284,14 @@ const istFunnel = variant === 'funnel';
         Irgendwann arbeitet ihr gegen das System statt damit.
       </p>
     </div>
-    <div class="af-rise order-1 lg:order-2">
+    <div class="szene-auf order-1 lg:order-2" data-szene>
       <HeuteAbloesung />
     </div>
   </div>
 </section>
 
 <!-- 01 LANDSCHAFT -->
-<section class="bg-background relative overflow-x-clip py-20 lg:py-32">
+<section class="bg-background relative overflow-x-clip py-16 lg:py-28">
   <div
     class="bg-brand-300/10 pointer-events-none absolute top-40 left-1/2 h-[40rem] w-[60rem] -translate-x-1/2 rounded-full blur-[120px]"
     aria-hidden="true"
@@ -285,28 +303,42 @@ const istFunnel = variant === 'funnel';
       number="01"
       eyebrow="Vorher, nachher"
       title="Aus acht Programmen wird eins. Nicht über Nacht."
-      lead="Das, womit ihr Geld verdient, zieht Stück für Stück in eine Anwendung. Buchhaltung und Lohn bleiben, wo sie sind, und werden angebunden."
+      lead="Stück für Stück in eine Anwendung. Buchhaltung und Lohn bleiben und werden angebunden."
     />
-    <div class="af-rise mx-auto mt-10 max-w-6xl lg:mt-16">
+    <div
+      class="szene-auf mx-auto mt-10 max-w-6xl lg:mt-14"
+      data-szene
+      data-szene-folge="[data-stand-btn='1'], [data-stand-btn='2']"
+      data-szene-pause="1600"
+      data-szene-takt="2600"
+    >
       <Landschaft />
-      <p class="z-note mt-4 text-center">Schaltet oben um: heute, nach 6 und nach 12 Monaten. Beispiel.</p>
+      <p class="z-note mt-4 text-center">Heute, nach 6 und nach 12 Monaten. Beispiel.</p>
     </div>
   </div>
 </section>
 
 <!-- 02 ABLÖSEPLAN -->
-<section class="bg-background-secondary border-border relative border-y py-20 lg:py-28">
+<section class="bg-background-secondary border-border relative border-y py-16 lg:py-28">
   <div class="relative z-10 container max-w-7xl">
     <SectionHeader
       size="md"
       number="02"
       eyebrow="Ablöseplan"
       title="Das Tagesgeschäft läuft weiter."
-      lead="Kein großer Knall. Das Neue geht Baustein für Baustein live. Das Alte läuft so lange mit. Erst wenn alles stimmt, kommt der Stichtag."
+      lead="Das Neue geht Baustein für Baustein live, das Alte läuft so lange mit. Erst wenn alles stimmt, kommt der Stichtag."
     />
-    <div class="af-rise mx-auto mt-10 max-w-6xl lg:mt-16">
+    <div
+      class="szene-auf mx-auto mt-10 max-w-6xl lg:mt-14"
+      data-szene
+      data-szene-folge="[data-ms='p2'], [data-ms='fin'], [data-ms='st']"
+      data-szene-pause="1800"
+      data-szene-takt="2400"
+    >
       <Abloeseplan />
-      <p class="z-note mt-4 text-center">Klickt auf die Meilensteine. Beispiel für einen Betrieb mit drei Bausteinen.</p>
+      <p class="z-note mt-4 text-center">
+        Beispiel für einen Betrieb mit drei Bausteinen. Klickt selbst auf die Meilensteine.
+      </p>
     </div>
   </div>
 </section>
@@ -319,9 +351,15 @@ const istFunnel = variant === 'funnel';
       number="03"
       eyebrow="Datenübernahme"
       title="Eure Daten kommen mit. Auch die alten."
-      lead="Alte Felder bekommen ihren Platz, doppelte Einträge werden zusammengeführt. Am Ende steht ein Prüfbericht: alt gegen neu. Was nicht passt, klären wir mit euch."
+      lead="Zuordnen, bereinigen, prüfen. Am Ende steht ein Prüfbericht: alt gegen neu."
     />
-    <div class="af-rise mx-auto mt-10 max-w-6xl lg:mt-16">
+    <div
+      class="szene-auf mx-auto mt-10 max-w-6xl lg:mt-14"
+      data-szene
+      data-szene-folge="[data-du-tab='bereinigen'], [data-du-tab='pruefen']"
+      data-szene-pause="1800"
+      data-szene-takt="2600"
+    >
       <Datenuebernahme />
       <p class="z-note mt-4 text-center">So lief es bei FKC. Die Zahlen sind Beispiele.</p>
     </div>
@@ -330,8 +368,10 @@ const istFunnel = variant === 'funnel';
 
 <!-- 04 FKC: Beweis aus der Praxis -->
 <section class="bg-background-secondary border-border relative border-y py-20 lg:py-28">
-  <div class="relative z-10 container grid max-w-7xl gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16">
-    <div class="af-rise order-2 lg:order-1">
+  <div
+    class="relative z-10 container grid max-w-7xl gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16"
+  >
+    <div class="szene-auf order-2 lg:order-1" data-szene>
       <figure class="af-frame">
         <div class="af-bar" aria-hidden="true">
           <span class="af-dots"><span></span><span></span><span></span></span>
@@ -350,13 +390,18 @@ const istFunnel = variant === 'funnel';
       </figure>
     </div>
     <div class="af-rise order-1 lg:order-2">
-      <SectionHeader size="md" align="left" number="04" eyebrow="In der Praxis" title="FKC: von Vertec zur eigenen Plattform." />
+      <SectionHeader
+        size="md"
+        align="left"
+        number="04"
+        eyebrow="In der Praxis"
+        title="FKC: von Vertec zur eigenen Plattform."
+      />
       <p class="text-foreground-secondary mt-6 text-base leading-7">
-        Eine Beratung, deren Ablauf nur mit Umwegen in Vertec passte. Wir haben den echten Ablauf
-        aufgenommen, die Daten aus Vertec und den Programmen davor übernommen und eine Anwendung
-        gebaut, die vom Vertrieb bis zur Rechnung so arbeitet wie FKC.
+        Der Ablauf passte nur mit Umwegen in Vertec. Heute arbeitet eine eigene Anwendung vom
+        Vertrieb bis zur Rechnung so wie FKC.
       </p>
-      <dl class="mt-7 space-y-4">
+      <dl class="mt-7 space-y-4" data-szene data-szene-kinder>
         {
           fkcFakten.map((f) => (
             <div class="flex gap-4">
@@ -383,21 +428,30 @@ const istFunnel = variant === 'funnel';
       title="Nicht jede Branchensoftware muss weg."
       lead="Wir verdienen an der Ablösung. Trotzdem sagen wir es klar: Oft ist Bleiben besser. Es kommt darauf an, ob euer Ablauf euer Vorteil ist."
     />
-    <div class="mt-10 grid gap-4 md:grid-cols-2 lg:mt-14">
+    <div class="mt-10 grid gap-4 md:grid-cols-2 lg:mt-14" data-szene data-szene-kinder>
       {
         antworten.map((a, i) => (
           <article
             class:list={[
-              'af-rise rounded-2xl border p-6 backdrop-blur sm:p-8',
+              'rounded-2xl border p-6 backdrop-blur sm:p-8',
               i === 1 ? 'border-brand-400/40 bg-brand-500/10' : 'border-white/10 bg-white/5',
             ]}
           >
-            <p class:list={['text-xs font-semibold tracking-[0.2em] uppercase', i === 1 ? 'text-brand-200' : 'text-on-invert-secondary']}>
+            <p
+              class:list={[
+                'text-xs font-semibold tracking-[0.2em] uppercase',
+                i === 1 ? 'text-brand-200' : 'text-on-invert-secondary',
+              ]}
+            >
               {a.label}
             </p>
-            <h3 class="font-display text-on-invert mt-4 text-xl font-bold tracking-tight sm:text-2xl">{a.titel}</h3>
+            <h3 class="font-display text-on-invert mt-4 text-xl font-bold tracking-tight sm:text-2xl">
+              {a.titel}
+            </h3>
             <p class="text-on-invert-secondary mt-3 text-[0.95rem] leading-7">{a.text}</p>
-            <p class="text-on-invert mt-5 hidden border-t border-white/10 pt-4 text-sm leading-6 sm:block">{a.note}</p>
+            <p class="text-on-invert mt-5 hidden border-t border-white/10 pt-4 text-sm leading-6 sm:block">
+              {a.note}
+            </p>
           </article>
         ))
       }
@@ -405,49 +459,82 @@ const istFunnel = variant === 'funnel';
   </div>
 </section>
 
-<!-- 06 SO KOMMT IHR DAZU: Marten, das Erstgespräch, der Knopf -->
-<section id="ablauf" class="gespraech-sec border-border relative scroll-mt-20 overflow-x-clip border-b py-16 lg:py-28">
+<!-- VERTRAUEN -->
+<VertrauensBand />
+
+<!-- 06 LOHNT SICH DAS? Rechen-Streifen und Marten -->
+<section
+  id="ablauf"
+  class="gespraech-sec border-border relative scroll-mt-20 overflow-x-clip border-b py-16 lg:py-28"
+>
   <div class="relative z-10 container max-w-6xl">
     <SectionHeader
       size="md"
       number="06"
-      eyebrow="So kommt ihr dazu"
-      title="Ein Gespräch. Dann entscheidet ihr."
-      lead="Ihr erzählt, wo ihr gegen euer Programm arbeitet. Alles Weitere klären wir dann zusammen."
+      eyebrow="Lohnt sich das?"
+      title="Das klärt ein Gespräch."
+      lead="Unverbindlich, 30 Minuten, keine Vorbereitung. Vorher könnt ihr kurz überschlagen, worum es bei euch geht."
     />
-    <ErstgespraechKarte
-      id="ablauf-01"
-      class="mt-10 lg:mt-14"
-      zitat="Erzählt mir, wo ihr gegen euer System arbeitet. Nach 30 Minuten wisst ihr, ob Ablösen für euch Sinn ergibt."
-      text="Ich zeige keine Folien. Ich höre zu und sage euch ehrlich, ob sich eine Ablösung lohnt oder ob ein Baustein daneben reicht. Ihr geht dabei keine Verpflichtung ein. Alles Weitere klären wir dann zusammen, wenn ihr wollt."
-    />
+    <div class="mx-auto mt-10 grid max-w-5xl gap-6 lg:mt-14">
+      <div class="af-rise">
+        <LohntSich
+          id="ls-abloesung"
+          frage="Wie viele Leute arbeiten täglich um euer Programm herum?"
+          min={1}
+          max={40}
+          step={1}
+          start={8}
+          minutenJe={400}
+          wofuer="in Zusatzfelder, Excel daneben und Nachpflege."
+          annahme="Grobe Rechnung mit 20 Minuten je Person und Arbeitstag. Ob sich Ablösen bei euch lohnt, klären wir im Gespräch."
+        />
+      </div>
+      <ErstgespraechKarte
+        id="ablauf-01"
+        class="w-full max-w-none"
+        zitat="Erzählt mir, wo ihr gegen euer System arbeitet. Nach 30 Minuten wisst ihr, ob sich Ablösen bei euch lohnt."
+        text="Ich zeige keine Folien und brauche keine Vorbereitung von euch. Ich höre zu und sage euch ehrlich, ob sich eine Ablösung lohnt oder ob ein Baustein daneben reicht. Ihr geht dabei keine Verpflichtung ein."
+      />
+    </div>
   </div>
 </section>
 
 <!-- 07 FAQ -->
 <section class="bg-background-secondary border-border relative border-b py-16 lg:py-28">
   <div class="relative z-10 container max-w-4xl">
-    <SectionHeader size="md" number="07" eyebrow="Häufige Fragen" title="Was vor einer Ablösung gefragt wird." />
+    <SectionHeader
+      size="md"
+      number="07"
+      eyebrow="Häufige Fragen"
+      title="Was vor einer Ablösung gefragt wird."
+    />
     <div class="mt-10 flex flex-col gap-4 lg:mt-12">
       {
         abloesungFaqs.map((item) => (
           <details class="group border-border bg-card rounded-2xl border p-5 shadow-sm transition-shadow duration-300 open:shadow-lg sm:p-6">
             <summary class="flex min-h-11 cursor-pointer list-none items-start gap-4 py-0.5 [&::-webkit-details-marker]:hidden">
-              <h3 class="font-display text-foreground flex-1 text-base font-bold tracking-tight sm:text-lg">{item.q}</h3>
+              <h3 class="font-display text-foreground flex-1 text-base font-bold tracking-tight sm:text-lg">
+                {item.q}
+              </h3>
               <Icon
                 name="chevron-down"
                 size="sm"
                 class="text-foreground-muted mt-1 shrink-0 transition-transform duration-300 group-open:rotate-180"
               />
             </summary>
-            <p class="text-foreground-secondary border-border/60 mt-4 border-t pt-4 text-[0.95rem] leading-7">{item.a}</p>
+            <p class="text-foreground-secondary border-border/60 mt-4 border-t pt-4 text-[0.95rem] leading-7">
+              {item.a}
+            </p>
           </details>
         ))
       }
     </div>
     <p class="text-foreground-muted mt-8 text-center text-sm">
       Noch eine Frage? Stellt sie im{' '}
-      <a href="#kontakt" class="text-brand-600 dark:text-brand-300 font-semibold underline-offset-4 hover:underline">
+      <a
+        href="#kontakt"
+        class="text-brand-600 dark:text-brand-300 font-semibold underline-offset-4 hover:underline"
+      >
         Erstgespräch</a
       >.
     </p>
@@ -455,14 +542,29 @@ const istFunnel = variant === 'funnel';
 </section>
 
 <!-- KONTAKT -->
-<section id="kontakt" class="kontakt-sec border-border relative scroll-mt-20 overflow-x-clip py-16 lg:py-32">
+<section
+  id="kontakt"
+  class="kontakt-sec border-border relative scroll-mt-20 overflow-x-clip py-16 lg:py-32"
+>
   <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-    <div class="bg-brand-400/15 absolute -bottom-40 -left-24 h-[34rem] w-[34rem] rounded-full blur-[150px]"></div>
-    <div class="bg-grid-pattern absolute inset-0 [mask-image:linear-gradient(to_top,black,transparent_85%)] opacity-[0.06]"></div>
+    <div
+      class="bg-brand-400/15 absolute -bottom-40 -left-24 h-[34rem] w-[34rem] rounded-full blur-[150px]"
+    >
+    </div>
+    <div
+      class="bg-grid-pattern absolute inset-0 [mask-image:linear-gradient(to_top,black,transparent_85%)] opacity-[0.06]"
+    >
+    </div>
   </div>
-  <div class="relative z-10 container grid max-w-6xl gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch lg:gap-16">
+  <div
+    class="relative z-10 container grid max-w-6xl gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch lg:gap-16"
+  >
     <div class="af-rise flex flex-col">
-      <p class="text-brand-600 dark:text-brand-300 font-mono text-xs font-semibold tracking-[0.2em] uppercase">Nächster Schritt</p>
+      <p
+        class="text-brand-600 dark:text-brand-300 font-mono text-xs font-semibold tracking-[0.2em] uppercase"
+      >
+        Nächster Schritt
+      </p>
       <h2
         lang="de"
         class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]"
@@ -476,9 +578,15 @@ const istFunnel = variant === 'funnel';
       <ol class="kontakt-ablauf mt-9 mb-8 hidden space-y-6 lg:block">
         {
           [
-            { titel: 'Fragen beantworten', text: 'Welches Programm bremst, wo es wehtut, wie groß ihr seid. Eine Minute.' },
+            {
+              titel: 'Fragen beantworten',
+              text: 'Welches Programm bremst, wo es wehtut, wie groß ihr seid. Eine Minute.',
+            },
             { titel: 'Wir melden uns', text: 'Werktags, persönlich, mit einem Terminvorschlag.' },
-            { titel: 'Erstgespräch', text: '30 Minuten, online, kostenlos. Ihr erzählt, wo ihr gegen das System arbeitet. Danach wisst ihr, ob Ablösen Sinn ergibt.' },
+            {
+              titel: 'Erstgespräch',
+              text: '30 Minuten, online, kostenlos. Ihr erzählt, wo ihr gegen das System arbeitet. Danach wisst ihr, ob Ablösen Sinn ergibt.',
+            },
           ].map((schritt, i) => (
             <li class="relative flex gap-4">
               <span class="bg-card border-brand-300 text-brand-600 dark:text-brand-300 relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border font-mono text-xs font-bold">
@@ -486,7 +594,9 @@ const istFunnel = variant === 'funnel';
               </span>
               <div class="pt-1">
                 <p class="font-display text-foreground font-bold tracking-tight">{schritt.titel}</p>
-                <p class="text-foreground-secondary mt-1 text-[0.95rem] leading-7">{schritt.text}</p>
+                <p class="text-foreground-secondary mt-1 text-[0.95rem] leading-7">
+                  {schritt.text}
+                </p>
               </div>
             </li>
           ))
@@ -505,13 +615,22 @@ const istFunnel = variant === 'funnel';
         />
         <p class="text-sm leading-6">
           <span class="text-foreground block font-semibold">Marten Prieß</span>
-          <span class="text-foreground-secondary">Gründer von RocketBase, meldet sich persönlich.</span>
+          <span class="text-foreground-secondary"
+            >Gründer von RocketBase, meldet sich persönlich.</span
+          >
         </p>
       </div>
     </div>
 
     <div class="af-rise lg:min-h-[38rem]">
-      <FunnelQuiz client:visible {...quizProps} phoneRequired companyOptional markRequired compact />
+      <FunnelQuiz
+        client:visible
+        {...quizProps}
+        phoneRequired
+        companyOptional
+        markRequired
+        compact
+      />
     </div>
   </div>
 </section>
@@ -557,17 +676,29 @@ const istFunnel = variant === 'funnel';
   }
   .heute-sec {
     background:
-      radial-gradient(50% 70% at 85% 50%, color-mix(in oklch, oklch(60% 0.19 25) 6%, transparent), transparent 70%),
+      radial-gradient(
+        50% 70% at 85% 50%,
+        color-mix(in oklch, oklch(60% 0.19 25) 6%, transparent),
+        transparent 70%
+      ),
       var(--color-background-secondary);
   }
   .gespraech-sec {
     background:
-      radial-gradient(55% 140% at 90% 50%, color-mix(in oklch, var(--color-brand-400) 22%, transparent), transparent 70%),
+      radial-gradient(
+        55% 140% at 90% 50%,
+        color-mix(in oklch, var(--color-brand-400) 22%, transparent),
+        transparent 70%
+      ),
       color-mix(in oklch, var(--color-brand-500) 7%, var(--color-background));
   }
   .kontakt-sec {
     background:
-      radial-gradient(55% 80% at 85% 40%, color-mix(in oklch, var(--color-brand-400) 16%, transparent), transparent 70%),
+      radial-gradient(
+        55% 80% at 85% 40%,
+        color-mix(in oklch, var(--color-brand-400) 16%, transparent),
+        transparent 70%
+      ),
       color-mix(in oklch, var(--color-brand-500) 6%, var(--color-background));
   }
   .kontakt-ablauf > li:not(:last-child)::before {
@@ -587,6 +718,8 @@ const istFunnel = variant === 'funnel';
 </style>
 
 <script>
+  import { szenenStarten } from '@/lib/szene';
+  szenenStarten();
   const heroScroll = document.querySelector<HTMLElement>('[data-hero-scroll]');
   if (heroScroll) {
     const sync = () => (heroScroll.dataset.hidden = window.scrollY > 40 ? 'true' : 'false');
