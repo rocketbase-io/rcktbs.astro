@@ -30,6 +30,8 @@ import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
 import SectionHeader from '@/components/angebote-funnel/SectionHeader.astro';
 import FunnelQuiz from '@/components/funnel/FunnelQuiz';
 import ErstgespraechKarte from '@/components/funnel/ErstgespraechKarte.astro';
+import DealZeile from '@/components/funnel/DealZeile.astro';
+import VonHeuteBisDahin from '@/components/funnel/VonHeuteBisDahin.astro';
 import LohntSich from '@/components/funnel/LohntSich.astro';
 import VertrauensBand from '@/components/funnel/VertrauensBand.astro';
 import '@/styles/szene.css';
@@ -175,6 +177,25 @@ const referenzen = [
 ];
 
 const miniFaqs = einsatzFaqs;
+
+// „Von heute bis dahin“: Strecke und Einwände der Funnel-Fassung (ersetzt dort die FAQ).
+const strecke = {
+  stationen: [
+    { wann: 'Heute', titel: 'Excel, WhatsApp, Stundenzettel', text: 'Geplant wird in Excel, umgeplant per Chat. Die Stundenzettel kommen am Monatsende, die Rechnung baut jemand aus allem, was er findet.' },
+    { wann: 'Woche 1 bis 2', titel: 'Erstgespräch und Aufnahme', text: 'Dreißig Minuten über eure Lage. Dann nehmen wir euren Ablauf auf, so wie er wirklich läuft, und ihr bekommt einen Festpreis.' },
+    { wann: 'Danach, 3 bis 6 Wochen', titel: 'Die Plantafel läuft', text: 'Programmiert zum Festpreis. Erfassung und Rechnung folgen Stufe für Stufe, eure Wochenplanung bleibt, bis das Neue trägt.' },
+  ] as const,
+  einwaende: [
+    { satz: 'Das dauert ewig.', antwort: 'Nach der Aufnahme läuft die Plantafel in drei bis sechs Wochen. Euer Tagesgeschäft läuft weiter.' },
+    { satz: 'Dafür haben wir keine Zeit.', antwort: 'Zwei bis drei Stunden pro Woche von euch: ein Termin, dazu Ausprobieren.' },
+    { satz: 'Dann müssen wir alles umstellen.', antwort: 'Umgestellt wird Schritt für Schritt. Das Alte läuft, bis das Neue trägt.' },
+    { satz: 'Wir haben schon ein ERP.', antwort: 'Das bleibt meist für Belege und Finanzen. Das Neue holt sich die Daten von dort.' },
+    { satz: 'Unsere Monteure machen das nicht mit.', antwort: 'Erfassen heißt: Foto, ein Tipp, fertig. Auf dem Handy, auch nachts auf der Baustelle.' },
+    { satz: 'Ist das nicht wieder Software von der Stange?', antwort: 'Nein. Wir setzen auf dem auf, was bei anderen Betrieben schon läuft, und programmieren, was bei euch anders ist. Nichts zum Konfigurieren, keine Grenzen. Mit unserer Erfahrung und KI beim Programmieren geht das schnell und bleibt bezahlbar.' },
+    { satz: 'Das ist sicher teuer.', antwort: 'Den Rahmen hört ihr im Erstgespräch, den Festpreis nach der Aufnahme. Programmiert wird erst, wenn ihr ihn kennt.' },
+  ],
+};
+
 ---
 
 <!-- HERO -->
@@ -207,8 +228,19 @@ const miniFaqs = einsatzFaqs;
         lang="de"
         class="font-display text-foreground mt-3 text-[2.05rem] leading-[1.08] font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:mt-5 sm:text-6xl sm:leading-[1.05] xl:text-[4.25rem]"
       >
+        {
+          istFunnel ? (
+            <>
+              Planen, erledigen, abrechnen.
+              <span class="text-brand-500 block">Ein Programm statt Excel, Zettel und WhatsApp.</span>
+            </>
+          ) : (
+            <>
         Geplant, erledigt, abgerechnet.
         <span class="text-brand-500 block">In einem System.</span>
+            </>
+          )
+        }
       </h1>
       <p
         data-reveal
@@ -221,6 +253,9 @@ const miniFaqs = einsatzFaqs;
           ))
         }
       </p>
+      {istFunnel && <DealZeile />}
+      {
+        !istFunnel && (
       <p
         data-reveal
         class="text-foreground-secondary mx-auto mt-4 max-w-lg text-base leading-7 sm:mt-7 sm:text-lg sm:leading-8 lg:mx-0"
@@ -228,6 +263,8 @@ const miniFaqs = einsatzFaqs;
         Wer was macht, was erledigt ist, was auf die Rechnung kommt. In einem System, nach eurem
         Ablauf.
       </p>
+        )
+      }
       <p
         class="text-foreground-muted border-border/70 bg-background/85 mx-auto mt-8 hidden max-w-lg rounded-xl border px-4 py-3 text-sm leading-6 backdrop-blur-sm lg:mx-0 lg:block"
       >
@@ -352,7 +389,7 @@ const miniFaqs = einsatzFaqs;
 <!-- 01 ABLAUF JE AUFTRAG -->
 <section
   id="ablauf-auftrag"
-  class="bg-background relative scroll-mt-20 overflow-x-clip py-16 lg:py-28"
+  class:list={['bg-background relative scroll-mt-20 overflow-x-clip py-16 lg:py-28', istFunnel && 'hidden lg:block']}
 >
   <div
     class="bg-brand-300/10 pointer-events-none absolute top-40 left-1/2 h-[40rem] w-[60rem] -translate-x-1/2 rounded-full blur-[120px]"
@@ -410,7 +447,7 @@ const miniFaqs = einsatzFaqs;
 </section>
 
 <!-- 03 LEISTUNG ZUR RECHNUNG -->
-<section class="bg-background relative overflow-x-clip py-16 lg:py-28">
+<section class:list={['bg-background relative overflow-x-clip py-16 lg:py-28', istFunnel && 'hidden lg:block']}>
   <div class="relative z-10 container max-w-7xl">
     <SectionHeader
       size="md"
@@ -441,7 +478,7 @@ const miniFaqs = einsatzFaqs;
       {
         referenzen.map((r) => (
           <article class="group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur transition-colors hover:border-white/25">
-            <div class="overflow-hidden border-b border-white/10 bg-white">
+            <div class:list={['overflow-hidden border-b border-white/10 bg-white', istFunnel && 'hidden lg:block']}>
               <Picture
                 src={r.image}
                 alt={r.alt}
@@ -459,7 +496,7 @@ const miniFaqs = einsatzFaqs;
               <h3 class="font-display text-on-invert mt-3 text-lg font-bold tracking-tight">
                 {r.title}
               </h3>
-              <p class="text-on-invert-secondary mt-3 text-[0.92rem] leading-7">{r.text}</p>
+              <p class:list={['text-on-invert-secondary mt-3 text-[0.92rem] leading-7', istFunnel && 'hidden lg:block']}>{r.text}</p>
             </div>
           </article>
         ))
@@ -470,6 +507,9 @@ const miniFaqs = einsatzFaqs;
 
 <!-- VERTRAUEN -->
 <VertrauensBand />
+
+<!-- VON HEUTE BIS DAHIN: Strecke und Einwände, nur im Funnel -->
+{istFunnel && <VonHeuteBisDahin stationen={strecke.stationen} einwaende={strecke.einwaende} />}
 
 <!-- 05 LOHNT SICH DAS? Rechen-Streifen und Marten -->
 <section
@@ -498,18 +538,23 @@ const miniFaqs = einsatzFaqs;
           annahme="Grobe Rechnung mit 45 Minuten je Auftrag. Ob sich ein System bei euch lohnt, klären wir im Gespräch."
         />
       </div>
-      <ErstgespraechKarte
-        id="ablauf-01"
-        class="w-full max-w-none"
-        zitat="Erzählt mir, wie ein Auftrag bei euch läuft. Nach 30 Minuten wisst ihr, ob sich das bei euch lohnt."
-        text="Ich zeige keine Folien und brauche keine Vorbereitung von euch. Ihr erzählt, wo es hakt: Planung, Erfassung oder Rechnung. Ich sage euch ehrlich, ob sich ein System lohnt und womit man anfangen würde. Ihr geht dabei keine Verpflichtung ein."
-      />
+      <!-- Nur auf der indexierten Seite: Im Funnel führt das Quiz zum Gespräch, die Karte wäre ein zweiter Weg. -->
+      {
+        !istFunnel && (
+          <ErstgespraechKarte
+            id="ablauf-01"
+            class="w-full max-w-none"
+            zitat="Erzählt mir, wie ein Auftrag bei euch läuft. Nach 30 Minuten wisst ihr, ob sich das bei euch lohnt."
+            text="Ihr erzählt, wie ihr heute plant und abrechnet. Ich sage euch ehrlich, ob sich etwas lohnt, und wenn ja, was zuerst."
+          />
+        )
+      }
     </div>
   </div>
 </section>
 
 <!-- FAQ -->
-<section class="bg-background border-border relative border-b py-24 lg:py-28">
+<section class:list={['bg-background border-border relative border-b py-24 lg:py-28', istFunnel && 'hidden']}>
   <div class="relative z-10 container max-w-4xl">
     <SectionHeader size="md" number="06" eyebrow="Häufige Fragen" title="Was vorab gefragt wird." />
     <div class="mt-12 flex flex-col gap-4">
@@ -540,7 +585,7 @@ const miniFaqs = einsatzFaqs;
 {!istFunnel && <BlogQuerverweis tuer="einsatz" />}
 
 <!-- KONTAKT -->
-<section id="kontakt" class="kontakt-sec relative scroll-mt-20 overflow-x-clip py-24 lg:py-32">
+<section id="kontakt" class:list={['kontakt-sec relative scroll-mt-20 overflow-x-clip py-24 lg:py-32', istFunnel && 'hidden lg:block']}>
   <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
     <div
       class="bg-brand-400/15 absolute -bottom-40 -left-24 h-[34rem] w-[34rem] rounded-full blur-[150px]"

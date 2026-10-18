@@ -6,7 +6,7 @@ export const einsatzFaqs = [
   },
   {
     q: 'Wir haben schon ein ERP. Muss das weg?',
-    a: 'Nein. Meist bleibt das ERP oder die Buchhaltung für Belege und Finanzen, und die Planung, Erfassung und Abrechnung bekommen ein Zuhause, das zu euch passt. Rechnungen gehen als ZUGFeRD oder per Schnittstelle dorthin, wo sie heute hin müssen. Manchmal ist es auch das Ganze. Das klären wir im Workshop.',
+    a: 'Nein. Meist bleibt das ERP oder die Buchhaltung für Belege und Finanzen, und die Planung, Erfassung und Abrechnung bekommen ein Zuhause, das zu euch passt. Rechnungen gehen als ZUGFeRD oder per Schnittstelle dorthin, wo sie heute hin müssen. Manchmal ist es auch das Ganze. Das klären wir im Erstgespräch.',
   },
   {
     q: 'Funktioniert das auch mobil, in der Werkstatt oder beim Kunden?',
@@ -14,7 +14,7 @@ export const einsatzFaqs = [
   },
   {
     q: 'Müssen wir unsere Abläufe umstellen?',
-    a: 'Nein. Im Workshop nehmen wir den Ablauf auf, wie er wirklich läuft, und bauen um ihn herum. Umgestellt wird Schritt für Schritt, während das Tagesgeschäft weiterläuft.',
+    a: 'Nein. Wir nehmen den Ablauf auf, wie er wirklich läuft, und bauen um ihn herum. Umgestellt wird Schritt für Schritt, während das Tagesgeschäft weiterläuft.',
   },
   {
     q: 'Wir sind weder Handwerk noch Beratung. Passt das trotzdem?',
@@ -22,6 +22,6 @@ export const einsatzFaqs = [
   },
   {
     q: 'Was kostet das?',
-    a: 'Das hängt davon ab, welcher Teil zuerst kommt und was angebunden werden muss. Genau das klärt der Workshop. Danach wisst ihr, was die Umsetzung kostet, bevor ihr irgendetwas beauftragt.',
+    a: 'Das hängt davon ab, welcher Teil zuerst kommt und was angebunden werden muss. Den Rahmen nennen wir im Erstgespräch, den Festpreis, bevor ihr irgendetwas beauftragt.',
   },
 ];
