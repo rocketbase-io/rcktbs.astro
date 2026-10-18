@@ -1,24 +1,38 @@
 ---
 /**
- * „Lohnt sich das bei euch?“: ein Regler, eine Zahl, ein Monat. Angebote im Monat mal 90
- * Minuten Abtippen, Nachrechnen und Nachfassen ergibt die Stunden, die heute neben dem
- * System verloren gehen. Bewusst grob und bewusst ohne Preis, Umfang oder Termin: Was es bei
- * euch wirklich ist, klärt das Erstgespräch. Ohne JS steht das Beispiel mit 30 Angeboten.
+ * „Lohnt sich das bei euch?“ für alle Funnel-Seiten: ein Regler, eine Zahl, ein Monat.
+ * Menge mal Minuten ergibt die Stunden, die heute neben dem System verloren gehen, dazu ein
+ * Monat mit 20 Arbeitstagen, die verlorenen eingefärbt. Bewusst grob und ohne Preis, Umfang
+ * oder Termin: Was es wirklich ist, klärt das Erstgespräch. Ohne JS steht der Startwert.
  *
- * Flacher Streifen über die volle Breite: ab lg Regler, Ergebnis und Monatsraster in einer
- * Zeile, darunter steht die Marten-Karte. (Neben der Karte wurde der Block zu hoch gezogen.)
+ * Flacher Streifen über die volle Breite: ab lg Regler, Ergebnis und Monatsraster in einer Zeile.
  */
-const START = 30;
-const MINUTEN_JE_ANGEBOT = 90;
-const stunden = (START * MINUTEN_JE_ANGEBOT) / 60;
-const tage = Math.round(stunden / 8);
+interface Props {
+  /** Die Frage am Regler, z. B. „Wie viele Angebote schreibt ihr im Monat?“ */
+  frage: string;
+  min: number;
+  max: number;
+  step: number;
+  start: number;
+  /** Minuten je Einheit und Monat, die heute neben dem System verloren gehen. */
+  minutenJe: number;
+  /** Wofür die Zeit draufgeht, z. B. „ins Abtippen, Nachrechnen und Nachfassen.“ */
+  wofuer: string;
+  /** Kleine Zeile unten: woher die grobe Rechnung kommt. */
+  annahme: string;
+  id?: string;
+}
+
+const { frage, min, max, step, start, minutenJe, wofuer, annahme, id = 'ls' } = Astro.props;
+const stunden = (start * minutenJe) / 60;
+const tage = Math.max(1, Math.round(stunden / 8));
+const fmt = (n: number) => n.toLocaleString('de-DE', { maximumFractionDigits: 1 });
 ---
 
-<div class="ls rounded-3xl p-5 sm:p-6 lg:p-7" data-ls data-minuten={MINUTEN_JE_ANGEBOT}>
+<div class="ls rounded-3xl p-5 sm:p-6 lg:p-7" data-ls data-minuten={minutenJe}>
   <div
     class="grid gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.9fr)_minmax(0,1fr)] lg:items-center lg:gap-8"
   >
-    <!-- Regler -->
     <div>
       <p
         class="text-brand-600 dark:text-brand-300 font-mono text-[11px] font-semibold tracking-[0.2em] uppercase"
@@ -26,51 +40,47 @@ const tage = Math.round(stunden / 8);
         Kurz überschlagen
       </p>
       <label
-        for="ls-range"
+        for={`${id}-range`}
         class="font-display text-foreground mt-2 block text-lg leading-snug font-bold tracking-tight"
       >
-        Wie viele Angebote schreibt ihr im Monat?
+        {frage}
       </label>
       <div class="mt-4 flex items-center gap-4">
         <input
-          id="ls-range"
+          id={`${id}-range`}
           type="range"
-          min="5"
-          max="150"
-          step="5"
-          value={START}
+          min={min}
+          max={max}
+          step={step}
+          value={start}
           class="ls-range w-full"
           data-ls-range
-          aria-describedby="ls-ergebnis"
+          aria-describedby={`${id}-ergebnis`}
         />
         <output
           class="ls-out font-display text-foreground min-w-[3ch] text-right text-2xl font-bold tabular-nums"
           data-ls-out
         >
-          {START}
+          {start}
         </output>
       </div>
     </div>
 
-    <!-- Ergebnis -->
-    <div id="ls-ergebnis" class="ls-ergebnis rounded-2xl p-4">
+    <div id={`${id}-ergebnis`} class="ls-ergebnis rounded-2xl p-4">
       <p class="text-foreground-secondary text-sm leading-5">Heute gehen dafür ungefähr</p>
       <p
         class="font-display text-foreground mt-1 text-3xl font-bold tracking-tight tabular-nums sm:text-4xl"
       >
-        <span data-ls-stunden>{stunden.toLocaleString('de-DE')}</span> Stunden
+        <span data-ls-stunden>{fmt(stunden)}</span> Stunden
       </p>
-      <p class="text-foreground-secondary mt-1 text-sm leading-5">
-        ins Abtippen, Nachrechnen und Nachfassen.
-      </p>
+      <p class="text-foreground-secondary mt-1 text-sm leading-5">{wofuer}</p>
     </div>
 
-    <!-- Ein Monat mit 20 Arbeitstagen, die verlorenen eingefärbt -->
     <div class="ls-monat" aria-hidden="true">
       <p class="text-foreground text-sm leading-5 font-semibold">
         Rund <span data-ls-tage>{tage}</span> von 20 Arbeitstagen
       </p>
-      <div class="ls-tage mt-3" data-ls-raster>
+      <div class="ls-tage mt-3">
         {
           Array.from({ length: 20 }, (_, i) => (
             <span class:list={['ls-tag', i < tage && 'ls-tag-weg']} />
@@ -84,10 +94,7 @@ const tage = Math.round(stunden / 8);
       </p>
     </div>
   </div>
-  <p class="text-foreground-muted mt-5 text-xs leading-5">
-    Grobe Rechnung mit 90 Minuten je Angebot. Ob sich ein Baustein bei euch lohnt, klären wir im
-    Gespräch.
-  </p>
+  <p class="text-foreground-muted mt-5 text-xs leading-5">{annahme}</p>
 </div>
 
 <style>
@@ -165,7 +172,7 @@ const tage = Math.round(stunden / 8);
 
 <script>
   document.querySelectorAll<HTMLElement>('[data-ls]').forEach((root) => {
-    const minuten = Number(root.dataset.minuten) || 90;
+    const minuten = Number(root.dataset.minuten) || 60;
     const range = root.querySelector<HTMLInputElement>('[data-ls-range]');
     const out = root.querySelector<HTMLElement>('[data-ls-out]');
     const stundenEl = root.querySelector<HTMLElement>('[data-ls-stunden]');
@@ -181,7 +188,7 @@ const tage = Math.round(stunden / 8);
       const stunden = (n * minuten) / 60;
       stundenEl.textContent = stunden.toLocaleString('de-DE', { maximumFractionDigits: 1 });
       const tage = Math.max(1, Math.round(stunden / 8));
-      tageEl.textContent = String(tage);
+      tageEl.textContent = tage > 20 ? 'über 20' : String(tage);
       tagEls.forEach((t, i) => t.classList.toggle('ls-tag-weg', i < tage));
     };
     range.addEventListener('input', zeichne);
