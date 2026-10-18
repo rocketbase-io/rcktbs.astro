@@ -59,12 +59,14 @@ export interface Rechnung {
 }
 
 interface Props {
+  /** Ziel des Links „im Erstgespräch“; im Funnel das Quiz (#quiz), sonst das Formular (#kontakt). */
+  kontaktHref?: string;
   rechnungen: Rechnung[];
   /** Rechengrößen, die in jedem Gewerk gleich funktionieren. Stehen einmal unter den Tabs. */
   gemeinsam?: { icon: string; titel: string; text: string }[];
 }
 
-const { rechnungen, gemeinsam = [] } = Astro.props;
+const { rechnungen, gemeinsam = [], kontaktHref = '#kontakt' } = Astro.props;
 // Dieselben Texte stehen unten im Script (für den Wechsel per Knopf).
 const ampelText = {
   gruen: 'Lohnt sich',
@@ -76,7 +78,8 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
 ---
 
 <div class="kr" data-kr data-szene>
-  <div class="kr-tabs sticky top-16 z-20 mx-auto max-w-full rounded-2xl p-1.5 lg:static lg:w-fit">
+  <!-- Nicht sticky: auf dem Handy lag die Leiste über Eingaben und Ergebnis. -->
+  <div class="kr-tabs mx-auto max-w-full rounded-2xl p-1.5 lg:w-fit">
     <div role="tablist" aria-label="Beispiele nach Branche" class="grid grid-cols-2 gap-1 lg:flex">
       {
         rechnungen.map((r, i) => (
@@ -100,7 +103,7 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
   <p class="text-foreground-muted mt-4 text-center text-sm">
     Eure Branche ist nicht dabei? Kein Problem, das klären wir{' '}
     <a
-      href="#kontakt"
+      href={kontaktHref}
       class="text-brand-600 hover:text-brand-700 dark:text-brand-300 font-semibold underline-offset-4 hover:underline"
       >im Erstgespräch</a
     >.

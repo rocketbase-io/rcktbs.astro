@@ -47,6 +47,8 @@ import KalkulationRechner, {
 } from '@/components/angebote-funnel/KalkulationRechner.astro';
 import ZahlWandert from '@/components/angebote-funnel/ZahlWandert.astro';
 import ErstgespraechKarte from '@/components/funnel/ErstgespraechKarte.astro';
+import DealZeile from '@/components/funnel/DealZeile.astro';
+import VonHeuteBisDahin from '@/components/funnel/VonHeuteBisDahin.astro';
 
 import editor from '@/assets/angebote/v2-editor-praesentation.webp';
 import bausteine from '@/assets/angebote/v2-bausteine-falk.webp';
@@ -138,7 +140,7 @@ const ebenen: Ebene[] = [
     titel: 'Vorlage und Texte',
     text: 'Texte und Bilder kommen aus eurer Bibliothek. Nichts wird abgetippt.',
     image: editor,
-    alt: 'Editor der Angebotsseite mit Bausteinen, Präsentation und Bildauswahl',
+    alt: 'Editor der Angebotsseite mit Abschnitten, Präsentation und Bildauswahl',
   },
   {
     titel: 'Kalkulation',
@@ -417,6 +419,25 @@ interface Props {
 }
 const { variant } = Astro.props;
 const istFunnel = variant === 'funnel';
+
+// „Von heute bis dahin“: Strecke und Einwände der Funnel-Fassung (ersetzt dort die FAQ).
+const strecke = {
+  stationen: [
+    { wann: 'Heute', titel: 'Vorlage kopieren, Zahlen ändern', text: 'Das letzte Angebot als Vorlage, die Kalkulation in einer Excel daneben, und ob der Kunde es gelesen hat, weiß keiner.' },
+    { wann: 'Woche 1 bis 2', titel: 'Erstgespräch und Aufnahme', text: 'Dreißig Minuten über euer kompliziertestes Angebot. Dann legen wir eure Kalkulationsregeln fest, so wie ihr heute rechnet, und ihr bekommt einen Festpreis.' },
+    { wann: 'Danach, 2 bis 4 Wochen', titel: 'Eure Kalkulation läuft', text: 'Programmiert zum Festpreis, nach euren Regeln, mit eurem Briefkopf. Der Kunde bekommt die Seite, ihr das PDF für die Akte.' },
+  ] as const,
+  einwaende: [
+    { satz: 'Das dauert ewig.', antwort: 'Sobald eure Regeln festgelegt sind, läuft eure Kalkulation in zwei bis vier Wochen.' },
+    { satz: 'Dafür haben wir keine Zeit.', antwort: 'Zwei bis drei Stunden pro Woche von euch: ein Termin, dazu Ausprobieren.' },
+    { satz: 'Unsere Kalkulation ist zu speziell.', antwort: 'Genau dafür programmieren wir. Aufmaß, Stückliste, Staffel, Zuschläge: eure Regeln, aufgeschrieben und gerechnet.' },
+    { satz: 'Bleibt das PDF?', antwort: 'Ja, auf Knopfdruck, für die Akte. Der Kunde bekommt dazu die Seite mit Optionen und Zusage per Klick.' },
+    { satz: 'Dann müssen wir alles umstellen.', antwort: 'Umgestellt wird Schritt für Schritt. Das Alte läuft, bis das Neue trägt.' },
+    { satz: 'Ist das nicht wieder Software von der Stange?', antwort: 'Nein. Wir setzen auf dem auf, was bei anderen Betrieben schon läuft, und programmieren, was bei euch anders ist. Nichts zum Konfigurieren, keine Grenzen. Mit unserer Erfahrung und KI beim Programmieren geht das schnell und bleibt bezahlbar.' },
+    { satz: 'Das ist sicher teuer.', antwort: 'Den Rahmen hört ihr im Erstgespräch, den Festpreis nach der Aufnahme. Programmiert wird erst, wenn ihr ihn kennt.' },
+  ],
+};
+
 ---
 
 <!-- HERO: Text links, Quiz rechts (drei Fragen, dann Kontaktformular) --><!--
@@ -445,15 +466,26 @@ const istFunnel = variant === 'funnel';
         data-reveal="fade-down"
         class="text-brand-600 dark:text-brand-300 text-sm font-semibold tracking-[0.22em] uppercase"
       >
-        Unser Angebotsbaustein
+        Angebot &amp; Kalkulation
       </p>
       <h1
         data-reveal="fade-down"
         lang="de"
         class="font-display text-foreground mt-3 text-[2.05rem] leading-[1.08] font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:mt-5 sm:text-6xl sm:leading-[1.05] xl:text-[4.25rem]"
       >
+        {
+          istFunnel ? (
+            <>
+              Euer Angebot rechnet sich selbst.
+              <span class="text-brand-500 block">Der Kunde sagt per Klick ja.</span>
+            </>
+          ) : (
+            <>
         Euer Angebot
         <span class="text-brand-500 block">rechnet sich selbst.</span>
+            </>
+          )
+        }
       </h1>
       <p
         data-reveal
@@ -466,6 +498,9 @@ const istFunnel = variant === 'funnel';
           ))
         }
       </p>
+      {istFunnel && <DealZeile />}
+      {
+        !istFunnel && (
       <p
         data-reveal
         class="text-foreground-secondary mx-auto mt-4 max-w-lg text-base leading-7 sm:mt-7 sm:text-lg sm:leading-8 lg:mx-0"
@@ -474,12 +509,14 @@ const istFunnel = variant === 'funnel';
         und sagt per Klick ja.
         <span class="hidden lg:inline"> Und ihr wisst vorher, was übrig bleibt.</span>
       </p>
+        )
+      }
       <p
         data-reveal
         class="text-foreground-muted border-border/70 bg-background/85 mx-auto mt-8 hidden max-w-lg rounded-xl border px-4 py-3 text-sm leading-6 backdrop-blur-sm lg:mx-0 lg:block"
       >
-        Kein Programm von der Stange. Der Baustein läuft bei unseren Kunden, und wir bauen ihn für
-        euren Betrieb um. Für Prüfung, Zertifizierung, Wartung, Service und Handwerk.
+        Kein Programm von der Stange. Was bei unseren Kunden läuft, bauen wir für euren Betrieb um
+        und programmieren, was bei euch anders ist. Für Prüfung, Zertifizierung, Wartung, Service und Handwerk.
       </p>
     </div>
 
@@ -512,8 +549,8 @@ const istFunnel = variant === 'funnel';
               30 Minuten. Ein echtes Angebot von euch. Eine ehrliche Antwort.
             </h2>
             <p class="text-foreground-secondary mt-4 text-base leading-7">
-              Ihr zeigt uns, wie ihr heute ein Angebot rechnet. Wir sagen, ob der Baustein zu euch
-              passt. Kostenlos, ohne Folien.
+              Ihr zeigt uns, wie ihr heute ein Angebot rechnet. Wir sagen, ob sich das bei euch
+              lohnt. Kostenlos, ohne Folien.
             </p>
             <div class="mt-6 flex flex-wrap gap-3">
               <Button size="lg" href={contactLinks.cal} target="_blank">
@@ -529,7 +566,7 @@ const istFunnel = variant === 'funnel';
     <p
       class="text-foreground-muted border-border/70 bg-background/85 mx-auto mt-6 max-w-lg rounded-xl border px-4 py-3 text-center text-sm leading-6 backdrop-blur-sm lg:hidden"
     >
-      Kein Programm von der Stange. Wir bauen den Baustein für euren Betrieb um.
+      Kein Programm von der Stange. Auf euren Betrieb zugeschnitten und programmiert.
     </p>
   </div>
   <!-- LOGOS: schließen die erste Bildschirmhöhe ab; der Scroll-Hinweis sitzt auf ihrer Oberkante -->
@@ -591,7 +628,7 @@ const istFunnel = variant === 'funnel';
 <!-- 01 DIE IDEE: eine Zahl, einmal eingegeben, wandert bis zum Kunden -->
 <section
   id="idee"
-  class="bg-background border-border relative scroll-mt-20 overflow-x-clip border-b py-16 lg:py-28"
+  class:list={['bg-background border-border relative scroll-mt-20 overflow-x-clip border-b py-16 lg:py-28', istFunnel && 'hidden lg:block']}
 >
   <div class="relative z-10 container max-w-6xl">
     <SectionHeader
@@ -627,7 +664,7 @@ const istFunnel = variant === 'funnel';
     />
 
     <div class="af-rise mx-auto mt-10 max-w-6xl lg:mt-12">
-      <KalkulationRechner rechnungen={rechnungen}>
+      <KalkulationRechner rechnungen={rechnungen} kontaktHref={istFunnel ? '#quiz' : '#kontakt'}>
         <p slot="hinweis">
           <span class="text-foreground font-semibold"
             >Die Zahlen sind erfunden. Die Regeln sind echt.</span
@@ -636,7 +673,7 @@ const istFunnel = variant === 'funnel';
             ' '
           }
           <a
-            href="#kontakt"
+            href={istFunnel ? '#quiz' : '#kontakt'}
             class="text-brand-600 hover:text-brand-700 dark:text-brand-300 inline-flex items-center gap-1 font-semibold whitespace-nowrap underline-offset-4 hover:underline"
           >
             Fragt uns
@@ -651,7 +688,7 @@ const istFunnel = variant === 'funnel';
 <!-- 03 SO SIEHT DAS AUS: echte Screenshots, fünf Schritte -->
 <section
   id="angebot"
-  class="invert-section bg-surface-invert relative scroll-mt-20 overflow-x-clip py-16 lg:py-28"
+  class:list={['invert-section bg-surface-invert relative scroll-mt-20 overflow-x-clip py-16 lg:py-28', istFunnel && 'hidden lg:block']}
 >
   <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
     <div
@@ -671,9 +708,9 @@ const istFunnel = variant === 'funnel';
   <div class="relative z-10 mx-auto max-w-[90rem] px-5 sm:px-8 lg:px-12">
     <SectionHeader
       number="03"
-      eyebrow="Unser Angebotsbaustein"
+      eyebrow="So sieht das aus"
       title="Vier Ebenen. Ein Angebot."
-      lead="Klickt euch durch. Echte Bilder aus dem Baustein."
+      lead="Klickt euch durch. Echte Bilder aus einer Kundenlösung."
       size="md"
       invert
     />
@@ -685,6 +722,9 @@ const istFunnel = variant === 'funnel';
 
 <!-- VERTRAUEN: vier Fakten auf dunklem Band -->
 <VertrauensBand />
+
+<!-- VON HEUTE BIS DAHIN: Strecke und Einwände, nur im Funnel -->
+{istFunnel && <VonHeuteBisDahin stationen={strecke.stationen} einwaende={strecke.einwaende} />}
 
 <!-- 04 SO KOMMT IHR DAZU: Marten, das Erstgespräch, der Knopf -->
 <section
@@ -711,22 +751,27 @@ const istFunnel = variant === 'funnel';
           start={30}
           minutenJe={90}
           wofuer="ins Abtippen, Nachrechnen und Nachfassen."
-          annahme="Grobe Rechnung mit 90 Minuten je Angebot. Ob sich ein Baustein bei euch lohnt, klären wir im Gespräch."
+          annahme="Grobe Rechnung mit 90 Minuten je Angebot. Ob sich das bei euch lohnt, klären wir im Gespräch."
         />
       </div>
 
-      <ErstgespraechKarte
-        id="ablauf-01"
-        class="w-full max-w-none"
-        zitat="Zeigt mir ein echtes Angebot von euch. Nach 30 Minuten wisst ihr, ob sich das bei euch lohnt."
-        text="Ich zeige keine Folien und brauche keine Vorbereitung von euch. Ihr erzählt, wie viele Angebote ihr schreibt und wie lange eins dauert. Ich sage euch ehrlich, ob sich ein Baustein lohnt oder nicht. Ihr geht dabei keine Verpflichtung ein."
-      />
+      <!-- Nur auf der indexierten Seite: Im Funnel führt das Quiz zum Gespräch, die Karte wäre ein zweiter Weg. -->
+      {
+        !istFunnel && (
+          <ErstgespraechKarte
+            id="ablauf-01"
+            class="w-full max-w-none"
+            zitat="Zeigt mir ein echtes Angebot von euch. Nach 30 Minuten wisst ihr, ob sich das bei euch lohnt."
+            text="Ihr erzählt, wie ihr heute Angebote schreibt und wie lange eins dauert. Ich sage euch ehrlich, ob sich das lohnt, und wenn ja, womit wir anfangen."
+          />
+        )
+      }
     </div>
   </div>
 </section>
 
 <!-- 05 FAQ: nur, was vor dem Absenden bremst -->
-<section class="bg-background-secondary border-border relative border-b py-16 lg:py-28">
+<section class:list={['bg-background-secondary border-border relative border-b py-16 lg:py-28', istFunnel && 'hidden']}>
   <div class="relative z-10 container max-w-4xl">
     <SectionHeader size="md" number="05" eyebrow="Häufige Fragen" title="Was oft gefragt wird." />
 
@@ -769,7 +814,7 @@ const istFunnel = variant === 'funnel';
 <!-- KONTAKT: Erstgespräch vereinbaren, über denselben Fragebogen wie im Hero -->
 <section
   id="kontakt"
-  class="kontakt-sec border-border relative scroll-mt-20 overflow-x-clip py-16 lg:py-32"
+  class:list={['kontakt-sec border-border relative scroll-mt-20 overflow-x-clip py-16 lg:py-32', istFunnel && 'hidden lg:block']}
 >
   <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
     <div

@@ -10,6 +10,8 @@ export interface FunnelQuizOption {
   id: string;
   label: string;
   description?: string;
+  /** Beschreibung auch unter 640 px zeigen; sonst steht dort nur das Label. */
+  descriptionOnMobile?: boolean;
   /** Zeigt nach Auswahl ein Freitextfeld statt direkt weiterzuspringen */
   allowText?: boolean;
   textPlaceholder?: string;

@@ -31,6 +31,8 @@ import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
 import SectionHeader from '@/components/angebote-funnel/SectionHeader.astro';
 import FunnelQuiz from '@/components/funnel/FunnelQuiz';
 import ErstgespraechKarte from '@/components/funnel/ErstgespraechKarte.astro';
+import DealZeile from '@/components/funnel/DealZeile.astro';
+import VonHeuteBisDahin from '@/components/funnel/VonHeuteBisDahin.astro';
 import LohntSich from '@/components/funnel/LohntSich.astro';
 import VertrauensBand from '@/components/funnel/VertrauensBand.astro';
 import '@/styles/szene.css';
@@ -97,6 +99,7 @@ const quizFragen: FunnelQuizQuestion[] = [
       { id: 'angebote', label: 'Angebote und Kalkulation' },
       { id: 'einsatz', label: 'Planung und Abrechnung' },
       { id: 'zahlen', label: 'Auswertungen und Zahlen' },
+      { id: 'daneben', label: 'Vieles läuft neben dem Programm, in Excel und Mail' },
       { id: 'ueberall', label: 'Überall ein bisschen' },
     ],
   },
@@ -159,6 +162,25 @@ interface Props {
 }
 const { variant = 'funnel' } = Astro.props;
 const istFunnel = variant === 'funnel';
+
+// „Von heute bis dahin“: Strecke und Einwände der Funnel-Fassung (ersetzt dort die FAQ).
+const strecke = {
+  stationen: [
+    { wann: 'Heute', titel: 'Tricks im Programm, Excel daneben', text: 'Das Lieferdatum steht im Bemerkungsfeld, die Kalkulation in einer Excel. Updates traut sich keiner, die Wartung kostet weiter.' },
+    { wann: 'Woche 1 bis 2', titel: 'Erstgespräch und Aufnahme', text: 'Dreißig Minuten über euer Programm. Dann nehmen wir auf, welcher Bereich zuerst umzieht und welche Daten mit müssen, und ihr bekommt einen Festpreis.' },
+    { wann: 'Danach, 4 bis 6 Wochen', titel: 'Der erste Bereich zieht um', text: 'Programmiert zum Festpreis, meist zuerst der Bereich, der am meisten Zeit kostet. Die weiteren folgen, je nach Programm in ein bis vier Monaten. Das alte läuft so lange weiter.' },
+  ] as const,
+  einwaende: [
+    { satz: 'Das dauert ewig.', antwort: 'Der erste Bereich zieht nach vier bis sechs Wochen um. Das Ganze dauert je nach Programm ein bis vier Monate, und das alte läuft so lange weiter.' },
+    { satz: 'Dafür haben wir keine Zeit.', antwort: 'Zwei bis drei Stunden pro Woche von euch: ein Termin, dazu Ausprobieren.' },
+    { satz: 'Wir hängen mit allen Daten im alten Programm.', antwort: 'Die Daten ziehen mit. Erst der Bereich, dann die Historie, geprüft gegen das Alte.' },
+    { satz: 'Dann steht der Betrieb still.', antwort: 'Das Neue läuft neben dem alten Programm. Abgeschaltet wird erst, wenn alles trägt.' },
+    { satz: 'Vielleicht ist Bleiben besser.', antwort: 'Oft ja. Das sagen wir im Erstgespräch genauso klar, obwohl wir an der Ablösung verdienen.' },
+    { satz: 'Ist das nicht wieder Software von der Stange?', antwort: 'Nein. Wir setzen auf dem auf, was bei anderen Betrieben schon läuft, und programmieren, was bei euch anders ist. Nichts zum Konfigurieren, keine Grenzen. Mit unserer Erfahrung und KI beim Programmieren geht das schnell und bleibt bezahlbar.' },
+    { satz: 'Das ist sicher teuer.', antwort: 'Den Rahmen hört ihr im Erstgespräch, den Festpreis nach der Aufnahme. Programmiert wird erst, wenn ihr ihn kennt.' },
+  ],
+};
+
 ---
 
 <!-- HERO -->
@@ -191,8 +213,19 @@ const istFunnel = variant === 'funnel';
         lang="de"
         class="font-display text-foreground mt-3 text-[2.05rem] leading-[1.08] font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:mt-5 sm:text-6xl sm:leading-[1.05] xl:text-[4.25rem]"
       >
+        {
+          istFunnel ? (
+            <>
+              Eure Abläufe in der Software. Nicht umgekehrt.
+              <span class="text-brand-500 block">Wir bauen sie euch. Das alte Programm läuft weiter.</span>
+            </>
+          ) : (
+            <>
         Raus aus der Branchensoftware.
         <span class="text-brand-500 block">Ohne Stillstand.</span>
+            </>
+          )
+        }
       </h1>
       <p
         data-reveal
@@ -205,6 +238,9 @@ const istFunnel = variant === 'funnel';
           ))
         }
       </p>
+      {istFunnel && <DealZeile />}
+      {
+        !istFunnel && (
       <p
         data-reveal
         class="text-foreground-secondary mx-auto mt-4 max-w-lg text-base leading-7 sm:mt-7 sm:text-lg sm:leading-8 lg:mx-0"
@@ -213,6 +249,8 @@ const istFunnel = variant === 'funnel';
         für Schritt, das alte läuft so lange weiter.
         <span class="hidden lg:inline"> Und alle Daten kommen mit.</span>
       </p>
+        )
+      }
       <p
         data-reveal
         class="text-foreground-muted border-border/70 bg-background/85 mx-auto mt-8 hidden max-w-lg rounded-xl border px-4 py-3 text-sm leading-6 backdrop-blur-sm lg:mx-0 lg:block"
@@ -291,7 +329,7 @@ const istFunnel = variant === 'funnel';
 </section>
 
 <!-- 01 LANDSCHAFT -->
-<section class="bg-background relative overflow-x-clip py-16 lg:py-28">
+<section class:list={['bg-background relative overflow-x-clip py-16 lg:py-28', istFunnel && 'hidden lg:block']}>
   <div
     class="bg-brand-300/10 pointer-events-none absolute top-40 left-1/2 h-[40rem] w-[60rem] -translate-x-1/2 rounded-full blur-[120px]"
     aria-hidden="true"
@@ -326,7 +364,7 @@ const istFunnel = variant === 'funnel';
       number="02"
       eyebrow="Ablöseplan"
       title="Das Tagesgeschäft läuft weiter."
-      lead="Das Neue geht Baustein für Baustein live, das Alte läuft so lange mit. Erst wenn alles stimmt, kommt der Stichtag."
+      lead="Das Neue geht Bereich für Bereich live, das Alte läuft so lange mit. Erst wenn alles stimmt, kommt der Stichtag."
     />
     <div
       class="szene-auf mx-auto mt-10 max-w-6xl lg:mt-14"
@@ -337,14 +375,14 @@ const istFunnel = variant === 'funnel';
     >
       <Abloeseplan />
       <p class="z-note mt-4 text-center">
-        Beispiel für einen Betrieb mit drei Bausteinen. Klickt selbst auf die Meilensteine.
+        Beispiel für einen Betrieb mit drei Bereichen. Klickt selbst auf die Meilensteine.
       </p>
     </div>
   </div>
 </section>
 
 <!-- 03 DATENÜBERNAHME -->
-<section class="bg-background relative overflow-x-clip py-20 lg:py-28">
+<section class:list={['bg-background relative overflow-x-clip py-20 lg:py-28', istFunnel && 'hidden lg:block']}>
   <div class="relative z-10 container max-w-7xl">
     <SectionHeader
       size="md"
@@ -371,7 +409,7 @@ const istFunnel = variant === 'funnel';
   <div
     class="relative z-10 container grid max-w-7xl gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16"
   >
-    <div class="szene-auf order-2 lg:order-1" data-szene>
+    <div class:list={['szene-auf order-2 lg:order-1', istFunnel && 'hidden lg:block']} data-szene>
       <figure class="af-frame">
         <div class="af-bar" aria-hidden="true">
           <span class="af-dots"><span></span><span></span><span></span></span>
@@ -418,7 +456,7 @@ const istFunnel = variant === 'funnel';
 </section>
 
 <!-- 05 EHRLICH -->
-<section class="invert-section bg-surface-invert relative overflow-x-clip py-16 lg:py-28">
+<section class:list={['invert-section bg-surface-invert relative overflow-x-clip py-16 lg:py-28', istFunnel && 'hidden lg:block']}>
   <div class="relative z-10 container max-w-6xl">
     <SectionHeader
       size="md"
@@ -462,6 +500,9 @@ const istFunnel = variant === 'funnel';
 <!-- VERTRAUEN -->
 <VertrauensBand />
 
+<!-- VON HEUTE BIS DAHIN: Strecke und Einwände, nur im Funnel -->
+{istFunnel && <VonHeuteBisDahin stationen={strecke.stationen} einwaende={strecke.einwaende} />}
+
 <!-- 06 LOHNT SICH DAS? Rechen-Streifen und Marten -->
 <section
   id="ablauf"
@@ -489,18 +530,23 @@ const istFunnel = variant === 'funnel';
           annahme="Grobe Rechnung mit 20 Minuten je Person und Arbeitstag. Ob sich Ablösen bei euch lohnt, klären wir im Gespräch."
         />
       </div>
-      <ErstgespraechKarte
-        id="ablauf-01"
-        class="w-full max-w-none"
-        zitat="Erzählt mir, wo ihr gegen euer System arbeitet. Nach 30 Minuten wisst ihr, ob sich Ablösen bei euch lohnt."
-        text="Ich zeige keine Folien und brauche keine Vorbereitung von euch. Ich höre zu und sage euch ehrlich, ob sich eine Ablösung lohnt oder ob ein Baustein daneben reicht. Ihr geht dabei keine Verpflichtung ein."
-      />
+      <!-- Nur auf der indexierten Seite: Im Funnel führt das Quiz zum Gespräch, die Karte wäre ein zweiter Weg. -->
+      {
+        !istFunnel && (
+          <ErstgespraechKarte
+            id="ablauf-01"
+            class="w-full max-w-none"
+            zitat="Erzählt mir, wo ihr gegen euer System arbeitet. Nach 30 Minuten wisst ihr, ob sich Ablösen bei euch lohnt."
+            text="Ihr erzählt, womit ihr heute arbeitet und wo ihr gegen das Programm arbeitet. Ich sage euch ehrlich, ob Ablösen sich lohnt oder Bleiben besser ist."
+          />
+        )
+      }
     </div>
   </div>
 </section>
 
 <!-- 07 FAQ -->
-<section class="bg-background-secondary border-border relative border-b py-16 lg:py-28">
+<section class:list={['bg-background-secondary border-border relative border-b py-16 lg:py-28', istFunnel && 'hidden']}>
   <div class="relative z-10 container max-w-4xl">
     <SectionHeader
       size="md"
@@ -544,7 +590,7 @@ const istFunnel = variant === 'funnel';
 <!-- KONTAKT -->
 <section
   id="kontakt"
-  class="kontakt-sec border-border relative scroll-mt-20 overflow-x-clip py-16 lg:py-32"
+  class:list={['kontakt-sec border-border relative scroll-mt-20 overflow-x-clip py-16 lg:py-32', istFunnel && 'hidden lg:block']}
 >
   <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
     <div

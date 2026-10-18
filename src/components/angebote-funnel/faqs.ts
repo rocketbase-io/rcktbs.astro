@@ -6,11 +6,11 @@
 export const angeboteFaqs = [
   {
     q: 'Ist das eine fertige Software?',
-    a: 'Nein. Der Baustein läuft bei unseren Kunden im Alltag. Für euch bauen wir ihn um: eure Rechnung, eure Vorlagen, euer Ablauf. Ihr bekommt keine Lizenz von der Stange, sondern etwas, das so arbeitet wie ihr.',
+    a: 'Nein. Wir bauen auf dem auf, was bei unseren Kunden im Alltag läuft, und programmieren für euch, was anders ist: eure Rechnung, eure Vorlagen, euer Ablauf. Ihr bekommt keine Lizenz von der Stange, sondern etwas, das so arbeitet wie ihr.',
   },
   {
     q: 'Wir haben schon eine Branchensoftware. Lohnt sich das trotzdem?',
-    a: 'Oft nicht, und das sagen wir euch auch. Wer so rechnet wie alle in seiner Branche, ist mit einer guten Branchensoftware gut bedient. Spannend wird es, wenn ihr anders rechnet: Eine Vorschrift gibt die Stunden vor. Mehrere Bereiche rechnen verschieden. Oder über die Jahre sind viele Sonderfälle dazugekommen, die im Programm keinen Platz haben. Euer Programm müsst ihr dafür nicht wegwerfen. Der Baustein kann auch nur die Angebote übernehmen.',
+    a: 'Oft nicht, und das sagen wir euch auch. Wer so rechnet wie alle in seiner Branche, ist mit einer guten Branchensoftware gut bedient. Spannend wird es, wenn ihr anders rechnet: Eine Vorschrift gibt die Stunden vor. Mehrere Bereiche rechnen verschieden. Oder über die Jahre sind viele Sonderfälle dazugekommen, die im Programm keinen Platz haben. Euer Programm müsst ihr dafür nicht wegwerfen. Wir können auch nur die Angebote übernehmen.',
   },
   {
     q: 'Rechnet das wirklich nach unserer Regel?',
@@ -22,7 +22,7 @@ export const angeboteFaqs = [
   },
   {
     q: 'Was kostet das?',
-    a: 'Das hängt davon ab, wie viel der Baustein bei euch rechnen soll: nur die Grundregel oder jede Leistung mit allen Sonderfällen. Darum nennen wir keinen Pauschalpreis. Im Erstgespräch schauen wir, was ihr braucht. Danach bekommt ihr ein klares Angebot. Drin sind Kalkulation, Angebotsseite, Versand, Nachfassen und das erste Jahr Betrieb.',
+    a: 'Das hängt davon ab, wie viel bei euch gerechnet werden soll: nur die Grundregel oder jede Leistung mit allen Sonderfällen. Darum nennen wir keinen Pauschalpreis. Im Erstgespräch schauen wir, was ihr braucht. Danach bekommt ihr ein klares Angebot. Drin sind Kalkulation, Angebotsseite, Versand, Nachfassen und das erste Jahr Betrieb.',
   },
   {
     q: 'Wie viel Zeit kostet uns das?',

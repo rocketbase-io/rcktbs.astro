@@ -16,8 +16,8 @@
  * 02 Auslastung (schaltet „+ Geplant“ selbst) → 03 Verträge → Band → 04 Lohnt sich + Marten →
  * 05 FAQ. Raus (stehen auf /zahlen/): Bis zur Person, Kunden, „Erst die Fragen“, mittlerer Aufruf.
  *
- * Keine Preise auf dieser Seite, auch kein „Festpreis“ (wie /f/angebote/). Der Workshop wird
- * genannt, seine Konditionen stehen nur auf /discovery-workshop/.
+ * Keine Preise auf dieser Seite, auch kein „Festpreis“ (wie /f/angebote/). Der Workshop ist
+ * kein Schritt auf der Seite; seine Konditionen stehen nur auf /discovery-workshop/.
  *
  * Abgrenzung zu Tür 2 (Einsatz & Abrechnung): hier die Verdichtung (Cockpit, Prognose,
  * Auslastung bis zur Person, Wegfall, Kunden, Forderungen). Vorgaben je Mitarbeiter,
@@ -32,6 +32,8 @@ import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
 import SectionHeader from '@/components/angebote-funnel/SectionHeader.astro';
 import FunnelQuiz from '@/components/funnel/FunnelQuiz';
 import ErstgespraechKarte from '@/components/funnel/ErstgespraechKarte.astro';
+import DealZeile from '@/components/funnel/DealZeile.astro';
+import VonHeuteBisDahin from '@/components/funnel/VonHeuteBisDahin.astro';
 import LohntSich from '@/components/funnel/LohntSich.astro';
 import VertrauensBand from '@/components/funnel/VertrauensBand.astro';
 import '@/styles/szene.css';
@@ -152,6 +154,25 @@ const quizProps = {
 };
 
 const miniFaqs = zahlenFaqs;
+
+// „Von heute bis dahin“: Strecke und Einwände der Funnel-Fassung (ersetzt dort die FAQ).
+const strecke = {
+  stationen: [
+    { wann: 'Heute', titel: 'Exporte, eine Excel, die BWA', text: 'Zahlen ziehen, abgleichen, eine Excel bauen. Die BWA kommt drei Wochen später und sagt, was war.' },
+    { wann: 'Woche 1 bis 2', titel: 'Erstgespräch und Aufnahme', text: 'Dreißig Minuten über eure Zahlen. Dann sehen wir uns an, wo die Daten liegen und was zuerst fehlt, und ihr bekommt einen Festpreis.' },
+    { wann: 'Danach, 4 bis 6 Wochen', titel: 'Das Cockpit steht', text: 'Programmiert zum Festpreis: Umsatz, Auslastung und Verträge aus euren Systemen. Weitere Zahlen kommen dazu, sobald die ersten tragen.' },
+  ] as const,
+  einwaende: [
+    { satz: 'Das dauert ewig.', antwort: 'Nach der Aufnahme steht das Cockpit in vier bis sechs Wochen, mit den Zahlen, die euch heute am meisten fehlen.' },
+    { satz: 'Dafür haben wir keine Zeit.', antwort: 'Zwei bis drei Stunden pro Woche von euch: ein Termin, dazu Ausprobieren.' },
+    { satz: 'Unsere Daten sind nicht sauber genug.', antwort: 'Das ist der Normalfall. Oft reicht es, zwei, drei Felder verbindlich zu machen. Das Cockpit zeigt Lücken, statt sie zu verstecken.' },
+    { satz: 'Wir haben schon ein ERP.', antwort: 'Das bleibt. Das Cockpit holt sich die Zahlen von dort, aus der Zeiterfassung und der Buchhaltung.' },
+    { satz: 'Dann müssen wir alles umstellen.', antwort: 'Umgestellt wird Schritt für Schritt. Das Alte läuft, bis das Neue trägt.' },
+    { satz: 'Ist das nicht wieder Software von der Stange?', antwort: 'Nein. Wir setzen auf dem auf, was bei anderen Betrieben schon läuft, und programmieren, was bei euch anders ist. Nichts zum Konfigurieren, keine Grenzen. Mit unserer Erfahrung und KI beim Programmieren geht das schnell und bleibt bezahlbar.' },
+    { satz: 'Das ist sicher teuer.', antwort: 'Den Rahmen hört ihr im Erstgespräch, den Festpreis nach der Aufnahme. Programmiert wird erst, wenn ihr ihn kennt.' },
+  ],
+};
+
 ---
 
 <!-- HERO -->
@@ -184,8 +205,19 @@ const miniFaqs = zahlenFaqs;
         lang="de"
         class="font-display text-foreground mt-3 text-[2.05rem] leading-[1.08] font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:mt-5 sm:text-6xl sm:leading-[1.05] xl:text-[4.25rem]"
       >
+        {
+          istFunnel ? (
+            <>
+              Wie läuft der Betrieb?
+              <span class="text-brand-500 block">Heute sehen, nicht am Monatsende.</span>
+            </>
+          ) : (
+            <>
         Euer Betrieb auf einen Blick.
         <span class="text-brand-500 block">Live, nicht am Monatsende.</span>
+            </>
+          )
+        }
       </h1>
       <p
         data-reveal
@@ -198,6 +230,9 @@ const miniFaqs = zahlenFaqs;
           ))
         }
       </p>
+      {istFunnel && <DealZeile />}
+      {
+        !istFunnel && (
       <p
         data-reveal
         class="text-foreground-secondary mx-auto mt-4 max-w-lg text-base leading-7 sm:mt-7 sm:text-lg sm:leading-8 lg:mx-0"
@@ -205,6 +240,8 @@ const miniFaqs = zahlenFaqs;
         Umsatz, Auslastung, was übrig bleibt, welche Verträge auslaufen. Jeden Morgen aktuell, aus
         den Systemen, die ihr habt.
       </p>
+        )
+      }
       <p
         class="text-foreground-muted border-border/70 bg-background/85 mx-auto mt-8 hidden max-w-lg rounded-xl border px-4 py-3 text-sm leading-6 backdrop-blur-sm lg:mx-0 lg:block"
       >
@@ -355,7 +392,7 @@ const miniFaqs = zahlenFaqs;
 </section>
 
 <!-- 02 AUSLASTUNG -->
-<section class="bg-background-secondary border-border relative border-y py-16 lg:py-28">
+<section class:list={['bg-background-secondary border-border relative border-y py-16 lg:py-28', istFunnel && 'hidden lg:block']}>
   <div
     class="relative z-10 container grid max-w-7xl gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:items-center lg:gap-14"
   >
@@ -384,7 +421,7 @@ const miniFaqs = zahlenFaqs;
 </section>
 
 <!-- 03 VERTRÄGE UND ZIELE -->
-<section class="bg-background relative overflow-x-clip py-16 lg:py-28">
+<section class:list={['bg-background relative overflow-x-clip py-16 lg:py-28', istFunnel && 'hidden lg:block']}>
   <div class="relative z-10 container max-w-7xl">
     <SectionHeader
       size="md"
@@ -401,6 +438,9 @@ const miniFaqs = zahlenFaqs;
 
 <!-- VERTRAUEN -->
 <VertrauensBand />
+
+<!-- VON HEUTE BIS DAHIN: Strecke und Einwände, nur im Funnel -->
+{istFunnel && <VonHeuteBisDahin stationen={strecke.stationen} einwaende={strecke.einwaende} />}
 
 <!-- 04 LOHNT SICH DAS? Rechen-Streifen und Marten -->
 <section
@@ -429,18 +469,23 @@ const miniFaqs = zahlenFaqs;
           annahme="Grobe Rechnung mit einem Arbeitstag je Person und Monat. Ob sich ein Cockpit bei euch lohnt, klären wir im Gespräch."
         />
       </div>
-      <ErstgespraechKarte
-        id="ablauf-01"
-        class="w-full max-w-none"
-        zitat="Erzählt mir, welche Zahlen ihr heute vermisst. Nach 30 Minuten wisst ihr, ob sich ein Cockpit bei euch lohnt."
-        text="Ich zeige keine Folien und brauche keine Vorbereitung von euch. Ihr erzählt, wonach ihr steuern wollt und woher die Zahlen heute kommen. Ich sage euch ehrlich, was sich live rechnen lässt und was nicht. Ihr geht dabei keine Verpflichtung ein."
-      />
+      <!-- Nur auf der indexierten Seite: Im Funnel führt das Quiz zum Gespräch, die Karte wäre ein zweiter Weg. -->
+      {
+        !istFunnel && (
+          <ErstgespraechKarte
+            id="ablauf-01"
+            class="w-full max-w-none"
+            zitat="Erzählt mir, welche Zahlen ihr heute vermisst. Nach 30 Minuten wisst ihr, ob sich ein Cockpit bei euch lohnt."
+            text="Ihr erzählt, woher eure Zahlen heute kommen und welche fehlen. Ich sage euch ehrlich, ob sich ein Cockpit lohnt, und wenn ja, welche Zahl zuerst."
+          />
+        )
+      }
     </div>
   </div>
 </section>
 
 <!-- FAQ -->
-<section class="bg-background border-border relative border-b py-24 lg:py-28">
+<section class:list={['bg-background border-border relative border-b py-24 lg:py-28', istFunnel && 'hidden']}>
   <div class="relative z-10 container max-w-4xl">
     <SectionHeader size="md" number="05" eyebrow="Häufige Fragen" title="Was vorab gefragt wird." />
     <div class="mt-12 flex flex-col gap-4">
@@ -471,7 +516,7 @@ const miniFaqs = zahlenFaqs;
 {!istFunnel && <BlogQuerverweis tuer="zahlen" />}
 
 <!-- KONTAKT -->
-<section id="kontakt" class="kontakt-sec relative scroll-mt-20 overflow-x-clip py-24 lg:py-32">
+<section id="kontakt" class:list={['kontakt-sec relative scroll-mt-20 overflow-x-clip py-24 lg:py-32', istFunnel && 'hidden lg:block']}>
   <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
     <div
       class="bg-brand-400/15 absolute -bottom-40 -left-24 h-[34rem] w-[34rem] rounded-full blur-[150px]"
