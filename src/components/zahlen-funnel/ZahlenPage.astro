@@ -158,7 +158,7 @@ const miniFaqs = zahlenFaqs;
 // „Von heute bis dahin“: Strecke und Einwände der Funnel-Fassung (ersetzt dort die FAQ).
 const strecke = {
   stationen: [
-    { wann: 'Heute', titel: 'Exporte, eine Excel, die BWA', text: 'Zahlen ziehen, abgleichen, eine Excel bauen. Die BWA kommt drei Wochen später und sagt, was war.' },
+    { wann: 'So läuft es heute', titel: 'Exporte, eine Excel, die BWA', text: 'Zahlen ziehen, abgleichen, eine Excel bauen. Die BWA kommt drei Wochen später und sagt, was war. Wie die Teams im nächsten Quartal ausgelastet sind, schätzt jemand nebenbei.' },
     { wann: 'Woche 1 bis 2', titel: 'Erstgespräch und Aufnahme', text: 'Dreißig Minuten über eure Zahlen. Dann sehen wir uns an, wo die Daten liegen und was zuerst fehlt, und ihr bekommt einen Festpreis.' },
     { wann: 'Danach, 4 bis 6 Wochen', titel: 'Das Cockpit steht', text: 'Programmiert zum Festpreis: Umsatz, Auslastung und Verträge aus euren Systemen. Weitere Zahlen kommen dazu, sobald die ersten tragen.' },
   ] as const,
@@ -459,14 +459,15 @@ const strecke = {
       <div class="af-rise">
         <LohntSich
           id="ls-zahlen"
-          frage="Wie viele Leute bauen bei euch Auswertungen?"
+          frage="Wie viele Leute planen und rechnen bei euch in Excel?"
+          wer="Controlling, Geschäftsführung, Projekt- und Teamleitung: alle, die Auslastung planen oder monatlich Zahlen zusammenstellen."
           min={1}
           max={15}
           step={1}
           start={3}
-          minutenJe={480}
-          wofuer="ins Exporte ziehen, Abgleichen und Excel bauen."
-          annahme="Grobe Rechnung mit einem Arbeitstag je Person und Monat. Ob sich ein Cockpit bei euch lohnt, klären wir im Gespräch."
+          minutenJe={600}
+          wofuer="in Exporte, Abgleiche, Auslastungsreports und die Planung fürs nächste Quartal."
+          annahme="Anderthalb Arbeitstage je Person und Monat: Exporte ziehen und abgleichen, den Auslastungsreport fürs Team bauen, Kapazitäten fürs nächste Quartal vorhalten, Zahlen für die Umsatzprognose bereitstellen. Darin steckt beides: zusammentragen, was war, und daraus planen, was kommt."
         />
       </div>
       <!-- Nur auf der indexierten Seite: Im Funnel führt das Quiz zum Gespräch, die Karte wäre ein zweiter Weg. -->
