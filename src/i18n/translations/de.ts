@@ -122,9 +122,8 @@ export const de = {
   },
 
   consent: {
-    heading: 'Cookie-Einstellungen',
-    description:
-      'Wir verwenden Cookies, um die Website zuverlässig zu betreiben, Inhalte zu verbessern und Nutzung zu analysieren.',
+    heading: 'Cookies',
+    description: 'Cookies für Reichweitenmessung und Anzeigen setzen wir erst nach Zustimmung.',
     acceptAll: 'Alle akzeptieren',
     declineAll: 'Alle ablehnen',
     customize: 'Anpassen',

@@ -38,7 +38,7 @@ const clientLogos = [
 
 <FunnelLayout title={funnel.meta.title} description={funnel.meta.description}>
   <!-- HERO + QUIZ -->
-  <section class="relative overflow-hidden pt-12 pb-16 sm:pt-16 lg:pt-20">
+  <section class="relative overflow-hidden pt-8 pb-16 sm:pt-16 lg:pt-20">
     <Blueprint />
     <div
       class="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,var(--color-background)_0%,transparent_75%)] opacity-70"
@@ -55,7 +55,7 @@ const clientLogos = [
         </p>
         <h1
           lang="de"
-          class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-4xl lg:text-5xl"
+          class="font-display text-foreground mt-3 text-3xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:mt-4 sm:text-4xl lg:text-5xl"
         >
           {funnel.hero.headline}
           <span class="text-brand-500 mt-2 block">
@@ -63,20 +63,20 @@ const clientLogos = [
           </span>
         </h1>
         <p
-          class="text-foreground-secondary mx-auto mt-6 max-w-2xl text-base leading-7 sm:text-lg sm:leading-8"
+          class="text-foreground-secondary mx-auto mt-4 max-w-2xl text-base leading-7 sm:mt-6 sm:text-lg sm:leading-8"
         >
           {funnel.hero.subline}
         </p>
       </div>
 
-      <div id="quiz" class="mt-10 scroll-mt-24">
+      <div id="quiz" class="mt-6 scroll-mt-24 sm:mt-10">
         <FunnelQuiz
           client:load
           funnel={funnel.slug}
           questions={funnel.questions}
           contact={funnel.contact}
           success={funnel.success}
-          privacyUrl="/datenschutz"
+          privacyUrl="/datenschutz/"
         />
       </div>
 

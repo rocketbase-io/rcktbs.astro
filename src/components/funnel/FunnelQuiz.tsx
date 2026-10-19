@@ -523,7 +523,14 @@ export function FunnelQuiz({
                             {option.label}
                           </span>
                           {option.description && (
-                            <span className="text-foreground-muted mt-0.5 block text-sm leading-5">
+                            <span
+                              className={cn(
+                                'text-foreground-muted mt-0.5 block text-sm leading-5',
+                                // Mobil fehlt der Platz: Mit Beschreibung ist eine Antwort rund 100 px
+                                // hoch, ohne 52. Die Labels tragen allein, Ausnahmen setzen das Flag.
+                                !option.descriptionOnMobile && 'hidden sm:block'
+                              )}
+                            >
                               {option.description}
                             </span>
                           )}

@@ -1,13 +1,14 @@
 ---
 /**
- * Anzeigen-Landing für Tür 3 (Zahlen & Steuerung). Inhalt liegt in
- * components/zahlen/ZahlenPage.astro und wird mit /zahlen/ geteilt.
+ * Anzeigen-Landing für Tür 3 (Zahlen & Steuerung) (Funnel-Fassung, seit 2026-10-16). Inhalt in components/zahlen-funnel/.
+ * Die indexierte Tür-Seite /zahlen/ hängt an components/zahlen/ und ist bewusst ausführlicher;
+ * hier steht nur, was zur Kontaktaufnahme führt.
  * FunnelLayout: noindex, ohne Navigation, nicht in der Sitemap.
  * Liegt als statische Datei neben /f/[slug].astro und gewinnt gegen die
  * dynamische Route; in funnels.ts darf es deshalb keinen Slug „zahlen" geben.
  */
 import FunnelLayout from '@/layouts/FunnelLayout.astro';
-import ZahlenPage from '@/components/zahlen/ZahlenPage.astro';
+import ZahlenPage from '@/components/zahlen-funnel/ZahlenPage.astro';
 ---
 
 <FunnelLayout

@@ -10,6 +10,8 @@ export interface FunnelQuizOption {
   id: string;
   label: string;
   description?: string;
+  /** Beschreibung auch unter 640 px zeigen; sonst steht dort nur das Label. */
+  descriptionOnMobile?: boolean;
   /** Zeigt nach Auswahl ein Freitextfeld statt direkt weiterzuspringen */
   allowText?: boolean;
   textPlaceholder?: string;
@@ -187,45 +189,6 @@ const timeQuestion: FunnelQuizQuestion = {
 };
 
 // Angle 3 (Lizenz / Eigene Software): Was stört an der aktuellen Software?
-const softwareFitQuestion: FunnelQuizQuestion = {
-  id: 'fit',
-  question: 'Was stört euch an eurer aktuellen Software am meisten?',
-  hint: 'Wählt, was am ehesten zutrifft.',
-  options: [
-    {
-      id: 'kosten',
-      label: 'Laufende Lizenz-/Abokosten',
-      description: 'Monat für Monat zahlen – und es hört nie auf.',
-    },
-    {
-      id: 'passt-nicht',
-      label: 'Passt nur zur Hälfte zu uns',
-      description: 'Wir arbeiten um die Software herum statt umgekehrt.',
-    },
-    {
-      id: 'zu-viele',
-      label: 'Zu viele Tools nebeneinander',
-      description: 'Mehrere Abos, die nicht richtig zusammenspielen.',
-    },
-    {
-      id: 'abhaengig',
-      label: 'Abhängigkeit vom Anbieter',
-      description: 'Preise, Funktionen, Roadmap – alles fremdbestimmt.',
-    },
-    {
-      id: 'unklar',
-      label: 'Schwer zu sagen – vieles',
-      description: 'Es passt an mehreren Stellen nicht so richtig.',
-    },
-    {
-      id: 'sonstiges',
-      label: 'Etwas anderes',
-      allowText: true,
-      textPlaceholder: 'Beschreibt in ein, zwei Sätzen, was euch stört …',
-    },
-  ],
-};
-
 /** Fragen-Decks je Angle: angle-spezifische Frage 1 + geteilte Impact-Frage 2. */
 // Angle 4 (Code-Check): Wer hat die bestehende Anwendung gebaut? Der Ausgangspunkt sagt mehr
 // über die typischen Lücken als jede Technikfrage – und vermeidet, dass sich jemand rechtfertigen muss.
@@ -266,7 +229,6 @@ const builderQuestion: FunnelQuizQuestion = {
 export const analyseQuestions: FunnelQuizQuestion[] = [landscapeQuestion, impactQuestion];
 export const codeCheckQuestions: FunnelQuizQuestion[] = [builderQuestion, impactQuestion];
 export const zeitfresserQuestions: FunnelQuizQuestion[] = [timeQuestion, impactQuestion];
-export const eigeneSoftwareQuestions: FunnelQuizQuestion[] = [softwareFitQuestion, impactQuestion];
 
 export const funnels: FunnelDefinition[] = [
   {
@@ -484,81 +446,6 @@ export const funnels: FunnelDefinition[] = [
       text: 'Ein kurzer Ausschnitt aus echten Projekten – damit ihr seht, wie Automatisierung im Alltag aussieht.',
     },
     questions: zeitfresserQuestions,
-    contact: {
-      heading: 'Wohin dürfen wir die Ersteinschätzung schicken?',
-      text: 'Ich melde mich werktags persönlich, um einen kurzen Call zu vereinbaren – kein Newsletter, keine Weitergabe eurer Daten.',
-    },
-    success: {
-      heading: 'Danke – eure Angaben sind angekommen.',
-      text: 'Ich schaue mir eure Antworten an und melde mich werktags, um einen 30-Minuten-Call zu vereinbaren. Wenn ihr wollt, bucht ihr direkt einen Termin:',
-      calUrl: 'https://cal.com/rocketbase-marten/discovery-vorabgesprach',
-      calLabel: 'Direkt 30-Minuten-Call buchen',
-    },
-  },
-  {
-    // ── ANGLE 3 — Lizenz-Revival / Eigene Software ─────────────────────────────────────────────
-    slug: 'eigene-software',
-    meta: {
-      title: 'Eigene Software statt Abo: Rechnet euren Fall in 2 Minuten',
-      description:
-        'Ihr zahlt Monat für Monat für Software von der Stange, die nur zur Hälfte passt? Beantwortet zwei kurze Fragen und erhaltet eine ehrliche Ersteinschätzung, ob sich eine eigene Lösung für euch rechnet.',
-    },
-    hero: {
-      eyebrow: 'Software-Rechnung',
-      headline: 'Fünf Abos – und keins passt richtig?',
-      headlineAccent: 'Rechnen wir euren Fall gemeinsam durch.',
-      subline:
-        'Standardsoftware kostet Monat für Monat – und ihr arbeitet trotzdem um sie herum. Beantwortet zwei kurze Fragen und bekommt eine ehrliche Ersteinschätzung, ob sich eine eigene, auf euren Prozess zugeschnittene Lösung für euch rechnet. Kein Verkaufsgespräch, keine Massenmail.',
-    },
-    details: {
-      heading: 'Warum sich der Blick auf eine eigene Lösung lohnt',
-      intro:
-        'Standardsoftware hat ihre Grenzen. Mit Schnittstellen, eigenen Tools und gezielter KI lässt sich vieles besser lösen – zugeschnitten statt Einheitsbrei.',
-      blocks: [
-        {
-          icon: 'zap',
-          title: 'Laufende Kosten, die nie enden',
-          text: 'Abos summieren sich Jahr für Jahr – ohne dass euch am Ende etwas gehört, das zu euch passt.',
-        },
-        {
-          icon: 'layers',
-          title: 'Prozesse, die um die Software gebaut sind',
-          text: 'Ihr passt euch der Software an, statt umgekehrt – das kostet täglich Zeit und Nerven.',
-        },
-        {
-          icon: 'share',
-          title: 'Zu viele Tools, die nicht zusammenspielen',
-          text: 'Mehrere Abos, doppelte Datenpflege, fehlende Schnittstellen – Standard eben.',
-        },
-        {
-          icon: 'shield',
-          title: 'Zugeschnitten statt fremdbestimmt',
-          text: 'Eine Lösung genau um euren Prozess gebaut – mit vollem Nutzungsrecht und ohne Abo-Tretmühle.',
-        },
-      ],
-    },
-    steps: [
-      {
-        icon: 'check-circle',
-        title: 'Formular ausfüllen',
-        text: 'Ein paar kurze Fragen zu eurer Situation – direkt hier auf der Seite, in zwei Minuten.',
-      },
-      {
-        icon: 'file-text',
-        title: 'Terminvorschlag von mir',
-        text: 'Ich melde mich werktags persönlich mit einem Vorschlag für einen 30-Minuten-Call.',
-      },
-      {
-        icon: 'users',
-        title: 'Einschätzung im Gespräch',
-        text: 'Im Call schauen wir uns eure Situation gemeinsam an – und ihr bekommt eine ehrliche Einschätzung vom Entwickler, nicht vom Vertriebler.',
-      },
-    ],
-    trustVideo: {
-      heading: 'Ein Einblick in das, was wir bauen',
-      text: 'Ein kurzer Ausschnitt aus echten Projekten – damit ihr seht, wie eine eigene, zugeschnittene Lösung aussieht.',
-    },
-    questions: eigeneSoftwareQuestions,
     contact: {
       heading: 'Wohin dürfen wir die Ersteinschätzung schicken?',
       text: 'Ich melde mich werktags persönlich, um einen kurzen Call zu vereinbaren – kein Newsletter, keine Weitergabe eurer Daten.',

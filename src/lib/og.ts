@@ -1,5 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+// satori bleibt auf der 0.28-Linie: ab 0.60 rechnet es Prozentbreiten in gepolsterten
+// Containern anders, und die Fußzeile (Logo links, Domain rechts) läuft rechts aus dem Bild.
 import satori from 'satori';
 import { html } from 'satori-html';
 import sharp from 'sharp';
@@ -32,6 +34,34 @@ const fontCaches = new Map<string, ArrayBuffer>();
 const logoCache = new Map<string, string>();
 
 const siteHostname = new URL(siteConfig.url).hostname;
+
+/**
+ * satori-html escapes interpolated strings (`&` -> `&amp;`), but satori renders text
+ * nodes verbatim, so a title like "Einsatz & Abrechnung" showed up as "&amp;".
+ * Decode the few entities the escaper produces, in every text node of the tree.
+ */
+const ENTITIES: Record<string, string> = {
+  '&amp;': '&',
+  '&lt;': '<',
+  '&gt;': '>',
+  '&quot;': '"',
+  '&#39;': "'",
+  '&#x27;': "'",
+};
+
+function decodeEntities<T>(node: T): T {
+  if (typeof node === 'string') {
+    return node.replace(/&(?:amp|lt|gt|quot|#39|#x27);/g, (m) => ENTITIES[m]) as T;
+  }
+  if (Array.isArray(node)) return node.map(decodeEntities) as T;
+  if (node && typeof node === 'object' && 'props' in node) {
+    const n = node as { props?: { children?: unknown } };
+    if (n.props && n.props.children !== undefined) {
+      n.props.children = decodeEntities(n.props.children);
+    }
+  }
+  return node;
+}
 
 function loadFontFile(filename: string): ArrayBuffer {
   if (!fontCaches.has(filename)) {
@@ -70,7 +100,7 @@ export async function generateOGImage(options: OGImageOptions): Promise<Buffer> 
 
   const badgeLabel = type === 'article' ? 'Artikel' : 'Seite';
 
-  const markup = html`
+  const markup = decodeEntities(html`
     <div style="height: 100%; width: 100%; display: flex; flex-direction: column; background: linear-gradient(135deg, #0d0f14 0%, #161a24 50%, #0d0f14 100%); padding: 60px 80px; font-family: 'Inter'; position: relative;">
       <!-- Left accent bar -->
       <div style="display: flex; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: linear-gradient(180deg, #6372A5 0%, #8b9bd4 50%, #6372A5 100%);"></div>
@@ -94,7 +124,7 @@ export async function generateOGImage(options: OGImageOptions): Promise<Buffer> 
         </div>
       </div>
     </div>
-  `;
+  `);
 
   // @ts-expect-error satori-html VNode is compatible with satori
   const svg = await satori(markup, {
@@ -146,7 +176,7 @@ export async function generateCaseOGImage(options: CaseOGImageOptions): Promise<
     .toBuffer();
 
   // 2. Foreground: gradient overlay + text via satori SVG.
-  const markup = html`
+  const markup = decodeEntities(html`
     <div style="height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 60px 80px; font-family: 'Inter'; background: linear-gradient(135deg, rgba(13,15,20,0.82) 0%, rgba(22,26,36,0.55) 55%, rgba(13,15,20,0.82) 100%); position: relative;">
       <!-- Left accent bar -->
       <div style="display: flex; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: linear-gradient(180deg, #6372A5 0%, #8b9bd4 50%, #6372A5 100%);"></div>
@@ -171,7 +201,7 @@ export async function generateCaseOGImage(options: CaseOGImageOptions): Promise<
         <span style="font-size: 15px; font-weight: 400; color: #d4d4d8;">${siteHostname}</span>
       </div>
     </div>
-  `;
+  `);
 
   // @ts-expect-error satori-html VNode is compatible with satori
   const overlaySvg = await satori(markup, {
@@ -219,7 +249,7 @@ export async function generateBlogOGImage(options: BlogOGImageOptions): Promise<
     .modulate({ brightness: 0.55 })
     .toBuffer();
 
-  const markup = html`
+  const markup = decodeEntities(html`
     <div style="height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 60px 80px; font-family: 'Inter'; background: linear-gradient(135deg, rgba(13,15,20,0.82) 0%, rgba(22,26,36,0.55) 55%, rgba(13,15,20,0.82) 100%); position: relative;">
       <div style="display: flex; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: linear-gradient(180deg, #6372A5 0%, #8b9bd4 50%, #6372A5 100%);"></div>
 
@@ -240,7 +270,7 @@ export async function generateBlogOGImage(options: BlogOGImageOptions): Promise<
         <span style="font-size: 15px; font-weight: 400; color: #d4d4d8;">${siteHostname}</span>
       </div>
     </div>
-  `;
+  `);
 
   // @ts-expect-error satori-html VNode is compatible with satori
   const overlaySvg = await satori(markup, {
