@@ -1,13 +1,14 @@
 ---
 /**
- * Anzeigen-Landing für Tür 2 (Einsatz & Abrechnung). Inhalt liegt in
- * components/einsatz/EinsatzPage.astro und wird mit /einsatzplanung/ geteilt.
+ * Anzeigen-Landing für Tür 2 (Einsatz & Abrechnung) (Funnel-Fassung, seit 2026-10-16). Inhalt in components/einsatz-funnel/.
+ * Die indexierte Tür-Seite /einsatzplanung/ hängt an components/einsatz/ und ist bewusst ausführlicher;
+ * hier steht nur, was zur Kontaktaufnahme führt.
  * FunnelLayout: noindex, ohne Navigation, nicht in der Sitemap.
  * Liegt als statische Datei neben /f/[slug].astro und gewinnt gegen die
  * dynamische Route; in funnels.ts darf es deshalb keinen Slug „einsatz" geben.
  */
 import FunnelLayout from '@/layouts/FunnelLayout.astro';
-import EinsatzPage from '@/components/einsatz/EinsatzPage.astro';
+import EinsatzPage from '@/components/einsatz-funnel/EinsatzPage.astro';
 ---
 
 <FunnelLayout

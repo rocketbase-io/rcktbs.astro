@@ -1,19 +1,20 @@
 ---
 /**
- * Anzeigen-Landing für den Angebotsbaustein. Inhalt liegt in
- * components/angebote/AngebotePage.astro und wird mit /angebote/ geteilt.
+ * Anzeigen-Landing für den Angebotsbaustein (Funnel-Fassung, seit 2026-10-16). Inhalt in components/angebote-funnel/.
+ * Die indexierte Tür-Seite /angebote/ hängt an components/angebote/ und ist bewusst ausführlicher;
+ * hier steht nur, was zur Kontaktaufnahme führt.
  * FunnelLayout: noindex, ohne Navigation, nicht in der Sitemap.
  * Liegt als statische Datei neben /f/[slug].astro und gewinnt gegen die
  * dynamische Route; in funnels.ts darf es deshalb keinen Slug „angebote" geben.
  */
 import FunnelLayout from '@/layouts/FunnelLayout.astro';
-import AngebotePage from '@/components/angebote/AngebotePage.astro';
+import AngebotePage from '@/components/angebote-funnel/AngebotePage.astro';
 ---
 
 <FunnelLayout
-  title="Angebotsbaustein: individuell für euch, durchgerechnet, Zusage online"
+  title="Angebote: individuell für euch, durchgerechnet, Zusage online"
   description="Angebote, die sich nach eurer Kalkulation selbst rechnen und beim Kunden als Seite ankommen. Zusage per Klick, Nachfassen automatisch. Für euren Betrieb entwickelt."
-  headerNote="Angebotsbaustein"
+  headerNote="Angebot &amp; Kalkulation"
 >
   <AngebotePage variant="funnel" />
 </FunnelLayout>
