@@ -71,7 +71,12 @@ const year = new Date().getFullYear();
     </div>
   </div>
 
-  <footer slot="footer" class="border-border bg-background-secondary border-t py-8">
+  <!-- pb: Platz für die fixierte Leiste, sonst liegt sie über Impressum und Datenschutz.
+       Die Höhe setzt das Skript als --leiste-h; der Startwert trägt, bis es läuft. -->
+  <footer
+    slot="footer"
+    class="border-border bg-background-secondary funnel-footer border-t pt-8 pb-8"
+  >
     <div class="container flex flex-col items-center justify-between gap-4 sm:flex-row">
       <p class="text-foreground-muted text-sm">
         © {year} {siteConfig.name}
@@ -126,6 +131,12 @@ const year = new Date().getFullYear();
     body:has([data-funnel-leiste]) .consent-reopener {
       display: none !important;
     }
+    /* Die Leiste ist fixiert und belegt keinen Platz im Fluss: Der Footer schiebt sich
+       selbst so weit hoch, dass seine Links frei bleiben. Nur wenn die Leiste wirklich
+       sichtbar ist, sonst klafft am Seitenende eine Lücke. */
+    body:has([data-funnel-leiste]:not([hidden])) .funnel-footer {
+      padding-bottom: calc(2rem + var(--leiste-h, 3.75rem));
+    }
   }
 </style>
 
@@ -136,6 +147,18 @@ const year = new Date().getFullYear();
     const quiz = document.getElementById('quiz');
     if (!leiste || !quiz || !('IntersectionObserver' in window)) return;
     leiste.removeAttribute('hidden');
+
+    // Die echte Höhe an den Footer geben: Sie hängt an der Schriftgröße und an
+    // env(safe-area-inset-bottom), ist also je Gerät verschieden.
+    const hoeheMelden = () => {
+      document.documentElement.style.setProperty(
+        '--leiste-h',
+        `${Math.ceil(leiste.getBoundingClientRect().height)}px`
+      );
+    };
+    hoeheMelden();
+    if ('ResizeObserver' in window) new ResizeObserver(hoeheMelden).observe(leiste);
+    window.addEventListener('resize', hoeheMelden);
     const beobachter = new IntersectionObserver(
       ([eintrag]) => {
         const vorbei = !eintrag.isIntersecting && eintrag.boundingClientRect.bottom < 0;
