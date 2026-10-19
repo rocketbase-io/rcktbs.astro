@@ -153,8 +153,8 @@ const referenzen = [
   {
     href: '/referenzen/fkc-consulting/',
     client: 'FKC Consulting',
-    title: 'Vom Vertrag bis zur Mahnung',
-    text: 'Einsätze je Vertrag gegen das Kontingent, Leistungen erfassen, Rechnung mit Leistungsnachweis, Mahnstufen mit Vorlagen. Abgelöst hat das eine Branchensoftware samt Excel daneben.',
+    title: 'Einsätze planen gegen das Kontingent',
+    text: 'Was im Vertrag steht, steuert die Terminplanung: jeder Einsatz zieht vom Kontingent ab, Leistungen werden erfasst, die Rechnung bringt den Nachweis mit. Abgelöst hat das eine Branchensoftware samt Excel daneben.',
     image: fkcInvoice,
     alt: 'Rechnung mit Leistungsnachweis in der Anwendung',
   },
@@ -181,7 +181,7 @@ const miniFaqs = einsatzFaqs;
 // „Von heute bis dahin“: Strecke und Einwände der Funnel-Fassung (ersetzt dort die FAQ).
 const strecke = {
   stationen: [
-    { wann: 'Heute', titel: 'Excel, WhatsApp, Stundenzettel', text: 'Geplant wird in Excel, umgeplant per Chat. Die Stundenzettel kommen am Monatsende, die Rechnung baut jemand aus allem, was er findet.' },
+    { wann: 'So läuft es heute', titel: 'Excel planen, einzeln nachtelefonieren', text: 'Geplant wird in einer Excel, die eine Person versteht. Fällt jemand aus, geht das Umplanen über Anrufe und Nachrichten. Was erledigt wurde, kommt am Monatsende.' },
     { wann: 'Woche 1 bis 2', titel: 'Erstgespräch und Aufnahme', text: 'Dreißig Minuten über eure Lage. Dann nehmen wir euren Ablauf auf, so wie er wirklich läuft, und ihr bekommt einen Festpreis.' },
     { wann: 'Danach, 3 bis 6 Wochen', titel: 'Die Plantafel läuft', text: 'Programmiert zum Festpreis. Erfassung und Rechnung folgen Stufe für Stufe, eure Wochenplanung bleibt, bis das Neue trägt.' },
   ] as const,
@@ -231,8 +231,8 @@ const strecke = {
         {
           istFunnel ? (
             <>
-              Planen, erledigen, abrechnen.
-              <span class="text-brand-500 block">Ein Programm statt Excel, Zettel und WhatsApp.</span>
+              Planen könnt ihr.
+              <span class="text-brand-500 block">Umplanen kostet euch den Tag.</span>
             </>
           ) : (
             <>
@@ -248,7 +248,7 @@ const strecke = {
       >
         <span>Schluss mit</span>
         {
-          ['Plan-Excel', 'Stundenzetteln', 'Rechnungen von Hand'].map((alt) => (
+          ['Plan-Excel', 'Telefonketten', 'Stundenzetteln'].map((alt) => (
             <span class="hero-alt border-border rounded-md border px-2 py-0.5">{alt}</span>
           ))
         }
@@ -268,8 +268,8 @@ const strecke = {
       <p
         class="text-foreground-muted border-border/70 bg-background/85 mx-auto mt-8 hidden max-w-lg rounded-xl border px-4 py-3 text-sm leading-6 backdrop-blur-sm lg:mx-0 lg:block"
       >
-        Aus laufenden Kundenlösungen, vom Metallbau bis zur Beratung. Für Betriebe, die planen,
-        ausführen und abrechnen.
+        Der Einsatzplan weiß, wer kann, wer darf und wer heute da ist. Fällt jemand aus, seht ihr
+        sofort, wer einspringen kann. Für Werkstatt, Außendienst und Beratung.
       </p>
     </div>
 
@@ -329,6 +329,14 @@ const strecke = {
         </div>
       )
     }
+    <!-- mobil unter dem Quiz, damit das Quiz ohne Scrollen anfängt -->
+    {
+      istFunnel && (
+        <p class="text-foreground-muted border-border/70 bg-background/85 mx-auto mt-6 max-w-lg rounded-xl border px-4 py-3 text-center text-sm leading-6 backdrop-blur-sm lg:hidden">
+          Der Einsatzplan weiß, wer kann, wer darf und wer heute da ist.
+        </p>
+      )
+    }
   </div>
 
   <div class="relative z-10">
@@ -372,8 +380,9 @@ const strecke = {
         <span class="text-foreground-muted">Bis um sechs Uhr morgens jemand krank ist.</span>
       </h2>
       <p class="text-foreground-secondary mt-5 text-[0.95rem] leading-7">
-        Geplant wird in Excel, umgeplant per WhatsApp. Die Stundenzettel kommen am Monatsende. Und
-        die Rechnung baut jemand aus allem, was er findet.
+        Geplant wird in einer Excel, die eine Person versteht. Umgeplant wird am Telefon, einer
+        nach dem anderen. Die Stundenzettel kommen am Monatsende, und die Rechnung baut jemand aus
+        allem, was er findet.
       </p>
       <p class="text-foreground mt-4 text-[0.95rem] leading-7 font-semibold">
         Mit jedem Auftrag wächst der Aufwand. Der Umsatz nicht ganz so schnell.
@@ -529,13 +538,14 @@ const strecke = {
         <LohntSich
           id="ls-einsatz"
           frage="Wie viele Aufträge rechnet ihr im Monat ab?"
+          wer="Alles, was durch Planung, Erfassung und Rechnung läuft: Baustellen, Touren, Serviceeinsätze."
           min={10}
           max={300}
           step={10}
           start={60}
-          minutenJe={45}
-          wofuer="ins Umplanen, Stundenzettel sammeln und Rechnungen bauen."
-          annahme="Grobe Rechnung mit 45 Minuten je Auftrag. Ob sich ein System bei euch lohnt, klären wir im Gespräch."
+          minutenJe={20}
+          wofuer="ins Umplanen, Stundenzettel nachhalten und Rechnungen zusammenbauen."
+          annahme="Zwanzig Minuten je Auftrag, über den ganzen Weg: Termin verschieben und alle informieren, fehlenden Stundenzetteln hinterhertelefonieren, Stunden abtippen, Material nachtragen, die Rechnung aus Zettel und Mail zusammenbauen. Wo bei euch die meiste Zeit hängt, sehen wir im Gespräch."
         />
       </div>
       <!-- Nur auf der indexierten Seite: Im Funnel führt das Quiz zum Gespräch, die Karte wäre ein zweiter Weg. -->

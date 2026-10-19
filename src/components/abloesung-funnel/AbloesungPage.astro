@@ -7,6 +7,17 @@
  * Software, die es so noch nicht gibt?" Dazu, was es 2024 nicht gab: Vieles ist gebaut, und KI
  * beim Programmieren macht den Rest bezahlbar. Das Ablösen bleibt der Weg, ist aber nicht mehr
  * das Versprechen. Begründung: rcktbs-sales, docs/vertrieb/tor-hooks.md.
+ *
+ * Die H1 hieß bis 2026-10-19 „Braucht ihr eine Software, die es so noch nicht gibt? / Vieles
+ * davon ist heute schon gebaut." Die Frage kam aus der Anzeige, der Besucher hatte sie also
+ * schon gelesen und mit Ja beantwortet; die zweite Zeile klang außerdem nach Software von der
+ * Stange. Jetzt steht hier der Schmerz: Ihr arbeitet anders, und das Programm kann damit nichts
+ * anfangen. Bezahlbarkeit und das 80/20-Argument kommen bewusst erst beim Scrollen — im Kasten
+ * unter dem Quiz und in den Einwänden (Marten, 2026-10-19).
+ *
+ * Wenn je Tor mehrere Anzeigen-Motive laufen: Varianten als eigene Seiten über funnels.ts, die
+ * sich nur in H1 und Heute-Block unterscheiden. Nicht per Query-Parameter — der Build ist
+ * statisch, die Headline würde nach dem Laden sichtbar umspringen.
  * Die ausführliche, indexierte Seite /standardsoftware-abloesung/ hängt weiter an
  * components/abloesung/. Die Visuals (Landschaft, Ablöseplan, Datenübernahme) sind Kopien von dort.
  *
@@ -172,12 +183,12 @@ const istFunnel = variant === 'funnel';
 // „Von heute bis dahin“: Strecke und Einwände der Funnel-Fassung (ersetzt dort die FAQ).
 const strecke = {
   stationen: [
-    { wann: 'Heute', titel: 'Der Ablauf steckt in Köpfen und Excel', text: 'Das Lieferdatum steht im Bemerkungsfeld, die Kalkulation in einer Excel. Was euch von anderen unterscheidet, kennt euer Programm nicht.' },
+    { wann: 'So läuft es heute', titel: 'Der Ablauf steckt in Köpfen und Excel', text: 'Das Lieferdatum steht im Bemerkungsfeld, die Kalkulation in einer Excel, der Rest in ein paar Köpfen. Jeder weiß, wie es geht, und keiner kann es jemandem übergeben.' },
     { wann: 'Woche 1 bis 2', titel: 'Erstgespräch und Aufnahme', text: 'Dreißig Minuten darüber, wie ihr arbeiten wollt. Dann nehmen wir auf, welcher Abschnitt zuerst umzieht und welche Daten mit müssen, und ihr bekommt einen Festpreis.' },
-    { wann: 'Danach, 4 bis 6 Wochen', titel: 'Der erste Abschnitt läuft', text: 'Programmiert zum Festpreis, meist zuerst der Abschnitt, der am meisten Zeit kostet. Die weiteren folgen, je nach Programm in ein bis vier Monaten. Das alte läuft so lange weiter.' },
+    { wann: 'Danach, 4 bis 6 Wochen', titel: 'Der erste Abschnitt läuft', text: 'Programmiert zum Festpreis, meist zuerst der Abschnitt, der am meisten Zeit kostet. Mit euren Daten darin und dem alten Programm daneben, bis das Neue trägt.' },
   ] as const,
   einwaende: [
-    { satz: 'Das dauert ewig.', antwort: 'Der erste Abschnitt läuft nach vier bis sechs Wochen. Das Ganze dauert je nach Programm ein bis vier Monate, und das alte läuft so lange weiter.' },
+    { satz: 'Das dauert ewig.', antwort: 'Der erste Abschnitt läuft nach vier bis sechs Wochen, jeder weitere braucht zwei bis vier Monate. Bei einem Kunden haben Angebote, Projekte, Rechnungen und Auswertungen zusammen neun Monate gedauert, dann war die alte Lizenz gekündigt. Die ganze Zeit lief das alte Programm weiter.' },
     { satz: 'Dafür haben wir keine Zeit.', antwort: 'Zwei bis drei Stunden pro Woche von euch: ein Termin, dazu Ausprobieren.' },
     { satz: 'Wir hängen mit allen Daten im alten Programm.', antwort: 'Die Daten ziehen mit. Erst der Abschnitt, dann die Historie, geprüft gegen das Alte.' },
     { satz: 'Dann steht der Betrieb still.', antwort: 'Das Neue läuft neben dem alten Programm. Abgeschaltet wird erst, wenn alles trägt.' },
@@ -222,8 +233,8 @@ const strecke = {
         {
           istFunnel ? (
             <>
-              Braucht ihr eine Software, die es so noch nicht gibt?
-              <span class="text-brand-500 block">Vieles davon ist heute schon gebaut.</span>
+              Ihr arbeitet anders als alle anderen.
+              <span class="text-brand-500 block">Nur eure Software weiß das nicht.</span>
             </>
           ) : (
             <>
@@ -261,8 +272,9 @@ const strecke = {
         data-reveal
         class="text-foreground-muted border-border/70 bg-background/85 mx-auto mt-8 hidden max-w-lg rounded-xl border px-4 py-3 text-sm leading-6 backdrop-blur-sm lg:mx-0 lg:block"
       >
-        Wenn mehr fehlt als ein Teil: Angebot, Einsatz und Zahlen in einem System, das so arbeitet
-        wie ihr. Für Betriebe ab etwa 30 Leuten.
+        Angebote, Projekte, Rechnungen, Auswertungen: an diesen Stellen arbeiten die meisten
+        Betriebe ähnlich, und das haben wir gebaut. Darauf setzen wir auf und programmieren, was
+        bei euch anders läuft. Für Betriebe ab etwa 30 Leuten.
       </p>
     </div>
 
@@ -272,7 +284,7 @@ const strecke = {
     <p
       class="text-foreground-muted border-border/70 bg-background/85 mx-auto mt-6 max-w-lg rounded-xl border px-4 py-3 text-center text-sm leading-6 backdrop-blur-sm lg:hidden"
     >
-      Angebot, Einsatz und Zahlen in einem System, das so arbeitet wie ihr.
+      Angebote, Projekte, Rechnungen: das ist gebaut. Programmiert wird, was bei euch anders läuft.
     </p>
   </div>
 
@@ -527,13 +539,15 @@ const strecke = {
         <LohntSich
           id="ls-abloesung"
           frage="Wie viele Leute arbeiten täglich um euer Programm herum?"
-          min={1}
-          max={40}
-          step={1}
-          start={8}
+          wer="Vertrieb, Disposition, Projektleitung, Buchhaltung, oft auch die Monteure: jeder, der eine Excel daneben pflegt."
+          einheit="personen"
+          min={10}
+          max={120}
+          step={5}
+          start={30}
           minutenJe={400}
-          wofuer="in Zusatzfelder, Excel daneben und Nachpflege."
-          annahme="Grobe Rechnung mit 20 Minuten je Person und Arbeitstag. Ob sich eigene Software bei euch lohnt, klären wir im Gespräch."
+          wofuer="die rechnerisch den ganzen Monat nur Zusatzfelder, Excel und Nachpflege machen."
+          annahme="Zwanzig Minuten je Person und Arbeitstag: Lieferdatum ins Bemerkungsfeld tippen, die Excel daneben nachrechnen, Lagerbestand gegen die Aufträge abgleichen, dasselbe zweimal pflegen, weil es zwei Programme gibt. Bei manchen sind es fünf Minuten, bei anderen eine Stunde."
         />
       </div>
       <!-- Nur auf der indexierten Seite: Im Funnel führt das Quiz zum Gespräch, die Karte wäre ein zweiter Weg. -->

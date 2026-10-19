@@ -423,7 +423,7 @@ const istFunnel = variant === 'funnel';
 // „Von heute bis dahin“: Strecke und Einwände der Funnel-Fassung (ersetzt dort die FAQ).
 const strecke = {
   stationen: [
-    { wann: 'Heute', titel: 'Vorlage kopieren, Zahlen ändern', text: 'Das letzte Angebot als Vorlage, die Kalkulation in einer Excel daneben, und ob der Kunde es gelesen hat, weiß keiner.' },
+    { wann: 'So läuft es heute', titel: 'Jedes Angebot neu zusammengesucht', text: 'Preise aus der letzten Kalkulation, Zuschläge aus dem Kopf, der Deckungsbeitrag in einer Excel daneben. Wer freigibt, sieht die Rechnung dahinter nicht, und ob der Kunde das Angebot überhaupt geöffnet hat, weiß keiner.' },
     { wann: 'Woche 1 bis 2', titel: 'Erstgespräch und Aufnahme', text: 'Dreißig Minuten über euer kompliziertestes Angebot. Dann legen wir eure Kalkulationsregeln fest, so wie ihr heute rechnet, und ihr bekommt einen Festpreis.' },
     { wann: 'Danach, 2 bis 4 Wochen', titel: 'Eure Kalkulation läuft', text: 'Programmiert zum Festpreis, nach euren Regeln, mit eurem Briefkopf. Der Kunde bekommt die Seite, ihr das PDF für die Akte.' },
   ] as const,
@@ -476,8 +476,8 @@ const strecke = {
         {
           istFunnel ? (
             <>
-              Euer Angebot rechnet sich selbst.
-              <span class="text-brand-500 block">Der Kunde sagt per Klick ja.</span>
+              Ein System, das eure Kalkulation kennt.
+              <span class="text-brand-500 block">Und eure Marge gleich mit.</span>
             </>
           ) : (
             <>
@@ -493,7 +493,7 @@ const strecke = {
       >
         <span>Schluss mit</span>
         {
-          ['Excel daneben', 'Word-Vorlage', 'PDF-Anhang'].map((alt) => (
+          ['Excel daneben', 'Word-Vorlage', 'Zahlendreher'].map((alt) => (
             <span class="hero-alt border-border rounded-md border px-2 py-0.5">{alt}</span>
           ))
         }
@@ -515,8 +515,9 @@ const strecke = {
         data-reveal
         class="text-foreground-muted border-border/70 bg-background/85 mx-auto mt-8 hidden max-w-lg rounded-xl border px-4 py-3 text-sm leading-6 backdrop-blur-sm lg:mx-0 lg:block"
       >
-        Kein Programm von der Stange. Was bei unseren Kunden läuft, bauen wir für euren Betrieb um
-        und programmieren, was bei euch anders ist. Für Prüfung, Zertifizierung, Wartung, Service und Handwerk.
+        Das PDF bleibt, auf Knopfdruck und mit eurem Briefkopf. Was dazukommt: die Kalkulation
+        dahinter rechnet nach euren Regeln, und ihr seht beim Schreiben, was übrig bleibt. Für
+        Prüfung, Zertifizierung, Wartung, Service und Handwerk.
       </p>
     </div>
 
@@ -566,7 +567,7 @@ const strecke = {
     <p
       class="text-foreground-muted border-border/70 bg-background/85 mx-auto mt-6 max-w-lg rounded-xl border px-4 py-3 text-center text-sm leading-6 backdrop-blur-sm lg:hidden"
     >
-      Kein Programm von der Stange. Auf euren Betrieb zugeschnitten und programmiert.
+      Das PDF bleibt. Was dazukommt: die Kalkulation dahinter rechnet nach euren Regeln.
     </p>
   </div>
   <!-- LOGOS: schließen die erste Bildschirmhöhe ab; der Scroll-Hinweis sitzt auf ihrer Oberkante -->
@@ -745,13 +746,14 @@ const strecke = {
       <div class="af-rise">
         <LohntSich
           frage="Wie viele Angebote schreibt ihr im Monat?"
+          wer="Gemeint sind die kalkulierten, nicht die Standardpreisliste."
           min={5}
-          max={150}
+          max={80}
           step={5}
-          start={30}
-          minutenJe={90}
-          wofuer="ins Abtippen, Nachrechnen und Nachfassen."
-          annahme="Grobe Rechnung mit 90 Minuten je Angebot. Ob sich das bei euch lohnt, klären wir im Gespräch."
+          start={25}
+          minutenJe={120}
+          wofuer="ins Zusammensuchen, Durchrechnen, Abstimmen und Nachfassen."
+          annahme="Zwei Stunden je kalkuliertem Angebot, von der Anfrage bis zur Zusage: Mengen aus dem Aufmaß ziehen, Einkaufspreise suchen, Zuschläge setzen, den Deckungsbeitrag in der Excel prüfen, zwei Varianten rechnen, freigeben lassen, nachfassen. Eure komplizierten dauern deutlich länger."
         />
       </div>
 

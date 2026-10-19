@@ -8,8 +8,10 @@
  * Gespräch. Preise stehen nirgends, der Rahmen wird im Erstgespräch genannt.
  *
  * Wochen je Tor (Marten, 2026-10-18), gerechnet ab Beauftragung nach der Aufnahme:
- * Angebote 2 bis 4, Einsatz 3 bis 6, Zahlen 4 bis 6, Ablösung erster Bereich 4 bis 6,
- * das Ganze ein bis vier Monate.
+ * Angebote 2 bis 4, Einsatz 3 bis 6, Zahlen 4 bis 6, Ablösung erster Bereich 4 bis 6.
+ * Jeder weitere Bereich 2 bis 4 Monate (Marten, 2026-10-19): bei einem Kunden waren es
+ * für vier Bereiche neun Monate, deshalb steht hier nicht mehr „ein bis vier Monate“
+ * fürs Ganze.
  */
 interface Station {
   /** Zeitmarke links, etwa „Heute“ oder „Danach, 3 bis 6 Wochen“. */
@@ -40,12 +42,12 @@ const { stationen, einwaende, class: className } = Astro.props;
         Von heute bis dahin
       </p>
       <h2 class="font-display text-foreground mt-4 text-2xl font-bold tracking-tight text-balance sm:text-3xl">
-        Was in den ersten Wochen passiert.
+        Vom heutigen Stand bis es läuft.
       </h2>
       <p class="text-foreground-secondary mt-4 text-[0.95rem] leading-6 sm:text-base sm:leading-7">
-        Wir bauen auf dem auf, was bei anderen Betrieben schon läuft, und programmieren, was bei euch
-        anders ist. Kein Konfigurieren, keine Grenzen wie bei Software von der Stange. Programmiert
-        zum Festpreis, am Ende zu hundert Prozent auf euren Betrieb zugeschnitten.
+        Drei Stationen: wo ihr heute steht, was im Erstgespräch passiert, und was ein paar Wochen
+        später läuft. Wir setzen dabei auf dem auf, was bei anderen Betrieben schon arbeitet, und
+        programmieren zum Festpreis, was bei euch anders ist.
       </p>
     </header>
 
@@ -54,7 +56,7 @@ const { stationen, einwaende, class: className } = Astro.props;
       {
         stationen.map((s, i) => (
           <li class="strecke-station relative pl-10 lg:pl-0 lg:pt-10">
-            <span class="strecke-punkt" aria-hidden="true">{i + 1}</span>
+            <span class:list={['strecke-punkt', i === 0 && 'strecke-punkt-heute']} aria-hidden="true">{i + 1}</span>
             <p class="text-foreground-muted font-mono text-[11px] font-semibold tracking-[0.18em] uppercase">
               {s.wann}
             </p>
@@ -111,6 +113,11 @@ const { stationen, einwaende, class: className } = Astro.props;
     font-family: var(--font-mono);
     font-size: 0.75rem;
     font-weight: 700;
+  }
+  /* Station 1 ist der Ist-Zustand, nicht schon ein Schritt von uns: gedämpfter Punkt. */
+  .strecke-punkt-heute {
+    border-color: color-mix(in oklch, var(--color-foreground) 25%, transparent);
+    color: var(--color-foreground-muted);
   }
   @media (min-width: 1024px) {
     .strecke::before {
