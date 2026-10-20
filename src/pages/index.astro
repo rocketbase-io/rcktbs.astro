@@ -352,15 +352,44 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
         }
       </div>
 
-      <div data-reveal class="mt-10 flex flex-wrap items-center gap-4">
-        <Button href={contactLinks.cal} target="_blank">
-          Lass uns draufschauen
-          <Icon name="arrow-up-right" size="sm" />
-        </Button>
-        <p class="text-foreground-muted text-sm leading-7">
-          Branchensoftware, Vertec oder ein gewachsenes System am Limit? Dann ist meist eine dieser drei Stellen der Grund.
-          <a href={standardsoftwareUrl} class="text-brand-600 font-semibold hover:text-brand-500">Standardsoftware ablösen</a>
-        </p>
+      <!-- Tür 4 und 5: nicht die drei Stellen, aber dieselbe Tür ins Haus -->
+      <div data-reveal class="mt-8 grid gap-4 md:grid-cols-2">
+        {
+          [
+            {
+              eyebrow: 'Oder das Ganze',
+              titel: 'Standardsoftware ablösen',
+              text: 'Branchensoftware, Vertec oder ein gewachsenes System am Limit? Dann ist meist eine dieser drei Stellen der Grund.',
+              href: standardsoftwareUrl,
+              icon: 'layers',
+            },
+            {
+              eyebrow: 'Ihr baut selbst',
+              titel: 'Software-Check',
+              text: 'Mit KI gebaut und ihr wollt technischen Rat von jemandem, der es auch könnte? Review, Sicherheit, Betrieb.',
+              href: '/software-check/',
+              icon: 'shield',
+            },
+          ].map((t) => (
+            <a
+              href={t.href}
+              class="group border-border bg-card hover:border-brand-300 flex items-start gap-4 rounded-2xl border p-5 transition-[border-color,transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_oklch(40%_0.1_265_/_0.4)]"
+            >
+              <span class="border-brand-300/70 bg-brand-500/5 text-brand-600 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border">
+                <Icon name={t.icon} size="sm" />
+              </span>
+              <span class="min-w-0">
+                <span class="text-foreground-muted block text-[0.65rem] font-semibold tracking-[0.18em] uppercase">{t.eyebrow}</span>
+                <span class="font-display text-foreground mt-1 block text-base font-bold tracking-tight">{t.titel}</span>
+                <span class="text-foreground-secondary mt-1 block text-sm leading-6">{t.text}</span>
+                <span class="text-brand-600 mt-2 inline-flex items-center gap-1.5 text-sm font-semibold transition-transform duration-300 group-hover:translate-x-1">
+                  Mehr dazu
+                  <Icon name="arrow-right" size="xs" />
+                </span>
+              </span>
+            </a>
+          ))
+        }
       </div>
     </div>
   </section>

@@ -24,6 +24,7 @@ const contactUrl = getLocalizedPath('contact', locale);
 const workshopUrl = getLocalizedPath('discoveryWorkshop', locale);
 const einsatzUrl = getLocalizedPath('einsatzplanung', locale);
 const abloesungUrl = getLocalizedPath('standardsoftwareAbloesung', locale);
+const checkUrl = '/software-check/';
 
 const tueren = [
   {
@@ -63,7 +64,6 @@ const ausserdem = [
   { icon: 'layers', titel: 'Interne Plattformen', text: 'Für Produktdaten, Inhalte oder operative Abläufe, die in kein Standardwerkzeug passen.' },
   { icon: 'globe', titel: 'Schnittstellen', text: 'Wenn eure Systeme miteinander reden sollen, statt dass Daten von Hand wandern.' },
   { icon: 'users', titel: 'Portale für Kunden', text: 'Bestellen, Rückfragen beantworten, Unterlagen abholen, ohne Mail-Pingpong.' },
-  { icon: 'shield', titel: 'Code-Check', text: 'Eine bestehende Anwendung, der ihr nicht ganz traut: betreiben, härten oder neu aufsetzen?' },
 ];
 
 const clientLogos = [
@@ -79,7 +79,7 @@ const professionalServiceSchema = createProfessionalServiceSchema({
   url: servicesPageUrl,
   description:
     'Individuelle Software für inhabergeführte Betriebe: Angebot und Kalkulation, Einsatz und Abrechnung, Zahlen und Steuerung, oder die Ablösung der Branchensoftware. Vom Erstgespräch über den Workshop bis zum Betrieb aus einer Hand.',
-  services: [...tueren.map((t) => t.titel), 'Standardsoftware ablösen'],
+  services: [...tueren.map((t) => t.titel), 'Standardsoftware ablösen', 'Software-Check'],
 });
 ---
 
@@ -188,6 +188,28 @@ const professionalServiceSchema = createProfessionalServiceSchema({
         </div>
         <MiniVisual kind="abloesung" />
       </a>
+
+      <!-- Oder erst prüfen: für Betriebe, die Software schon haben -->
+      <a
+        href={checkUrl}
+        data-reveal
+        class="group border-border bg-card hover:border-brand-300 mt-5 grid items-center gap-6 overflow-hidden rounded-[1.6rem] border p-5 shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:shadow-[0_26px_55px_-28px_oklch(40%_0.1_265_/_0.45)] md:grid-cols-[minmax(0,1fr)_17rem] md:p-7"
+      >
+        <div>
+          <p class="text-foreground-muted text-xs font-semibold tracking-[0.2em] uppercase">Ihr baut selbst</p>
+          <h3 class="font-display text-foreground mt-2 text-2xl font-bold tracking-tight">Software-Check</h3>
+          <p class="text-foreground-secondary mt-2 max-w-xl text-sm leading-6 sm:text-base sm:leading-7">
+            Mit KI gebaut und ihr wollt technischen Rat von jemandem, der es auch könnte: Ein
+            erfahrener Entwickler und Architekt schaut drauf. Sicherheit, Struktur, Betrieb, mit Bericht,
+            den ihr Kunden und Auditoren vorlegen könnt.
+          </p>
+          <span class="text-brand-600 mt-4 inline-flex items-center gap-2 text-sm font-semibold transition-transform duration-300 group-hover:translate-x-1">
+            Was geprüft wird
+            <Icon name="arrow-right" size="sm" />
+          </span>
+        </div>
+        <MiniVisual kind="check" />
+      </a>
     </div>
   </section>
 
@@ -199,7 +221,7 @@ const professionalServiceSchema = createProfessionalServiceSchema({
         number="02"
         eyebrow="Der Weg"
         title="Egal welcher Bereich: Es fängt gleich an."
-        lead="Beratung, Konzept, Umsetzung und Betrieb aus einer Hand. Keine Übergaben, bei denen Wissen verloren geht."
+        lead="Beratung, Konzept, Umsetzung und Betrieb aus einer Hand. Keine Übergaben, bei denen Wissen verloren geht. Gebaut von uns, oder von euch mit uns: Wer jemanden hat, der baut und bleibt, bekommt Review und Begleitung statt Umsetzung."
       />
       <ol class="relative mt-14 grid gap-4 md:grid-cols-4">
         <span class="bg-border absolute top-[1.35rem] right-[12%] left-[12%] hidden h-px md:block" aria-hidden="true"></span>

@@ -4,7 +4,7 @@
  * Daraus entstehen: Artikel unter der Tür (BlogQuerverweis), „Passende Lösung“ am
  * Ende eines Artikels und auf Referenzseiten. Nicht auf Funnel-Seiten (/f/).
  */
-export const tuerIds = ['angebot', 'einsatz', 'zahlen', 'abloesung', 'workshop'] as const;
+export const tuerIds = ['angebot', 'einsatz', 'zahlen', 'abloesung', 'check', 'workshop'] as const;
 export type TuerId = (typeof tuerIds)[number];
 
 export const tueren: Record<TuerId, { titel: string; href: string; icon: string; text: string }> = {
@@ -31,6 +31,12 @@ export const tueren: Record<TuerId, { titel: string; href: string; icon: string;
     href: '/standardsoftware-abloesung/',
     icon: 'layers',
     text: 'Branchensoftware samt Excel drumherum Schritt für Schritt ablösen, mit allen Daten.',
+  },
+  check: {
+    titel: 'Software-Check',
+    href: '/software-check/',
+    icon: 'shield',
+    text: 'Bestehende Software nach OWASP ASVS prüfen, Architektur-Review, Fahrplan für den Cyber Resilience Act.',
   },
   workshop: {
     titel: 'Der Workshop',

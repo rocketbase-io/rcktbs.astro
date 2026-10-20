@@ -37,7 +37,8 @@ const referencesPath = getLocalizedPath('references', locale);
 const blogPath = getLocalizedPath('blog', locale);
 const servicesPath = getLocalizedPath('services', locale);
 
-// Lösungen-Dropdown: die drei Türen, durch die ein Betrieb einsteigt, plus die Ablöse.
+// Lösungen-Dropdown: die drei Türen, durch die ein Betrieb einsteigt, die Ablöse und der Check
+// (Tür 5, seit 2026-10-20: für Betriebe, die Software schon haben).
 // Der Workshop hat einen eigenen Top-Level-Eintrag und steht deshalb nicht mehr hier.
 // Die Seiten bleiben in routes.ts auf show:false, damit sie nicht zusätzlich
 // als Top-Level-Einträge erscheinen.
@@ -46,25 +47,31 @@ const serviceLinks = [
     href: '/angebote/',
     icon: 'edit',
     title: 'Angebot & Kalkulation',
-    text: 'Angebote, die sich nach eurer Regel selbst rechnen. Angebotsseite statt PDF, Zusage per Klick.',
+    text: 'Angebote nach eurer Regel, Zusage per Klick.',
   },
   {
     href: getLocalizedPath('einsatzplanung', locale),
     icon: 'users',
     title: t('nav.einsatzplanung'),
-    text: 'Plantafel, Ablauf je Auftrag, Leistung und Rechnung. Geplant, erledigt, abgerechnet in einem System.',
+    text: 'Plantafel, Leistung, Rechnung in einem System.',
   },
   {
     href: '/zahlen/',
     icon: 'table',
     title: 'Zahlen & Steuerung',
-    text: 'Umsatz, Auslastung und auslaufende Verträge live statt am Monatsende aus Excel.',
+    text: 'Umsatz, Auslastung, Verträge live statt am Monatsende.',
   },
   {
     href: getLocalizedPath('standardsoftwareAbloesung', locale),
     icon: 'layers',
     title: t('nav.standardsoftwareAbloesung'),
-    text: 'Wenn es mehr ist als ein Teil: Branchensoftware samt Excel drumherum Schritt für Schritt ablösen.',
+    text: 'Branchensoftware samt Excel Schritt für Schritt ablösen.',
+  },
+  {
+    href: '/software-check/',
+    icon: 'shield',
+    title: 'Software-Check',
+    text: 'Technischer Rat für Software, die ihr selbst gebaut habt.',
   },
 ] as const;
 
@@ -133,9 +140,9 @@ const featuredReferences = cases
               <div class="rounded-2xl border border-border bg-background p-3 shadow-[0_24px_60px_rgba(22,28,44,0.14)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.6)]">
                 {serviceLinks.map((item, i) => (
                   <Fragment>
-                  {i === 3 && (
+                  {(i === 3 || i === 4) && (
                     <p class="mx-2.5 mt-2 mb-1 flex items-center gap-3 border-t border-border pt-3 text-[0.68rem] font-semibold tracking-[0.18em] text-foreground-muted uppercase">
-                      Oder das Ganze
+                      {i === 3 ? 'Oder das Ganze' : 'Ihr baut selbst'}
                     </p>
                   )}
                   <a
@@ -143,12 +150,12 @@ const featuredReferences = cases
                     class="flex gap-3 rounded-xl p-2.5 transition-colors hover:bg-secondary"
                     role="menuitem"
                   >
-                    <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg border border-brand-300/70 bg-brand-500/5 text-brand-600">
-                      <Icon name={item.icon} size="md" />
+                    <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-brand-300/70 bg-brand-500/5 text-brand-600">
+                      <Icon name={item.icon} size="sm" />
                     </div>
                     <div class="min-w-0 flex-1">
                       <p class="text-sm font-semibold text-foreground">{item.title}</p>
-                      <p class="mt-1 text-xs leading-5 text-foreground-muted line-clamp-2">{item.text}</p>
+                      <p class="mt-0.5 text-xs leading-5 text-foreground-muted line-clamp-1">{item.text}</p>
                     </div>
                   </a>
                   </Fragment>
@@ -326,7 +333,7 @@ const featuredReferences = cases
           <div class="mt-3 space-y-2 border-l-2 border-border pl-3">
             {serviceLinks.map((item, i) => (
               <Fragment>
-              {i === 3 && <p class="mt-3 border-t border-border pt-3 text-[0.68rem] font-semibold tracking-[0.18em] text-foreground-muted uppercase">Oder das Ganze</p>}
+              {(i === 3 || i === 4) && <p class="mt-3 border-t border-border pt-3 text-[0.68rem] font-semibold tracking-[0.18em] text-foreground-muted uppercase">{i === 3 ? 'Oder das Ganze' : 'Ihr baut selbst'}</p>}
               <a
                 href={item.href}
                 class="flex gap-3 rounded-lg p-2 transition-colors hover:bg-secondary"
