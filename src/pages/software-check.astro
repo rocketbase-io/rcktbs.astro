@@ -1,0 +1,30 @@
+---
+/**
+ * Tür 5: Software-Check. Dieselben Inhalte wie die Anzeigen-Landing /f/software-check/,
+ * aber mit Navigation, indexiert und ohne Quiz. Inhalt in components/check/CheckPage.astro.
+ *
+ * Anders als die Türen 1 bis 3 für Betriebe, die Software schon haben: Prüfung nach
+ * OWASP ASVS, Zweitmeinung zur Architektur, Fahrplan für den Cyber Resilience Act.
+ */
+import LandingLayout from '@/layouts/LandingLayout.astro';
+import { createServiceSchema } from '@/lib/schema';
+import CheckPage from '@/components/check/CheckPage.astro';
+
+const serviceSchema = createServiceSchema({
+  name: 'Software-Check',
+  description:
+    'Sicherheitsprüfung bestehender Software nach OWASP ASVS 5.0, Zweitmeinung zu Konzept und Architektur, Fahrplan für den Cyber Resilience Act. Mit Prüfbericht für Kunden und Auditoren.',
+  url: new URL(Astro.url.pathname, Astro.site).toString(),
+  serviceType: 'Sicherheitsprüfung und Architekturberatung für Individualsoftware',
+  areaServed: 'DE',
+});
+---
+
+<LandingLayout
+  title="Software-Check: Review für Software, die ihr selbst mit KI gebaut habt"
+  description="Kundenportal, internes Tool oder Produkt mit Software drin: Wir prüfen gegen OWASP ASVS 5.0 und schreiben auf, was offen ist. Prüfbericht für Kunden und Auditoren, Zweitmeinung zur Architektur, Fahrplan für den Cyber Resilience Act. Für Betriebe ab 30 Leuten."
+  lang="de"
+  extraSchemas={[serviceSchema]}
+>
+  <CheckPage variant="site" />
+</LandingLayout>

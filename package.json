@@ -51,6 +51,7 @@
     "satori-html": "^0.3.2",
     "schema-dts": "^2.1.0",
     "sharp": "^0.35.5",
+    "simple-icons": "^16.35.0",
     "tailwind-merge": "^3.7.0",
     "zod": "^4.6.7"
   },

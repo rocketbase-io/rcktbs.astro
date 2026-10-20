@@ -1,0 +1,76 @@
+---
+title: 'Zwei Systeme, mit KI gebaut. Was ein Blick von außen gefunden hat.'
+seoTitle: 'Software-Check: KI-gebaute Systeme von außen prüfen'
+description: 'Lagersystem und Service-App mit Claude gebaut, sauber dokumentiert. Was eine Durchsicht nach OWASP ASVS in acht Tagen trotzdem fand, und warum das kein Argument gegen KI ist.'
+publishedAt: 2026-11-03
+author: 'Marten Prieß'
+tags: ['software-check', 'owasp', 'ki', 'claude', 'sicherheit', 'betrieb', 'architektur']
+doors: ['check']
+featured: true
+draft: true
+locale: de
+cta:
+  headline: 'Bei euch baut jemand mit KI?'
+  body: 'Dreißig Minuten, in denen wir einordnen, ob ein Blick von außen etwas bringt und welcher. Kostenlos, ohne Folien.'
+---
+
+{/*
+  ENTWURF. Vor Veröffentlichung von Delta-Sport freigeben lassen (Daniel Kies, Daniel Rübensam):
+  Nennung des Hauses, der beiden Systeme und der genannten Befunde. Alle Befunde stehen hier auf
+  Muster-Ebene, ohne Fundstellen und ohne Angaben, die eine Ausnutzung erleichtern würden. Die
+  Zahlen (54 Befunde, 5 kritisch, 8 Tage) stammen aus der Durchsicht vom 03. bis 10.09.2026.
+  Falls Delta-Sport nicht genannt werden möchte: "ein Handelshaus in Norddeutschland" und die
+  Systeme als "Lagersystem" und "Service-App" belassen, dann steht der Text ohne Änderung.
+*/}
+
+Im September hat mich ein Handelshaus gebeten, zwei Systeme anzuschauen, kurz vor dem Go-Live des einen und mitten im Betrieb des anderen. Ein Lagersystem mit Anbindung an die Warenwirtschaft und den Paketdienst, und eine Service-App, die Reklamationen entgegennimmt, Kundenmails führt, per Sprachmodell klassifiziert und Erstattungen als Bankdatei erzeugt. Beides in wenigen Monaten gebaut, beides zum großen Teil mit Claude.
+
+Ich will hier nicht erzählen, dass KI-gebaute Software schlecht ist. Das Gegenteil ist der Fall, und das ist der eigentliche Punkt.
+
+## Was ich vorgefunden habe
+
+Erst einmal: mehr, als die meisten Häuser haben. Beide Systeme hatten eine nummerierte Liste von Entscheidungen mit Datum und Messwert. Die Service-App hatte eine eigene Security-Baseline mit 55 Einträgen und zwei Durchsichten hinter sich, eine extern, eine mit Claude. Es gab Known Issues, ein Runbook, einen Backlog. Niemand hat hier blind drauflosgebaut.
+
+Und die Grundlagen stimmten. Anmeldung in beiden Systemen vollständig: Signatur, Aussteller, Zielgruppe, Algorithmus festgelegt, Abbruch ohne Konfiguration. Ich habe an der laufenden Instanz des Lagersystems alle 27 geschützten Zugänge ohne Berechtigungsnachweis aufgerufen, alle 27 abgelehnt. Keine Zugangsdaten im Quellcode, durchgängig Schlüsseltresor und verwaltete Identitäten. Geldbeträge in ganzen Cent ohne Fließkomma. Die Übergabe an die Warenwirtschaft mit Zustandsautomat, Zeilensperre und eingefrorenem Beleg, lehrbuchhaft.
+
+In keinem der beiden Systeme habe ich eine Schwachstelle gefunden, die einem Angreifer aus dem Internet Zugriff verschafft.
+
+## Was trotzdem offen war
+
+54 Befunde in acht Tagen, fünf davon kritisch. Nicht dort, wo man Sicherheitslücken vermutet, sondern in drei Bereichen, in beiden Systemen an denselben Stellen.
+
+**Gleichzeitige Zugriffe.** Beide Anwendungen gehen davon aus, dass zwei Vorgänge nicht zur selben Zeit dieselben Daten anfassen. Im Lager betrifft das die Bestandszusage: Zwei gleichzeitige Reservierungen auf das letzte Stück wurden beide angenommen, der Bestand stand danach bei minus eins, und der nächtliche Abgleich hat den negativen Wert auf null gesetzt und die Spur beseitigt. Gemessen mit einem Integrationstest gegen ein echtes Postgres, nicht vermutet. In der Service-App betraf dasselbe Muster den Zahllauf: Zwei gleichzeitige Freigaben erzeugen zwei gültige Bankdateien mit denselben Zahlungen. Wer die zweite einreicht, zahlt alles doppelt.
+
+Das Bittere daran: Das Projekt beherrschte das Gegenmittel. An sechs anderen Stellen waren die Zeilensperren korrekt gesetzt. Ausgerechnet dort, wo Geld fließt, fehlten sie.
+
+**Die Produktionsumgebung.** Sie unterschied sich von der Entwicklungsumgebung in Rechengröße, Ausfallsicherheit und Aufbewahrungsfristen. In keinem Sicherheitsaspekt. Die Datenbank war über eine Sammelregel erreichbar, die auch fremde Kunden desselben Cloud-Anbieters einschließt, der Dienst im Firmennetz meldete sich mit dem Administratorkonto an. Und die Laufzeitumgebung lief auf einer Node-Version, die seit April keine Sicherheitspatches mehr bekommt. Das stand sogar in den Known Issues, als bewusste Entscheidung, nur ohne das Support-Ende.
+
+**Die Erkennbarkeit von Störungen.** In keinem der beiden Systeme gab es eine Alarmierung. Beide Zustandsmeldungen antworteten mit "ok", auch bei gestoppter Datenbank; ich habe es ausprobiert. Genau diese Meldung war der Rauchtest der Auslieferung. Ein dokumentierter Fall: Der Bestandsabgleich war ein ganzes Wochenende außer Betrieb, unbemerkt.
+
+Dazu Kleineres, das sich summiert. Eine Schwärzung personenbezogener Daten im Logger, die auf Feldnamen in Unterstrich-Schreibweise zielte, während der Code durchgängig Binnenmajuskel verwendete: 203 Treffer im Code, 0 geschützt, Test grün, weil er die erfundene Schreibweise loggte. Ein Rate-Limiting, installiert und nirgends eingebunden. 19 Kommandozeilen-Werkzeuge, die gegen die Datenbank aus der lokalen Konfiguration laufen, mehrere davon verändernd, keines zeigt den Zielhost. Heute gibt es nur eine Entwicklungsumgebung; ab Go-Live ist die Produktion einen Kopierfehler entfernt.
+
+## Warum KI das nicht sieht
+
+Keiner dieser Befunde ist ein Fehler im Sinne von "der Code tut nicht, was er soll". Der Code tat überall, was er sollte. Die Befunde liegen dort, wo die Frage lautet: Was passiert, wenn zwei Leute gleichzeitig klicken? Wenn die Datenbank weg ist? Wenn der Paketdienst nicht antwortet? Wenn jemand in zwei Jahren das Skript auf der falschen Umgebung startet?
+
+Das sind keine Fragen an den Code, sondern an den Betrieb. Man stellt sie, weil man einmal nachts um drei einen Zahllauf zurückgedreht hat, oder weil man gesehen hat, wie ein Health-Endpunkt, der immer grün ist, drei Tage lang einen Ausfall versteckt. Ein Sprachmodell hat das nicht erlebt. Es baut, was beschrieben wird, und es baut es gut. Es baut nicht, wonach niemand gefragt hat.
+
+Das ist auch der Grund, warum die zwei vorherigen Durchsichten diese Punkte nicht hatten: Eine davon war ein Pentest von außen, der Angriffe prüft und keine Nebenläufigkeit. Die andere war mit Claude, und Claude prüft den Code gegen das, was im Code steht.
+
+## Wie die Durchsicht gelaufen ist
+
+Acht Tage, Quellcode und Infrastrukturvorlagen beider Systeme, zwei Durchgänge: einmal mit der Projektdokumentation, einmal bewusst ohne, Kommentare als Behauptung behandelt. Für das Lagersystem eine lokal aufgesetzte Instanz, gegen die sich Dinge messen ließen. Als Rahmen die Kapitelsystematik des OWASP Application Security Verification Standard, damit nachvollziehbar bleibt, was geprüft wurde und was nicht.
+
+Kein Pentest, kein Lasttest, kein Zertifikat. Ein Bericht mit Einordnung und Grenzen, jeder Befund mit Fundstelle, Einstufung und einem Auftrag, den das Team so an Claude geben konnte. Dazu, und das halte ich für den wichtigeren Teil: eine Seite "Was ausdrücklich so bleiben darf". Das ist keine Höflichkeit. Das ist Bestand, den ein Team verteidigen kann, wenn der nächste Berater kommt und alles neu bauen will.
+
+Anderthalb Stunden Termin, zwei Live-Nachweise (der rote Test, der Health-Endpunkt bei gestoppter Datenbank), die Fragen zum Dokument. Danach ein Nachtrag mit den Themen, die über den Code hinausgehen: Zustellbarkeit bei 130.000 Mails im Jahr, Backup und Restore-Probe, Alarmierung, Lasttest vor der Januar-Spitze.
+
+## Was ich daraus mitnehme
+
+Erstens: Mit KI gebaute Software ist nicht das Problem. Die beiden Systeme waren in ihren Grundlagen besser als vieles, was ich aus zehn Jahren Agenturarbeit kenne. Die Frage ist nicht, ob man mit KI bauen soll. Die Frage ist, wer den Teil übernimmt, den die KI nicht kennt: Nebenläufigkeit, Betrieb, Umgebung, Alarmierung, der Weg in die Produktion und zurück.
+
+Zweitens: Der Blick von außen muss nicht groß sein. Acht Tage für zwei Systeme, mit Bericht, Test und Termin. Das ist weniger als eine einzige doppelt eingereichte Bankdatei.
+
+Drittens: Je besser ein Team dokumentiert, desto mehr findet eine Durchsicht. Das klingt paradox, ist aber logisch: Entscheidungen mit Datum und Messwert kann man prüfen. Bauchgefühl nicht.
+
+Wenn bei euch jemand mit KI baut, und das wird in den nächsten Jahren in fast jedem Betrieb so sein: Lasst es irgendwann jemanden anschauen, der schon einmal etwas betrieben hat. Nicht, weil es schlecht ist. Sondern weil die Fragen, die fehlen, nur von dort kommen.
