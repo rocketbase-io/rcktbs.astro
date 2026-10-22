@@ -1,11 +1,22 @@
 ---
 /**
  * Branchen-Umschalter für die Kalkulation: je Branche eine Beispielrechnung
- * (Eingaben → Regel → Preis, Kosten, Deckungsbeitrag mit Ampel).
+ * (Eingaben → Regel → Preis, Kosten, was übrig bleibt, mit Ampel).
  *
  * WAI-ARIA-Tabs (Pfeiltasten, Home/End). Die Werte sind Beispielwerte und
  * stehen so auch im UI. Der Balken wächst beim Wechsel, ohne JS ist die erste
  * Branche sichtbar und vollständig.
+ *
+ * Entwurf 2026-10-16: Zwei Ansichten je Branche.
+ *   - Unter lg eine kompakte Karte (`.kr-kompakt`): Zahlen als kleines Raster,
+ *     die Regel in einem Satz, dann groß der Preis, direkt darunter die Knöpfe.
+ *     Wer tippt, sieht die Wirkung, ohne zu scrollen. Die lange Karte war mobil
+ *     drei Bildschirme hoch, und die Knöpfe lagen weit weg vom Ergebnis.
+ *   - Ab lg die volle Karte (`.kr-card`) wie bisher, zweispaltig.
+ *   Beide hängen an denselben data-Attributen, die Knöpfe stellen beide um.
+ *
+ * Seit 2026-10-22 dieselbe Fassung auf /angebote/ und /f/angebote/; im Funnel zeigt
+ * `kontaktHref` aufs Quiz.
  */
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 
@@ -48,51 +59,54 @@ export interface Rechnung {
       ampel: 'gruen' | 'gelb' | 'rot';
     }[];
   };
-
 }
 
 interface Props {
+  /** Ziel des Links „im Erstgespräch“; im Funnel das Quiz (#quiz), sonst das Formular (#kontakt). */
+  kontaktHref?: string;
   rechnungen: Rechnung[];
   /** Rechengrößen, die in jedem Gewerk gleich funktionieren. Stehen einmal unter den Tabs. */
   gemeinsam?: { icon: string; titel: string; text: string }[];
 }
 
-const { rechnungen, gemeinsam = [] } = Astro.props;
+const { rechnungen, gemeinsam = [], kontaktHref = '#kontakt' } = Astro.props;
+// Dieselben Texte stehen unten im Script (für den Wechsel per Knopf).
 const ampelText = {
-  gruen: 'Rechnet sich',
-  gelb: 'Knapp · nur mit Freigabe',
-  rot: 'Unter eurer Grenze · geht so nicht raus',
+  gruen: 'Lohnt sich',
+  gelb: 'Knapp. Erst freigeben lassen',
+  rot: 'Zu wenig übrig. Geht so nicht raus',
 };
 // Einmal rendern, in jeder Karte als Footer ausgeben (ein Slot lässt sich nicht mehrfach einsetzen).
 const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis') : '';
 ---
 
-<div class="kr" data-kr>
-  <div class="kr-tabs sticky top-16 z-20 mx-auto max-w-full rounded-2xl p-1.5 sm:static sm:w-fit">
-  <div role="tablist" aria-label="Beispiele nach Branche" class="grid grid-cols-2 gap-1 sm:flex">
-    {
-      rechnungen.map((r, i) => (
-        <button
-          type="button"
-          role="tab"
-          id={`kr-tab-${r.key}`}
-          aria-controls={`kr-panel-${r.key}`}
-          aria-selected={i === 0 ? 'true' : 'false'}
-          tabindex={i === 0 ? 0 : -1}
-          class="kr-tab flex min-w-0 items-center justify-center gap-2 rounded-xl px-2.5 py-2.5 text-center text-[0.8rem] leading-tight font-semibold sm:shrink-0 sm:px-4 sm:text-sm sm:whitespace-nowrap"
-        >
-          <Icon name={r.icon} size="sm" />
-          {r.branche}
-        </button>
-      ))
-    }
-  </div>
+<div class="kr" data-kr data-szene>
+  <!-- Nicht sticky: auf dem Handy lag die Leiste über Eingaben und Ergebnis. -->
+  <div class="kr-tabs mx-auto max-w-full rounded-2xl p-1.5 lg:w-fit">
+    <div role="tablist" aria-label="Beispiele nach Branche" class="grid grid-cols-2 gap-1 lg:flex">
+      {
+        rechnungen.map((r, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`kr-tab-${r.key}`}
+            aria-controls={`kr-panel-${r.key}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            tabindex={i === 0 ? 0 : -1}
+            class="kr-tab flex min-w-0 items-center justify-center gap-2 rounded-xl px-2.5 py-2.5 text-center text-[0.8rem] leading-tight font-semibold lg:shrink-0 lg:px-4 lg:text-sm lg:whitespace-nowrap"
+          >
+            <Icon name={r.icon} size="sm" />
+            {r.branche}
+          </button>
+        ))
+      }
+    </div>
   </div>
 
   <p class="text-foreground-muted mt-4 text-center text-sm">
     Eure Branche ist nicht dabei? Kein Problem, das klären wir{' '}
     <a
-      href="#kontakt"
+      href={kontaktHref}
       class="text-brand-600 hover:text-brand-700 dark:text-brand-300 font-semibold underline-offset-4 hover:underline"
       >im Erstgespräch</a
     >.
@@ -119,20 +133,161 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
             ampel: r.ampel,
           })}
         >
-          <div class="kr-card relative grid overflow-hidden rounded-[1.75rem] lg:grid-cols-2">
+          {/* ───── Kompakt, unter lg ───── */}
+          <div class="kr-kompakt overflow-hidden rounded-[1.5rem] lg:hidden">
+            <div class="p-5">
+              <div class="flex items-center justify-between gap-3">
+                <p class="kr-label">Eure Zahlen</p>
+                <span class="kr-sample rounded-full px-2 py-0.5 text-[10px] font-semibold tracking-[0.12em] uppercase">
+                  Beispiel
+                </span>
+              </div>
+              <p class="font-display text-foreground mt-2 text-lg leading-snug font-bold tracking-tight text-balance">
+                {r.satz}
+              </p>
+              <dl class="mt-4 grid grid-cols-2 gap-1.5">
+                {r.eingaben.map((e) => (
+                  <div
+                    class="kr-k-row rounded-lg px-2.5 py-2"
+                    style={`--d: ${r.eingaben.indexOf(e) * 60}ms`}
+                    data-eingabe={e.label}
+                  >
+                    <dt class="text-foreground-muted text-[11px] leading-4">
+                      {e.label}
+                      {e.auto && (
+                        <>
+                          <Icon
+                            name="zap"
+                            size="xs"
+                            class="text-brand-500 ml-1 inline-block align-[-2px]"
+                          />
+                          <span class="sr-only">berechnet</span>
+                        </>
+                      )}
+                    </dt>
+                    <dd
+                      class="text-foreground mt-0.5 font-mono text-sm font-semibold tabular-nums"
+                      data-eingabe-wert
+                    >
+                      {e.wert}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+
+            <div class="kr-k-regel flex items-start gap-3 px-5 py-3">
+              <span class="kr-link-dot flex h-8 w-8 shrink-0 items-center justify-center rounded-full">
+                <Icon name="zap" size="xs" />
+              </span>
+              <p class="text-foreground-secondary text-xs leading-5">
+                <span class="text-foreground block text-[11px] font-semibold tracking-[0.14em] uppercase">
+                  Eure Regel
+                </span>
+                {r.regel}
+              </p>
+            </div>
+
+            <div class="kr-result p-5">
+              <p class="kr-label">Ergebnis</p>
+              <div class="mt-2 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                <p class="text-foreground-secondary text-sm">{r.ergebnis[0]?.label}</p>
+                <p
+                  class="font-display text-foreground text-3xl font-bold tracking-tight tabular-nums"
+                  data-preis
+                >
+                  {r.ergebnis[0]?.wert}
+                </p>
+              </div>
+              {r.ergebnis[1] && (
+                <div class="mt-1 flex items-baseline justify-between gap-4">
+                  <p class="text-foreground-secondary text-sm">{r.ergebnis[1].label}</p>
+                  <p
+                    class="text-foreground font-mono text-sm font-semibold tabular-nums"
+                    data-kennzahl
+                  >
+                    {r.ergebnis[1].wert}
+                  </p>
+                </div>
+              )}
+              <div class="mt-1 flex items-baseline justify-between gap-4">
+                <p class="text-foreground-secondary text-sm">Kosten</p>
+                <p class="text-foreground font-mono text-sm font-semibold tabular-nums" data-kosten>
+                  {r.kosten}
+                </p>
+              </div>
+
+              <div class="kr-db mt-4 rounded-2xl p-3.5" data-ampel={r.ampel}>
+                <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                  <p class="text-foreground text-sm font-semibold">Bleibt übrig</p>
+                  <p
+                    class="text-foreground font-mono text-sm font-bold whitespace-nowrap tabular-nums"
+                    data-db
+                  >
+                    {r.db} · {r.dbProzent} %
+                  </p>
+                </div>
+                <div class="kr-bar mt-2.5 h-2 overflow-hidden rounded-full" aria-hidden="true">
+                  <span class="kr-bar-fill block h-full rounded-full" />
+                </div>
+                <p
+                  class="kr-ampel mt-2.5 inline-flex items-center gap-2 text-xs font-semibold"
+                  data-ampeltext
+                >
+                  <span class="kr-dot" aria-hidden="true" />
+                  {ampelText[r.ampel]}
+                </p>
+              </div>
+
+              {r.regler && (
+                <div class="kr-swap mt-4 rounded-2xl p-3.5">
+                  <p class="text-foreground-muted text-[11px] font-semibold tracking-[0.14em] uppercase">
+                    Probiert es: {r.regler.label}
+                  </p>
+                  <div class="mt-2.5 grid gap-2" role="group" aria-label={r.regler.label}>
+                    {r.regler.optionen.map((o, k) => (
+                      <button
+                        type="button"
+                        class="kr-swap-btn kr-swap-btn-row rounded-xl px-3 py-2.5 text-left"
+                        data-swap={String(k)}
+                        aria-pressed={k === 0 ? 'true' : 'false'}
+                      >
+                        <span class="text-foreground text-sm font-semibold">{o.name}</span>
+                        {o.wert && (
+                          <span class="text-foreground-muted font-mono text-xs">{o.wert}</span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            {hinweis && (
+              <div class="kr-hinweis flex gap-3 px-5 py-4">
+                <Icon name="info" size="sm" class="text-brand-500 mt-0.5 shrink-0" />
+                <div
+                  class="text-foreground-secondary text-[0.85rem] leading-6"
+                  set:html={hinweis}
+                />
+              </div>
+            )}
+          </div>
+
+          {/* ───── Volle Karte, ab lg ───── */}
+          <div class="kr-card relative hidden overflow-hidden rounded-[1.75rem] lg:grid lg:grid-cols-2">
             <span class="kr-sample absolute top-4 right-4 z-10 rounded-full px-2.5 py-1 text-[10px] font-semibold tracking-[0.14em] uppercase">
               Frei erfunden
             </span>
             {/* Eingaben */}
-            <div class="kr-eingaben p-6 sm:p-8 lg:pr-14">
-              <p class="kr-label">Eure Größen</p>
+            <div class="kr-eingaben p-8 lg:pr-14">
+              <p class="kr-label">Eure Zahlen</p>
               {r.grundlage && (
                 <p class="kr-grundlage mt-3 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1">
                   <Icon name="book" size="xs" />
                   {r.grundlage}
                 </p>
               )}
-              <p class="font-display text-foreground mt-2 text-xl font-bold tracking-tight sm:text-2xl">
+              <p class="font-display text-foreground mt-2 text-2xl font-bold tracking-tight">
                 {r.satz}
               </p>
               <dl class="mt-6 space-y-2">
@@ -156,43 +311,28 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
                   </div>
                 ))}
               </dl>
-
             </div>
 
-            {/* Stellschrauben: eigenes Grid-Kind, damit sie mobil unter das
-                Ergebnis rutschen können (siehe .kr-swap-wrap). */}
+            {/* Stellschrauben unter den Eingaben */}
             {r.regler && (
-              <div class="kr-swap-wrap px-6 pb-6 sm:px-8 sm:pb-8 lg:pr-14">
-                {/*
-                  Mobil liegen die Stellschrauben rund 400 px unter dem Preis: wer hier
-                  tippt, sieht die Wirkung nicht. Diese Zeile spiegelt Branche und Preis
-                  direkt über den Knöpfen, damit beides im selben Bild steht. Der Name
-                  der Branche steht dabei nochmal, weil die Auswahl weit oben liegt und
-                  bis hierher längst aus dem Blick ist.
-                */}
-                <div class="kr-echo mt-5 flex items-center justify-between gap-3 rounded-xl px-3 py-2 lg:hidden">
-                  <span class="text-foreground-muted min-w-0 truncate text-[11px] font-semibold tracking-[0.1em] uppercase">
-                    {r.branche}
-                  </span>
-                  <span class="text-foreground font-display shrink-0 text-lg font-bold whitespace-nowrap tabular-nums" data-preis>
-                    {r.ergebnis[0].wert}
-                  </span>
-                </div>
-                <div class="kr-swap mt-2.5 rounded-2xl p-4 lg:mt-5">
+              <div class="kr-swap-wrap px-8 pb-8 lg:pr-14">
+                <div class="kr-swap mt-5 rounded-2xl p-4">
                   <p class="text-foreground-muted text-[11px] font-semibold tracking-[0.14em] uppercase">
-                    {r.regler.label}
+                    Probiert es: {r.regler.label}
                   </p>
                   <div class="mt-2.5 flex flex-wrap gap-2" role="group" aria-label={r.regler.label}>
                     {r.regler.optionen.map((o, k) => (
                       <button
                         type="button"
-                        class="kr-swap-btn w-full rounded-xl px-3 py-2 text-left sm:w-auto sm:flex-1"
+                        class="kr-swap-btn flex-1 rounded-xl px-3 py-2 text-left"
                         data-swap={String(k)}
                         aria-pressed={k === 0 ? 'true' : 'false'}
                       >
                         <span class="text-foreground block text-sm font-semibold">{o.name}</span>
                         {o.wert && (
-                          <span class="text-foreground-muted block font-mono text-xs">{o.wert}</span>
+                          <span class="text-foreground-muted block font-mono text-xs">
+                            {o.wert}
+                          </span>
                         )}
                       </button>
                     ))}
@@ -212,7 +352,7 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
             </div>
 
             {/* Ergebnis */}
-            <div class="kr-result p-6 sm:p-8 lg:pl-14">
+            <div class="kr-result p-8 lg:pl-14">
               <p class="kr-label">Ergebnis</p>
               <p class="text-foreground-muted mt-2 text-xs leading-5 lg:pr-24">{r.regel}</p>
               <dl class="mt-5 space-y-3">
@@ -222,7 +362,7 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
                     <dd
                       class:list={[
                         'text-foreground font-bold tabular-nums',
-                        j === 0 ? 'font-display text-3xl tracking-tight sm:text-4xl' : 'font-mono text-base',
+                        j === 0 ? 'font-display text-4xl tracking-tight' : 'font-mono text-base',
                       ]}
                       data-preis={j === 0 ? '' : undefined}
                       data-kennzahl={j === 1 ? '' : undefined}
@@ -233,7 +373,10 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
                 ))}
                 <div class="flex items-baseline justify-between gap-4">
                   <dt class="text-foreground-secondary text-sm">Kosten</dt>
-                  <dd class="text-foreground font-mono text-base font-semibold tabular-nums" data-kosten>
+                  <dd
+                    class="text-foreground font-mono text-base font-semibold tabular-nums"
+                    data-kosten
+                  >
                     {r.kosten}
                   </dd>
                 </div>
@@ -241,15 +384,24 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
 
               <div class="kr-db mt-6 rounded-2xl p-4" data-ampel={r.ampel}>
                 <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-                  <p class="text-foreground text-sm font-semibold">Deckungsbeitrag</p>
-                  <p class="text-foreground font-mono text-sm font-bold whitespace-nowrap tabular-nums" data-db>
+                  <p class="text-foreground text-sm font-semibold">
+                    Bleibt übrig{' '}
+                    <span class="text-foreground-muted font-normal">(Deckungsbeitrag)</span>
+                  </p>
+                  <p
+                    class="text-foreground font-mono text-sm font-bold whitespace-nowrap tabular-nums"
+                    data-db
+                  >
                     {r.db} · {r.dbProzent} %
                   </p>
                 </div>
                 <div class="kr-bar mt-3 h-2 overflow-hidden rounded-full" aria-hidden="true">
                   <span class="kr-bar-fill block h-full rounded-full" />
                 </div>
-                <p class="kr-ampel mt-3 inline-flex items-center gap-2 text-xs font-semibold" data-ampeltext>
+                <p
+                  class="kr-ampel mt-3 inline-flex items-center gap-2 text-xs font-semibold"
+                  data-ampeltext
+                >
                   <span class="kr-dot" aria-hidden="true" />
                   {ampelText[r.ampel]}
                 </p>
@@ -257,9 +409,12 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
             </div>
             {/* Footer der Karte: Einordnung der Beispielwerte (Slot „hinweis“ der Seite) */}
             {hinweis && (
-              <div class="kr-hinweis flex gap-3 px-6 py-4 sm:px-8 lg:col-span-2">
+              <div class="kr-hinweis flex gap-3 px-8 py-4 lg:col-span-2">
                 <Icon name="info" size="sm" class="text-brand-500 mt-0.5 shrink-0" />
-                <div class="text-foreground-secondary text-[0.85rem] leading-6" set:html={hinweis} />
+                <div
+                  class="text-foreground-secondary text-[0.85rem] leading-6"
+                  set:html={hinweis}
+                />
               </div>
             )}
           </div>
@@ -278,19 +433,21 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
           </p>
           <span class="kr-rule kr-rule-r h-px flex-1" aria-hidden="true" />
         </div>
-        <ul class="mt-8 grid gap-x-8 gap-y-7 sm:grid-cols-2 lg:grid-cols-4">
+        <ul class="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
           {gemeinsam.map((g) => (
             <li>
               <p class="font-display text-foreground flex items-center gap-2 text-sm font-bold tracking-tight">
                 <Icon name={g.icon} size="sm" class="text-brand-500 shrink-0" />
                 {g.titel}
               </p>
-              <p class="text-foreground-secondary mt-2 text-sm leading-6">{g.text}</p>
+              <p class="text-foreground-secondary mt-2 hidden text-sm leading-6 sm:block">
+                {g.text}
+              </p>
             </li>
           ))}
         </ul>
         <p class="text-foreground-muted mt-7 text-center text-sm">
-          Einmal nach euren Regeln gebaut, und es gilt für jede Leistung.
+          Einmal nach euren Regeln gebaut. Dann gilt es für jede Leistung.
         </p>
       </div>
     )
@@ -304,7 +461,7 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
     background: color-mix(in oklch, var(--color-foreground) 5%, var(--color-background));
     border: 1px solid var(--color-border);
   }
-  @media (min-width: 640px) {
+  @media (min-width: 1024px) {
     .kr-tabs {
       background: color-mix(in oklch, var(--color-foreground) 5%, transparent);
     }
@@ -354,8 +511,29 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
     }
   }
 
+  /* Kompakte Karte (unter lg) */
+  .kr-kompakt {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 24px 55px -36px oklch(30% 0.08 265 / 0.55);
+  }
+  .kr-k-row {
+    background: color-mix(in oklch, var(--color-foreground) 4%, transparent);
+  }
+  .kr-k-regel {
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    background: color-mix(in oklch, var(--color-brand-500) 5%, transparent);
+  }
+  .kr-kompakt .kr-link-dot {
+    box-shadow: 0 8px 18px -8px var(--color-brand-500);
+  }
+  .kr-kompakt .kr-link-dot::after {
+    display: none;
+  }
+
   .kr-hinweis {
-    order: 10; /* immer zuletzt, auch mobil, wo die Teile umsortiert sind */
+    order: 10; /* immer zuletzt */
     border-top: 1px solid var(--color-border);
     background: color-mix(in oklch, var(--color-brand-500) 4%, var(--color-card));
   }
@@ -368,11 +546,6 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
     color: var(--color-foreground-muted);
     background: var(--color-card);
     border: 1px dashed var(--color-border-strong, var(--color-border));
-  }
-  @media (max-width: 1023px) {
-    .kr-sample {
-      display: none;
-    }
   }
   .kr-grundlage {
     font-family: var(--font-mono, ui-monospace, monospace);
@@ -392,27 +565,12 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
   .kr-rule-r {
     background: linear-gradient(to left, transparent, var(--color-border));
   }
-  /*
-   * Die Stellschrauben stehen mobil NACH dem Ergebnis: Wer auf eine Option
-   * tippt, hat Preis und Deckungsbeitrag direkt darüber im Blick. Ab lg liegen
-   * sie wieder unter den Eingaben in der linken Spalte.
-   */
+  /* Volle Karte: Stellschrauben unter den Eingaben in der linken Spalte */
   .kr-swap-wrap {
-    order: 4;
-    margin-top: -0.5rem;
-  }
-  @media (min-width: 1024px) {
-    .kr-swap-wrap {
-      order: 0;
-      grid-column: 1;
-      grid-row: 2;
-      margin-top: -1rem;
-      align-self: start;
-    }
-  }
-  .kr-echo {
-    background: color-mix(in oklch, var(--color-brand-500) 8%, transparent);
-    border: 1px solid color-mix(in oklch, var(--color-brand-400) 35%, var(--color-border));
+    grid-column: 1;
+    grid-row: 2;
+    margin-top: -1rem;
+    align-self: start;
   }
   .kr-swap {
     background: color-mix(in oklch, var(--color-brand-500) 5%, transparent);
@@ -422,13 +580,23 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-width: 8.5rem;
+    flex: 1 1 auto;
+    min-width: max-content;
+    white-space: nowrap;
     background: var(--color-card);
     border: 1px solid var(--color-border);
     cursor: pointer;
     transition:
       border-color 0.2s ease,
       box-shadow 0.2s ease;
+  }
+  /* Kompakt: Name links, Kurzwert rechts auf einer Zeile */
+  .kr-swap-btn-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-width: 0;
   }
   .kr-swap-btn[aria-pressed='true'] {
     border-color: var(--color-brand-400);
@@ -464,9 +632,18 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
     border-radius: 0.75rem;
     background: color-mix(in oklch, var(--color-foreground) 4%, transparent);
   }
-  .kr-panel[data-active='true'] .kr-row {
+  :global(html.szenen-ready)
+    .kr:not([data-szene='an'])
+    :is(.kr-row, .kr-k-row, .kr-bar-fill, .kr-db, .kr-swap) {
+    opacity: 0;
+  }
+  .kr[data-szene='an'] .kr-panel[data-active='true'] :is(.kr-row, .kr-k-row) {
     animation: kr-row 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: var(--d);
+    animation-delay: var(--d, 0ms);
+  }
+  .kr[data-szene='an'] .kr-panel[data-active='true'] :is(.kr-db, .kr-swap) {
+    animation: kr-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: 0.6s;
   }
   @keyframes kr-row {
     from {
@@ -475,39 +652,18 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
     }
   }
 
-  /* Regel-Knoten: unter lg zwischen den gestapelten Hälften (order 2), ab lg mittig auf der Trennlinie */
+  /* Regel-Knoten der vollen Karte: mittig auf der Trennlinie */
   .kr-link {
-    position: relative;
+    position: absolute;
+    left: 50%;
+    top: 50%;
     z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.4rem;
-    padding: 0.25rem 0;
+    transform: translate(-50%, -50%);
     pointer-events: none;
-    /* Mobil zwischen Eingaben (1) und Ergebnis (3); ohne order rutschte er nach oben. */
-    order: 2;
-  }
-  /* Unter lg: Knoten im Fluss zwischen den Hälften, Linie quer hindurch */
-  @media (max-width: 1023px) {
-    .kr-link::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 50%;
-      height: 1px;
-      background: var(--color-border);
-    }
-  }
-  @media (min-width: 1024px) {
-    .kr-link {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      margin: 0;
-      transform: translate(-50%, -50%);
-    }
   }
   .kr-link-dot {
     position: relative;
@@ -545,25 +701,12 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
   :global(.dark) .kr-link-label {
     color: var(--color-brand-200);
   }
-  @media (max-width: 1023px) {
-    /*
-     * Das Label saß neben dem Knoten und hatte dort keinen Platz. Mobil steht es
-     * darunter - ohne es bleibt nur ein nacktes Blitz-Icon ohne Aussage.
-     */
-    .kr-link-label {
-      position: absolute;
-      top: 3.25rem;
-      left: 50%;
-      translate: -50% 0;
-      white-space: nowrap;
-    }
-  }
 
   .kr-eingaben {
-    order: 1;
+    grid-column: 1;
+    grid-row: 1;
   }
   .kr-result {
-    order: 3;
     background:
       radial-gradient(
         120% 80% at 100% 0%,
@@ -571,6 +714,11 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
         transparent 60%
       ),
       color-mix(in oklch, var(--color-brand-500) 3%, var(--color-card));
+  }
+  .kr-card .kr-result {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    border-left: 1px solid var(--color-border);
   }
 
   .kr-db {
@@ -593,8 +741,8 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
     width: var(--db);
     background: var(--ok);
   }
-  .kr-panel[data-active='true'] .kr-bar-fill {
-    animation: kr-bar 0.9s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+  .kr[data-szene='an'] .kr-panel[data-active='true'] .kr-bar-fill {
+    animation: kr-bar 0.9s 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
   @keyframes kr-bar {
     from {
@@ -612,19 +760,6 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
     box-shadow: 0 0 0 4px color-mix(in oklch, var(--ok) 25%, transparent);
   }
 
-  @media (min-width: 1024px) {
-    .kr-eingaben {
-      order: 0;
-      grid-column: 1;
-      grid-row: 1;
-    }
-    .kr-result {
-      order: 0;
-      grid-column: 2;
-      grid-row: 1 / span 2;
-      border-left: 1px solid var(--color-border);
-    }
-  }
   @media (prefers-reduced-motion: reduce) {
     .kr-link-dot::after {
       animation: none;
@@ -639,9 +774,22 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
 </style>
 
 <script>
+  import { szenenStarten, hochzaehlen } from '@/lib/szene';
+
   document.querySelectorAll<HTMLElement>('[data-kr]').forEach((root) => {
     const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role=tab]')];
     const panels = [...root.querySelectorAll<HTMLElement>('[role=tabpanel]')];
+    const bewegt = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Der Preis zählt hoch, wenn die Szene anläuft und bei jedem Tabwechsel.
+    const zaehlen = (panel: HTMLElement) => {
+      if (!bewegt) return;
+      panel.querySelectorAll<HTMLElement>('[data-preis]').forEach((el) => hochzaehlen(el, 900));
+    };
+    root.addEventListener('szene:an', () => {
+      const aktiv = panels.find((p) => p.dataset.active === 'true');
+      if (aktiv) zaehlen(aktiv);
+    });
 
     const select = (index: number, focus = false) => {
       tabs.forEach((tab, i) => {
@@ -652,12 +800,15 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
         if (!panel) return;
         panel.hidden = !on;
         panel.dataset.active = on ? 'true' : 'false';
+        if (on && root.dataset.szene === 'an') zaehlen(panel);
       });
       if (focus) tabs[index]?.focus();
     };
 
     // Stellschrauben je Panel: Option wählen, alle abhängigen Werte nachziehen.
     // Gerechnet wird nichts im Browser — jede Option bringt ihr fertiges Ergebnis mit.
+    // Jeder Wert steht zweimal im Panel (kompakte und volle Karte), deshalb überall
+    // querySelectorAll.
     panels.forEach((panel) => {
       const btns = [...panel.querySelectorAll<HTMLButtonElement>('[data-swap]')];
       if (!btns.length) return;
@@ -681,49 +832,50 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
       }
       if (!optionen.length || !basis) return;
 
-      // Der Preis steht zweimal im Panel: im Ergebnis und mobil über den Stellschrauben.
-      const preisEls = panel.querySelectorAll<HTMLElement>('[data-preis]');
-      const kennzahlEl = panel.querySelector<HTMLElement>('[data-kennzahl]');
-      const kostenEl = panel.querySelector<HTMLElement>('[data-kosten]');
-      const dbEl = panel.querySelector<HTMLElement>('[data-db]');
-      const ampelEl = panel.querySelector<HTMLElement>('[data-ampeltext]');
-      const box = panel.querySelector<HTMLElement>('.kr-db');
+      const alle = (sel: string) => [...panel.querySelectorAll<HTMLElement>(sel)];
+      const preisEls = alle('[data-preis]');
+      const kennzahlEls = alle('[data-kennzahl]');
+      const kostenEls = alle('[data-kosten]');
+      const dbEls = alle('[data-db]');
+      const ampelEls = alle('[data-ampeltext]');
+      const boxes = alle('.kr-db');
       const texte: Record<string, string> = {
-        gruen: 'Rechnet sich',
-        gelb: 'Knapp · nur mit Freigabe',
-        rot: 'Unter eurer Grenze · geht so nicht raus',
+        gruen: 'Lohnt sich',
+        gelb: 'Knapp. Erst freigeben lassen',
+        rot: 'Zu wenig übrig. Geht so nicht raus',
       };
       // Ausgangswerte der Eingabezeilen merken, damit eine andere Option sie zurücksetzt.
-      const zeilen = new Map<string, { el: HTMLElement; start: string }>();
+      const zeilen: { label: string; el: HTMLElement; start: string }[] = [];
       panel.querySelectorAll<HTMLElement>('[data-eingabe]').forEach((row) => {
         const wert = row.querySelector<HTMLElement>('[data-eingabe-wert]');
         const label = row.dataset.eingabe;
-        if (wert && label) zeilen.set(label, { el: wert, start: wert.textContent ?? '' });
+        if (wert && label) zeilen.push({ label, el: wert, start: wert.textContent ?? '' });
       });
 
       const apply = (i: number) => {
         const o = optionen[i];
         if (!o || !basis) return;
-        preisEls.forEach((el) => {
-          el.textContent = o.preis ?? basis.preis;
+        const b = basis;
+        preisEls.forEach((el) => (el.textContent = o.preis ?? b.preis));
+        kennzahlEls.forEach((el) => (el.textContent = o.kennzahl ?? b.kennzahl));
+        kostenEls.forEach((el) => (el.textContent = o.kosten));
+        dbEls.forEach((el) => (el.textContent = `${o.db} · ${o.dbProzent} %`));
+        ampelEls.forEach((el) => {
+          const dot = el.querySelector('.kr-dot');
+          el.textContent = texte[o.ampel] ?? '';
+          if (dot) el.prepend(dot);
         });
-        if (kennzahlEl) kennzahlEl.textContent = o.kennzahl ?? basis.kennzahl;
-        if (kostenEl) kostenEl.textContent = o.kosten;
-        if (dbEl) dbEl.textContent = `${o.db} · ${o.dbProzent} %`;
-        if (ampelEl) {
-          const dot = ampelEl.querySelector('.kr-dot');
-          ampelEl.textContent = texte[o.ampel] ?? '';
-          if (dot) ampelEl.prepend(dot);
-        }
-        if (box) box.dataset.ampel = o.ampel;
+        boxes.forEach((box) => (box.dataset.ampel = o.ampel));
         panel.style.setProperty('--db', `${o.dbProzent}%`);
-        zeilen.forEach(({ el, start }, label) => {
+        zeilen.forEach(({ label, el, start }) => {
           el.textContent = o.setzt?.[label] ?? start;
         });
-        btns.forEach((b, k) => b.setAttribute('aria-pressed', k === i ? 'true' : 'false'));
+        btns.forEach((b) =>
+          b.setAttribute('aria-pressed', b.dataset.swap === String(i) ? 'true' : 'false')
+        );
       };
 
-      btns.forEach((b, i) => b.addEventListener('click', () => apply(i)));
+      btns.forEach((b) => b.addEventListener('click', () => apply(Number(b.dataset.swap))));
     });
 
     tabs.forEach((tab, i) => {
@@ -746,4 +898,5 @@ const hinweis = Astro.slots.has('hinweis') ? await Astro.slots.render('hinweis')
       });
     });
   });
+  szenenStarten();
 </script>

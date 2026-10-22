@@ -35,16 +35,16 @@ import AngebotEbenen, { type Ebene } from '@/components/angebote-funnel/AngebotE
 import LohntSich from '@/components/funnel/LohntSich.astro';
 import VertrauensBand from '@/components/funnel/VertrauensBand.astro';
 import '@/styles/szene.css';
-import SectionHeader from '@/components/angebote-funnel/SectionHeader.astro';
+import SectionHeader from '@/components/angebote/SectionHeader.astro';
 import FunnelQuiz from '@/components/funnel/FunnelQuiz';
 import { contactLinks } from '@/data/rocketbase';
 import { Picture } from 'astro:assets';
 import founderPortrait from '@/assets/rocketbase/founder-marten-priess.jpg';
 import type { FunnelQuizQuestion } from '@/data/funnels';
-import HeuteChaos from '@/components/angebote-funnel/HeuteChaos.astro';
+import HeuteChaos from '@/components/angebote/HeuteChaos.astro';
 import KalkulationRechner, {
   type Rechnung,
-} from '@/components/angebote-funnel/KalkulationRechner.astro';
+} from '@/components/angebote/KalkulationRechner.astro';
 import ZahlWandert from '@/components/angebote-funnel/ZahlWandert.astro';
 import ErstgespraechKarte from '@/components/funnel/ErstgespraechKarte.astro';
 import DealZeile from '@/components/funnel/DealZeile.astro';
@@ -621,7 +621,7 @@ const strecke = {
     </div>
 
     <div class="af-rise order-1 lg:order-2">
-      <HeuteChaos />
+      <HeuteChaos szene />
     </div>
   </div>
 </section>

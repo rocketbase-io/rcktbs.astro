@@ -7,19 +7,56 @@
  */
 interface Props {
   class?: string;
+  /** Fenster stapeln sich beim Hereinscrollen (lib/szene.ts). Die Seite muss styles/szene.css laden. */
+  szene?: boolean;
 }
-const { class: className } = Astro.props;
+const { class: className, szene = false } = Astro.props;
 
 const fenster = [
-  { key: 'excel', datei: 'kalkulation_final_v3.xlsx', pain: 'Liegt neben dem System. Versteht eine im Team.', x: 0, y: 6, r: -3 },
-  { key: 'word', datei: 'Angebot_Beispiel_2026.docx', pain: 'Die Summe tippt ihr von Hand ab.', x: 52, y: 0, r: 2 },
-  { key: 'pdf', datei: 'Angebot_v4_NEU.pdf', pain: 'Eine Änderung, und alles von vorn.', x: 6, y: 42, r: 1.5 },
-  { key: 'mail', datei: 'Re: Angebot im Anhang', pain: 'Geöffnet? Keine Ahnung.', x: 52, y: 38, r: -2 },
-  { key: 'kalender', datei: 'Wiedervorlage', pain: 'Nachfassen, wenn jemand dran denkt.', x: 28, y: 76, r: -1 },
+  {
+    key: 'excel',
+    datei: 'kalkulation_final_v3.xlsx',
+    pain: 'Liegt neben dem System. Versteht eine im Team.',
+    x: 0,
+    y: 6,
+    r: -3,
+  },
+  {
+    key: 'word',
+    datei: 'Angebot_Beispiel_2026.docx',
+    pain: 'Die Summe tippt ihr von Hand ab.',
+    x: 52,
+    y: 0,
+    r: 2,
+  },
+  {
+    key: 'pdf',
+    datei: 'Angebot_v4_NEU.pdf',
+    pain: 'Eine Änderung, und alles von vorn.',
+    x: 6,
+    y: 42,
+    r: 1.5,
+  },
+  {
+    key: 'mail',
+    datei: 'Re: Angebot im Anhang',
+    pain: 'Geöffnet? Keine Ahnung.',
+    x: 52,
+    y: 38,
+    r: -2,
+  },
+  {
+    key: 'kalender',
+    datei: 'Wiedervorlage',
+    pain: 'Nachfassen, wenn jemand dran denkt.',
+    x: 28,
+    y: 76,
+    r: -1,
+  },
 ];
 ---
 
-<div class:list={['hc relative', className]}>
+<div class:list={['hc relative', className]} data-szene={szene ? '' : undefined}>
   <svg
     class="hc-line pointer-events-none absolute inset-0 hidden h-full w-full lg:block"
     viewBox="0 0 100 100"
@@ -181,9 +218,6 @@ const fenster = [
     border: 1px solid var(--color-border);
     box-shadow: 0 18px 40px -22px oklch(30% 0.06 265 / 0.45);
     transform: rotate(calc(var(--r) * 0.5));
-    transition:
-      transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 0.4s ease;
     overflow: hidden;
   }
   @media (hover: hover) {
@@ -223,6 +257,30 @@ const fenster = [
     50% {
       translate: 0 -5px;
     }
+  }
+
+  /*
+   * Szene (lib/szene.ts): Die Fenster stapeln sich beim Hereinscrollen eines nach dem
+   * anderen, zuletzt der Kalender. Über `scale` und `opacity`, weil `translate` auf dem
+   * Desktop von hc-drift belegt ist. Ohne JS steht alles sofort.
+   */
+  :global(html.szenen-ready) .hc[data-szene]:not([data-szene='an']) .hc-win {
+    opacity: 0;
+    scale: 0.9;
+  }
+  .hc-win {
+    transition:
+      opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+      scale 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.4s ease;
+    transition-delay: calc(var(--i) * 170ms), calc(var(--i) * 170ms), 0s, 0s;
+  }
+  :global(html.szenen-ready) .hc[data-szene]:not([data-szene='an']) .hc-line {
+    opacity: 0;
+  }
+  .hc-line {
+    transition: opacity 0.8s ease 0.9s;
   }
 
   .hc-bar {
@@ -441,3 +499,8 @@ const fenster = [
     }
   }
 </style>
+
+<script>
+  import { szenenStarten } from '@/lib/szene';
+  szenenStarten();
+</script>

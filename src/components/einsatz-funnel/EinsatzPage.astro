@@ -27,7 +27,7 @@ import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Blueprint from '@/components/hero-backgrounds/Blueprint.astro';
 import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
-import SectionHeader from '@/components/angebote-funnel/SectionHeader.astro';
+import SectionHeader from '@/components/angebote/SectionHeader.astro';
 import FunnelQuiz from '@/components/funnel/FunnelQuiz';
 import ErstgespraechKarte from '@/components/funnel/ErstgespraechKarte.astro';
 import DealZeile from '@/components/funnel/DealZeile.astro';
@@ -42,13 +42,13 @@ import mavoxPlanung from '@/assets/references/mavox-winterdienst-tourenplanung.p
 import fkcInvoice from '@/assets/references/fkc-invoice.png';
 import type { FunnelQuizQuestion } from '@/data/funnels';
 import { contactLinks } from '@/data/rocketbase';
-import AblaufPlan from './AblaufPlan.astro';
-import Plantafel from './Plantafel.astro';
-import LeistungRechnung from './LeistungRechnung.astro';
-import HeuteEinsatz from './HeuteEinsatz.astro';
-import '@/components/angebote-funnel/frame.css';
-import '@/components/zahlen-funnel/zahlen.css';
-import './einsatz.css';
+import AblaufPlan from '@/components/einsatz/AblaufPlan.astro';
+import Plantafel from '@/components/einsatz/Plantafel.astro';
+import LeistungRechnung from '@/components/einsatz/LeistungRechnung.astro';
+import HeuteEinsatz from '@/components/einsatz/HeuteEinsatz.astro';
+import '@/components/angebote/frame.css';
+import '@/components/zahlen/zahlen.css';
+import '@/components/einsatz/einsatz.css';
 
 interface Props {
   variant: 'funnel' | 'site';
