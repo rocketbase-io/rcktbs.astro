@@ -1,35 +1,48 @@
 ---
 /**
- * Ablöseplan als Zeitleiste über 12 Monate: Workshop, Bausteine mit Bau- und Live-Phase,
+ * Ablöseplan als Zeitleiste über sieben Monate: Workshop, Bausteine mit Bau- und Live-Phase,
  * Altsystem im Parallelbetrieb, Probeläufe der Datenübernahme, Stichtag. Die Meilensteine sind
  * anklickbar und zeigen, was in dem Moment passiert. Beispielplan, kein Versprechen.
+ *
+ * `variante="funnel"` für /f/eigene-software/: dort gibt es weder „Workshop“ noch „Baustein“,
+ * es heißt „Aufnahme“ und „Bereich“.
  */
 import '@/components/angebote/frame.css';
 import '@/components/zahlen/zahlen.css';
 import './abloesung.css';
 
-const pct = (m: number) => `${(m / 12) * 100}%`;
+interface Props {
+  variante?: 'seite' | 'funnel';
+}
+const { variante = 'seite' } = Astro.props;
+const funnel = variante === 'funnel';
+const teil = funnel ? 'Bereich' : 'Baustein';
+
+// Je Baustein 1 bis 3 Monate, das Ganze 4 bis 6 (Marten, 2026-10-22). Die Achse läuft zwei
+// Monate über den Stichtag hinaus, damit Live-Phase und „nur lesen“ sichtbar bleiben.
+const dauer = 7;
+const pct = (m: number) => `${(m / dauer) * 100}%`;
 type Bar = { von: number; bis: number; art: 'ws' | 'bau' | 'live' | 'alt' | 'lesen'; t: string };
 const zeilen: { name: string; sub?: string; bars: Bar[] }[] = [
-  { name: 'Workshop', bars: [{ von: 0, bis: 1, art: 'ws', t: '3 Termine' }] },
-  { name: 'Angebot & Kalkulation', sub: 'Baustein 1', bars: [{ von: 1, bis: 2.5, art: 'bau', t: 'Bau' }, { von: 2.5, bis: 12, art: 'live', t: 'live' }] },
-  { name: 'Einsatz & Abrechnung', sub: 'Baustein 2', bars: [{ von: 2.2, bis: 5.5, art: 'bau', t: 'Bau' }, { von: 5.5, bis: 12, art: 'live', t: 'live' }] },
-  { name: 'Zahlen & Steuerung', sub: 'Baustein 3', bars: [{ von: 5.5, bis: 7.5, art: 'bau', t: 'Bau' }, { von: 7.5, bis: 12, art: 'live', t: 'live' }] },
-  { name: 'Altsystem', sub: 'Branchensoftware', bars: [{ von: 0, bis: 9, art: 'alt', t: 'läuft parallel weiter' }, { von: 9, bis: 12, art: 'lesen', t: 'nur lesen' }] },
+  { name: funnel ? 'Aufnahme' : 'Workshop', bars: [{ von: 0, bis: 1, art: 'ws', t: funnel ? 'mit euch' : '3 Termine' }] },
+  { name: 'Angebot & Kalkulation', sub: `${teil} 1`, bars: [{ von: 1, bis: 2, art: 'bau', t: 'Bau' }, { von: 2, bis: 7, art: 'live', t: 'live' }] },
+  { name: 'Einsatz & Abrechnung', sub: `${teil} 2`, bars: [{ von: 1.8, bis: 3.5, art: 'bau', t: 'Bau' }, { von: 3.5, bis: 7, art: 'live', t: 'live' }] },
+  { name: 'Zahlen & Steuerung', sub: `${teil} 3`, bars: [{ von: 3.2, bis: 4.2, art: 'bau', t: 'Bau' }, { von: 4.2, bis: 7, art: 'live', t: 'live' }] },
+  { name: 'Altsystem', sub: 'Branchensoftware', bars: [{ von: 0, bis: 5, art: 'alt', t: 'läuft parallel weiter' }, { von: 5, bis: 7, art: 'lesen', t: 'nur lesen' }] },
 ];
 const meilensteine = [
-  { id: 'p1', m: 3, zeile: 5, titel: 'Probelauf 1', text: 'Alle Kunden und offenen Projekte einmal komplett übernommen, in einer Kopie. Ihr arbeitet zwei Tage damit und schreibt auf, was fehlt oder falsch aussieht. Nichts davon ist endgültig.', red: false },
-  { id: 'p2', m: 6, zeile: 5, titel: 'Probelauf 2', text: 'Jetzt mit der ganzen Historie, Rechnungen inklusive. Der Prüfbericht vergleicht Summen und Anzahlen zwischen alt und neu. Was nicht passt, wird geklärt, bevor es zählt.', red: false },
-  { id: 'fin', m: 8.5, zeile: 5, titel: 'Übernahme final', text: 'An einem Wochenende: Altsystem auf Lesen, letzte Übernahme, Prüfbericht, Freigabe durch euch. Montag früh arbeitet das Team im neuen System, mit allen Daten.', red: false },
-  { id: 'st', m: 9, zeile: 4, titel: 'Stichtag', text: 'Ab hier wird im Altsystem nichts mehr erfasst. Es bleibt bis zum Ende der Vertragslaufzeit lesbar, für den Fall, dass jemand nachschauen will. Danach wird es gekündigt.', red: true },
+  { id: 'p1', m: 2, zeile: 5, titel: 'Probelauf 1', text: 'Alle Kunden und offenen Projekte einmal komplett übernommen, in einer Kopie. Ihr arbeitet zwei Tage damit und schreibt auf, was fehlt oder falsch aussieht. Nichts davon ist endgültig.', red: false },
+  { id: 'p2', m: 3.5, zeile: 5, titel: 'Probelauf 2', text: 'Jetzt mit der ganzen Historie, Rechnungen inklusive. Der Prüfbericht vergleicht Summen und Anzahlen zwischen alt und neu. Was nicht passt, wird geklärt, bevor es zählt.', red: false },
+  { id: 'fin', m: 4.5, zeile: 5, titel: 'Übernahme final', text: 'An einem Wochenende: Altsystem auf Lesen, letzte Übernahme, Prüfbericht, Freigabe durch euch. Montag früh arbeitet das Team im neuen System, mit allen Daten.', red: false },
+  { id: 'st', m: 5, zeile: 4, titel: 'Stichtag', text: 'Ab hier wird im Altsystem nichts mehr erfasst. Es bleibt bis zum Ende der Vertragslaufzeit lesbar, für den Fall, dass jemand nachschauen will. Danach wird es gekündigt.', red: true },
 ];
-const monate = Array.from({ length: 12 }, (_, i) => `M${i + 1}`);
+const monate = Array.from({ length: dauer }, (_, i) => `M${i + 1}`);
 ---
 
-<figure class="af-frame z-app" data-plan>
+<figure class="af-frame z-app" data-plan style={`--ap-monate: ${dauer}`}>
   <div class="af-bar" aria-hidden="true">
     <span class="af-dots"><span></span><span></span><span></span></span>
-    <span class="af-url">ablöseplan · beispiel</span>
+    <span class="af-url">{funnel ? 'der weg dahin' : 'ablöseplan'} · beispiel</span>
     <span class="af-dots invisible"><span></span><span></span><span></span></span>
   </div>
   <div class="p-3 sm:p-5">
@@ -37,7 +50,7 @@ const monate = Array.from({ length: 12 }, (_, i) => `M${i + 1}`);
       <div class="min-w-[44rem]">
         <div class="grid grid-cols-[11rem_minmax(0,1fr)] items-end">
           <span class="z-label">Ablauf</span>
-          <div class="grid grid-cols-12 text-center">
+          <div class="grid text-center" style={`grid-template-columns: repeat(${dauer}, minmax(0, 1fr))`}>
             {monate.map((m) => <span class="z-label">{m}</span>)}
           </div>
         </div>
@@ -74,10 +87,10 @@ const monate = Array.from({ length: 12 }, (_, i) => `M${i + 1}`);
             </div>
           </div>
           <div class="pointer-events-none absolute inset-y-0 right-0 left-[11rem]">
-            <span class="ap-stichtag" style={`left:${pct(9)}`}></span>
+            <span class="ap-stichtag" style={`left:${pct(5)}`}></span>
           </div>
           <div class="absolute top-[-1.6rem] right-0 left-[11rem]">
-            <button type="button" class="ap-ms ap-ms-red" style={`left:${pct(9)};top:0.7rem`} data-ms="st" aria-pressed="false" aria-label="Stichtag"></button>
+            <button type="button" class="ap-ms ap-ms-red" style={`left:${pct(5)};top:0.7rem`} data-ms="st" aria-pressed="false" aria-label="Stichtag"></button>
           </div>
         </div>
       </div>

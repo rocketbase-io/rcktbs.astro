@@ -19,7 +19,8 @@
  * sich nur in H1 und Heute-Block unterscheiden. Nicht per Query-Parameter — der Build ist
  * statisch, die Headline würde nach dem Laden sichtbar umspringen.
  * Die ausführliche, indexierte Seite /standardsoftware-abloesung/ hängt weiter an
- * components/abloesung/. Die Visuals (Landschaft, Ablöseplan, Datenübernahme) sind Kopien von dort.
+ * components/abloesung/. Die Visuals kommen von dort (seit 2026-10-22 geteilt, keine Kopien mehr);
+ * der Ablöseplan läuft hier mit variante="funnel".
  *
  * Gleicher Aufbau wie /f/angebote-neu/: ein Ziel, das Formular.
  *
@@ -45,7 +46,7 @@
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Blueprint from '@/components/hero-backgrounds/Blueprint.astro';
 import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
-import SectionHeader from '@/components/angebote-funnel/SectionHeader.astro';
+import SectionHeader from '@/components/angebote/SectionHeader.astro';
 import FunnelQuiz from '@/components/funnel/FunnelQuiz';
 import ErstgespraechKarte from '@/components/funnel/ErstgespraechKarte.astro';
 import DealZeile from '@/components/funnel/DealZeile.astro';
@@ -57,14 +58,14 @@ import { Picture } from 'astro:assets';
 import founderPortrait from '@/assets/rocketbase/founder-marten-priess.jpg';
 import fkcKanban from '@/assets/references/fkc-sales-kanban.png';
 import type { FunnelQuizQuestion } from '@/data/funnels';
-import HeuteAbloesung from './HeuteAbloesung.astro';
-import Landschaft from './Landschaft.astro';
-import Abloeseplan from './Abloeseplan.astro';
-import Datenuebernahme from './Datenuebernahme.astro';
+import HeuteAbloesung from '@/components/abloesung/HeuteAbloesung.astro';
+import Landschaft from '@/components/abloesung/Landschaft.astro';
+import Abloeseplan from '@/components/abloesung/Abloeseplan.astro';
+import Datenuebernahme from '@/components/abloesung/Datenuebernahme.astro';
 import { abloesungFaqs } from './faqs';
-import '@/components/angebote-funnel/frame.css';
-import '@/components/zahlen-funnel/zahlen.css';
-import './abloesung.css';
+import '@/components/angebote/frame.css';
+import '@/components/zahlen/zahlen.css';
+import '@/components/abloesung/abloesung.css';
 
 const clientLogos = [
   { key: 'fkc_logo', name: 'FKC Consulting' },
@@ -188,7 +189,7 @@ const strecke = {
     { wann: 'Danach, 4 bis 6 Wochen', titel: 'Der erste Abschnitt läuft', text: 'Programmiert zum Festpreis, meist zuerst der Abschnitt, der am meisten Zeit kostet. Mit euren Daten darin und dem alten Programm daneben, bis das Neue trägt.' },
   ] as const,
   einwaende: [
-    { satz: 'Das dauert ewig.', antwort: 'Der erste Abschnitt läuft nach vier bis sechs Wochen, jeder weitere braucht zwei bis vier Monate. Bei einem Kunden haben Angebote, Projekte, Rechnungen und Auswertungen zusammen neun Monate gedauert, dann war die alte Lizenz gekündigt. Die ganze Zeit lief das alte Programm weiter.' },
+    { satz: 'Das dauert ewig.', antwort: 'Der erste Abschnitt läuft nach vier bis sechs Wochen, jeder weitere nach ein bis drei Monaten. Für Angebote, Projekte, Rechnungen und Auswertungen zusammen rechnen wir mit vier bis sechs Monaten, dann ist die alte Lizenz gekündigt. Bis dahin läuft das alte Programm weiter.' },
     { satz: 'Dafür haben wir keine Zeit.', antwort: 'Zwei bis drei Stunden pro Woche von euch: ein Termin, dazu Ausprobieren.' },
     { satz: 'Wir hängen mit allen Daten im alten Programm.', antwort: 'Die Daten ziehen mit. Erst der Abschnitt, dann die Historie, geprüft gegen das Alte.' },
     { satz: 'Dann steht der Betrieb still.', antwort: 'Das Neue läuft neben dem alten Programm. Abgeschaltet wird erst, wenn alles trägt.' },
@@ -369,7 +370,7 @@ const strecke = {
       data-szene-takt="2600"
     >
       <Landschaft />
-      <p class="z-note mt-4 text-center">Heute, nach 6 und nach 12 Monaten. Beispiel.</p>
+      <p class="z-note mt-4 text-center">Heute, nach 3 und nach 6 Monaten. Beispiel.</p>
     </div>
   </div>
 </section>
@@ -391,7 +392,7 @@ const strecke = {
       data-szene-pause="1800"
       data-szene-takt="2400"
     >
-      <Abloeseplan />
+      <Abloeseplan variante="funnel" />
       <p class="z-note mt-4 text-center">
         Beispiel für einen Betrieb mit drei Bereichen. Klickt selbst auf die Meilensteine.
       </p>

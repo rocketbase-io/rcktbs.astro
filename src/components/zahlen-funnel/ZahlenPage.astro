@@ -29,7 +29,7 @@ import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Blueprint from '@/components/hero-backgrounds/Blueprint.astro';
 import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
-import SectionHeader from '@/components/angebote-funnel/SectionHeader.astro';
+import SectionHeader from '@/components/angebote/SectionHeader.astro';
 import FunnelQuiz from '@/components/funnel/FunnelQuiz';
 import ErstgespraechKarte from '@/components/funnel/ErstgespraechKarte.astro';
 import DealZeile from '@/components/funnel/DealZeile.astro';
@@ -41,12 +41,12 @@ import { Picture } from 'astro:assets';
 import founderPortrait from '@/assets/rocketbase/founder-marten-priess.jpg';
 import type { FunnelQuizQuestion } from '@/data/funnels';
 import { contactLinks } from '@/data/rocketbase';
-import CockpitMock from './CockpitMock.astro';
-import AuslastungTeams from './AuslastungTeams.astro';
-import WegfallZiele from './WegfallZiele.astro';
-import HeuteKalender from './HeuteKalender.astro';
-import '@/components/angebote-funnel/frame.css';
-import './zahlen.css';
+import CockpitMock from '@/components/zahlen/CockpitMock.astro';
+import AuslastungTeams from '@/components/zahlen/AuslastungTeams.astro';
+import WegfallZiele from '@/components/zahlen/WegfallZiele.astro';
+import HeuteKalender from '@/components/zahlen/HeuteKalender.astro';
+import '@/components/angebote/frame.css';
+import '@/components/zahlen/zahlen.css';
 
 interface Props {
   variant: 'funnel' | 'site';

@@ -176,7 +176,7 @@
 /* ---------- Ablöseplan ---------- */
 .ap-grid {
   background-image: linear-gradient(to right, var(--z-grid) 1px, transparent 1px);
-  background-size: calc(100% / 12) 100%;
+  background-size: calc(100% / var(--ap-monate, 12)) 100%;
 }
 .ap-bar {
   position: absolute;
