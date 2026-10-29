@@ -137,6 +137,11 @@ const year = new Date().getFullYear();
     body:has([data-funnel-leiste]:not([hidden])) .funnel-footer {
       padding-bottom: calc(2rem + var(--leiste-h, 3.75rem));
     }
+    /* Ist die Erstgespräch-Leiste eingefahren, sitzt das eingeklappte Cookie-Symbol darüber
+       statt auf ihrem Knopf. */
+    body:has([data-funnel-leiste]:not([hidden]):not(.translate-y-full)) {
+      --consent-mini-ueber: var(--leiste-h, 3.75rem);
+    }
   }
 </style>
 
