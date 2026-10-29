@@ -13,7 +13,8 @@ const answerSchema = z.object({
 
 /**
  * Pflicht sind Name und Telefon, auf jeder Strecke gleich (Quiz, Brief-Kontakt): Marten ruft
- * zurück, und über eine E-Mail wird man schnell abgewimmelt. E-Mail und Firma sind optional.
+ * zurück, und über eine E-Mail wird man schnell abgewimmelt. E-Mail ist optional; nach der Firma
+ * fragt das Formular seit 2026-10-29 nicht mehr (das Feld bleibt erlaubt, für offene alte Tabs).
  * Das Formular (`FunnelQuiz.tsx`, `PFLICHTFELDER`) prüft dasselbe; bis 2026-10-29 hing die
  * Regel an einer Liste von Strecken, und `/f/software-check/` fehlte darin, sodass Server
  * und Formular dort verschiedene Felder verlangten.
