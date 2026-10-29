@@ -756,6 +756,14 @@ const configJson = JSON.stringify(consentConfig);
       line-height: 1.45;
     }
 
+    /* Unter 375 px (viele Android-Geräte haben 360) 12 px, damit der Satz einzeilig bleibt.
+       Abschneiden geht nicht: Der Zweck muss vor der Zustimmung ganz lesbar sein. */
+    @media (max-width: 374px) {
+      .consent-banner-description {
+        font-size: 0.75rem;
+      }
+    }
+
     .consent-banner-actions {
       display: grid;
       grid-template-columns: 1fr 1fr auto;

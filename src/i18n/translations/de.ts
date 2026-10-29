@@ -123,7 +123,7 @@ export const de = {
 
   consent: {
     heading: 'Cookies',
-    description: 'Cookies für Reichweitenmessung und Anzeigen setzen wir erst nach Zustimmung.',
+    description: 'Cookies für Statistik & Marketing nur mit Zustimmung.',
     acceptAll: 'Alle akzeptieren',
     declineAll: 'Alle ablehnen',
     customize: 'Anpassen',
