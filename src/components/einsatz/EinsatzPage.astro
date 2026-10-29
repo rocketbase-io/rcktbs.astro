@@ -199,7 +199,7 @@ const miniFaqs = einsatzFaqs;
     {
       istFunnel ? (
         <div id="quiz" class="mt-7 scroll-mt-20 sm:mt-10 lg:mt-0 lg:min-h-[38rem]" data-quiz>
-          <FunnelQuiz client:load {...quizProps} phoneRequired companyOptional markRequired compact />
+          <FunnelQuiz client:load {...quizProps} markRequired compact />
         </div>
       ) : (
         <div class="mt-7 sm:mt-10 lg:mt-0 lg:flex lg:items-center">
@@ -573,7 +573,7 @@ const miniFaqs = einsatzFaqs;
     {
       istFunnel ? (
         <div class="af-rise lg:min-h-[38rem]">
-          <FunnelQuiz client:visible {...quizProps} phoneRequired companyOptional markRequired compact />
+          <FunnelQuiz client:visible {...quizProps} markRequired compact />
         </div>
       ) : (
         <div class="af-rise flex flex-col justify-center gap-4">

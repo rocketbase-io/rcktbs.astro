@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FocusEvent, type FormEvent } from 'react';
 import { ArrowLeft, ArrowRight, CalendarClock, Check, Loader2, ShieldCheck } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { buttonVariants } from '@/components/ui/form/Button/button.variants';
@@ -30,10 +30,6 @@ interface FunnelQuizProps {
   endpoint?: string;
   /** Text des Absende-Knopfs. */
   submitLabel?: string;
-  /** Telefon als Pflichtfeld (der Endpoint prüft das je Funnel mit). */
-  phoneRequired?: boolean;
-  /** Firma optional statt Pflicht (der Endpoint prüft das je Funnel mit). */
-  companyOptional?: boolean;
   /** Hinweis unter dem Telefonfeld. */
   phoneHint?: string;
   /** Eigener dataLayer-Event für den Lead, zusätzlich als Plausible-Event „Lead“. */
@@ -67,6 +63,14 @@ interface QuizAnswer {
  * Was das CRM braucht, sind zwei Tatsachen: Die Firma hat den Link geöffnet (`page_view`,
  * gemeldet vom `FunnelLayout`) und sie hat abgeschickt (`quiz_lead`, hier).
  */
+/**
+ * Pflicht sind Name und Telefon, auf jeder Strecke gleich: Marten ruft zurück, und über eine
+ * E-Mail wird man schnell abgewimmelt. `netlify/functions/funnel-lead.ts` prüft dasselbe.
+ * Nur diese beiden Felder bekommen eigenes Tracking; bei den optionalen ist es egal, ob
+ * jemand sie leer lässt.
+ */
+const PFLICHTFELDER = new Set(['name', 'phone']);
+
 const BACKEND_EVENTS: Record<string, FunnelEreignis> = {
   funnel_lead: 'quiz_lead',
 };
@@ -79,8 +83,6 @@ export function FunnelQuiz({
   privacyUrl = '/datenschutz/',
   endpoint = '/api/funnel-lead',
   submitLabel = 'Ersteinschätzung anfordern',
-  phoneRequired = false,
-  companyOptional = false,
   phoneHint = 'Für eine kurze Rückfrage - wir rufen nur an, wenn es hilft.',
   leadEvent,
   compact = false,
@@ -144,6 +146,32 @@ export function FunnelQuiz({
     if (startedRef.current) return;
     startedRef.current = true;
     melde('funnel_quiz_start');
+  }
+
+  // Was im Kontaktformular passiert, ohne Inhalte: angefangen, Pflichtfeld gefüllt oder leer
+  // verlassen, Absenden versucht, vom Browser blockiert. Ohne das ist "Kontaktschritt
+  // erreicht, nicht abgeschickt" eine Blackbox: Wer vor dem Telefonfeld aufhört, wer
+  // ausfüllt und am Knopf zögert und wen die Browser-Prüfung stoppt, sieht gleich aus.
+  // Server- und Netzfehler meldet `funnel_fehler` in `handleSubmit`. Jedes Ereignis
+  // einmal je Feld und Aktion.
+  const formularRef = useRef<Set<string>>(new Set());
+  function meldeFormular(event: string, props: Record<string, string> = {}) {
+    const key = [event, ...Object.values(props)].join(':');
+    if (formularRef.current.has(key)) return;
+    formularRef.current.add(key);
+    melde(event, props);
+  }
+  function feldVerlassen(ev: FocusEvent<HTMLFormElement>) {
+    const feld = ev.target as unknown as HTMLInputElement;
+    if (!PFLICHTFELDER.has(feld.name)) return;
+    meldeFormular('formular_feld', {
+      feld: feld.name,
+      aktion: feld.value.trim() ? 'ausgefuellt' : 'leer_verlassen',
+    });
+  }
+  function feldUngueltig(ev: FormEvent<HTMLFormElement>) {
+    const feld = ev.target as unknown as HTMLInputElement;
+    if (feld.name) meldeFormular('formular_ungueltig', { feld: feld.name });
   }
 
   // Erreichte Schritte als eigene Ereignisse: Plausible zeigt pro Ereignis
@@ -346,6 +374,9 @@ export function FunnelQuiz({
 
               <form
                 onSubmit={handleSubmit}
+                onFocus={() => meldeFormular('formular_angefangen')}
+                onBlur={feldVerlassen}
+                onInvalidCapture={feldUngueltig}
                 className={compact ? 'mt-5 space-y-4' : 'mt-6 space-y-4'}
                 noValidate={false}
               >
@@ -359,34 +390,24 @@ export function FunnelQuiz({
                     <div className="grid gap-x-4 gap-y-3 sm:grid-cols-2">
                       <Input label="Name" name="name" type="text" size="lg" required autoComplete="name" requiredMark={markRequired} />
                       <Input
-                        label="E-Mail"
-                        name="email"
-                        type="email"
-                        size="lg"
-                        required
-                        autoComplete="email"
-                        inputMode="email"
-                        requiredMark={markRequired}
-                      />
-                      <Input
-                        label={phoneRequired || markRequired ? 'Telefon' : 'Telefon (optional)'}
+                        label="Telefon"
                         name="phone"
                         type="tel"
                         size="lg"
-                        required={phoneRequired}
+                        required
                         autoComplete="tel"
                         inputMode="tel"
                         requiredMark={markRequired}
                       />
                       <Input
-                        label={companyOptional && !markRequired ? 'Firma (optional)' : 'Firma'}
-                        name="company"
-                        type="text"
+                        label="E-Mail (optional)"
+                        name="email"
+                        type="email"
                         size="lg"
-                        required={!companyOptional}
-                        autoComplete="organization"
-                        requiredMark={markRequired}
+                        autoComplete="email"
+                        inputMode="email"
                       />
+                      <Input label="Firma (optional)" name="company" type="text" size="lg" autoComplete="organization" />
                     </div>
                     {(phoneHint || markRequired) && (
                       <p className="text-foreground-muted text-xs leading-5">
@@ -401,26 +422,19 @@ export function FunnelQuiz({
                   </>
                 ) : (
                   <>
-                    <Input
-                      label={companyOptional ? 'Firma (optional)' : 'Firma'}
-                      name="company"
-                      type="text"
-                      required={!companyOptional}
-                      autoComplete="organization"
-                      size="lg"
-                    />
                     <Input label="Name" name="name" type="text" required autoComplete="name" size="lg" />
-                    <Input label="E-Mail" name="email" type="email" required autoComplete="email" inputMode="email" size="lg" />
                     <Input
-                      label={phoneRequired ? 'Telefon' : 'Telefon (optional)'}
+                      label="Telefon"
                       name="phone"
                       type="tel"
-                      required={phoneRequired}
+                      required
                       autoComplete="tel"
                       inputMode="tel"
                       size="lg"
                       hint={phoneHint}
                     />
+                    <Input label="E-Mail (optional)" name="email" type="email" autoComplete="email" inputMode="email" size="lg" />
+                    <Input label="Firma (optional)" name="company" type="text" autoComplete="organization" size="lg" />
                   </>
                 )}
 
@@ -438,6 +452,7 @@ export function FunnelQuiz({
                 <button
                   type="submit"
                   disabled={submitting}
+                  onClick={() => melde('formular_absenden_versucht')}
                   className={cn(buttonVariants({ size: 'lg', fullWidth: true }))}
                 >
                   {submitting ? (
