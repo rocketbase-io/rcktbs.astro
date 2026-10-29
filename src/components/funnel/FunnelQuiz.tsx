@@ -14,6 +14,7 @@ import {
 } from '@/lib/leadTracking';
 import { meldeEreignis, streckeAusPfad, type FunnelEreignis } from '@/lib/funnelTracking';
 import { leseBriefRef } from '@/lib/briefRef';
+import { einordnungFuer, type EinordnungsStrecke } from '@/lib/quizEinordnung';
 
 interface FunnelQuizProps {
   /**
@@ -41,6 +42,13 @@ interface FunnelQuizProps {
   compact?: boolean;
   /** Pflichtfelder mit Sternchen markieren, dazu der Hinweis „* Pflichtfeld“. */
   markRequired?: boolean;
+  /**
+   * Zeigt im Kontaktschritt über dem Formular eine Schnell-Einschätzung aus den Antworten: die
+   * Überschrift der passenden Aussage aus `src/data/quizEinordnung.json`, den Rest klärt das
+   * Gespräch. Kein eigener Schritt und kein Absatz Text: Jeder Klick und jede Zeile mehr kurz
+   * vor dem Abschicken kostet Leute.
+   */
+  einordnung?: EinordnungsStrecke;
 }
 
 interface QuizAnswer {
@@ -87,6 +95,7 @@ export function FunnelQuiz({
   leadEvent,
   compact = false,
   markRequired = false,
+  einordnung: einordnungsStrecke,
 }: FunnelQuizProps) {
   // Schritte: 0..questions.length-1 = Fragen, questions.length = Kontakt
   const [step, setStep] = useState(0);
@@ -113,6 +122,8 @@ export function FunnelQuiz({
   const progress = submitted ? 100 : Math.round((step / totalSteps) * 100);
   const contactStep = step === questions.length;
   const currentQuestion = contactStep ? null : questions[step];
+  const einordnung =
+    contactStep && einordnungsStrecke ? einordnungFuer(einordnungsStrecke, answers) : null;
 
   useEffect(() => {
     utmRef.current = sammleAttribution();
@@ -187,6 +198,9 @@ export function FunnelQuiz({
     melde(contactStep ? 'funnel_kontakt_erreicht' : 'funnel_schritt_erreicht', {
       step: step + 1,
       ...(currentQuestion ? { question: currentQuestion.id } : {}),
+      // Welche Einschätzung jemand gesehen hat: In Plausible lässt sich damit je Kombination
+      // ablesen, wie viele danach abschicken (`funnel_lead`).
+      ...(einordnung ? { einordnung: `${einordnung.antwortA}|${einordnung.antwortB}` } : {}),
     });
   }, [step]);
 
@@ -360,10 +374,23 @@ export function FunnelQuiz({
                 totalSteps={totalSteps}
                 onBack={() => goToStep(step - 1)}
               />
+              {einordnung && (
+                <div className="bg-brand-500/5 mt-3 rounded-2xl px-4 py-3">
+                  <p className="text-brand-600 dark:text-brand-300 font-mono text-[0.6875rem] font-semibold tracking-[0.18em] uppercase">
+                    Erste Schnell-Einschätzung
+                  </p>
+                  <p className="font-display text-foreground mt-1.5 text-base leading-6 font-bold text-balance">
+                    {einordnung.titel}
+                  </p>
+                  <p className="text-foreground-secondary mt-1 text-sm leading-6">
+                    Genaueres klärt ihr mit Marten im Gespräch.
+                  </p>
+                </div>
+              )}
               <h2
                 className={cn(
                   'font-display text-foreground text-xl font-bold tracking-tight sm:text-2xl',
-                  compact ? 'mt-3' : 'mt-4'
+                  einordnung ? 'mt-5' : compact ? 'mt-3' : 'mt-4'
                 )}
               >
                 {contact.heading}
