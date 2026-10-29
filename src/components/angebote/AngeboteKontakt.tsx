@@ -131,28 +131,11 @@ export function AngeboteKontakt({
             <form onSubmit={handleSubmit} className="mt-6 space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <Input
-                  label="Firma"
-                  name="company"
-                  type="text"
-                  autoComplete="organization"
-                  size="lg"
-                />
-                <Input
                   label="Name"
                   name="name"
                   type="text"
                   required
                   autoComplete="name"
-                  size="lg"
-                  requiredMark
-                />
-                <Input
-                  label="E-Mail"
-                  name="email"
-                  type="email"
-                  required
-                  autoComplete="email"
-                  inputMode="email"
                   size="lg"
                   requiredMark
                 />
@@ -165,6 +148,21 @@ export function AngeboteKontakt({
                   inputMode="tel"
                   size="lg"
                   requiredMark
+                />
+                <Input
+                  label="E-Mail (optional)"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  inputMode="email"
+                  size="lg"
+                />
+                <Input
+                  label="Firma (optional)"
+                  name="company"
+                  type="text"
+                  autoComplete="organization"
+                  size="lg"
                 />
               </div>
 

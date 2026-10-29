@@ -130,30 +130,29 @@ export function BriefKontakt({
                 Nebeneinander unlesbar. */}
             <form onSubmit={handleSubmit} className="mt-6 space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
-                <Input
-                  label="Firma"
-                  name="company"
-                  type="text"
-                  required
-                  autoComplete="organization"
-                  size="lg"
-                />
                 <Input label="Name" name="name" type="text" required autoComplete="name" size="lg" />
                 <Input
-                  label="E-Mail"
+                  label="Telefon"
+                  name="phone"
+                  type="tel"
+                  required
+                  autoComplete="tel"
+                  inputMode="tel"
+                  size="lg"
+                />
+                <Input
+                  label="E-Mail (optional)"
                   name="email"
                   type="email"
-                  required
                   autoComplete="email"
                   inputMode="email"
                   size="lg"
                 />
                 <Input
-                  label="Telefon (optional)"
-                  name="phone"
-                  type="tel"
-                  autoComplete="tel"
-                  inputMode="tel"
+                  label="Firma (optional)"
+                  name="company"
+                  type="text"
+                  autoComplete="organization"
                   size="lg"
                 />
               </div>
@@ -161,7 +160,7 @@ export function BriefKontakt({
               {/* Unter dem Raster statt am Feld: als Feld-Hint würde er die
                   Spaltenhöhen ungleich machen. */}
               <p className="text-foreground-muted text-xs leading-5">
-                Die Telefonnummer nur für eine kurze Rückfrage — wir rufen an, wenn es hilft.
+                Wir rufen an, um mit euch einen Termin zu finden.
               </p>
 
               {/* Honeypot */}

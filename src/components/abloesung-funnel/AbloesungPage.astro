@@ -280,7 +280,7 @@ const strecke = {
     </div>
 
     <div id="quiz" class="mt-7 scroll-mt-20 sm:mt-10 lg:mt-0 lg:min-h-[38rem]" data-quiz>
-      <FunnelQuiz client:load {...quizProps} phoneRequired companyOptional markRequired compact />
+      <FunnelQuiz client:load {...quizProps} markRequired compact />
     </div>
     <p
       class="text-foreground-muted border-border/70 bg-background/85 mx-auto mt-6 max-w-lg rounded-xl border px-4 py-3 text-center text-sm leading-6 backdrop-blur-sm lg:hidden"
@@ -693,8 +693,6 @@ const strecke = {
       <FunnelQuiz
         client:visible
         {...quizProps}
-        phoneRequired
-        companyOptional
         markRequired
         compact
       />

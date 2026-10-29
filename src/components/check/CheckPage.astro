@@ -296,7 +296,7 @@ const nichtDabei = [
     {
       istFunnel && (
         <div id="quiz" class="mt-7 scroll-mt-20 sm:mt-10 lg:mt-0 lg:min-h-[38rem]" data-quiz>
-          <FunnelQuiz client:load {...quizProps} phoneRequired companyOptional markRequired compact />
+          <FunnelQuiz client:load {...quizProps} markRequired compact />
         </div>
       )
     }
@@ -574,7 +574,7 @@ const nichtDabei = [
           </div>
         </div>
         <div data-quiz>
-          <FunnelQuiz client:visible {...quizProps} phoneRequired companyOptional markRequired />
+          <FunnelQuiz client:visible {...quizProps} markRequired />
         </div>
       </div>
     ) : (

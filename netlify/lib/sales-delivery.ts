@@ -15,7 +15,7 @@ export interface StoredLead {
 	funnel: string;
 	company: string;
 	name: string;
-	email: string;
+	email?: string;
 	phone?: string;
 	answers: {
 		questionId: string;

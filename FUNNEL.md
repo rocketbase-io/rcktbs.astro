@@ -137,6 +137,14 @@ Dazugekommen, nur für die Abbruch-Analyse:
 | `funnel_schritt_erreicht` | Frage 2..n angezeigt (einmal pro Schritt) | `funnel`, `step`, `question` |
 | `funnel_kontakt_erreicht` | Kontaktschritt angezeigt | `funnel`, `step` |
 | `funnel_fehler` | Absenden gescheitert | `funnel`, `art`: `validierung` \| `netz` |
+| `formular_angefangen` | Erstes Feld im Kontaktformular angeklickt | `funnel` |
+| `formular_feld` | Pflichtfeld verlassen (nur `name`, `phone`) | `funnel`, `feld`, `aktion`: `ausgefuellt` \| `leer_verlassen` |
+| `formular_absenden_versucht` | Klick auf den Absende-Knopf, auch wenn der Browser blockiert | `funnel` |
+| `formular_ungueltig` | Browser blockiert das Absenden (leeres Pflichtfeld, kaputte E-Mail) | `funnel`, `feld` |
+
+Pflicht im Kontaktformular sind auf jeder Strecke **Name und Telefon** (seit 2026-10-29),
+E-Mail und Firma sind optional. Frontend (`FunnelQuiz.tsx`, `PFLICHTFELDER`) und
+`netlify/functions/funnel-lead.ts` prüfen dasselbe. Feldinhalte gehen nie an Plausible.
 
 Abbruch liest sich in Plausible als Differenz der eindeutigen Besucher:
 Pageview → `funnel_quiz_start` → `funnel_schritt_erreicht` (step=2, 3, …) →

@@ -11,13 +11,22 @@ const answerSchema = z.object({
 	detail: z.string().max(2000).optional(),
 });
 
+/**
+ * Pflicht sind Name und Telefon, auf jeder Strecke gleich (Quiz, Brief-Kontakt): Marten ruft
+ * zurück, und über eine E-Mail wird man schnell abgewimmelt. E-Mail und Firma sind optional.
+ * Das Formular (`FunnelQuiz.tsx`, `PFLICHTFELDER`) prüft dasselbe; bis 2026-10-29 hing die
+ * Regel an einer Liste von Strecken, und `/f/software-check/` fehlte darin, sodass Server
+ * und Formular dort verschiedene Felder verlangten.
+ */
 const leadSchema = z.object({
 	funnel: z.string().min(1).max(100),
-	// Pflicht prüft superRefine: auf /f/angebote/ darf die Firma fehlen.
 	company: z.string().max(200),
-	name: z.string().min(2, 'Bitte mindestens 2 Zeichen eingeben.').max(100),
-	email: z.string().email('Bitte eine gueltige E-Mail-Adresse eingeben.'),
-	phone: z.string().max(50).optional(),
+	name: z.string().trim().min(2, 'Bitte mindestens 2 Zeichen eingeben.').max(100),
+	// Leer heißt "nicht angegeben"; eine angegebene Adresse muss gültig sein.
+	email: z
+		.union([z.literal(''), z.string().trim().email('Bitte eine gueltige E-Mail-Adresse eingeben.')])
+		.transform((value) => value || undefined),
+	phone: z.string().trim().min(5, 'Bitte eine Telefonnummer angeben.').max(50),
 	answers: z.array(answerSchema).max(20),
 	utm: z.record(z.string(), z.string().max(500)).optional(),
 	page: z.string().max(2000).optional(),
@@ -33,30 +42,6 @@ const leadSchema = z.object({
 	 */
 	letterRef: z.string().max(50).optional(),
 	honeypot: z.string().max(0),
-}).superRefine((lead, ctx) => {
-	// Auf der Angebotsbaustein-Seite (/f/angebote/) gibt es keine Terminbuchung, Marten ruft
-	// zurück: Telefon ist dort Pflicht, die Firma dafür optional.
-	// Gleiches gilt für die Zahlen-Seite (/f/zahlen/), die Einsatz-Seite (/f/einsatz/)
-	// und die eigene Software (/f/eigene-software/, bis 2026-10-18 unter /f/abloesung/).
-	//
-	// Geprüft wird gegen die Strecke, also den Pfad (`f/angebote`), den
-	// `streckeAusPfad` liefert. Die alten Kurznamen (`angebote`) bleiben
-	// erlaubt, damit ein Lead aus einem noch offenen Tab nicht an der
-	// falschen Pflichtfeld-Regel scheitert.
-	const RUECKRUF_STRECKEN = new Set([
-		'f/angebote', 'f/zahlen', 'f/einsatz',
-		'f/eigene-software', 'f/abloesung',
-		// Backup der alten Funnel-Fassungen (seit 2026-10-16 unter /f/*-old/).
-		'f/angebote-old', 'f/zahlen-old', 'f/einsatz-old',
-		'angebote', 'zahlen', 'einsatz',
-	]);
-	const angebote = RUECKRUF_STRECKEN.has(lead.funnel);
-	if (angebote && (lead.phone ?? '').trim().length < 5) {
-		ctx.addIssue({ code: 'custom', path: ['phone'], message: 'Bitte eine Telefonnummer angeben.' });
-	}
-	if (!angebote && lead.company.trim().length < 2) {
-		ctx.addIssue({ code: 'custom', path: ['company'], message: 'Bitte den Firmennamen angeben.' });
-	}
 });
 
 const json = (body: unknown, status = 200) =>
@@ -98,7 +83,7 @@ interface CapiInput {
 	pixelId: string;
 	token: string;
 	eventId?: string;
-	email: string;
+	email?: string;
 	phone?: string;
 	name: string;
 	fbp?: string;
@@ -190,7 +175,7 @@ export default async (request: Request, context: Context) => {
 			company: formData.get('company')?.toString() || '',
 			name: formData.get('name')?.toString() || '',
 			email: formData.get('email')?.toString() || '',
-			phone: formData.get('phone')?.toString() || undefined,
+			phone: formData.get('phone')?.toString() || '',
 			answers: parseJson(formData.get('answers')?.toString() || '[]', []),
 			utm: parseJson(formData.get('utm')?.toString() || '{}', {}),
 			page: formData.get('page')?.toString() || undefined,
@@ -408,7 +393,7 @@ export default async (request: Request, context: Context) => {
               ${originHtml}
               <p><strong>Firma:</strong> ${lead.company || '–'}</p>
               <p><strong>Name:</strong> ${lead.name}</p>
-              <p><strong>E-Mail:</strong> ${lead.email}</p>
+              <p><strong>E-Mail:</strong> ${lead.email || '–'}</p>
               ${lead.phone ? `<p><strong>Telefon:</strong> ${lead.phone}</p>` : ''}
               <hr />
               ${answersHtml}
