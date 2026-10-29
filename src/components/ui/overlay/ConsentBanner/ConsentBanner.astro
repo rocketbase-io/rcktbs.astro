@@ -93,6 +93,19 @@ const configJson = JSON.stringify(consentConfig);
       </div>
     </div>
 
+    <!-- Nur auf dem Handy, solange nicht entschieden ist: Die eingeklappte Leiste. Ein Tipp
+         klappt sie wieder auf. -->
+    <button type="button" id="consent-mini" class="consent-mini" aria-label={ui.heading}>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"></path>
+        <path d="M8.5 8.5v.01"></path>
+        <path d="M16 15.5v.01"></path>
+        <path d="M12 12v.01"></path>
+        <path d="M11 17v.01"></path>
+        <path d="M7 14v.01"></path>
+      </svg>
+    </button>
+
     <!-- Settings Panel via Dialog -->
     <Dialog id="consent-settings" title={ui.settingsHeading} size="md">
       <div class="consent-settings-body">
@@ -435,6 +448,54 @@ const configJson = JSON.stringify(consentConfig);
           }, { signal: signal });
 
           watchDialogClose();
+
+          // Auf dem Handy (siehe CSS) klappt die Leiste zu einem Cookie-Symbol rechts unten ein,
+          // sobald jemand eine Bildschirmhöhe gescrollt oder das Quiz angefangen hat. Sonst liegt
+          // sie über der Erstgespräch-Leiste der Funnel-Seiten und über dem Kontaktformular.
+          // Ein Tipp aufs Symbol klappt sie wieder auf, bis man ein Stück weiterscrollt.
+          // Unentschieden heißt weiterhin: kein Pixel.
+          const banner = document.getElementById('consent-banner');
+          const mini = document.getElementById('consent-mini');
+          if (banner) {
+            let quizBegonnen = false;
+            let aufgeklapptBei: number | null = null;
+            const schrumpfen = function() {
+              if (aufgeklapptBei !== null && Math.abs(window.scrollY - aufgeklapptBei) > 300) {
+                aufgeklapptBei = null;
+              }
+              const zu = aufgeklapptBei === null && (quizBegonnen || window.scrollY > window.innerHeight);
+              banner.classList.toggle('consent-banner--compact', zu);
+            };
+            schrumpfen();
+            window.addEventListener('scroll', schrumpfen, { passive: true, signal: signal });
+            document.addEventListener('click', function(ev) {
+              const ziel = ev.target as HTMLElement | null;
+              if (ziel && ziel.closest('[data-quiz]')) {
+                quizBegonnen = true;
+                aufgeklapptBei = null;
+                schrumpfen();
+              }
+            }, { signal: signal });
+            if (mini) mini.addEventListener('click', function() {
+              aufgeklapptBei = window.scrollY;
+              schrumpfen();
+            }, { signal: signal });
+            document.addEventListener('focusin', function(ev) {
+              const ziel = ev.target as HTMLElement | null;
+              if (ziel && ziel.matches('input, textarea, select') && !banner.contains(ziel)) {
+                banner.classList.add('consent-banner--weicht');
+              }
+            }, { signal: signal });
+            // Erst nach dem Fokuswechsel prüfen: Von Feld zu Feld springt sie sonst kurz auf.
+            document.addEventListener('focusout', function() {
+              setTimeout(function() {
+                const aktiv = document.activeElement as HTMLElement | null;
+                if (!aktiv || !aktiv.matches('input, textarea, select')) {
+                  banner.classList.remove('consent-banner--weicht');
+                }
+              }, 0);
+            }, { signal: signal });
+          }
         }
 
         // Run on page load and view transitions
@@ -642,74 +703,82 @@ const configJson = JSON.stringify(consentConfig);
     box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
   }
 
+  /* ─── Eingeklappte Leiste (nur Handy, siehe Responsive) ─── */
+  .consent-mini {
+    display: none;
+    position: fixed;
+    right: max(1rem, env(safe-area-inset-right, 0px));
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px) + var(--consent-mini-ueber, 0px));
+    z-index: 50;
+    width: 2.75rem;
+    height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--background-elevated);
+    color: var(--foreground);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+    transition: bottom var(--transition-slow);
+  }
+
+  .consent-mini:focus-visible {
+    outline: 2px solid var(--ring, currentColor);
+    outline-offset: 2px;
+  }
+
   /* ─── Responsive ─── */
   @media (max-width: 640px) {
-    /* Auf dem Handy ist der Banner eine Karte in der Mitte mit abgedunkeltem
-       Hintergrund. Als Zeile unten lag er über dem Quiz der Funnel-Seiten und
-       wurde meist einfach ignoriert; dann lief das Pixel nie. Auf dem Desktop
-       bleibt die Zeile unten, dort stört eine Karte in der Mitte mehr. */
-    .consent-banner--bottom {
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.25rem;
-      background: rgba(15, 18, 28, 0.55);
-      transform: none;
-      opacity: 0;
-      pointer-events: none;
-      touch-action: none;
-      transition: opacity var(--transition-slow);
-    }
-
-    .consent-banner--bottom[hidden] {
-      display: none;
-    }
-
-    .consent-banner--visible.consent-banner--bottom {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .consent-banner--bottom .consent-banner-inner {
+    /* Auf dem Handy eine flache Leiste unten, die nichts sperrt. Vom 18. bis 29.10.2026 war
+       es eine Karte in der Mitte mit abgedunkeltem Hintergrund: 513 von 662 Besuchern aus
+       den Meta-Anzeigen haben sie nicht beantwortet und waren nach 6 s wieder weg; wer sie
+       beantwortet hat, blieb 45 s. Das Pixel lädt weiterhin erst nach Zustimmung.
+       Ohne Überschrift und mit den Knöpfen in einer Zeile bleibt die Leiste so niedrig, dass
+       der Hero darüber lesbar bleibt. */
+    .consent-banner-inner {
       flex-direction: column;
       align-items: stretch;
-      gap: 1rem;
-      width: 100%;
-      max-width: 24rem;
-      padding: 1.25rem;
-      border: 1px solid var(--border);
-      border-radius: 1.25rem;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+      gap: 0.625rem;
+      padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
+    }
+
+    .consent-banner-heading {
+      display: none;
     }
 
     .consent-banner-content {
       min-width: 0;
     }
 
-    .consent-banner-heading {
-      font-size: 1.0625rem;
-    }
-
     .consent-banner-description {
-      font-size: 0.875rem;
-      line-height: 1.5;
+      font-size: 0.8125rem;
+      line-height: 1.45;
     }
 
     .consent-banner-actions {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.625rem;
+      grid-template-columns: 1fr 1fr auto;
+      align-items: center;
+      gap: 0.5rem;
     }
 
     .consent-banner-actions > * {
-      min-height: 2.75rem;
-      font-size: 0.9375rem;
+      min-height: 2.5rem;
     }
 
-    #consent-customize {
-      grid-column: 1 / -1;
-      min-height: 2.25rem;
+    /* Eingeklappt: die Leiste fährt nach unten weg, rechts unten bleibt das Cookie-Symbol. */
+    .consent-banner--visible.consent-banner--bottom.consent-banner--compact {
+      transform: translateY(100%);
+    }
+
+    .consent-banner--visible.consent-banner--compact:not(.consent-banner--weicht) ~ .consent-mini {
+      display: flex;
+    }
+
+    /* Solange ein Formularfeld den Fokus hat, ganz aus dem Weg. */
+    .consent-banner--visible.consent-banner--bottom.consent-banner--weicht {
+      transform: translateY(100%);
     }
   }
 
