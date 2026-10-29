@@ -404,10 +404,10 @@ export function FunnelQuiz({
                         name="email"
                         type="email"
                         size="lg"
+                        className="sm:col-span-2"
                         autoComplete="email"
                         inputMode="email"
                       />
-                      <Input label="Firma (optional)" name="company" type="text" size="lg" autoComplete="organization" />
                     </div>
                     {(phoneHint || markRequired) && (
                       <p className="text-foreground-muted text-xs leading-5">
@@ -434,7 +434,6 @@ export function FunnelQuiz({
                       hint={phoneHint}
                     />
                     <Input label="E-Mail (optional)" name="email" type="email" autoComplete="email" inputMode="email" size="lg" />
-                    <Input label="Firma (optional)" name="company" type="text" autoComplete="organization" size="lg" />
                   </>
                 )}
 

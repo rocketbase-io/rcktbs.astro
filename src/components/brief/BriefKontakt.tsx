@@ -144,15 +144,9 @@ export function BriefKontakt({
                   label="E-Mail (optional)"
                   name="email"
                   type="email"
+                  className="sm:col-span-2"
                   autoComplete="email"
                   inputMode="email"
-                  size="lg"
-                />
-                <Input
-                  label="Firma (optional)"
-                  name="company"
-                  type="text"
-                  autoComplete="organization"
                   size="lg"
                 />
               </div>

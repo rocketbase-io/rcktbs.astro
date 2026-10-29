@@ -143,7 +143,7 @@ Dazugekommen, nur für die Abbruch-Analyse:
 | `formular_ungueltig` | Browser blockiert das Absenden (leeres Pflichtfeld, kaputte E-Mail) | `funnel`, `feld` |
 
 Pflicht im Kontaktformular sind auf jeder Strecke **Name und Telefon** (seit 2026-10-29),
-E-Mail und Firma sind optional. Frontend (`FunnelQuiz.tsx`, `PFLICHTFELDER`) und
+E-Mail ist optional, nach der Firma wird nicht mehr gefragt. Frontend (`FunnelQuiz.tsx`, `PFLICHTFELDER`) und
 `netlify/functions/funnel-lead.ts` prüfen dasselbe. Feldinhalte gehen nie an Plausible.
 
 Abbruch liest sich in Plausible als Differenz der eindeutigen Besucher:
