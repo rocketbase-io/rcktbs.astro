@@ -232,8 +232,9 @@ export function FunnelQuiz({
     setStep(next);
     setTextMode(false);
     setFreeText('');
-    // Mobil steht das Formular sonst unter der Rechnung und damit unter dem Bildausschnitt.
-    if (kontaktPerson && next === questions.length && window.innerWidth < 1024) {
+    // Mobil rückt die Karte ab der ersten Antwort ganz nach oben: So sind alle Antworten und
+    // am Ende Formular und Knopf ohne Scrollen im Bild.
+    if (kontaktPerson && window.innerWidth < 1024) {
       window.setTimeout(
         () => cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
         50

@@ -4,7 +4,7 @@
  * `skills/RocketBase LP Angebote – schlank.html`. Ein Gerüst für alle fünf Tore, die Texte stehen
  * in `src/data/funnelSchlank.ts`, die Bilder kommen je Tor über drei Slots:
  *
- *   Hero     für wen, Versprechen, Erklärung, Knopf, vier Fakten, Bild (Slot `hero`)
+ *   Hero     für wen, Versprechen, Erklärung, Bild (Slot `hero`), Knopf ab sm, vier Fakten
  *   Was      was es ist, drei Schritte, Bild (Standard-Slot)
  *   Heute    vorher und nachher mit Bild (Slot `heute`, optional), dazu die Zahl
  *   Ablauf   drei Schritte (#ablauf)
@@ -12,8 +12,8 @@
  *   Kontakt  Marten, Quiz (#kontakt, #quiz)
  *
  * Das Quiz steht bewusst nur am Ende: Kalte Besucher sollen erst verstehen, worum es geht.
- * Die Leiste unten (FunnelLayout) erscheint, sobald der Knopf im Hero aus dem Bild ist, und
- * führt zum Quiz.
+ * Mobil gibt es im Hero keinen Knopf, damit Text und Bild den ersten Bildschirm haben: Die Leiste
+ * unten (FunnelLayout) fährt beim ersten Scrollen ein und führt zum Quiz.
  *
  * Die ausführlichen Seiten bleiben unter den Tür-Adressen, die alten Funnel-Komponenten
  * (`*-funnel/`, `CheckPage variant="funnel"`) sind nur nicht mehr eingebunden.
@@ -62,10 +62,12 @@ const quizProps = {
     aria-hidden="true"
   >
   </div>
+  <!-- Sobald dieser Punkt aus dem Bild ist, fährt mobil die Leiste ein. -->
+  <div class="absolute top-6 h-px w-px" data-leiste-start aria-hidden="true"></div>
   <div
-    class="relative z-10 mx-auto grid w-full max-w-7xl gap-8 px-5 pt-6 pb-10 sm:px-8 sm:pt-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-center lg:gap-14 lg:py-16"
+    class="relative z-10 mx-auto grid w-full max-w-7xl gap-x-14 gap-y-6 px-5 pt-6 pb-10 sm:px-8 sm:pt-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:grid-rows-[auto_auto] lg:py-16"
   >
-    <div>
+    <div class="lg:self-end">
       <p class="text-brand-600 dark:text-brand-300 text-xs font-semibold tracking-[0.14em] uppercase">
         {tor.fuerWen}
       </p>
@@ -75,16 +77,22 @@ const quizProps = {
       >
         {tor.headline}
       </h1>
-      <p class="text-foreground-secondary mt-4 text-base leading-7 sm:mt-5 sm:text-lg sm:leading-8">
-        {tor.lead}
+      <p class="text-foreground-secondary mt-3 text-base leading-7 sm:mt-5 sm:text-lg sm:leading-8">
+        <span class="sm:hidden">{tor.leadMobil}</span>
+        <span class="hidden sm:inline">{tor.lead}</span>
       </p>
-      <div data-leiste-start>
-        <Button size="lg" href="#quiz" class="mt-6 w-full sm:w-auto">
+    </div>
+    <div class="min-w-0 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center">
+      <slot name="hero" />
+    </div>
+    <div class="lg:self-start">
+      <div class="mb-4 hidden sm:block">
+        <Button size="lg" href="#quiz">
           Kostenloses Erstgespräch anfragen
           <Icon name="arrow-right" size="sm" />
         </Button>
       </div>
-      <div class="mt-4 flex items-center gap-3">
+      <div class="flex items-center gap-3">
         <Picture
           src={founderPortrait}
           alt="Marten Prieß, Gründer von RocketBase"
@@ -99,7 +107,7 @@ const quizProps = {
           Marten Prieß ruft euch selbst an.<br />30 Minuten, online, ohne Vorbereitung.
         </p>
       </div>
-      <ul class="mt-6 grid gap-x-5 gap-y-2 sm:grid-cols-2">
+      <ul class="mt-5 grid gap-x-5 gap-y-2 sm:grid-cols-2">
         {
           tor.fakten.map((f) => (
             <li class="text-foreground-secondary flex gap-2 text-sm leading-6">
@@ -110,7 +118,6 @@ const quizProps = {
         }
       </ul>
     </div>
-    <div class="min-w-0"><slot name="hero" /></div>
   </div>
 </section>
 
