@@ -150,9 +150,11 @@ export function AngeboteKontakt({
                   requiredMark
                 />
                 <Input
-                  label="E-Mail (optional)"
+                  label="E-Mail"
                   name="email"
                   type="email"
+                  required
+                  requiredMark
                   className="sm:col-span-2"
                   autoComplete="email"
                   inputMode="email"

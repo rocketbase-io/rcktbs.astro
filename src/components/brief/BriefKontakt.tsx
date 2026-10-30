@@ -141,9 +141,10 @@ export function BriefKontakt({
                   size="lg"
                 />
                 <Input
-                  label="E-Mail (optional)"
+                  label="E-Mail"
                   name="email"
                   type="email"
+                  required
                   className="sm:col-span-2"
                   autoComplete="email"
                   inputMode="email"

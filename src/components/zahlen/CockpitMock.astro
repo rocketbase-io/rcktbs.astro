@@ -10,8 +10,10 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 
 interface Props {
   url?: string;
+  /** Mobil ohne Berater-Ranking, damit das Bild im Hero nicht zu lang wird. */
+  kompakt?: boolean;
 }
-const { url = 'app.euer-betrieb.de/cockpit/geschaeftsfuehrung' } = Astro.props;
+const { url = 'app.euer-betrieb.de/cockpit/geschaeftsfuehrung', kompakt = false } = Astro.props;
 
 type Kpi = { label: string; value: string; delta: string; up: boolean; spark: number[] };
 const kpis: Kpi[] = [
@@ -345,7 +347,7 @@ const berater = [
     </div>
 
     <!-- Berater-Ranking -->
-    <div class="z-card mt-2 p-3 sm:mt-3 sm:p-4">
+    <div class:list={['z-card mt-2 p-3 sm:mt-3 sm:p-4', kompakt && 'hidden sm:block']}>
       <div class="flex flex-wrap items-center justify-between gap-2">
         <p class="flex items-center gap-1.5 text-xs font-bold sm:text-sm">
           <Icon name="users" size="xs" class="z-muted" /> Berater nach Umsatz

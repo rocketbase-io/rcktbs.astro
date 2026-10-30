@@ -15,13 +15,30 @@
  * dynamische Route; in funnels.ts darf es deshalb keinen Slug „eigene-software" geben.
  */
 import FunnelLayout from '@/layouts/FunnelLayout.astro';
-import AbloesungPage from '@/components/abloesung-funnel/AbloesungPage.astro';
+import SchlankPage from '@/components/funnel-schlank/SchlankPage.astro';
+import { Image } from 'astro:assets';
+import Abloeseplan from '@/components/abloesung/Abloeseplan.astro';
+import HeuteAbloesung from '@/components/abloesung/HeuteAbloesung.astro';
+import kundenstandorte from '@/assets/references/kundenstandorte-demo-1920.png';
+import { eigeneSoftware } from '@/data/funnelSchlank';
 ---
 
 <FunnelLayout
   title="Eigene Software für euren Ablauf: vieles davon ist schon gebaut"
   description="Braucht ihr eine Software, die es so noch nicht gibt? Wir setzen auf dem auf, was bei anderen Betrieben läuft, und programmieren, was bei euch anders ist. Schritt für Schritt, das alte Programm läuft weiter. Für Betriebe ab etwa 30 Leuten."
-  headerNote="Eigene Software"
+  headerCta
 >
-  <AbloesungPage variant="funnel" />
+  <SchlankPage tor={eigeneSoftware}>
+  <Image
+    slot="hero"
+    src={kundenstandorte}
+    alt="Kundenstandorte und Berater auf einer Deutschlandkarte, Demo-Daten"
+    widths={[640, 960, 1280]}
+    sizes="(min-width: 1024px) 50vw, 100vw"
+    class="border-border w-full rounded-2xl border shadow-xl"
+    loading="eager"
+  />
+  <Abloeseplan variante="funnel" />
+  <HeuteAbloesung slot="heute" />
+</SchlankPage>
 </FunnelLayout>

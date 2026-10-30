@@ -1,0 +1,277 @@
+---
+/**
+ * Die schlanke Fassung der Anzeigen-Landings (/f/*), Vorlage ist die Angebotsseite aus
+ * `skills/RocketBase LP Angebote – schlank.html`. Ein Gerüst für alle fünf Tore, die Texte stehen
+ * in `src/data/funnelSchlank.ts`, die Bilder kommen je Tor über drei Slots:
+ *
+ *   Hero     für wen, Versprechen, Erklärung, Knopf, vier Fakten, Bild (Slot `hero`)
+ *   Was      was es ist, drei Schritte, Bild (Standard-Slot)
+ *   Heute    vorher und nachher mit Bild (Slot `heute`, optional), dazu die Zahl
+ *   Ablauf   drei Schritte (#ablauf)
+ *   Fragen   vier Antworten, eingeklappt: kosten kaum Platz, der Preis bleibt auffindbar
+ *   Kontakt  Marten, Quiz (#kontakt, #quiz)
+ *
+ * Das Quiz steht bewusst nur am Ende: Kalte Besucher sollen erst verstehen, worum es geht.
+ * Die Leiste unten (FunnelLayout) erscheint, sobald der Knopf im Hero aus dem Bild ist, und
+ * führt zum Quiz.
+ *
+ * Die ausführlichen Seiten bleiben unter den Tür-Adressen, die alten Funnel-Komponenten
+ * (`*-funnel/`, `CheckPage variant="funnel"`) sind nur nicht mehr eingebunden.
+ */
+import Button from '@/components/ui/form/Button/Button.astro';
+import Blueprint from '@/components/hero-backgrounds/Blueprint.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
+import FunnelQuiz from '@/components/funnel/FunnelQuiz';
+import { getImage, Picture } from 'astro:assets';
+import founderPortrait from '@/assets/rocketbase/founder-marten-priess.jpg';
+import '@/styles/szene.css';
+import type { SchlankTor } from '@/data/funnelSchlank';
+
+interface Props {
+  tor: SchlankTor;
+}
+const { tor } = Astro.props;
+const mitHeuteBild = Astro.slots.has('heute');
+
+const martenBild = await getImage({ src: founderPortrait, width: 112, format: 'webp' });
+const rolle = 'Softwarearchitekt, über 15 Jahre Erfahrung';
+
+const quizProps = {
+  kontaktPerson: { bild: martenBild.src, name: 'Marten Prieß', rolle },
+  funnel: tor.funnel,
+  questions: tor.fragen,
+  rechnung: tor.rechnung,
+  einordnung: tor.einordnung,
+  leadEvent: tor.leadEvent,
+  contact: { heading: 'Wohin darf Marten zurückrufen?', text: '' },
+  success: {
+    heading: 'Danke, das ist angekommen.',
+    text: 'Marten ruft euch werktags an.',
+  },
+  submitLabel: 'Rückruf anfordern',
+  phoneHint: 'Rückruf werktags, 30 Minuten, kostenlos.',
+  privacyUrl: '/datenschutz/',
+};
+---
+
+<section class="relative overflow-x-clip">
+  <Blueprint />
+  <div
+    class="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_60%_50%_at_30%_40%,var(--color-background)_0%,transparent_75%)] opacity-80"
+    aria-hidden="true"
+  >
+  </div>
+  <div
+    class="relative z-10 mx-auto grid w-full max-w-7xl gap-8 px-5 pt-6 pb-10 sm:px-8 sm:pt-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-center lg:gap-14 lg:py-16"
+  >
+    <div>
+      <p class="text-brand-600 dark:text-brand-300 text-xs font-semibold tracking-[0.14em] uppercase">
+        {tor.fuerWen}
+      </p>
+      <h1
+        lang="de"
+        class="font-display text-foreground mt-3 text-[2rem] leading-[1.1] font-bold tracking-tight text-balance sm:text-5xl sm:leading-[1.08] lg:text-[2.75rem] lg:leading-[1.12]"
+      >
+        {tor.headline}
+      </h1>
+      <p class="text-foreground-secondary mt-4 text-base leading-7 sm:mt-5 sm:text-lg sm:leading-8">
+        {tor.lead}
+      </p>
+      <div data-leiste-start>
+        <Button size="lg" href="#quiz" class="mt-6 w-full sm:w-auto">
+          Kostenloses Erstgespräch anfragen
+          <Icon name="arrow-right" size="sm" />
+        </Button>
+      </div>
+      <div class="mt-4 flex items-center gap-3">
+        <Picture
+          src={founderPortrait}
+          alt="Marten Prieß, Gründer von RocketBase"
+          widths={[80, 160]}
+          sizes="2.5rem"
+          formats={['avif', 'webp']}
+          class="h-10 w-10 rounded-full object-cover object-[center_22%]"
+          pictureAttributes={{ class: 'shrink-0' }}
+          loading="eager"
+        />
+        <p class="text-foreground-muted text-sm leading-5">
+          Marten Prieß ruft euch selbst an.<br />30 Minuten, online, ohne Vorbereitung.
+        </p>
+      </div>
+      <ul class="mt-6 grid gap-x-5 gap-y-2 sm:grid-cols-2">
+        {
+          tor.fakten.map((f) => (
+            <li class="text-foreground-secondary flex gap-2 text-sm leading-6">
+              <Icon name="check" size="sm" class="text-brand-500 mt-0.5 shrink-0" />
+              {f}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+    <div class="min-w-0"><slot name="hero" /></div>
+  </div>
+</section>
+
+<ClientLogoStrip heading="Aus Projekten mit" logos={tor.logos} variant="light" uniform class="py-8" />
+
+<section id="beweis" class="scroll-mt-20 py-14 lg:py-20">
+  <div class="container max-w-6xl">
+    <h2 class="font-display text-foreground text-2xl font-bold tracking-tight text-balance sm:text-4xl">
+      {tor.wasEsIst.titel}
+    </h2>
+    <p class="text-foreground-secondary mt-3 max-w-2xl text-base leading-7">{tor.wasEsIst.text}</p>
+    <ol class="mt-7 grid gap-4 lg:grid-cols-3">
+      {
+        tor.wasEsIst.schritte.map((s, i) => (
+          <li class="bg-brand-500/5 rounded-2xl p-5">
+            <p class="font-display text-foreground font-bold">
+              <span class="text-brand-500 mr-1.5">{i + 1}</span>
+              {s.titel}
+            </p>
+            <p class="text-foreground-secondary mt-1.5 text-[0.95rem] leading-6">{s.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+    <div class="szene-auf mt-8 min-w-0" data-szene><slot /></div>
+    <p class="text-foreground-muted mt-3 text-sm">{tor.beweis.hinweis}</p>
+  </div>
+</section>
+
+<section id="heute" class="scroll-mt-20 pb-14 lg:pb-20">
+  <div class="container max-w-6xl">
+    <h2 class="font-display text-foreground text-2xl font-bold tracking-tight text-balance sm:text-4xl">
+      {tor.vergleichTitel}
+    </h2>
+    <div class:list={['mt-7 grid gap-8', mitHeuteBild && 'lg:grid-cols-2 lg:items-center lg:gap-12']}>
+      {
+        mitHeuteBild && (
+          <div class="szene-auf min-w-0" data-szene>
+            <slot name="heute" />
+          </div>
+        )
+      }
+      <div class="border-border min-w-0 overflow-hidden rounded-2xl border">
+        {
+          tor.vergleich.map(([heute, danach]) => (
+            <div class:list={['border-border grid gap-1.5 border-t px-5 py-3.5 first:border-t-0', !mitHeuteBild && 'sm:grid-cols-2 sm:gap-6']}>
+              <p class="text-foreground-muted text-[0.95rem] leading-6 line-through decoration-[var(--color-border-strong)]">{heute}</p>
+              <p class="text-foreground flex gap-2 text-[0.95rem] leading-6 font-semibold">
+                <Icon name="check" size="sm" class="text-brand-500 mt-0.5 shrink-0" />
+                {danach}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+    {
+      tor.schmerz && (
+        <div class="mt-6 flex flex-col gap-3 rounded-2xl bg-[oklch(18%_0.03_265)] p-6 text-white sm:flex-row sm:items-center sm:justify-between sm:gap-8">
+          <p class="font-display text-lg leading-7 font-bold">{tor.schmerz.text}</p>
+          <p class="shrink-0 sm:text-right">
+            <span class="font-display block text-4xl font-bold">{tor.schmerz.zahl}</span>
+            <span class="text-sm text-white/65">{tor.schmerz.einheit}</span>
+          </p>
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<section id="ablauf" class="ablauf-sec scroll-mt-20 py-14 lg:py-20">
+  <div class="container max-w-6xl">
+    <h2 class="font-display text-foreground text-2xl font-bold tracking-tight text-balance sm:text-4xl">
+      {tor.ablaufTitel}
+    </h2>
+    <ol class="mt-8 grid gap-7 lg:grid-cols-3 lg:gap-8">
+      {
+        tor.ablauf.map((s) => (
+          <li class="border-brand-500 border-t-2 pt-4">
+            <p class="text-brand-600 dark:text-brand-300 text-xs font-semibold tracking-[0.14em] uppercase">
+              {s.wann}
+            </p>
+            <p class="font-display text-foreground mt-2 text-lg font-bold">{s.titel}</p>
+            <p class="text-foreground-secondary mt-1.5 text-[0.95rem] leading-7">{s.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<section class="pt-14 lg:pt-20">
+  <div class="container max-w-3xl">
+    <h2 class="font-display text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
+      Häufige Fragen
+    </h2>
+    <div class="divide-border mt-4 divide-y">
+      {
+        tor.fragenUndAntworten.map((f) => (
+          <details class="group">
+            <summary class="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 py-2 [&::-webkit-details-marker]:hidden">
+              <span class="text-foreground font-semibold">{f.q}</span>
+              <Icon
+                name="chevron-down"
+                size="sm"
+                class="text-foreground-muted shrink-0 transition-transform duration-200 group-open:rotate-180"
+              />
+            </summary>
+            <p class="text-foreground-secondary pb-4 text-[0.95rem] leading-7">{f.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<section id="kontakt" class="scroll-mt-20 py-14 lg:py-20">
+  <div class="container grid max-w-6xl items-start gap-8 lg:grid-cols-[1fr_0.9fr] lg:gap-14">
+    <div>
+      <h2 class="font-display text-foreground text-3xl font-bold tracking-tight sm:text-4xl">
+        {tor.schlussTitel}
+      </h2>
+      <p class="text-foreground-secondary mt-4 text-base leading-7 sm:text-lg sm:leading-8">
+        Ein paar kurze Fragen, dann ruft Marten euch werktags an. {tor.schlussText}
+      </p>
+      <div class="border-border mt-6 hidden items-center gap-4 border-t pt-6 lg:flex">
+        <Picture
+          src={founderPortrait}
+          alt="Marten Prieß"
+          widths={[72, 144]}
+          sizes="4.5rem"
+          formats={['avif', 'webp']}
+          class="h-[4.5rem] w-[4.5rem] rounded-full object-cover object-[center_22%]"
+          pictureAttributes={{ class: 'shrink-0' }}
+          loading="lazy"
+        />
+        <p class="text-sm leading-6">
+          <span class="text-foreground block font-semibold">Marten Prieß</span>
+          <span class="text-foreground-secondary">Gründer von RocketBase. {rolle}.</span>
+        </p>
+      </div>
+    </div>
+    <div id="quiz" class="scroll-mt-20" data-quiz>
+      <FunnelQuiz client:visible {...quizProps} compact markRequired />
+    </div>
+  </div>
+</section>
+
+<style>
+  .ablauf-sec {
+    background:
+      radial-gradient(
+        55% 140% at 90% 50%,
+        color-mix(in srgb, var(--color-brand-400) 22%, transparent),
+        transparent 70%
+      ),
+      color-mix(in srgb, var(--color-brand-500) 7%, var(--color-background));
+  }
+</style>
+
+<script>
+  import { szenenStarten } from '@/lib/szene';
+  szenenStarten();
+</script>

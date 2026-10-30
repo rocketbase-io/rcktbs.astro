@@ -8,13 +8,19 @@
  * dynamische Route; in funnels.ts darf es deshalb keinen Slug „software-check“ geben.
  */
 import FunnelLayout from '@/layouts/FunnelLayout.astro';
-import CheckPage from '@/components/check/CheckPage.astro';
+import SchlankPage from '@/components/funnel-schlank/SchlankPage.astro';
+import BerichtMock from '@/components/check/BerichtMock.astro';
+import StackLeiste from '@/components/check/StackLeiste.astro';
+import { softwareCheck } from '@/data/funnelSchlank';
 ---
 
 <FunnelLayout
   title="Mit KI gebaut? Jetzt soll jemand draufschauen, der es auch selbst könnte."
   description="Kundenportal, internes Tool oder Produkt mit Software drin: Wir prüfen gegen OWASP ASVS 5.0 und schreiben auf, was offen ist. Mit Bericht, den ihr Kunden vorlegen könnt. Für Betriebe ab etwa 30 Leuten."
-  headerNote="Software-Check"
+  headerCta
 >
-  <CheckPage variant="funnel" />
+  <SchlankPage tor={softwareCheck}>
+  <BerichtMock slot="hero" />
+  <StackLeiste />
+</SchlankPage>
 </FunnelLayout>
