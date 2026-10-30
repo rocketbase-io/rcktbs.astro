@@ -18,6 +18,7 @@ import FunnelLayout from '@/layouts/FunnelLayout.astro';
 import SchlankPage from '@/components/funnel-schlank/SchlankPage.astro';
 import { Image } from 'astro:assets';
 import Abloeseplan from '@/components/abloesung/Abloeseplan.astro';
+import AbloeseplanMobil from '@/components/funnel-schlank/AbloeseplanMobil.astro';
 import HeuteAbloesung from '@/components/abloesung/HeuteAbloesung.astro';
 import kundenstandorte from '@/assets/references/kundenstandorte-demo-1920.png';
 import { eigeneSoftware } from '@/data/funnelSchlank';
@@ -38,7 +39,8 @@ import { eigeneSoftware } from '@/data/funnelSchlank';
     class="border-border w-full rounded-2xl border shadow-xl"
     loading="eager"
   />
-  <Abloeseplan variante="funnel" />
+  <div class="hidden lg:block"><Abloeseplan variante="funnel" /></div>
+  <AbloeseplanMobil class="lg:hidden" />
   <HeuteAbloesung slot="heute" />
 </SchlankPage>
 </FunnelLayout>

@@ -23,6 +23,8 @@ export interface SchlankTor {
   fuerWen: string;
   headline: string;
   lead: string;
+  /** Mobil kürzer, damit das Bild in die erste Bildschirmhöhe rückt. */
+  leadMobil: string;
   /** Vier Fakten zu Zeit, Aufwand und Risiko. */
   fakten: string[];
   logos: { key: string; name: string }[];
@@ -53,7 +55,7 @@ const groesse: FunnelQuizQuestion = {
 
 const preisFrage = {
   q: 'Was kostet das?',
-  a: 'Das hängt davon ab, was die Software können soll. Eine grobe Zahl hört ihr im Erstgespräch, den festen Preis, sobald wir aufgeschrieben haben, wie ihr arbeitet. Wir fangen erst an, wenn ihr ihn kennt.',
+  a: 'Das lässt sich pauschal nicht seriös sagen, weil wir für jeden Betrieb einzeln bauen. Im Erstgespräch schauen wir uns an, was ihr braucht, und ihr bekommt eine ehrliche Einschätzung. Das Gespräch ist kostenlos und verpflichtet euch zu nichts. Gebaut wird erst, wenn ihr den festen Preis kennt und zugesagt habt.',
 };
 const zeitFrage = {
   q: 'Wie viel Zeit kostet uns das?',
@@ -66,6 +68,7 @@ export const angebote: SchlankTor = {
   fuerWen: 'Für Betriebe aus Prüfung, Wartung, Zertifizierung und Handwerk',
   headline: 'Beim Angebotschreiben schon sehen, wie viel Gewinn übrig bleibt',
   lead: 'Wir bauen euch eine Software, die eure Preise so ausrechnet, wie ihr es heute in Excel macht. Euer Kunde sagt online mit einem Klick zu. Meldet er sich nicht, erinnert ihn die Software.',
+  leadMobil: 'Software, die eure Preise so rechnet wie eure Excel. Euer Kunde sagt per Klick zu.',
   fakten: ['Läuft nach 3 bis 6 Wochen', 'Fester Preis, bevor wir anfangen', '2 bis 3 Stunden pro Woche für euch', 'Eure Daten bleiben in Deutschland'],
   logos: [
     { key: 'fkc_logo', name: 'FKC Consulting' },
@@ -141,6 +144,7 @@ export const einsatz: SchlankTor = {
   fuerWen: 'Für Betriebe, deren Leute beim Kunden oder unterwegs arbeiten',
   headline: 'Bei jedem Ausfall sofort sehen, wer einspringen kann',
   lead: 'Wir bauen euch eine Software für Planung, Stundenzettel und Rechnung, nach eurem Ablauf. Was erledigt ist, wird zur Rechnung, und Stundenzettel tippt niemand mehr ab.',
+  leadMobil: 'Software für Planung, Stundenzettel und Rechnung, nach eurem Ablauf gebaut.',
   fakten: ['Läuft nach 4 bis 8 Wochen', 'Fester Preis, bevor wir anfangen', '2 bis 3 Stunden pro Woche für euch', 'Eure Daten bleiben in Deutschland'],
   logos: [
     { key: 'fkc_logo', name: 'FKC Consulting' },
@@ -214,6 +218,7 @@ export const zahlen: SchlankTor = {
   fuerWen: 'Für Inhaber und Geschäftsführer',
   headline: 'Jeden Tag sehen, wie der Betrieb läuft und wo er in drei Monaten steht',
   lead: 'Wir bauen euch eine Übersicht aus den Zahlen, die ihr schon habt: Umsatz, Auslastung und Verträge. BWA und Steuerberater bleiben. Ihr seht nur früher, was los ist.',
+  leadMobil: 'Umsatz, Auslastung und Verträge auf einen Blick. Die BWA bleibt, ihr seht nur früher.',
   fakten: ['Steht nach 5 bis 8 Wochen', 'Fester Preis, bevor wir anfangen', '2 bis 3 Stunden pro Woche für euch', 'Eure Daten bleiben in Deutschland'],
   logos: [
     { key: 'fkc_logo', name: 'FKC Consulting' },
@@ -288,6 +293,7 @@ export const eigeneSoftware: SchlankTor = {
   fuerWen: 'Für Betriebe ab etwa 30 Leuten',
   headline: 'Braucht ihr eine Software, die es so noch nicht gibt?',
   lead: 'Wir bauen sie. Vieles davon läuft schon bei anderen Betrieben, wir programmieren nur, was bei euch anders ist. Euer altes Programm läuft weiter, bis das Neue trägt.',
+  leadMobil: 'Wir bauen sie. Vieles läuft schon bei anderen Betrieben, nur euer Teil ist neu.',
   fakten: ['Erster Abschnitt nach 5 bis 8 Wochen', 'Fester Preis, bevor wir anfangen', '2 bis 3 Stunden pro Woche für euch', 'Eure Daten bleiben in Deutschland'],
   logos: [
     { key: 'fkc_logo', name: 'FKC Consulting' },
@@ -358,6 +364,7 @@ export const softwareCheck: SchlankTor = {
   fuerWen: 'Für Betriebe, die Software selbst gebaut haben',
   headline: 'Mit KI gebaute Software prüfen lassen, bevor ein Kunde nachfragt',
   lead: 'Erfahrene Entwickler schauen von außen drauf, gegen den Standard OWASP ASVS 5.0. Ihr bekommt einen Prüfbericht, den ihr Kunden und Auditoren zeigen könnt, und zu jedem Fund einen Vorschlag.',
+  leadMobil: 'Geprüft gegen OWASP ASVS 5.0. Ihr bekommt einen Bericht für Kunden und Auditoren.',
   fakten: ['Bericht nach wenigen Tagen', 'Geprüft nach OWASP ASVS 5.0', 'Für Kunden und Auditoren', 'Eine Zahl, bevor wir anfangen'],
   logos: [
     { key: 'bonprix_logo', name: 'bonprix' },
@@ -389,7 +396,7 @@ export const softwareCheck: SchlankTor = {
     { wann: '1,5 Stunden', titel: 'Bericht durchgehen', text: 'Was kritisch ist, was warten kann und was die Behebung kostet.' },
   ],
   fragenUndAntworten: [
-    { q: 'Was kostet das?', a: 'Das hängt von der Größe der Anwendung ab. Eine Zahl hört ihr im Erstgespräch, bevor irgendetwas beginnt.' },
+    { q: 'Was kostet das?', a: 'Das hängt von der Größe eurer Software ab, deshalb gibt es keinen Pauschalpreis. Im Erstgespräch schaut ihr mit Marten drauf und bekommt eine ehrliche Einschätzung. Das Gespräch ist kostenlos und verpflichtet euch zu nichts. Geprüft wird erst, wenn ihr den Preis kennt und zugesagt habt.' },
     { q: 'Ist das ein Penetrationstest?', a: 'Nein. Wenn ihr einen braucht, sagen wir es und holen einen Partner dazu.' },
     { q: 'Bekommen wir ein Zertifikat?', a: 'Nein, das stellen Prüfstellen aus. Wir bereiten vor und begleiten.' },
     { q: 'Müssen wir danach alles neu bauen?', a: 'Selten. Der Bericht sagt je Fund, ob ihr ihn so lassen, umbauen oder neu machen solltet.' },
