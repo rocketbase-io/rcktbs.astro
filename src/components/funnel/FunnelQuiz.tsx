@@ -15,6 +15,7 @@ import {
 import { meldeEreignis, streckeAusPfad, type FunnelEreignis } from '@/lib/funnelTracking';
 import { leseBriefRef } from '@/lib/briefRef';
 import { einordnungFuer, type EinordnungsStrecke } from '@/lib/quizEinordnung';
+import { rechnungFuer, type RechnungsStrecke } from '@/lib/quizRechnung';
 
 interface FunnelQuizProps {
   /**
@@ -49,6 +50,13 @@ interface FunnelQuizProps {
    * vor dem Abschicken kostet Leute.
    */
   einordnung?: EinordnungsStrecke;
+  /**
+   * Zeigt im Kontaktschritt die Stunden-Rechnung aus den Antworten (`src/lib/quizRechnung.ts`).
+   * Hat Vorrang vor `einordnung`.
+   */
+  rechnung?: RechnungsStrecke;
+  /** Wer zurückruft: Foto, Name und Erfahrung direkt über den Formularfeldern. */
+  kontaktPerson?: { bild: string; name: string; rolle: string };
 }
 
 interface QuizAnswer {
@@ -72,12 +80,11 @@ interface QuizAnswer {
  * gemeldet vom `FunnelLayout`) und sie hat abgeschickt (`quiz_lead`, hier).
  */
 /**
- * Pflicht sind Name und Telefon, auf jeder Strecke gleich: Marten ruft zurück, und über eine
- * E-Mail wird man schnell abgewimmelt. `netlify/functions/funnel-lead.ts` prüft dasselbe.
- * Nur diese beiden Felder bekommen eigenes Tracking; bei den optionalen ist es egal, ob
- * jemand sie leer lässt.
+ * Pflicht sind Name, Telefon und E-Mail, auf jeder Strecke gleich: Marten ruft zurück, und wen
+ * er nicht erreicht, dem schreibt er. `netlify/functions/funnel-lead.ts` prüft dasselbe.
+ * Diese Felder bekommen eigenes Tracking, so zeigt `formular_feld`, an welchem jemand aufhört.
  */
-const PFLICHTFELDER = new Set(['name', 'phone']);
+const PFLICHTFELDER = new Set(['name', 'phone', 'email']);
 
 const BACKEND_EVENTS: Record<string, FunnelEreignis> = {
   funnel_lead: 'quiz_lead',
@@ -96,6 +103,8 @@ export function FunnelQuiz({
   compact = false,
   markRequired = false,
   einordnung: einordnungsStrecke,
+  rechnung: rechnungsStrecke,
+  kontaktPerson,
 }: FunnelQuizProps) {
   // Schritte: 0..questions.length-1 = Fragen, questions.length = Kontakt
   const [step, setStep] = useState(0);
@@ -122,8 +131,12 @@ export function FunnelQuiz({
   const progress = submitted ? 100 : Math.round((step / totalSteps) * 100);
   const contactStep = step === questions.length;
   const currentQuestion = contactStep ? null : questions[step];
+  const rechnung =
+    contactStep && rechnungsStrecke ? rechnungFuer(rechnungsStrecke, answers) : null;
   const einordnung =
-    contactStep && einordnungsStrecke ? einordnungFuer(einordnungsStrecke, answers) : null;
+    contactStep && einordnungsStrecke && !rechnung
+      ? einordnungFuer(einordnungsStrecke, answers)
+      : null;
 
   useEffect(() => {
     utmRef.current = sammleAttribution();
@@ -201,6 +214,7 @@ export function FunnelQuiz({
       // Welche Einschätzung jemand gesehen hat: In Plausible lässt sich damit je Kombination
       // ablesen, wie viele danach abschicken (`funnel_lead`).
       ...(einordnung ? { einordnung: `${einordnung.antwortA}|${einordnung.antwortB}` } : {}),
+      ...(rechnung ? { stunden: rechnung.stunden } : {}),
     });
   }, [step]);
 
@@ -218,6 +232,14 @@ export function FunnelQuiz({
     setStep(next);
     setTextMode(false);
     setFreeText('');
+    // Mobil steht das Formular sonst unter der Rechnung und damit unter dem Bildausschnitt.
+    if (kontaktPerson && next === questions.length && window.innerWidth < 1024) {
+      window.setTimeout(
+        () => cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
+        50
+      );
+      return;
+    }
     scrollToCard();
   }
 
@@ -328,7 +350,7 @@ export function FunnelQuiz({
   const selectedOptionId = currentQuestion ? answers[currentQuestion.id]?.optionId : undefined;
 
   return (
-    <div ref={cardRef} className="scroll-mt-24">
+    <div ref={cardRef} className="scroll-mt-3 sm:scroll-mt-24">
       <div className="border-border bg-card overflow-hidden rounded-3xl border shadow-lg">
         {/* Fortschritt */}
         <div className="bg-background-secondary h-1.5 w-full">
@@ -374,6 +396,20 @@ export function FunnelQuiz({
                 totalSteps={totalSteps}
                 onBack={() => goToStep(step - 1)}
               />
+              {rechnung && (
+                <div className="bg-brand-500/5 mt-1 rounded-2xl px-4 py-3">
+                  <p className="font-display text-foreground text-xl leading-6 font-bold tracking-tight">
+                    Rund {rechnung.stunden.toLocaleString('de-DE')} Stunden im Monat
+                  </p>
+                  <p className="text-foreground-secondary mt-1 text-sm leading-5">
+                    {rechnung.wofuer} Das sind etwa {rechnung.euroJahr.toLocaleString('de-DE')} €
+                    Arbeitszeit im Jahr.
+                  </p>
+                  <p className="text-foreground-muted mt-1 text-xs leading-4">
+                    {rechnung.weg}, 30 € je Stunde.
+                  </p>
+                </div>
+              )}
               {einordnung && (
                 <div className="bg-brand-500/5 mt-3 rounded-2xl px-4 py-3">
                   <p className="text-brand-600 dark:text-brand-300 font-mono text-[0.6875rem] font-semibold tracking-[0.18em] uppercase">
@@ -382,29 +418,54 @@ export function FunnelQuiz({
                   <p className="font-display text-foreground mt-1.5 text-base leading-6 font-bold text-balance">
                     {einordnung.titel}
                   </p>
-                  <p className="text-foreground-secondary mt-1 text-sm leading-6">
-                    Genaueres klärt ihr mit Marten im Gespräch.
+                  {!kontaktPerson && (
+                    <p className="text-foreground-secondary mt-1 text-sm leading-6">
+                      Genaueres klärt ihr mit Marten im Gespräch.
+                    </p>
+                  )}
+                </div>
+              )}
+              {kontaktPerson && (
+                <div className="mt-3 flex items-center gap-3">
+                  <img
+                    src={kontaktPerson.bild}
+                    alt={kontaktPerson.name}
+                    width={48}
+                    height={48}
+                    loading="lazy"
+                    className="h-12 w-12 shrink-0 rounded-full object-cover object-[center_22%]"
+                  />
+                  <p className="text-sm leading-5">
+                    <span className="text-foreground font-semibold sm:block">
+                      {rechnung
+                        ? 'Marten zeigt euch im Gespräch, wie viel davon ihr sparen könnt.'
+                        : 'Genaueres klärt ihr mit Marten im Gespräch.'}
+                    </span>{' '}
+                    <span className="text-foreground-secondary">{kontaktPerson.rolle}.</span>
                   </p>
                 </div>
               )}
               <h2
                 className={cn(
-                  'font-display text-foreground text-xl font-bold tracking-tight sm:text-2xl',
-                  einordnung ? 'mt-5' : compact ? 'mt-3' : 'mt-4'
+                  'font-display text-foreground font-bold tracking-tight',
+                  kontaktPerson ? 'mt-3 text-lg' : 'text-xl sm:text-2xl',
+                  !kontaktPerson && (einordnung || rechnung ? 'mt-5' : compact ? 'mt-3' : 'mt-4')
                 )}
               >
                 {contact.heading}
               </h2>
-              <p className="text-foreground-secondary mt-2 text-sm leading-6 sm:text-base">
-                {contact.text}
-              </p>
+              {contact.text && (
+                <p className="text-foreground-secondary mt-2 text-sm leading-6 sm:text-base">
+                  {contact.text}
+                </p>
+              )}
 
               <form
                 onSubmit={handleSubmit}
                 onFocus={() => meldeFormular('formular_angefangen')}
                 onBlur={feldVerlassen}
                 onInvalidCapture={feldUngueltig}
-                className={compact ? 'mt-5 space-y-4' : 'mt-6 space-y-4'}
+                className={kontaktPerson ? 'mt-2 space-y-3' : compact ? 'mt-5 space-y-4' : 'mt-6 space-y-4'}
                 noValidate={false}
               >
                 {compact ? (
@@ -414,7 +475,14 @@ export function FunnelQuiz({
                       Schrift, und unter 16 px zoomt iOS Safari beim Fokus die ganze
                       Seite. Betrifft das wichtigste Formular der Funnel-Seiten.
                     */}
-                    <div className="grid gap-x-4 gap-y-3 sm:grid-cols-2">
+                    {/* Mit Kontaktperson auch mobil zu zweit: Name, Telefon und Knopf sollen auf
+                        einen Bildschirm passen, sonst sieht man nur Rechnung und Foto. */}
+                    <div
+                      className={cn(
+                        'grid gap-x-3 gap-y-2',
+                        kontaktPerson ? 'grid-cols-2' : 'sm:grid-cols-2'
+                      )}
+                    >
                       <Input label="Name" name="name" type="text" size="lg" required autoComplete="name" requiredMark={markRequired} />
                       <Input
                         label="Telefon"
@@ -427,11 +495,13 @@ export function FunnelQuiz({
                         requiredMark={markRequired}
                       />
                       <Input
-                        label="E-Mail (optional)"
+                        label="E-Mail"
                         name="email"
                         type="email"
                         size="lg"
-                        className="sm:col-span-2"
+                        required
+                        requiredMark={markRequired}
+                        className={kontaktPerson ? 'col-span-2' : 'sm:col-span-2'}
                         autoComplete="email"
                         inputMode="email"
                       />
@@ -460,7 +530,7 @@ export function FunnelQuiz({
                       size="lg"
                       hint={phoneHint}
                     />
-                    <Input label="E-Mail (optional)" name="email" type="email" autoComplete="email" inputMode="email" size="lg" />
+                    <Input label="E-Mail" name="email" type="email" required autoComplete="email" inputMode="email" size="lg" />
                   </>
                 )}
 

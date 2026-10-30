@@ -8,13 +8,30 @@
  * dynamische Route; in funnels.ts darf es deshalb keinen Slug „einsatz" geben.
  */
 import FunnelLayout from '@/layouts/FunnelLayout.astro';
-import EinsatzPage from '@/components/einsatz-funnel/EinsatzPage.astro';
+import SchlankPage from '@/components/funnel-schlank/SchlankPage.astro';
+import { Image } from 'astro:assets';
+import Plantafel from '@/components/einsatz/Plantafel.astro';
+import HeuteEinsatz from '@/components/einsatz/HeuteEinsatz.astro';
+import auftragsplanung from '@/assets/references/auftragsplanung-demo-1920.png';
+import { einsatz } from '@/data/funnelSchlank';
 ---
 
 <FunnelLayout
   title="Einsatz & Abrechnung: geplant, erledigt, abgerechnet, in einem System"
   description="Plantafel, Ablauf je Auftrag, Leistungserfassung, Rechnung und Mahnwesen. Nach eurem Ablauf gebaut, statt Excel und Stundenzettel."
-  headerNote="Einsatz & Abrechnung"
+  headerCta
 >
-  <EinsatzPage variant="funnel" />
+  <SchlankPage tor={einsatz}>
+  <Image
+    slot="hero"
+    src={auftragsplanung}
+    alt="Auftragsplanung mit Mitarbeitern, Einsätzen und Krankmeldungen, Demo-Daten"
+    widths={[640, 960, 1280]}
+    sizes="(min-width: 1024px) 50vw, 100vw"
+    class="border-border w-full rounded-2xl border shadow-xl"
+    loading="eager"
+  />
+  <Plantafel />
+  <HeuteEinsatz slot="heute" />
+</SchlankPage>
 </FunnelLayout>

@@ -12,8 +12,8 @@ const answerSchema = z.object({
 });
 
 /**
- * Pflicht sind Name und Telefon, auf jeder Strecke gleich (Quiz, Brief-Kontakt): Marten ruft
- * zurück, und über eine E-Mail wird man schnell abgewimmelt. E-Mail ist optional; nach der Firma
+ * Pflicht sind Name, Telefon und E-Mail, auf jeder Strecke gleich (Quiz, Brief-Kontakt): Marten
+ * ruft zurück, und wen er nicht erreicht, dem schreibt er. Nach der Firma
  * fragt das Formular seit 2026-10-29 nicht mehr (das Feld bleibt erlaubt, für offene alte Tabs).
  * Das Formular (`FunnelQuiz.tsx`, `PFLICHTFELDER`) prüft dasselbe; bis 2026-10-29 hing die
  * Regel an einer Liste von Strecken, und `/f/software-check/` fehlte darin, sodass Server
@@ -23,10 +23,7 @@ const leadSchema = z.object({
 	funnel: z.string().min(1).max(100),
 	company: z.string().max(200),
 	name: z.string().trim().min(2, 'Bitte mindestens 2 Zeichen eingeben.').max(100),
-	// Leer heißt "nicht angegeben"; eine angegebene Adresse muss gültig sein.
-	email: z
-		.union([z.literal(''), z.string().trim().email('Bitte eine gueltige E-Mail-Adresse eingeben.')])
-		.transform((value) => value || undefined),
+	email: z.string().trim().email('Bitte eine gueltige E-Mail-Adresse eingeben.').max(200),
 	phone: z.string().trim().min(5, 'Bitte eine Telefonnummer angeben.').max(50),
 	answers: z.array(answerSchema).max(20),
 	utm: z.record(z.string(), z.string().max(500)).optional(),

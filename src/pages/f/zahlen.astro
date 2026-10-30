@@ -8,13 +8,21 @@
  * dynamische Route; in funnels.ts darf es deshalb keinen Slug „zahlen" geben.
  */
 import FunnelLayout from '@/layouts/FunnelLayout.astro';
-import ZahlenPage from '@/components/zahlen-funnel/ZahlenPage.astro';
+import SchlankPage from '@/components/funnel-schlank/SchlankPage.astro';
+import CockpitMock from '@/components/zahlen/CockpitMock.astro';
+import AuslastungTeams from '@/components/zahlen/AuslastungTeams.astro';
+import HeuteKalender from '@/components/zahlen/HeuteKalender.astro';
+import { zahlen } from '@/data/funnelSchlank';
 ---
 
 <FunnelLayout
   title="Zahlen & Steuerung: euer Betrieb auf einen Blick, live statt am Monatsende"
   description="Umsatz und Prognose, Auslastung bis zur Person, Deckungsbeitrag, auslaufende Verträge. Aus euren Systemen, nach euren Regeln gerechnet. Für euren Betrieb entwickelt."
-  headerNote="Zahlen & Steuerung"
+  headerCta
 >
-  <ZahlenPage variant="funnel" />
+  <SchlankPage tor={zahlen}>
+  <CockpitMock slot="hero" kompakt />
+  <div class="hidden lg:block"><AuslastungTeams /></div>
+  <HeuteKalender slot="heute" />
+</SchlankPage>
 </FunnelLayout>
