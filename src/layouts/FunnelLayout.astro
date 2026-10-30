@@ -21,9 +21,11 @@ interface Props {
    * angeboten wird.
    */
   headerNote?: string;
+  /** Knopf „Erstgespräch anfragen“ im Header ab lg, springt zu #quiz. */
+  headerCta?: boolean;
 }
 
-const { title, description, headerNote = 'Kostenlose Ersteinschätzung' } = Astro.props;
+const { title, description, headerNote = 'Kostenlose Ersteinschätzung', headerCta = false } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
@@ -44,17 +46,25 @@ const year = new Date().getFullYear();
         loading="eager"
         fetchpriority="high"
       />
-      <span class="text-foreground-muted hidden text-xs font-semibold tracking-[0.18em] uppercase sm:block">
-        {headerNote}
-      </span>
+      {
+        headerCta ? (
+          <Button size="sm" href="#quiz" class="hidden whitespace-nowrap lg:inline-flex">
+            Erstgespräch anfragen
+          </Button>
+        ) : (
+          <span class="text-foreground-muted hidden text-xs font-semibold tracking-[0.18em] uppercase sm:block">
+            {headerNote}
+          </span>
+        )
+      }
     </div>
   </header>
 
   <slot />
 
   <!-- Leiste unten, nur unterhalb von lg und nur, wenn die Seite ein #quiz hat: erscheint,
-       sobald das Quiz im Hero nach oben aus dem Bild ist, und springt dorthin zurück. Auf dem
-       Handy zeigt der Funnel das zweite Quiz am Seitenende nicht. -->
+       sobald [data-leiste-start] (sonst das Quiz) nach oben aus dem Bild ist, und springt zum
+       Quiz. Steht das Quiz selbst im Bild, fährt sie wieder ein. -->
   <div
     data-funnel-leiste
     class="border-border bg-background/95 fixed inset-x-0 bottom-0 z-30 translate-y-full border-t backdrop-blur-md transition-transform duration-300 ease-out lg:hidden"
@@ -146,7 +156,8 @@ const year = new Date().getFullYear();
 </style>
 
 <script>
-  // Leiste unten: sichtbar, solange das Hero-Quiz oberhalb des Bildausschnitts liegt.
+  // Leiste unten: sichtbar, sobald der Start oberhalb des Bildausschnitts liegt und das Quiz
+  // nicht im Bild ist. Beim Quiz im Hero sind Start und Quiz dasselbe Element.
   function leisteEinrichten() {
     const leiste = document.querySelector<HTMLElement>('[data-funnel-leiste]');
     const quiz = document.getElementById('quiz');
@@ -164,13 +175,21 @@ const year = new Date().getFullYear();
     hoeheMelden();
     if ('ResizeObserver' in window) new ResizeObserver(hoeheMelden).observe(leiste);
     window.addEventListener('resize', hoeheMelden);
+    const start = document.querySelector<HTMLElement>('[data-leiste-start]') ?? quiz;
+    let vorbei = false;
+    let quizImBild = false;
     const beobachter = new IntersectionObserver(
-      ([eintrag]) => {
-        const vorbei = !eintrag.isIntersecting && eintrag.boundingClientRect.bottom < 0;
-        leiste.classList.toggle('translate-y-full', !vorbei);
+      (eintraege) => {
+        for (const eintrag of eintraege) {
+          if (eintrag.target === start)
+            vorbei = !eintrag.isIntersecting && eintrag.boundingClientRect.bottom < 0;
+          if (eintrag.target === quiz) quizImBild = eintrag.isIntersecting;
+        }
+        leiste.classList.toggle('translate-y-full', !vorbei || quizImBild);
       },
       { threshold: 0 }
     );
+    beobachter.observe(start);
     beobachter.observe(quiz);
   }
   leisteEinrichten();

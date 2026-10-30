@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Funnel-Vergleich</title>
+<style>
+  :root { --bg:#f4f5f8; --ink:#14182b; --muted:#667; --line:#dde0e8; --brand:#5a6aa0; --rot:#dc2626; }
+  * { box-sizing:border-box; }
+  html,body { height:100%; margin:0; background:var(--bg); color:var(--ink); font:14px/1.4 Inter,system-ui,sans-serif; }
+  body { display:flex; flex-direction:column; }
+  header { display:flex; flex-wrap:wrap; gap:6px 14px; align-items:center; padding:8px 12px; background:#fff; border-bottom:1px solid var(--line); }
+  nav { display:flex; flex-wrap:wrap; gap:4px; }
+  button { font:inherit; border:1px solid var(--line); background:#fff; color:var(--ink); padding:5px 10px; border-radius:7px; cursor:pointer; }
+  button[aria-pressed=true] { background:var(--brand); border-color:var(--brand); color:#fff; }
+  .abstand { flex:1; }
+  #notiz { width:100%; color:var(--muted); font-size:13px; }
+  main { flex:1; min-height:0; display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:10px; }
+  .spalte { min-height:0; display:flex; flex-direction:column; align-items:center; }
+  .kopf { width:100%; display:flex; justify-content:space-between; font-weight:600; font-size:12px; padding:0 2px 6px; }
+  .kopf a { color:var(--muted); font-weight:400; }
+  iframe { flex:1; min-height:0; width:100%; border:1px solid var(--line); border-radius:8px; background:#fff; }
+  body.mobil iframe { width:390px; flex:none; height:min(674px, 100%); }
+  #konzept { display:none; flex:1; border:0; width:100%; }
+  body.konzept main { display:none; } body.konzept #konzept { display:block; }
+  body.konzept .nur-vergleich { display:none; }
+</style>
+</head>
+<body>
+<header>
+  <strong>Funnel-Vergleich</strong>
+  <nav id="tore"></nav>
+  <span class="abstand"></span>
+  <nav class="nur-vergleich">
+    <button id="desk" aria-pressed="false">Desktop</button>
+    <button id="mob" aria-pressed="true">Handy (Instagram)</button>
+    <button id="sync" aria-pressed="true">Scrollen koppeln</button>
+  </nav>
+  <div id="notiz" class="nur-vergleich"></div>
+</header>
+<main>
+  <div class="spalte"><div class="kopf"><span>Vorher: live</span><a id="livelink" target="_blank"></a></div><iframe id="live" title="Live"></iframe></div>
+  <div class="spalte"><div class="kopf"><span>Nachher: lokal</span><a id="lokallink" target="_blank"></a></div><iframe id="lokal" title="Lokal"></iframe></div>
+</main>
+<iframe id="konzept" src="/konzept" title="Konzept"></iframe>
+<script>
+  const TORE = {
+    angebote: { name:'Angebote', raus:['Eine Zahl. Einmal','Eure Regel','Vier Ebenen','Vom heutigen Stand','Das klärt ein Gespräch'], notiz:'Live 36 Besucher, 25 % Quiz-Start. Überschrift aus deiner schlanken Fassung, Menge und Dauer statt Werkzeug-Frage.' },
+    einsatz: { name:'Einsatz', raus:['Jeder Schritt kennt','Erfasst ist abgerechnet','Drei Betriebe','Vom heutigen Stand','Das klärt ein Gespräch'], notiz:'Live 126 Besucher, 4,8 % Quiz-Start. Sagt jetzt zuerst, was die Software ist.' },
+    zahlen: { name:'Zahlen', raus:['Wer ist voll','Was nächstes Jahr','Vom heutigen Stand','Das klärt ein Gespräch'], notiz:'Live 58 Besucher, 12,1 % Quiz-Start. BWA und Steuerberater bleiben ausdrücklich.' },
+    'eigene-software': { name:'Eigene Software', raus:['Aus acht Programmen','Eure Daten kommen','FKC: von Vertec','Nicht jeder Ablauf','Vom heutigen Stand','Das klärt ein Gespräch'], notiz:'Live 86 Besucher, 4,7 % Quiz-Start. Überschrift ist die Frage aus der Anzeige von 2024, nur noch zwei Quizfragen.' },
+    'software-check': { name:'Software-Check', raus:['Nicht Prisma','Das, was KI-Werkzeuge','Vier Schritte','Leute, die so etwas'], notiz:'Live 136 Besucher, 9,6 % Quiz-Start. Keine Stundenrechnung, die Schnell-Einschätzung bleibt über dem Formular.' },
+  };
+  const LIVE = location.protocol + '//' + location.hostname + ':4401';
+  const LOKAL = location.protocol + '//' + location.hostname + ':4402';
+  const $ = (id) => document.getElementById(id);
+  const zustand = { tor:'angebote', sync:true };
+  const tore = $('tore');
+  const knopf = (id, text) => { const b = document.createElement('button'); b.textContent = text; b.dataset.id = id; b.onclick = () => zeige(id); tore.append(b); };
+  knopf('konzept', 'Konzept');
+  for (const [id, t] of Object.entries(TORE)) knopf(id, t.name);
+
+  function zeige(id) {
+    for (const b of tore.children) b.setAttribute('aria-pressed', b.dataset.id === id);
+    document.body.classList.toggle('konzept', id === 'konzept');
+    history.replaceState(null, '', '#' + id);
+    if (id === 'konzept') return;
+    zustand.tor = id;
+    const pfad = `/f/${id}/`;
+    $('notiz').textContent = TORE[id].notiz;
+    $('livelink').textContent = 'rocketbase.io' + pfad; $('livelink').href = 'https://rocketbase.io' + pfad;
+    $('lokallink').textContent = 'localhost:4330' + pfad; $('lokallink').href = 'http://localhost:4330' + pfad;
+    $('live').src = `${LIVE}${pfad}?seite=live`;
+    $('lokal').src = `${LOKAL}${pfad}?seite=lokal`;
+  }
+  addEventListener('message', (e) => {
+    if (e.data?.typ === 'bereit' && e.data.seite === 'live') $('live').contentWindow.postMessage({ typ:'raus', titel:TORE[zustand.tor].raus }, '*');
+    if (e.data?.typ !== 'scroll' || !zustand.sync) return;
+    const ziel = e.data.seite === 'live' ? $('lokal') : $('live');
+    ziel.contentWindow.postMessage({ ...e.data, typ:'folge' }, '*');
+  });
+  function breite(mobil) {
+    document.body.classList.toggle('mobil', mobil);
+    $('mob').setAttribute('aria-pressed', mobil); $('desk').setAttribute('aria-pressed', !mobil);
+  }
+  $('desk').onclick = () => breite(false);
+  $('mob').onclick = () => breite(true);
+  $('sync').onclick = () => { zustand.sync = !zustand.sync; $('sync').setAttribute('aria-pressed', zustand.sync); };
+  breite(true);
+  zeige(location.hash.slice(1) || 'konzept');
+</script>
+</body>
+</html>
