@@ -19,7 +19,7 @@ import { defaultLocale } from '@/i18n/config';
 import { getLocalizedPath } from '@/i18n/index';
 import { getReadingTime } from '@/lib/utils';
 import founderImage from '@/assets/rocketbase/founder-marten-priess.jpg';
-import stageCaseImage from '@/assets/references/teaser-stage-cml.jpeg';
+import statistaCaseImage from '@/assets/references/teaser-statista.jpeg';
 import fkcCaseImage from '@/assets/references/teaser-fkc.jpeg';
 import schlossereiCaseImage from '@/assets/references/teaser-schlosserei.jpeg';
 import logomark from '@/assets/branding/logomark.svg?url';
@@ -85,16 +85,15 @@ const ladderSteps = [
 ];
 
 const caseImageMap: Record<string, ImageMetadata> = {
-  'stage-cml': stageCaseImage,
   'fkc-consulting': fkcCaseImage,
   'schlosserei-diezinger': schlossereiCaseImage,
+  statista: statistaCaseImage,
 };
 
 // Startseiten-Auswahl: drei Fälle, in denen sich ein Mittelständler wiederfindet —
 // FKC (Standardsoftware-Ablösung, Hauptfokus), Schlosserei Diezinger
-// (Einsatzplanung) und Stage (Zahlen raus aus Excel). Statista und bonprix
-// stehen bewusst im Gründer-Block als Herkunft, nicht hier als Vergleichsfall.
-const featuredSlugs = ['stage-cml', 'fkc-consulting', 'schlosserei-diezinger'];
+// (Einsatzplanung) und Statista (Altsystem im laufenden Betrieb ablösen).
+const featuredSlugs = ['fkc-consulting', 'schlosserei-diezinger', 'statista'];
 const caseBySlug = new Map([...cases, ...additionalCases].map((c) => [c.slug, c]));
 const featuredCases: FeaturedCase[] = featuredSlugs
   .map((slug) => caseBySlug.get(slug))
