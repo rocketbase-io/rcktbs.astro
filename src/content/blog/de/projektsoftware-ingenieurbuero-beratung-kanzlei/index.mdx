@@ -34,9 +34,9 @@ import Screencast from '@/components/blog/Screencast.astro';
 import ProzessDriftDiagramm from '@/components/blog/diagrams/ProzessDriftDiagramm.astro';
 import { contactLinks } from '@/data/rocketbase';
 
-Ein Ingenieurbüro mit 40 Mitarbeitern, eine Unternehmensberatung mit 25, eine mittelgroße Kanzlei: Auf den ersten Blick drei verschiedene Welten. Schaut man auf die Software, mit der sie ihr Kerngeschäft steuern, sind es dieselben Systeme - und dieselben Beschwerden.
+Ein Ingenieurbüro mit 40 Mitarbeitern, eine Unternehmensberatung mit 25, eine mittelgroße Kanzlei: Auf den ersten Blick drei verschiedene Welten. Schaut man auf die Software, mit der sie ihr Kerngeschäft steuern, sind es dieselben Systeme und dieselben Beschwerden.
 
-Das ist kein Zufall. Alle drei verkaufen im Kern dasselbe: **qualifizierte Zeit**. Und damit haben sie denselben Kernprozess - Auftrag kalkulieren, Stunden erfassen, Projektfortschritt verfolgen, fakturieren. Für diesen Prozess gibt es einen etablierten Markt an Projekt- und Kanzleisoftware. Und dort taucht ein wiederkehrendes Muster auf: Die Software, die das Geschäft tragen sollte, bindet irgendwann mehr Kapazität, als sie freisetzt.
+Das ist kein Zufall. Alle drei verkaufen im Kern dasselbe: **qualifizierte Zeit**. Und damit haben sie denselben Kernprozess: Auftrag kalkulieren, Stunden erfassen, Projektfortschritt verfolgen, fakturieren. Für diesen Prozess gibt es einen etablierten Markt an Projekt- und Kanzleisoftware. Und dort taucht ein wiederkehrendes Muster auf: Die Software, die das Geschäft tragen sollte, bindet irgendwann mehr Kapazität, als sie freisetzt.
 
 ## Warum es ausgerechnet diese Branchen trifft
 
@@ -82,7 +82,7 @@ Die Systeme selbst sind gut. Sie sind für einen breiten Markt gebaut und tragen
 
 ## Vier Signale, dass die Grenze erreicht ist
 
-In Gesprächen mit projektgetriebenen Häusern kommen fast immer dieselben vier Punkte. Und zwar als Geschäfts-Argument, selten als technisches.
+In Gesprächen mit projektgetriebenen Häusern kommen fast immer dieselben vier Punkte, und zwar als Geschäfts-Argument, selten als technisches.
 
 <div className="not-prose my-10 grid gap-4 sm:grid-cols-2" data-reveal="fade-up">
   <div className="border-border bg-background-secondary rounded-2xl border p-5">
@@ -97,8 +97,8 @@ In Gesprächen mit projektgetriebenen Häusern kommen fast immer dieselben vier 
     </p>
     <p className="text-foreground-secondary mt-2 text-sm leading-6">
       Die eigentliche Kalkulation passiert in einer Tabelle, das Ergebnis wird ins System
-      übertragen. Das System ist zur Ablage geworden, nicht zum Werkzeug. Wer die Tabelle gebaut
-      hat, ist meist genau eine Person.
+      übertragen. Das System ist zur reinen Ablage geworden. Gebaut hat die Tabelle meist genau eine
+      Person.
     </p>
   </div>
   <div className="border-border bg-background-secondary rounded-2xl border p-5">
@@ -144,8 +144,8 @@ In Gesprächen mit projektgetriebenen Häusern kommen fast immer dieselben vier 
     </p>
     <p className="text-foreground-secondary mt-2 text-sm leading-6">
       Jedes größere Release ist ein Risiko, weil unklar ist, ob die eigenen Anpassungen es
-      überstehen. Wer Updates aus Vorsicht verschleppt, betreibt faktisch Legacy-Software - und
-      zahlt weiterhin Lizenzen dafür.
+      überstehen. Wer Updates aus Vorsicht verschleppt, betreibt faktisch Legacy-Software, also
+      Altsoftware, und zahlt weiterhin Lizenzen dafür.
     </p>
   </div>
 </div>
@@ -178,7 +178,7 @@ Ein einzelnes Signal ist normal. Kritisch wird es, wenn drei oder vier gleichzei
 
 Bei [FKC Consulting](/referenzen/fkc-consulting/) lag genau diese Konstellation vor. Eine etablierte Standardsoftware sollte das Beratungsgeschäft tragen, wurde aber binnen weniger Jahre eher zur Last: Der eigene Angebots- und Projektprozess passte nur über Umwege hinein, das Team fing immer mehr von Hand auf, und für Steuerung und Prognosen fehlten die Auswertungen im nötigen Detail.
 
-Der entscheidende Konstruktionsfehler saß tiefer als in der Bedienung. **Angebot und Durchführung waren im Standard so miteinander verwoben, dass sich Plan und Ergebnis kaum noch gegenüberstellen ließen.** Damit fällt die wichtigste Steuerungsfrage eines projektgetriebenen Hauses weg: Haben wir das geliefert, was wir kalkuliert haben - und wo genau sind wir davon abgewichen?
+Der entscheidende Konstruktionsfehler saß tiefer als in der Bedienung. **Angebot und Durchführung waren im Standard so miteinander verwoben, dass sich Plan und Ergebnis kaum noch gegenüberstellen ließen.** Damit fällt die wichtigste Steuerungsfrage eines projektgetriebenen Hauses weg: Haben wir das geliefert, was wir kalkuliert haben, und wo genau sind wir davon abgewichen?
 
 <Figure
   src={pipelineKanban}
@@ -195,7 +195,7 @@ Der entscheidende Konstruktionsfehler saß tiefer als in der Bedienung. **Angebo
     </p>
     <p className="text-foreground-secondary mt-4 text-sm leading-6">
       Technisch sauber gebaut, aber als Lösung für jeden Zuschnitt gedacht. Die eigenen,
-      entscheidenden Strukturen fanden darin keinen Platz - und wurden an den Rändern nachgebaut.
+      entscheidenden Strukturen fanden darin keinen Platz und wurden an den Rändern nachgebaut.
     </p>
   </div>
   <div className="border-brand-300 bg-card dark:border-brand-800 rounded-2xl border p-6 shadow-[0_22px_55px_rgba(34,43,74,0.08)] sm:p-7">
@@ -205,15 +205,15 @@ Der entscheidende Konstruktionsfehler saß tiefer als in der Bedienung. **Angebo
     </p>
     <p className="text-foreground-secondary mt-4 text-sm leading-6">
       Vertrieb als Kanban-Board, automatische Angebotskalkulation, integrierte Terminplanung,
-      Rechnung mit direktem Versand - und Angebot und Durchführung sauber getrennt, damit Plan und
+      Rechnung mit direktem Versand. Angebot und Durchführung sind sauber getrennt, damit Plan und
       Ergebnis auswertbar bleiben.
     </p>
   </div>
 </div>
 
-Wichtig an diesem Fall ist weniger die Technik als die Reihenfolge: Aufgenommen wurde **der reale Prozess, nicht die bestehende Systemlandschaft**. Erst danach wurden Datenmigration und Anwendung geplant. Bestandsdaten aus proprietären Strukturen wurden herausgelöst, bereinigt und übernommen - die Historie blieb nutzbar.
+Wichtig an diesem Fall ist weniger die Technik als die Reihenfolge: Aufgenommen wurde **der reale Prozess, nicht die bestehende Systemlandschaft**. Erst danach wurden Datenmigration und Anwendung geplant. Bestandsdaten aus proprietären Strukturen wurden herausgelöst, bereinigt und übernommen, die Historie blieb nutzbar.
 
-Das Muster dahinter ist übertragbar: Ein Ingenieurbüro rechnet über Leistungsphasen statt über Beratungstage, eine Kanzlei über Gegenstandswerte und Zeithonorare. Die Fachlogik unterscheidet sich - die strukturelle Frage ist identisch.
+Das Muster dahinter ist übertragbar: Ein Ingenieurbüro rechnet über Leistungsphasen statt über Beratungstage, eine Kanzlei über Gegenstandswerte und Zeithonorare. Die Fachlogik unterscheidet sich, die Frage dahinter ist dieselbe.
 
 ## Die realistischen Optionen
 
@@ -339,6 +339,6 @@ Wir sagen das im Erstgespräch auch so. Ein Ablöseprojekt, das aus Frust starte
 
 ## Der Punkt, an dem sich die Rechnung dreht
 
-Am Ende entscheidet die Wirtschaftlichkeit, nicht die Technik. Die Lizenzkosten sind dabei die kleinere Zahl. Es geht darum, **was der Umgang mit dem System an Kapazität bindet**: Stunden für manuelles Auffangen, verschleppte Auswertungen, lange Einarbeitung, Projekte, deren Marge zu spät sichtbar wird.
+Am Ende entscheidet die Wirtschaftlichkeit. Die Lizenzkosten sind dabei die kleinere Zahl. Es geht darum, **was der Umgang mit dem System an Kapazität bindet**: Stunden für manuelles Auffangen, verschleppte Auswertungen, lange Einarbeitung, Projekte, deren Marge zu spät sichtbar wird.
 
 In projektgetriebenen Häusern ist genau diese Kapazität das Produkt. Sobald die Software mehr davon bindet als freisetzt, ist die Grenze überschritten. Wie gut das System auf dem Papier dasteht, spielt dann keine Rolle mehr.

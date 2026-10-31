@@ -8,7 +8,9 @@
  */
 import LandingLayout from '@/layouts/LandingLayout.astro';
 import { createServiceSchema } from '@/lib/schema';
-import CheckPage from '@/components/check/CheckPage.astro';
+import SchlankPage from '@/components/funnel-schlank/SchlankPage.astro';
+import BerichtMock from '@/components/check/BerichtMock.astro';
+import { softwareCheck } from '@/data/funnelSchlank';
 
 const serviceSchema = createServiceSchema({
   name: 'Software-Check',
@@ -21,10 +23,26 @@ const serviceSchema = createServiceSchema({
 ---
 
 <LandingLayout
-  title="Software-Check: Review für Software, die ihr selbst mit KI gebaut habt"
-  description="Kundenportal, internes Tool oder Produkt mit Software drin: Wir prüfen gegen OWASP ASVS 5.0 und schreiben auf, was offen ist. Prüfbericht für Kunden und Auditoren, Zweitmeinung zur Architektur, Fahrplan für den Cyber Resilience Act. Für Betriebe ab 30 Leuten."
+  title="Software-Check: mit KI gebaute Software prüfen lassen"
+  description="Erfahrene Entwickler prüfen eure Software gegen OWASP ASVS 5.0. Ihr bekommt einen Prüfbericht für Kunden und Auditoren und zu jedem Fund einen Vorschlag. Für Betriebe ab etwa 30 Leuten."
   lang="de"
   extraSchemas={[serviceSchema]}
 >
-  <CheckPage variant="site" />
+  <SchlankPage tor={softwareCheck} modus="seite" blogTuer="check">
+  <BerichtMock slot="hero" />
+  <div class="grid gap-4 lg:grid-cols-2">
+    <div class="bg-brand-500/5 rounded-2xl p-5">
+      <p class="font-display text-foreground font-bold">Architektur-Review</p>
+      <p class="text-foreground-secondary mt-1.5 text-[0.95rem] leading-6">
+        Für Gebautes und Geplantes. Ein erfahrener Entwickler sagt euch, was trägt und wo es später teuer wird.
+      </p>
+    </div>
+    <div class="bg-brand-500/5 rounded-2xl p-5">
+      <p class="font-display text-foreground font-bold">Software-Check</p>
+      <p class="text-foreground-secondary mt-1.5 text-[0.95rem] leading-6">
+        Vor dem Go-Live oder für Software, die läuft. Wir prüfen gegen OWASP ASVS 5.0, ab zwei Tagen je nach Größe.
+      </p>
+    </div>
+  </div>
+</SchlankPage>
 </LandingLayout>

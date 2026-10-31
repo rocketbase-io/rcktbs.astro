@@ -1,5 +1,5 @@
 ---
-title: 'Von der Anfrage zur Zusage - ohne Brüche dazwischen'
+title: 'Von der Anfrage zur Zusage, ohne dass unterwegs etwas verloren geht'
 seoTitle: 'Angebotsprozess: Von der Anfrage zur Zusage'
 description: 'Anfrage strukturiert aufnehmen, daraus ein Angebot machen, das der Kunde selbst konfiguriert - und am Ende trotzdem ein sauberes PDF für die Akte.'
 publishedAt: 2026-08-20
@@ -26,13 +26,13 @@ import Screencast from '@/components/blog/Screencast.astro';
 import AngebotsprozessDiagramm from '@/components/blog/diagrams/AngebotsprozessDiagramm.astro';
 import { contactLinks } from '@/data/rocketbase';
 
-Zwischen "wir hätten Interesse" und "wir beauftragen Sie" liegen in den meisten Unternehmen eine Handvoll Schritte, die niemand richtig verantwortet: Die Anfrage landet in einem Postfach. Jemand telefoniert nach, um die fehlende Hälfte der Informationen zu bekommen. Dann wird kalkuliert - meist auf Basis eines alten Angebots. Ein Dokument entsteht, wandert per Mail hinaus, und danach herrscht Funkstille.
+Zwischen "wir hätten Interesse" und "wir beauftragen Sie" liegen in den meisten Unternehmen eine Handvoll Schritte, die niemand richtig verantwortet: Die Anfrage landet in einem Postfach. Jemand telefoniert nach, um die fehlende Hälfte der Informationen zu bekommen. Dann wird kalkuliert, meist auf Basis eines alten Angebots. Ein Dokument entsteht, wandert per Mail hinaus, und danach herrscht Funkstille.
 
 Jeder dieser Schritte funktioniert für sich. Der Bruch liegt dazwischen: **Was in Schritt eins gesagt wurde, muss in Schritt drei mühsam rekonstruiert werden**, und was der Kunde mit dem fertigen Angebot macht, sieht niemand.
 
 Es geht auch anders: eine durchgehende Strecke von der strukturierten Anfrage über die Kalkulation bis zu einem Angebot, das der Kunde selbst konfiguriert und annimmt. Am Ende steht trotzdem ein PDF, und zwar aus gutem Grund.
 
-## Wo der Dokumentenweg an Grenzen stößt
+## Wo das PDF als Arbeitsmittel an Grenzen stößt
 
 Als Archivformat ist ein PDF hervorragend. Schwierig wird es, sobald man es als **Arbeitsmittel** benutzt. Vier Eigenschaften stehen dem Angebotsprozess dabei im Weg:
 
@@ -60,7 +60,7 @@ Als Archivformat ist ein PDF hervorragend. Schwierig wird es, sobald man es als 
     </div>
     <p className="text-foreground mt-2 text-sm leading-6">
       Jede Rückfrage erzeugt eine neue Version. Nach drei Runden kursieren vier PDFs, und niemand
-      weiß sicher, welches gilt - der Kunde am wenigsten.
+      weiß sicher, welches gilt, der Kunde am wenigsten.
     </p>
   </div>
   <div className="border-border bg-background-secondary rounded-2xl border p-5">
@@ -89,9 +89,9 @@ Als Archivformat ist ein PDF hervorragend. Schwierig wird es, sobald man es als 
   </div>
 </div>
 
-Dazu kommt ein Punkt, den viele unterschätzen: Ein Angebot ist oft **das erste Arbeitsergebnis, das ein potenzieller Kunde von euch sieht**. Wenn es aussieht wie eine Rechnung mit Fließtext, ist das eine verschenkte Gelegenheit - besonders in Märkten, in denen sich Anbieter fachlich kaum unterscheiden.
+Dazu kommt ein Punkt, den viele unterschätzen: Ein Angebot ist oft **das erste Arbeitsergebnis, das ein potenzieller Kunde von euch sieht**. Wenn es aussieht wie eine Rechnung mit Fließtext, ist das eine verschenkte Gelegenheit, besonders in Märkten, in denen sich Anbieter fachlich kaum unterscheiden.
 
-Der Ausweg ist aber nicht, das Dokument abzuschaffen. Es ist, den **Prozess** vom Dokument zu trennen: Die Arbeit passiert im System, das Dokument entsteht daraus - und nicht umgekehrt.
+Das Dokument muss dafür nicht verschwinden. Der Ausweg ist, den **Prozess** vom Dokument zu trennen: Die Arbeit passiert im System, und das Dokument entsteht daraus.
 
 <AngebotsprozessDiagramm />
 
@@ -107,7 +107,7 @@ Statt einer Datei bekommt der Kunde einen Link auf eine Seite, die ihm gehört. 
     </p>
     <p className="text-foreground-secondary mt-3 text-sm leading-6">
       Leistungsumfang, Laufzeit, Budgetierung, Zahlungsmodalitäten, Team, Auftragsbestätigung: Der
-      Kunde springt zu dem Abschnitt, der ihn interessiert - der Einkauf zu den Konditionen, die
+      Kunde springt zu dem Abschnitt, der ihn interessiert: der Einkauf zu den Konditionen, die
       Fachabteilung zum Umfang.
     </p>
   </div>
@@ -117,8 +117,8 @@ Statt einer Datei bekommt der Kunde einen Link auf eine Seite, die ihm gehört. 
       Eine Fassung, immer aktuell
     </p>
     <p className="text-foreground-secondary mt-3 text-sm leading-6">
-      Wird nachverhandelt, ändert sich der Inhalt unter demselben Link. Es gibt keine Version 3
-      final final - es gibt das Angebot, in dem Stand, der gerade gilt.
+      Wird nachverhandelt, ändert sich der Inhalt unter demselben Link. Statt Version 3 final final
+      gibt es das eine Angebot im Stand, der gerade gilt.
     </p>
   </div>
   <div className="border-border bg-background-secondary rounded-2xl border p-6">
@@ -128,18 +128,18 @@ Statt einer Datei bekommt der Kunde einen Link auf eine Seite, die ihm gehört. 
     </p>
     <p className="text-foreground-secondary mt-3 text-sm leading-6">
       Ein Klick auf "Angebot annehmen" statt einer unterschriebenen und zurückgescannten Seite. Aus
-      der Zusage wird direkt ein Auftrag im System - ohne dass jemand etwas abtippt.
+      der Zusage wird direkt ein Auftrag im System, ohne dass jemand etwas abtippt.
     </p>
   </div>
 </div>
 
-### Das PDF bleibt - als Ableitung, nicht als Original
+### Das PDF bleibt, aber es entsteht aus dem System
 
-Das ist kein Zugeständnis, sondern Notwendigkeit. **Gerade bei größeren Kunden reicht eine Webseite nicht**: Es wird ein schriftliches Dokument erwartet, das in die Beschaffungsakte wandert, im Gremium herumgereicht und rechtssicher archiviert wird. Wer hier nur einen Link liefert, fällt aus dem Verfahren.
+**Gerade bei größeren Kunden reicht eine Webseite nicht**: Es wird ein schriftliches Dokument erwartet, das in die Beschaffungsakte wandert, im Gremium herumgereicht und rechtssicher archiviert wird. Wer hier nur einen Link liefert, fällt aus dem Verfahren.
 
-Der Unterschied liegt in der Richtung. Nicht: Dokument erstellen, daraus vielleicht eine Ansicht bauen. Sondern: **Das Angebot liegt strukturiert im System, die Darstellungen werden daraus erzeugt** - die Webansicht für die Auseinandersetzung mit dem Inhalt, das PDF für die Akte. Beide zeigen dieselben Daten, ein Versionskonflikt kann gar nicht erst entstehen.
+Der Unterschied liegt in der Richtung: **Das Angebot liegt strukturiert im System, die Darstellungen werden daraus erzeugt**, die Webansicht zum Durcharbeiten, das PDF für die Akte. Beide zeigen dieselben Daten, widersprüchliche Versionen können gar nicht erst entstehen.
 
-Praktisch heißt das auch, dass sich beide Fassungen unterscheiden dürfen: Wer das Angebot erstellt, entscheidet, welche Abschnitte ins PDF wandern. Aufklappbare Erklärstrecken, Animationen und Imageteile sind auf einer Webseite hilfreich - im ausgedruckten Dokument sind sie Ballast. Das PDF darf deshalb schlanker sein als die Webansicht, ohne dass jemand zwei Fassungen pflegt.
+Praktisch heißt das auch, dass sich beide Fassungen unterscheiden dürfen: Wer das Angebot erstellt, entscheidet, welche Abschnitte ins PDF wandern. Aufklappbare Erklärstrecken, Animationen und Imageteile sind auf einer Webseite hilfreich, im ausgedruckten Dokument sind sie Ballast. Das PDF darf deshalb schlanker sein als die Webansicht, ohne dass jemand zwei Fassungen pflegt.
 
 <aside className="not-prose my-8" data-reveal="fade-up">
   <div className="border-brand-200 bg-brand-50/60 dark:border-brand-800 dark:bg-brand-900/15 rounded-2xl border p-6 sm:p-7">
@@ -165,7 +165,7 @@ Praktisch heißt das auch, dass sich beide Fassungen unterscheiden dürfen: Wer 
 
 ## Der Teil, den fast alle unterschätzen: der Weg dahin
 
-Über die Darstellung wird viel geredet, über den Prozess dahinter zu wenig. Dabei entsteht dort die eigentliche Entlastung. Ein Angebot durchläuft in der Regel sechs Stationen - und in vielen Häusern ist jede davon Handarbeit:
+Über die Darstellung wird viel geredet, über den Prozess dahinter zu wenig. Dabei entsteht dort die eigentliche Entlastung. Ein Angebot durchläuft in der Regel sechs Stationen, und in vielen Häusern ist jede davon Handarbeit:
 
 <div className="not-prose my-10 flex flex-col gap-4" data-reveal="fade-up">
   <div className="border-border bg-background-secondary rounded-2xl border p-6">
@@ -176,12 +176,12 @@ Praktisch heißt das auch, dass sich beide Fassungen unterscheiden dürfen: Wer 
       <div>
         <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">Station 1</p>
         <p className="font-display text-foreground mt-1 text-base leading-snug font-semibold">
-          Anfrage aufnehmen - strukturiert, egal über welchen Kanal
+          Anfrage aufnehmen: strukturiert, egal über welchen Kanal
         </p>
         <p className="text-foreground-secondary mt-2 text-sm leading-6">
           Anfragen kommen über das Formular auf der Website oder als formlose Mail. Beides landet im
           selben System, statt in einem Postfach zu versanden. Entscheidend ist der strukturierte
-          Fragenkatalog dahinter: Objektgröße, Standorte, Fristen, Rahmenbedingungen - alles, was
+          Fragenkatalog dahinter: Objektgröße, Standorte, Fristen, Rahmenbedingungen, also alles, was
           bei euch den Aufwand bestimmt. Wer diese Angaben vorher hat, rechnet einmal richtig statt
           dreimal ungefähr.
         </p>
@@ -201,8 +201,8 @@ Praktisch heißt das auch, dass sich beide Fassungen unterscheiden dürfen: Wer 
         <p className="text-foreground-secondary mt-2 text-sm leading-6">
           Nicht jede Anfrage ist nach dem Formular klar. Rückfragen, ein Beratungstermin, eine
           Vor-Ort-Begehung: Wenn der Interessent seinen Termin selbst buchen kann und jeder Kontakt
-          am Vorgang hängt, bleibt der Verlauf nachvollziehbar - auch für die Kollegin, die später
-          übernimmt. Kein Wissen mehr, das nur in einem Postfach liegt.
+          am Vorgang hängt, bleibt der Verlauf nachvollziehbar, auch für die Kollegin, die später
+          übernimmt. So liegt kein Wissen mehr nur in einem Postfach.
         </p>
       </div>
     </div>
@@ -219,8 +219,8 @@ Praktisch heißt das auch, dass sich beide Fassungen unterscheiden dürfen: Wer 
         </p>
         <p className="text-foreground-secondary mt-2 text-sm leading-6">
           Hier steckt der größte Hebel. Wenn Rollen, Aufwände und Sätze im System hinterlegt sind,
-          rechnet sich das Angebot selbst - inklusive Deckungsbeitrag. Statt einer Tabelle, die eine
-          Person pflegt und alle anderen kopieren.
+          rechnet sich das Angebot selbst, inklusive Deckungsbeitrag. Das ersetzt die Tabelle, die
+          eine Person pflegt und alle anderen kopieren.
         </p>
       </div>
     </div>
@@ -237,8 +237,8 @@ Praktisch heißt das auch, dass sich beide Fassungen unterscheiden dürfen: Wer 
         </p>
         <p className="text-foreground-secondary mt-2 text-sm leading-6">
           Ab einer bestimmten Summe schaut die Geschäftsführung drüber. Läuft das über Mail, ist
-          unklar, ob und wann freigegeben wurde. Als Schritt im System ist es dokumentiert - und die
-          Freigabe steht am Angebot, nicht in einem Postfach.
+          unklar, ob und wann freigegeben wurde. Als Schritt im System ist sie dokumentiert, und die
+          Freigabe steht direkt am Angebot.
         </p>
       </div>
     </div>
@@ -256,7 +256,7 @@ Praktisch heißt das auch, dass sich beide Fassungen unterscheiden dürfen: Wer 
         <p className="text-foreground-secondary mt-2 text-sm leading-6">
           Der Kunde will Position 3 streichen und Position 5 erweitern. Im Dokumentenprozess
           bedeutet das: neu rechnen, neu exportieren, neu senden. Digital kann er optionale
-          Positionen selbst ab- und zuwählen und sieht die Summe sofort - und sein Feedback steht am
+          Positionen selbst ab- und zuwählen und sieht die Summe sofort, und sein Feedback steht am
           Angebot statt in einem Mailverlauf.
         </p>
       </div>
@@ -270,14 +270,14 @@ Praktisch heißt das auch, dass sich beide Fassungen unterscheiden dürfen: Wer 
       <div>
         <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">Station 6</p>
         <p className="font-display text-foreground mt-1 text-base leading-snug font-semibold">
-          Zusage - oder Absage mit Begründung
+          Zusage oder Absage mit Begründung
         </p>
         <p className="text-foreground-secondary mt-2 text-sm leading-6">
           Der klassische Bruch: Was im Angebot stand, wird von Hand ins Projekt übertragen. Hängen
-          Angebot und Durchführung zusammen, entsteht der Auftrag direkt aus dem Angebot -
-          Kalkulation und tatsächlicher Verlauf bleiben vergleichbar. Und die Absage ist kein
-          Papierkorb, sondern ein Datenpunkt: Wer absagt und woran es lag, ist die Grundlage dafür,
-          das nächste Angebot besser zu schneiden.
+          Angebot und Durchführung zusammen, entsteht der Auftrag direkt aus dem Angebot.
+          Kalkulation und tatsächlicher Verlauf bleiben vergleichbar. Auch eine Absage ist nützlich:
+          Wer absagt und woran es lag, ist die Grundlage dafür, das nächste Angebot besser zu
+          schneiden.
         </p>
       </div>
     </div>
@@ -288,7 +288,7 @@ Der letzte Punkt ist der wirtschaftlich wichtigste. Solange Angebot und Projekt 
 
 ## Vom Dokument zum Dialog
 
-Die drei Punkte oben - navigierbar, aktuell, direkt annehmbar - beschreiben ein besseres Dokument. Der eigentliche Sprung passiert an einer anderen Stelle: wenn das Angebot **etwas ist, mit dem der Kunde arbeiten kann**, statt etwas, das er nur liest.
+Die drei Punkte oben (navigierbar, aktuell, direkt annehmbar) beschreiben ein besseres Dokument. Der eigentliche Sprung passiert an einer anderen Stelle: wenn das Angebot **etwas ist, mit dem der Kunde arbeiten kann**, statt etwas, das er nur liest.
 
 <div className="not-prose my-10 flex flex-col gap-4" data-reveal="fade-up">
   <div className="border-border bg-background-secondary rounded-2xl border p-6">
@@ -303,7 +303,7 @@ Die drei Punkte oben - navigierbar, aktuell, direkt annehmbar - beschreiben ein 
         <p className="text-foreground-secondary mt-2 text-sm leading-6">
           Zusatzmodule, erweiterte Betreuung, ein zweiter Standort: Optionale Positionen lassen sich
           ab- und zuwählen, die Summe rechnet sich sofort mit. Der Kunde stellt sich den Umfang
-          zusammen, der zu seinem Budget passt - statt eine Rückfrage zu stellen und drei Tage auf
+          zusammen, der zu seinem Budget passt, statt eine Rückfrage zu stellen und drei Tage auf
           ein neues PDF zu warten. Nebeneffekt: Ihr seht, welche Optionen tatsächlich gezogen
           werden.
         </p>
@@ -320,8 +320,8 @@ Die drei Punkte oben - navigierbar, aktuell, direkt annehmbar - beschreiben ein 
           Feedback dort, wo es hingehört
         </p>
         <p className="text-foreground-secondary mt-2 text-sm leading-6">
-          Eine Anmerkung zu Position 4 steht an Position 4 - nicht in einer Mail, die auf "Anbei
-          unsere Anmerkungen" endet und eine Telefonkonferenz nach sich zieht. Der
+          Eine Anmerkung zu Position 4 steht an Position 4. Die Mail, die auf "Anbei unsere
+          Anmerkungen" endet und eine Telefonkonferenz nach sich zieht, entfällt. Der
           Verhandlungsverlauf bleibt am Angebot und ist auch für Kolleginnen nachvollziehbar, die
           später dazukommen.
         </p>
@@ -335,7 +335,7 @@ Die drei Punkte oben - navigierbar, aktuell, direkt annehmbar - beschreiben ein 
       </span>
       <div>
         <p className="font-display text-foreground text-base leading-snug font-semibold">
-          Zusagen - oder absagen, mit einem Grund
+          Zusagen oder absagen, mit einem Grund
         </p>
         <p className="text-foreground-secondary mt-2 text-sm leading-6">
           Beides gehört ins Angebot. Die Zusage erzeugt direkt den Auftrag, ohne dass jemand etwas
@@ -356,9 +356,8 @@ Die drei Punkte oben - navigierbar, aktuell, direkt annehmbar - beschreiben ein 
           Erklären statt nur auflisten
         </p>
         <p className="text-foreground-secondary mt-2 text-sm leading-6">
-          Eine Webseite kann zeigen, wie eine Leistung abläuft - mit Abschnitten, die sich beim
-          Scrollen aufbauen, und Grafiken statt Aufzählungen. Das ist kein Selbstzweck: Wer
-          verstanden hat, was er kauft, fragt weniger zurück und verhandelt sachlicher.
+          Eine Webseite kann zeigen, wie eine Leistung abläuft, mit Abschnitten, die sich beim
+          Scrollen aufbauen, und Grafiken statt Aufzählungen. Wer verstanden hat, was er kauft, fragt weniger zurück und verhandelt sachlicher.
         </p>
       </div>
     </div>
@@ -401,8 +400,8 @@ Ein vorgeschalteter Fragebogen dreht die Reihenfolge um. Bevor kalkuliert wird, 
       Angebot auf Faktenbasis
     </p>
     <p className="text-foreground-secondary mt-4 text-sm leading-6">
-      Die aufwandsbestimmenden Kriterien liegen vor der Kalkulation vor. Das Angebot trifft beim
-      ersten Mal - und Anfragen, die erkennbar nicht passen, klären sich, bevor jemand Stunden
+      Was den Aufwand bestimmt, ist vor der Kalkulation bekannt. Das Angebot trifft beim ersten Mal,
+      und Anfragen, die erkennbar nicht passen, klären sich, bevor jemand Stunden
       hineinsteckt.
     </p>
   </div>
@@ -415,11 +414,11 @@ Ein vorgeschalteter Fragebogen dreht die Reihenfolge um. Bevor kalkuliert wird, 
   source="Beispielansicht aus einer RocketBase-Lösung"
 />
 
-Der zweite Effekt ist der unterschätzte: **Vorqualifizierung filtert.** Nicht jede Anfrage verdient ein durchkalkuliertes Angebot. Wer früh sieht, dass Budget, Umfang oder Zeitrahmen nicht zusammenpassen, spart sich die teuerste Form von Vertriebsarbeit - die für einen Auftrag, den es nie gab.
+Der zweite Effekt ist der unterschätzte: **Vorqualifizierung filtert.** Nicht jede Anfrage verdient ein durchkalkuliertes Angebot. Wer früh sieht, dass Budget, Umfang oder Zeitrahmen nicht zusammenpassen, spart sich die teuerste Form von Vertriebsarbeit: die für einen Auftrag, den es nie gab.
 
 ## Wo KI in diesem Prozess tatsächlich hilft
 
-Der Begriff wird derzeit an so vieles geheftet, dass Skepsis berechtigt ist. In diesem Prozess gibt es allerdings zwei Stellen, an denen der Nutzen konkret und überprüfbar ist - beide betreffen stumpfe Zuarbeit, nicht die fachliche Entscheidung.
+Der Begriff wird derzeit an so vieles geheftet, dass Skepsis berechtigt ist. In diesem Prozess gibt es allerdings zwei Stellen, an denen der Nutzen konkret und überprüfbar ist. Beide betreffen stumpfe Zuarbeit.
 
 <div className="not-prose my-10 grid gap-4 md:grid-cols-2" data-reveal="fade-up">
   <div className="border-border bg-background-secondary rounded-2xl border p-6">
@@ -434,7 +433,7 @@ Der Begriff wird derzeit an so vieles geheftet, dass Skepsis berechtigt ist. In 
     </p>
     <p className="text-foreground-secondary mt-2 text-sm leading-6">
       Nicht jeder schreibt über das Formular. Kommt eine formlose Mail, wird sie ausgelesen und dem
-      richtigen Vorgang zugeordnet - neue Anfrage oder Rückmeldung zu einem laufenden Angebot. Was
+      richtigen Vorgang zugeordnet: neue Anfrage oder Rückmeldung zu einem laufenden Angebot. Was
       sonst jemand von Hand einsortiert, ist damit erledigt, bevor es jemand sieht.
     </p>
   </div>
@@ -488,13 +487,13 @@ Ein digitales Angebot protokolliert, was mit ihm passiert: wann es geöffnet wur
       Nachfassen nach Signal
     </p>
     <p className="text-foreground-secondary mt-4 text-sm leading-6">
-      Angebot wurde gestern dreimal geöffnet, zuletzt heute früh: ein guter Moment für einen Anruf -
+      Angebot wurde gestern dreimal geöffnet, zuletzt heute früh: ein guter Moment für einen Anruf,
       und die Wiedervorlage ist schon vorgerückt.
     </p>
   </div>
 </div>
 
-Zwei Dinge gehören hier zur Ehrlichkeit dazu. Erstens ist das **Datenverarbeitung und braucht eine saubere Grundlage** - Zweckbindung, Datenschutzhinweis, keine heimliche Überwachung einzelner Personen. Zweitens ersetzt es kein Urteilsvermögen: Ein ungeöffnetes Angebot kann bedeuten, dass der Ansprechpartner im Urlaub ist, nicht dass das Interesse weg ist.
+Zwei Dinge gehören hier zur Ehrlichkeit dazu. Erstens ist das **Datenverarbeitung und braucht eine saubere Grundlage**: Zweckbindung, Datenschutzhinweis, keine heimliche Überwachung einzelner Personen. Zweitens ersetzt es kein Urteilsvermögen: Ein ungeöffnetes Angebot kann bedeuten, dass der Ansprechpartner im Urlaub ist. Das Interesse muss nicht weg sein.
 
 ## Für wen sich das rechnet
 
@@ -537,7 +536,7 @@ Nicht jedes Unternehmen braucht das. Die Rechnung wird von drei Faktoren bestimm
       </p>
     </div>
     <p className="text-foreground-secondary mt-2 text-sm leading-6">
-      Je höher der Wert, desto teurer ein verlorener Abschluss - und desto eher zahlt sich ein
+      Je höher der Wert, desto teurer ein verlorener Abschluss, und desto eher zahlt sich ein
       Angebot aus, das professionell wirkt und rechtzeitig nachgefasst wird.
     </p>
   </div>
@@ -549,7 +548,7 @@ In drei Fällen wäre der Aufwand falsch investiert. Sind eure Angebote weitgehe
 
 ## Aus der Praxis
 
-Wie das konkret aussieht, zeigt die Plattform, die wir für [FKC Consulting](/referenzen/fkc-consulting/) gebaut haben. Sie deckt die Strecke von der Anfrage bis zur Rechnung ab. Der Angebotsteil erinnert an Werkzeuge wie Qwilr oder PandaDoc, sitzt aber am echten Kalkulations- und Projektmodell des Hauses statt an einem generischen Vorlagensystem. Und er bricht nicht zu dem ab, was davor und danach passiert.
+Wie das konkret aussieht, zeigt die Plattform, die wir für [FKC Consulting](/referenzen/fkc-consulting/) gebaut haben. Sie deckt die Strecke von der Anfrage bis zur Rechnung ab. Der Angebotsteil erinnert an Werkzeuge wie Qwilr oder PandaDoc, sitzt aber am echten Kalkulations- und Projektmodell des Hauses statt an einem generischen Vorlagensystem. Und er hängt mit dem zusammen, was davor und danach passiert.
 
 Die ganze Strecke mit Screenshots steht auf der Seite zum [Angebotsbaustein](/f/angebote/).
 
@@ -575,6 +574,6 @@ Entscheidung auf Grundlage von Information.
   caption="Vom Posteingang zur Zusage: Das Angebot kommt als Link statt als PDF-Anhang - der Kunde öffnet die Seite aus der Mail, navigiert durch die Abschnitte und nimmt direkt an. Die Druckansicht für die Ablage bleibt."
 />
 
-Entscheidend war dabei eine strukturelle Frage, keine gestalterische: **Angebot und Durchführung sind sauber getrennt**, damit sich Kalkulation und Realität später vergleichen lassen. Genau daran scheitern viele gewachsene Systeme, mehr dazu im Artikel über [Projektsoftware, die nicht mehr mitwächst](/blog/projektsoftware-ingenieurbuero-beratung-kanzlei/).
+Entscheidend war dabei eine Frage der Struktur: **Angebot und Durchführung sind sauber getrennt**, damit sich Kalkulation und Realität später vergleichen lassen. Genau daran scheitern viele gewachsene Systeme, mehr dazu im Artikel über [Projektsoftware, die nicht mehr mitwächst](/blog/projektsoftware-ingenieurbuero-beratung-kanzlei/).
 
 Das Muster gilt weit über Beratungen hinaus. Ein Handwerksbetrieb mit Sanierungen, ein Ingenieurbüro mit Leistungsphasen, eine Agentur mit Retainern: Der Ablauf aus Anfrage, Kalkulation, Freigabe, Rückfragen und Zusage bleibt derselbe. Unterschiedlich ist nur die Fachlogik dahinter.

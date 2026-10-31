@@ -1,15 +1,14 @@
 ---
+import SeitenHero from '@/components/landing/SeitenHero.astro';
+import { Image } from 'astro:assets';
+import auftragsplanung from '@/assets/references/auftragsplanung-demo-1920.png';
 import PageLayout from '@/layouts/PageLayout.astro';
 import { Picture } from 'astro:assets';
-import { getCollection } from 'astro:content';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
-import JsonLd from '@/components/seo/JsonLd.astro';
-import Moon from '@/components/hero-backgrounds/Moon.astro';
 import { defaultLocale } from '@/i18n/config';
 import { contactLinks } from '@/data/rocketbase';
 import { cn } from '@/lib/cn.ts';
-import { createFAQSchema } from '@/lib/schema';
 
 import bsfzSiegel2025 from '@/assets/rocketbase/bsfz_siegel-2025.svg';
 import bsfzSiegel2026 from '@/assets/rocketbase/bsfz_siegel-2026.svg';
@@ -24,126 +23,91 @@ import kiAfter from '@/assets/work/ki-after.png';
 
 const locale = defaultLocale;
 
-const faqEntries = await getCollection('faqs', ({ data }) => data.category === 'arbeitsweise');
-const faqs = faqEntries
-  .map((entry) => entry.data)
-  .sort((a, b) => a.order - b.order);
-
-const faqSchema = createFAQSchema(
-  faqs.map((f) => ({
-    question: f.question,
-    answer: [f.summary, f.details].filter(Boolean).join(' ') || f.answer || '',
-  })),
-);
-
-const faqIcons: Record<number, string> = {
-  1: 'clock',
-  2: 'file-text',
-  3: 'users',
-  4: 'globe',
-  5: 'shield',
-  6: 'heart',
-  7: 'layers',
-};
+// Das Wichtigste der früheren Seite /mission/, die seit 2026-10-31 hierher weiterleitet.
+const haltungen = [
+  { titel: 'Zuerst klären, welches Problem zu lösen ist', text: 'Wir setzen uns mit den Leuten zusammen, die den Ablauf jeden Tag machen. Oft ist das eigentliche Problem ein anderes als das, was zuerst auf dem Zettel stand.' },
+  { titel: 'Ihr sprecht mit den Leuten, die auch bauen', text: 'Wer euch etwas zusagt, setzt es danach selbst um. Deshalb wird gebaut, was besprochen wurde.' },
+  { titel: 'Wir widersprechen, wenn ein Wunsch falsch läuft', text: 'Gute Lösungen entstehen im Gespräch. Wir arbeiten direkt mit euch, und jemand widerspricht, wenn es nötig ist.' },
+  { titel: 'Eure Software passt an eure anderen Programme', text: 'Jede Anwendung hat eine dokumentierte Schnittstelle. Damit verbindet ihr sie mit euren Programmen oder baut Automatisierungen in n8n oder Make.' },
+];
 
 const sections = [
   {
-    id: 'discovery',
+    id: 'team',
     number: '01',
-    eyebrow: 'Discovery',
-    title: 'Erst verstehen. Dann bauen.',
-    subline:
-      'Prozesse analysieren, Keyuser interviewen, Datenmodell und Architektur an die echte Arbeitsrealität anpassen – bevor die erste Zeile Code entsteht.',
-    layout: 'notebook' as const,
+    eyebrow: 'Team',
+    title: 'Ein kleines Team, das schnell entscheidet',
+    subline: 'Ihr habt einen gemeinsamen Slack-Channel und einen festen Verantwortlichen.',
+    layout: 'split' as const,
     background: 'default' as const,
     before: {
-      title: 'Elfenbeinturm-Planung',
-      text: 'Architektur und Datenmodell entstehen am Reißbrett, ohne die Menschen, die später damit arbeiten. Nach dem Rollout merken Keyuser: so passt das nicht in unseren Alltag. Folge: hoher Rework-Aufwand, frustrierte Nutzer, und am Ende wird die Software umgangen statt verwendet.',
-      image: null,
-    },
-    after: {
-      title: 'Unser Discovery-Ansatz',
-      text: 'Wir analysieren reale Prozesse, beobachten den Arbeitsalltag, interviewen Keyuser und mappen die Customer Journey. Daraus leiten wir Datenmodell und Architektur ab – die Software passt sich der Arbeit an, nicht umgekehrt.',
-      image: null,
-    },
-  },
-  {
-    id: 'team',
-    number: '02',
-    eyebrow: 'Team',
-    title: 'Vom großen Standardteam zum schlanken Expertenteam',
-    subline:
-      'Ein Slack-Channel. Ein Verantwortlicher. Keine Daily-Kette über drei Abteilungen.',
-    layout: 'split' as const,
-    background: 'secondary' as const,
-    before: {
-      title: 'Branchen-Standard im Konzern',
-      text: 'Typisch sind 8+ Personen, mehrere Ticket-Hops und Daily-Standups bis eine Entscheidung steht. Wissen verteilt sich, Tempo verliert sich in Übergaben – und das kostet messbar Geld.',
+      title: 'Typisch im Konzern',
+      text: 'Typisch sind acht oder mehr Leute. Eine Entscheidung wandert durch mehrere Tickets und tägliche Abstimmungen, bis sie steht. Das Wissen verteilt sich, und jede Übergabe kostet Zeit und damit Geld.',
       image: teamBefore,
     },
     after: {
-      title: 'Unser Setup',
-      text: 'Ein eingespieltes Team aus Tech Lead, Engineering und Architektur. Entscheidungen fallen im Gespräch, nicht im Ticket-Tool. Output vergleichbar mit Teams ab 12 Personen.',
+      title: 'Bei uns',
+      text: 'Bei uns arbeitet ein eingespieltes Team aus technischer Leitung, Entwicklung und Architektur. Entscheidungen fallen im Gespräch. So schafft es so viel wie Teams ab 12 Personen.',
       image: teamAfter,
     },
   },
   {
     id: 'cloud',
-    number: '03',
-    eyebrow: 'Infrastruktur',
-    title: 'Vom eigenen Server zur Cloud aus Deutschland',
+    number: '02',
+    eyebrow: 'Server',
+    title: 'Eure Software läuft in einer Cloud in Deutschland',
     subline:
-      'Hetzner statt Hardware-Bestellung. Backup, Monitoring und Skalierung sind dabei – kein eigenes Admin-Team nötig.',
+      'Wir nutzen Hetzner. Backups, Überwachung und mehr Leistung bei Bedarf sind dabei, und ihr braucht dafür kein eigenes Admin-Team.',
     layout: 'stacked' as const,
-    background: 'default' as const,
+    background: 'secondary' as const,
     before: {
-      title: 'Mittelstand-Realität',
-      text: 'In vielen Mittelstandsbetrieben steht der Server noch im Büroschrank: manuelle Backups, Updates am Wochenende, eingeschränkter Zugriff von außen. Bei Hardware-Defekten oder Wachstum stößt das schnell an Grenzen.',
+      title: 'Server im Büro',
+      text: 'In vielen Betrieben steht der Server noch im Büroschrank. Backups macht jemand von Hand, Updates laufen am Wochenende, und von außen kommt man schwer dran. Geht die Hardware kaputt oder wächst der Betrieb, wird es schnell eng.',
       image: serverBefore,
     },
     after: {
       title: 'Cloud aus Deutschland',
-      text: 'Hetzner Cloud, automatische Backups, kontinuierliches Monitoring. DSGVO-konform in Deutschland gehostet, jederzeit skalierbar – ohne eigenes Admin-Team.',
+      text: 'Eure Anwendung läuft in der Hetzner Cloud in Deutschland, DSGVO-konform. Backups laufen automatisch, und das System wird durchgehend überwacht. Braucht ihr mehr Leistung, geht das jederzeit.',
       image: serverAfter,
     },
   },
   {
     id: 'tools',
-    number: '04',
+    number: '03',
     eyebrow: 'Werkzeuge',
-    title: 'Von Tool-Chaos zur integrierten Lösung',
+    title: 'Alle Daten liegen in einem System',
     subline:
-      'Ein zentrales System statt drei Excel-Listen, einem CRM und einem Mailverteiler – Daten an einer Stelle, Auswertungen in Echtzeit.',
-    layout: 'diptych' as const,
-    background: 'secondary' as const,
+      'Ein System ersetzt drei Excel-Listen, ein CRM und einen Mailverteiler. Eure Auswertungen sind immer aktuell.',
+    layout: 'split' as const,
+    background: 'default' as const,
     before: {
-      title: 'Gewachsener Tool-Zoo',
-      text: 'Typisch sind Bestellungen in Excel, Kunden im CRM, Versand in Trello, Reports per Mail. Daten leben in Silos, Prozesse laufen manuell, Doppelarbeit überall – niemand hat den vollen Überblick.',
+      title: 'Viele Werkzeuge nebeneinander',
+      text: 'Typisch sind Bestellungen in Excel, Kunden im CRM, Versand in Trello und Berichte per Mail. Vieles wird doppelt gepflegt, und niemand hat den ganzen Überblick.',
       image: toolsBefore,
     },
     after: {
-      title: 'Eine integrierte Lösung',
-      text: 'Ein PIM, ein ERP-Backend, ein Dashboard. Bestellungen, Stammdaten und Auswertungen verzahnt – eine Quelle der Wahrheit.',
+      title: 'Ein System',
+      text: 'Bestellungen, Stammdaten und Auswertungen greifen ineinander und stehen an einer Stelle.',
       image: toolsAfter,
     },
   },
   {
     id: 'ki',
-    number: '05',
-    eyebrow: 'Engineering',
-    title: 'Von klassischer Entwicklung zu KI-gestützter Umsetzung',
+    number: '04',
+    eyebrow: 'Entwicklung',
+    title: 'KI erledigt die Fleißarbeit, das senkt eure Kosten',
     subline:
-      'Wir setzen KI dort ein, wo sie echte Zeit spart – bei den wiederkehrenden Fleißarbeiten der Entwicklung. Das senkt Aufwand und Kosten, ohne an Qualität zu sparen.',
+      'Wir setzen KI dort ein, wo sie wirklich Zeit spart. Das senkt Aufwand und Kosten, und die Qualität bleibt gleich.',
     layout: 'reveal' as const,
-    background: 'default' as const,
+    background: 'secondary' as const,
     before: {
-      title: 'Klassischer Entwicklungsprozess',
-      text: 'Klassisch wird vieles von Hand getippt: Standard-Code, Tests, Dokumentation. Viel Wiederholung, die Zeit frisst und nichts bringt außer Kosten.',
+      title: 'Alles von Hand',
+      text: 'Klassisch wird vieles von Hand getippt: Standard-Code, Tests und Dokumentation. Diese Wiederholung frisst Zeit und kostet Geld.',
       image: kiBefore,
     },
     after: {
-      title: 'KI + Open Source',
-      text: 'KI übernimmt die wiederkehrenden Fleißarbeiten. Unsere Entwickler stecken ihre Zeit dafür dorthin, wo es auf Erfahrung ankommt: in eure Geschäftslogik und eine Lösung, die trägt.',
+      title: 'KI und Open Source',
+      text: 'KI übernimmt die wiederkehrende Arbeit. Unsere Entwickler kümmern sich um das, wofür es Erfahrung braucht: eure Geschäftsregeln und eine Lösung, die trägt.',
       image: kiAfter,
     },
   },
@@ -156,37 +120,37 @@ const sections = [
   lang={locale}
   routeId="work"
 >
-  <JsonLd schema={faqSchema} />
   <!-- HERO -->
-  <section
-    class="border-border bg-background-secondary relative flex min-h-[60vh] items-center overflow-hidden border-b py-24 sm:py-32"
-  >
-    <Moon />
+  <SeitenHero eyebrow="Wie wir arbeiten" titel="Schneller und günstiger zur passenden Software" text="Vier Dinge machen wir heute anders als vor zehn Jahren. Euer Projekt wird dadurch schneller fertig und kostet weniger.">
+    <Image
+      src={auftragsplanung}
+      alt="Auftragsplanung mit Mitarbeitern und Einsätzen, Demo-Daten"
+      widths={[640, 960, 1280]}
+      sizes="(min-width: 1024px) 50vw, 100vw"
+      class="border-border w-full rounded-2xl border shadow-xl"
+      loading="eager"
+    />
+  </SeitenHero>
 
-    <div class="container relative z-10 max-w-5xl text-center">
-      <p
-        data-reveal="fade-down"
-        class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase"
-      >
-        Wie wir arbeiten
+  <section class="border-border border-b py-14 lg:py-20">
+    <div class="container max-w-6xl">
+      <h2 class="font-display text-foreground text-2xl font-bold tracking-tight text-balance sm:text-4xl">
+        Über 15 Jahre Erfahrung aus Konzern und Mittelstand
+      </h2>
+      <p class="text-foreground-secondary mt-3 max-w-2xl text-base leading-7">
+        Wir haben unter anderem für bonprix und Statista gebaut. Die Technik wählen wir so, dass sie
+        auch in fünf Jahren noch trägt, auch wenn dann jemand anderes das Projekt übernommen hat.
       </p>
-      <h1
-        data-reveal="fade-down"
-        class="font-display text-foreground mt-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl"
-      >
-        <span
-          class="from-brand-500 to-brand-400 bg-gradient-to-r bg-clip-text text-transparent"
-        >
-          Kleines Team. Kurze Wege. KI, wo sie Arbeit spart.
-        </span>
-      </h1>
-      <p
-        data-reveal
-        class="text-foreground-secondary mx-auto mt-8 max-w-2xl text-lg leading-8 sm:text-xl"
-      >
-        Vier Dinge machen wir heute anders als vor zehn Jahren. Was das für euer Projekt
-        bedeutet, steht hier.
-      </p>
+      <div class="mt-7 grid gap-4 lg:grid-cols-2">
+        {
+          haltungen.map((h) => (
+            <div class="bg-brand-500/5 rounded-2xl p-5">
+              <p class="font-display text-foreground font-bold">{h.titel}</p>
+              <p class="text-foreground-secondary mt-1.5 text-[0.95rem] leading-6">{h.text}</p>
+            </div>
+          ))
+        }
+      </div>
     </div>
   </section>
 
@@ -246,7 +210,7 @@ const sections = [
                 <div data-reveal="fade-right" class="space-y-6">
                   <div>
                     <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
-                      Unser Ansatz · {section.after.title}
+                      So machen wir es · {section.after.title}
                     </p>
                     <p class="text-foreground mt-3 text-lg leading-8 font-medium">
                       {section.after.text}
@@ -254,7 +218,7 @@ const sections = [
                   </div>
                   <div class="border-border/60 border-l-2 pl-4">
                     <p class="text-foreground-muted text-[11px] font-semibold tracking-[0.22em] uppercase">
-                      Status quo · {section.before.title}
+                      So ist es oft · {section.before.title}
                     </p>
                     <p class="text-foreground-muted mt-2 text-sm leading-6">
                       {section.before.text}
@@ -318,7 +282,7 @@ const sections = [
                 <div data-reveal="fade-left" class="space-y-6">
                   <div>
                     <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
-                      Unser Ansatz · {section.after.title}
+                      So machen wir es · {section.after.title}
                     </p>
                     <p class="text-foreground mt-3 text-lg leading-8 font-medium">
                       {section.after.text}
@@ -326,70 +290,7 @@ const sections = [
                   </div>
                   <div class="border-border/60 border-l-2 pl-4">
                     <p class="text-foreground-muted text-[11px] font-semibold tracking-[0.22em] uppercase">
-                      Status quo · {section.before.title}
-                    </p>
-                    <p class="text-foreground-muted mt-2 text-sm leading-6">
-                      {section.before.text}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* DIPTYCH LAYOUT */}
-            {section.layout === 'diptych' && (
-              <div class="mt-16">
-                <div
-                  data-reveal="zoom-in"
-                  class="border-border bg-card rounded-3xl border-2 p-4 shadow-xl transition-shadow duration-500 hover:shadow-2xl sm:p-6"
-                >
-                  <div class="grid gap-4 sm:grid-cols-[1.3fr_1fr]">
-                    <div class="group relative">
-                      <span class="font-display text-brand-600 absolute top-3 left-3 z-10 text-xs font-bold tracking-[0.22em]">
-                        SO MACHEN WIR'S
-                      </span>
-                      <Picture
-                        src={section.after.image}
-                        alt={section.after.title}
-                        widths={[400, 560, 720, 960]}
-                        sizes="(max-width: 640px) calc(100vw - 4rem), (max-width: 1024px) 55vw, 560px"
-                        formats={['avif', 'webp']}
-                        class="aspect-square w-full rounded-2xl object-cover transition-all duration-500 ease-out group-hover:scale-105"
-                        loading="lazy"
-                      />
-                    </div>
-                    <div class="group relative opacity-70 transition-opacity duration-500 hover:opacity-100">
-                      <span class="font-display text-foreground-muted absolute top-3 left-3 z-10 text-[10px] font-bold tracking-[0.22em]">
-                        STATUS QUO
-                      </span>
-                      <Picture
-                        src={section.before.image}
-                        alt={section.before.title}
-                        widths={[320, 448, 560, 720]}
-                        sizes="(max-width: 640px) calc(100vw - 4rem), (max-width: 1024px) 42vw, 420px"
-                        formats={['avif', 'webp']}
-                        class="aspect-square w-full rounded-2xl object-cover grayscale transition-all duration-500 ease-out group-hover:scale-105 group-hover:grayscale-0"
-                        loading="lazy"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  data-reveal
-                  class="mt-10 grid gap-8 sm:grid-cols-[1.3fr_1fr]"
-                >
-                  <div>
-                    <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
-                      Unser Ansatz · {section.after.title}
-                    </p>
-                    <p class="text-foreground mt-3 text-lg leading-8 font-medium">
-                      {section.after.text}
-                    </p>
-                  </div>
-                  <div class="border-border/60 border-l-2 pl-4">
-                    <p class="text-foreground-muted text-[11px] font-semibold tracking-[0.22em] uppercase">
-                      Status quo · {section.before.title}
+                      So ist es oft · {section.before.title}
                     </p>
                     <p class="text-foreground-muted mt-2 text-sm leading-6">
                       {section.before.text}
@@ -426,7 +327,7 @@ const sections = [
                 <div data-reveal="fade-left" class="space-y-6">
                   <div>
                     <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
-                      Unser Ansatz · {section.after.title}
+                      So machen wir es · {section.after.title}
                     </p>
                     <p class="text-foreground mt-3 text-lg leading-8 font-medium">
                       {section.after.text}
@@ -434,7 +335,7 @@ const sections = [
                   </div>
                   <div class="border-border/60 border-l-2 pl-4">
                     <p class="text-foreground-muted text-[11px] font-semibold tracking-[0.22em] uppercase">
-                      Status quo · {section.before.title}
+                      So ist es oft · {section.before.title}
                     </p>
                     <p class="text-foreground-muted mt-2 text-sm leading-6">
                       {section.before.text}
@@ -444,118 +345,6 @@ const sections = [
               </div>
             )}
 
-            {/* NOTEBOOK LAYOUT - animated checklist */}
-            {section.layout === 'notebook' && (
-              <div class="mt-16">
-                <div
-                  data-reveal="zoom-in"
-                  class="relative grid items-stretch gap-8 md:grid-cols-2 md:gap-12"
-                >
-                  {/* Status quo notepad - chaotic, struck-through */}
-                  <div class="group border-border bg-card relative -rotate-1 rounded-2xl border p-7 opacity-80 shadow-md transition-all duration-500 ease-out hover:rotate-0 hover:opacity-100 hover:shadow-lg">
-                    <div class="text-foreground-muted bg-card border-border absolute -top-3 left-5 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold tracking-[0.22em] uppercase">
-                      Status quo · Elfenbeinturm
-                    </div>
-                    <ul class="text-foreground-muted mt-2 space-y-3 font-mono text-sm">
-                      <li class="flex items-start gap-3 line-through opacity-60">
-                        <span class="text-foreground-muted/60 mt-0.5">☐</span>
-                        <span>Anforderungen aus Bauchgefühl ableiten</span>
-                      </li>
-                      <li class="flex items-start gap-3 line-through opacity-60">
-                        <span class="text-foreground-muted/60 mt-0.5">☐</span>
-                        <span>Datenmodell am Whiteboard skizzieren</span>
-                      </li>
-                      <li class="flex items-start gap-3">
-                        <span class="text-red-500 mt-0.5">✕</span>
-                        <span class="text-red-600/80 dark:text-red-400/80">
-                          Keyuser nach 6 Monaten konfrontieren
-                        </span>
-                      </li>
-                      <li class="flex items-start gap-3">
-                        <span class="text-red-500 mt-0.5">✕</span>
-                        <span class="text-red-600/80 dark:text-red-400/80">
-                          Rework, Frust, Workarounds
-                        </span>
-                      </li>
-                      <li class="flex items-start gap-3">
-                        <span class="text-red-500 mt-0.5">✕</span>
-                        <span class="text-red-600/80 dark:text-red-400/80">
-                          Software wird umgangen
-                        </span>
-                      </li>
-                    </ul>
-                    <p class="text-foreground-muted/70 mt-5 text-xs italic">
-                      „Wir hatten doch alles spezifiziert …"
-                    </p>
-                  </div>
-
-                  {/* Unser Ansatz notepad - animated checklist */}
-                  <div class="group border-brand-300 bg-card relative rotate-1 rounded-2xl border-2 p-7 shadow-xl transition-all duration-500 ease-out hover:rotate-0 hover:-translate-y-1 hover:shadow-[0_30px_60px_-15px_rgba(99,102,241,0.35)]">
-                    <div class="text-brand-600 bg-card border-brand-300 absolute -top-3 left-5 rounded-full border-2 px-2.5 py-0.5 text-[10px] font-bold tracking-[0.22em] uppercase">
-                      Unser Ansatz · Discovery
-                    </div>
-                    <ul class="discovery-checklist mt-2 space-y-3 font-mono text-sm" aria-live="polite">
-                      <li class="discovery-item flex items-start gap-3" data-delay="0">
-                        <span class="discovery-checkbox text-foreground-muted/60 mt-0.5 transition-all duration-300">☐</span>
-                        <span class="discovery-text text-foreground-secondary transition-all duration-300">
-                          Prozesse beobachten & Keyuser interviewen
-                        </span>
-                      </li>
-                      <li class="discovery-item flex items-start gap-3" data-delay="700">
-                        <span class="discovery-checkbox text-foreground-muted/60 mt-0.5 transition-all duration-300">☐</span>
-                        <span class="discovery-text text-foreground-secondary transition-all duration-300">
-                          Customer Journey & Engpässe mappen
-                        </span>
-                      </li>
-                      <li class="discovery-item flex items-start gap-3" data-delay="1400">
-                        <span class="discovery-checkbox text-foreground-muted/60 mt-0.5 transition-all duration-300">☐</span>
-                        <span class="discovery-text text-foreground-secondary transition-all duration-300">
-                          Datenmodell aus realer Arbeit ableiten
-                        </span>
-                      </li>
-                      <li class="discovery-item flex items-start gap-3" data-delay="2100">
-                        <span class="discovery-checkbox text-foreground-muted/60 mt-0.5 transition-all duration-300">☐</span>
-                        <span class="discovery-text text-foreground-secondary transition-all duration-300">
-                          Architektur an die Prozesse anpassen
-                        </span>
-                      </li>
-                      <li class="discovery-item flex items-start gap-3" data-delay="2800">
-                        <span class="discovery-checkbox text-foreground-muted/60 mt-0.5 transition-all duration-300">☐</span>
-                        <span class="discovery-text text-foreground transition-all duration-300 font-medium">
-                          Mit der Umsetzung starten
-                        </span>
-                      </li>
-                    </ul>
-                    <p class="text-brand-600 mt-5 flex items-center gap-2 text-xs font-semibold">
-                      <Icon name="zap" size="xs" />
-                      Software passt sich der Arbeit an, nicht umgekehrt.
-                    </p>
-                  </div>
-                </div>
-
-                <div
-                  data-reveal
-                  class="mt-12 grid gap-8 md:grid-cols-[1.3fr_1fr]"
-                >
-                  <div>
-                    <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
-                      Unser Ansatz · {section.after.title}
-                    </p>
-                    <p class="text-foreground mt-3 text-lg leading-8 font-medium">
-                      {section.after.text}
-                    </p>
-                  </div>
-                  <div class="border-border/60 border-l-2 pl-4">
-                    <p class="text-foreground-muted text-[11px] font-semibold tracking-[0.22em] uppercase">
-                      Status quo · {section.before.title}
-                    </p>
-                    <p class="text-foreground-muted mt-2 text-sm leading-6">
-                      {section.before.text}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         </section>
       ))
@@ -598,8 +387,8 @@ const sections = [
             anerkannt.
           </p>
           <p class="text-foreground-secondary mt-4 text-base leading-7 sm:text-lg">
-            Für uns ist das eine unabhängige Bestätigung, dass unsere Entwicklungsarbeit auch
-            technisch anspruchsvollen Ansprüchen standhält.
+            Das ist eine unabhängige Bestätigung, dass unsere Entwicklungsarbeit auch hohen technischen
+            Ansprüchen standhält.
           </p>
           <a
             href="https://www.bescheinigung-forschungszulage.de/"
@@ -612,102 +401,6 @@ const sections = [
           </a>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section
-    id="faq"
-    class="bg-background-secondary border-border relative overflow-hidden border-t py-24 lg:py-32"
-  >
-    <div
-      class="bg-grid-pattern pointer-events-none absolute inset-0 opacity-30 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]"
-      aria-hidden="true"
-    >
-    </div>
-    <div
-      class="bg-brand-300/15 pointer-events-none absolute -right-24 bottom-1/4 h-96 w-96 rounded-full blur-3xl"
-      aria-hidden="true"
-    >
-    </div>
-
-    <div class="container relative z-10 max-w-6xl">
-      <header data-reveal class="mx-auto max-w-3xl text-center">
-        <div class="mx-auto flex max-w-md items-center gap-4">
-          <span class="bg-border h-px flex-1"></span>
-          <span
-            class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold"
-          >
-            06
-          </span>
-          <span
-            class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase"
-          >
-            Häufige Fragen
-          </span>
-          <span class="bg-border h-px flex-1"></span>
-        </div>
-        <h2
-          class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl"
-        >
-          Was Interessenten uns oft fragen.
-        </h2>
-        <p class="text-foreground-secondary mt-6 text-lg leading-8">
-          Dauer, Einstieg, Projektgröße, Hosting, Betrieb. Die Antworten stehen hier,
-          bevor ihr fragen müsst.
-        </p>
-      </header>
-
-      <div
-        data-reveal
-        class="mt-16 grid gap-5 md:grid-cols-2 md:gap-6"
-      >
-        {
-          faqs.map((faq) => (
-            <details
-              class="faq-card group border-border bg-card relative rounded-2xl border p-6 shadow-sm transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-lg open:shadow-lg sm:p-7"
-            >
-              <summary class="flex cursor-pointer list-none items-start gap-4 [&::-webkit-details-marker]:hidden">
-                <div class="border-brand-300/70 bg-brand-500/5 text-brand-600 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border transition-colors duration-300 group-hover:bg-brand-500 group-hover:text-on-invert group-hover:border-brand-500 group-open:bg-brand-500 group-open:text-on-invert group-open:border-brand-500">
-                  <Icon name={faqIcons[faq.order] ?? 'check-circle'} size="md" />
-                </div>
-                <div class="min-w-0 flex-1">
-                  <h3 class="font-display text-foreground text-lg font-bold tracking-tight sm:text-xl">
-                    {faq.question}
-                  </h3>
-                  <p class="text-foreground-secondary mt-2 text-[0.95rem] leading-7">
-                    {faq.summary}
-                  </p>
-                </div>
-                <Icon
-                  name="chevron-down"
-                  size="sm"
-                  class="faq-chevron text-foreground-muted mt-1 shrink-0 transition-transform duration-300 group-open:rotate-180"
-                />
-              </summary>
-              {faq.details && (
-                <div class="text-foreground-secondary mt-4 border-t border-border/60 pt-4 pl-[3.75rem] text-[0.95rem] leading-7">
-                  {faq.details}
-                </div>
-              )}
-            </details>
-          ))
-        }
-      </div>
-
-      <p
-        data-reveal
-        class="text-foreground-muted mx-auto mt-14 max-w-2xl text-center text-sm"
-      >
-        Etwas anderes auf dem Herzen? Stellt eure Frage direkt im
-        <a
-          href={contactLinks.cal}
-          target="_blank"
-          rel="noopener"
-          class="text-brand-600 hover:text-brand-700 font-semibold underline decoration-brand-300/60 underline-offset-4 transition-colors"
-          >Erstgespräch</a
-        >.
-      </p>
     </div>
   </section>
 
@@ -745,52 +438,3 @@ const sections = [
   </section>
 </PageLayout>
 
-<style>
-  .discovery-item.is-done .discovery-checkbox {
-    color: var(--brand-500, #6366f1);
-  }
-  .discovery-item.is-done .discovery-text {
-    color: var(--foreground-muted);
-    text-decoration: line-through;
-    text-decoration-color: var(--brand-300, #a5b4fc);
-    text-decoration-thickness: 1.5px;
-  }
-  .discovery-item.is-pulsing .discovery-checkbox {
-    transform: scale(1.4);
-  }
-</style>
-
-<script>
-  function initDiscoveryChecklist() {
-    const lists = document.querySelectorAll<HTMLElement>('.discovery-checklist');
-    if (!lists.length) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          const list = entry.target as HTMLElement;
-          if (list.dataset.animated) return;
-          list.dataset.animated = '1';
-          const items = list.querySelectorAll<HTMLElement>('.discovery-item');
-          items.forEach((item) => {
-            const delay = Number(item.dataset.delay ?? '0');
-            window.setTimeout(() => {
-              item.classList.add('is-done', 'is-pulsing');
-              const box = item.querySelector('.discovery-checkbox');
-              if (box) box.textContent = '☑';
-              window.setTimeout(() => item.classList.remove('is-pulsing'), 250);
-            }, delay);
-          });
-        });
-      },
-      { threshold: 0.4 }
-    );
-
-    lists.forEach((l) => observer.observe(l));
-  }
-
-  initDiscoveryChecklist();
-  document.addEventListener('astro:page-load', initDiscoveryChecklist);
-  document.addEventListener('astro:after-swap', initDiscoveryChecklist);
-</script>

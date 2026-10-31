@@ -1,4 +1,7 @@
 ---
+import SeitenHero from '@/components/landing/SeitenHero.astro';
+import { Image } from 'astro:assets';
+import leistungBild from '@/assets/angebote/kunde-annahme-hd.webp';
 /**
  * „Alle Lösungen ansehen“: Übersicht über die drei Türen (Angebot, Einsatz, Zahlen), die Ablösung
  * als „das Ganze“ und den immer gleichen Weg dorthin. Seit 2026-10-07 neu, ersetzt die alte
@@ -8,7 +11,6 @@
 import PageLayout from '@/layouts/PageLayout.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
-import Blueprint from '@/components/hero-backgrounds/Blueprint.astro';
 import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
 import SectionHeader from '@/components/angebote/SectionHeader.astro';
 import MiniVisual from '@/components/loesungen/MiniVisual.astro';
@@ -32,7 +34,7 @@ const tueren = [
     kind: 'angebot' as const,
     titel: 'Angebot & Kalkulation',
     wenn: 'Wenn die Kalkulation neben dem System liegt und jemand die Summe abtippt.',
-    punkte: ['Angebote rechnen nach eurer Regel', 'Angebotsseite statt PDF, Zusage per Klick', 'Ihr seht, wann der Kunde geöffnet hat'],
+    punkte: ['Angebote rechnen nach eurer Regel', 'Der Kunde sagt online mit einem Klick zu', 'Ihr seht, wann der Kunde geöffnet hat'],
     href: '/angebote/',
   },
   {
@@ -40,15 +42,15 @@ const tueren = [
     kind: 'einsatz' as const,
     titel: 'Einsatz & Abrechnung',
     wenn: 'Wenn geplant wird in Excel, umgeplant am Telefon und abgerechnet aus Stundenzetteln.',
-    punkte: ['Plantafel mit Abwesenheiten und Ablauf je Auftrag', 'Leistung erfassen, Rechnung per Klick', 'Mahnwesen mit Vorlagen je Stufe'],
+    punkte: ['Plantafel mit Abwesenheiten und Ablauf je Auftrag', 'Aus erfasster Leistung wird per Klick die Rechnung', 'Mahnungen mit Vorlagen für jede Stufe'],
     href: einsatzUrl,
   },
   {
     nr: '03',
     kind: 'zahlen' as const,
     titel: 'Zahlen & Steuerung',
-    wenn: 'Wenn der Monatsabschluss ein Projekt ist und die Zahlen alt sind, wenn sie kommen.',
-    punkte: ['Umsatz und Prognose, live statt am Monatsende', 'Auslastung bis zur einzelnen Person', 'Auslaufende Verträge, solange noch Zeit ist'],
+    wenn: 'Wenn der Monatsabschluss viel Arbeit macht und die Zahlen schon alt sind, wenn sie kommen.',
+    punkte: ['Umsatz und Prognose, jeden Tag aktuell', 'Auslastung bis zur einzelnen Person', 'Auslaufende Verträge seht ihr rechtzeitig'],
     href: '/zahlen/',
   },
 ];
@@ -61,9 +63,9 @@ const weg = [
 ];
 
 const ausserdem = [
-  { icon: 'layers', titel: 'Interne Plattformen', text: 'Für Produktdaten, Inhalte oder operative Abläufe, die in kein Standardwerkzeug passen.' },
-  { icon: 'globe', titel: 'Schnittstellen', text: 'Wenn eure Systeme miteinander reden sollen, statt dass Daten von Hand wandern.' },
-  { icon: 'users', titel: 'Portale für Kunden', text: 'Bestellen, Rückfragen beantworten, Unterlagen abholen, ohne Mail-Pingpong.' },
+  { icon: 'layers', titel: 'Interne Plattformen', text: 'Für Produktdaten, Inhalte oder Abläufe, die in kein Standardprogramm passen.' },
+  { icon: 'globe', titel: 'Schnittstellen', text: 'Damit eure Programme Daten austauschen und niemand sie von Hand überträgt.' },
+  { icon: 'users', titel: 'Portale für Kunden', text: 'Eure Kunden bestellen, beantworten Rückfragen und holen Unterlagen ab, ohne lange Mailwechsel.' },
 ];
 
 const clientLogos = [
@@ -91,42 +93,17 @@ const professionalServiceSchema = createProfessionalServiceSchema({
   extraSchemas={professionalServiceSchema}
 >
   <!-- HERO -->
-  <section class="relative overflow-x-clip">
-    <Blueprint />
-    <div
-      class="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_60%_55%_at_50%_45%,var(--color-background)_0%,transparent_75%)] opacity-80"
-      aria-hidden="true"
-    >
-    </div>
-    <div class="relative z-10 container max-w-5xl py-20 text-center sm:py-28">
-      <p data-reveal="fade-down" class="text-brand-600 dark:text-brand-300 text-sm font-semibold tracking-[0.22em] uppercase">Lösungen</p>
-      <h1
-        data-reveal="fade-down"
-        lang="de"
-        class="font-display text-foreground mt-5 text-4xl leading-[1.08] font-bold tracking-tight text-balance sm:text-5xl lg:text-6xl"
-      >
-        Software für Betriebe,
-        <span class="text-brand-500 block">die nicht in Standardlösungen passen.</span>
-      </h1>
-      <p data-reveal class="text-foreground-secondary mx-auto mt-7 max-w-2xl text-lg leading-8">
-        Drei Bereiche, in denen wir am häufigsten gebraucht werden. Ihr könnt mit einem anfangen oder
-        die Branchensoftware ganz ablösen. Der erste Schritt ist immer ein Gespräch.
-      </p>
-      <div data-reveal class="mt-9 flex flex-wrap items-center justify-center gap-4">
-        <Button size="lg" href={contactLinks.cal} target="_blank">
-          Erstgespräch buchen
-          <Icon name="arrow-up-right" size="sm" />
-        </Button>
-        <Button variant="link" href="#tueren" class="text-foreground-secondary hover:text-foreground">
-          Die drei Bereiche
-          <Icon name="chevron-down" size="sm" />
-        </Button>
-      </div>
-    </div>
-    <div class="relative z-10">
-      <ClientLogoStrip heading="Aus Projekten mit" logos={clientLogos} variant="light" uniform class="py-10" />
-    </div>
-  </section>
+  <SeitenHero eyebrow="Lösungen" titel="Software für Angebot, Einsatz und Zahlen, die zu eurem Betrieb passt" text="In diesen drei Bereichen werden wir am häufigsten gebraucht. Ihr könnt mit einem anfangen oder eure Branchensoftware ganz ablösen." zweiterKnopf={{ text: 'Die drei Bereiche', href: '#tueren' }}>
+    <Image
+      src={leistungBild}
+      alt="Zusage auf einer Angebotsseite mit wählbaren Leistungen und Summe"
+      widths={[640, 960, 1280]}
+      sizes="(min-width: 1024px) 50vw, 100vw"
+      class="border-border w-full rounded-2xl border shadow-xl"
+      loading="eager"
+    />
+  </SeitenHero>
+  <ClientLogoStrip heading="Aus Projekten mit" logos={clientLogos} variant="light" uniform class="py-8" />
 
   <!-- 01 DIE DREI TÜREN -->
   <section id="tueren" class="bg-background relative scroll-mt-16 overflow-x-clip py-24 lg:py-28">
@@ -136,8 +113,8 @@ const professionalServiceSchema = createProfessionalServiceSchema({
         size="md"
         number="01"
         eyebrow="Drei Bereiche"
-        title="Wo bei euch die meiste Zeit verloren geht."
-        lead="Jeder Bereich ist für sich ein Einstieg. Mit eigener Seite, echten Ansichten aus Kundenlösungen und dem gleichen Weg: erst reden, dann der Workshop, dann bauen."
+        title="Wo geht bei euch die meiste Zeit verloren?"
+        lead="Mit jedem Bereich könnt ihr einzeln anfangen. Jeder hat eine eigene Seite mit echten Ansichten aus Kundenlösungen. Der Weg ist immer gleich: erst reden, dann der Workshop, dann bauen."
       />
       <div class="mt-14 grid gap-5 lg:grid-cols-3 lg:gap-y-0">
         {
@@ -178,8 +155,9 @@ const professionalServiceSchema = createProfessionalServiceSchema({
           <p class="text-foreground-muted text-xs font-semibold tracking-[0.2em] uppercase">Oder das Ganze</p>
           <h3 class="font-display text-foreground mt-2 text-2xl font-bold tracking-tight">Standardsoftware ablösen</h3>
           <p class="text-foreground-secondary mt-2 max-w-xl text-sm leading-6 sm:text-base sm:leading-7">
-            Wenn es mehr ist als ein fehlender Teil: Branchensoftware samt Excel drumherum, Schritt für
-            Schritt abgelöst, im Parallelbetrieb und mit der ganzen Datenhistorie.
+            Wenn mehr fehlt als ein einzelner Teil: Wir lösen eure Branchensoftware und die Excel-Listen
+            drumherum Schritt für Schritt ab. Das Alte läuft daneben weiter, und eure ganze Datenhistorie
+            zieht mit.
           </p>
           <span class="text-brand-600 mt-4 inline-flex items-center gap-2 text-sm font-semibold transition-transform duration-300 group-hover:translate-x-1">
             So läuft eine Ablösung
@@ -199,9 +177,9 @@ const professionalServiceSchema = createProfessionalServiceSchema({
           <p class="text-foreground-muted text-xs font-semibold tracking-[0.2em] uppercase">Ihr baut selbst</p>
           <h3 class="font-display text-foreground mt-2 text-2xl font-bold tracking-tight">Software-Check</h3>
           <p class="text-foreground-secondary mt-2 max-w-xl text-sm leading-6 sm:text-base sm:leading-7">
-            Mit KI gebaut und ihr wollt technischen Rat von jemandem, der es auch könnte: Ein
-            erfahrener Entwickler und Architekt schaut drauf. Sicherheit, Struktur, Betrieb, mit Bericht,
-            den ihr Kunden und Auditoren vorlegen könnt.
+            Ihr habt mit KI gebaut und wollt technischen Rat von jemandem, der es auch könnte? Ein
+            erfahrener Entwickler und Architekt prüft Sicherheit, Struktur und Betrieb. Den Bericht könnt
+            ihr Kunden und Auditoren vorlegen.
           </p>
           <span class="text-brand-600 mt-4 inline-flex items-center gap-2 text-sm font-semibold transition-transform duration-300 group-hover:translate-x-1">
             Was geprüft wird
@@ -220,8 +198,8 @@ const professionalServiceSchema = createProfessionalServiceSchema({
         size="md"
         number="02"
         eyebrow="Der Weg"
-        title="Egal welcher Bereich: Es fängt gleich an."
-        lead="Beratung, Konzept, Umsetzung und Betrieb aus einer Hand. Keine Übergaben, bei denen Wissen verloren geht. Gebaut von uns, oder von euch mit uns: Wer jemanden hat, der baut und bleibt, bekommt Review und Begleitung statt Umsetzung."
+        title="In jedem Bereich fängt es gleich an"
+        lead="Beratung, Konzept, Umsetzung und Betrieb kommen aus einer Hand, damit bei Übergaben kein Wissen verloren geht. Habt ihr jemanden, der selbst baut und bleibt, prüfen und begleiten wir seine Arbeit."
       />
       <ol class="relative mt-14 grid gap-4 md:grid-cols-4">
         <span class="bg-border absolute top-[1.35rem] right-[12%] left-[12%] hidden h-px md:block" aria-hidden="true"></span>
@@ -254,10 +232,9 @@ const professionalServiceSchema = createProfessionalServiceSchema({
     <div class="relative z-10 container max-w-6xl">
       <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:gap-16">
         <div data-reveal>
-          <SectionHeader size="md" align="left" number="03" eyebrow="Was wir außerdem bauen" title="Nicht jede Anfrage passt in einen Bereich." />
+          <SectionHeader size="md" align="left" number="03" eyebrow="Was wir außerdem bauen" title="Manche Anfragen passen in keinen der drei Bereiche" />
           <p class="text-foreground-secondary mt-6 text-base leading-7">
-            Manches liegt quer dazu oder ist kleiner. Auch dafür gilt: erst reden, dann sagen wir ehrlich,
-            ob wir die Richtigen sind.
+            Auch dann reden wir zuerst miteinander und sagen euch ehrlich, ob wir die Richtigen sind.
           </p>
         </div>
         <div class="grid gap-4 sm:grid-cols-2">
@@ -287,8 +264,8 @@ const professionalServiceSchema = createProfessionalServiceSchema({
             Nicht sicher, welcher Bereich passt?
           </h2>
           <p class="text-foreground-secondary mt-3 max-w-xl text-[0.95rem] leading-7">
-            Das klären wir in 30 Minuten. Ihr erzählt, wo es hakt, wir sagen ehrlich, wo wir anfangen
-            würden. Das Gespräch führt Marten Prieß, Gründer von RocketBase, selbst.
+            Das klären wir in 30 Minuten. Ihr erzählt, wo es hakt, und wir sagen ehrlich, wo wir anfangen
+            würden. Das Gespräch führt Marten Prieß selbst, der Gründer von RocketBase.
           </p>
         </div>
       </div>

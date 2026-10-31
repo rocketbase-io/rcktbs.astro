@@ -70,10 +70,10 @@ Umsetzung steht.
 ## Weitere Seiten
 
 - [Lösungen im Überblick](${base}/leistungen/): Die drei Bereiche, die Ablösung und der Weg vom Erstgespräch bis zum Betrieb.
-- [Workshop](${base}/discovery-workshop/): Drei Termine (3 h, 2 h, 1 h), ein Dokument mit Prozessbild und Entwürfen, ein Festpreis für die Umsetzung; 2.400 €, bei Beauftragung angerechnet.
+- [Workshop](${base}/discovery-workshop/): Drei Termine (3 h, 2 h, 1 h), ein Dokument mit Prozessbild und Entwürfen, ein Festpreis für die Umsetzung.
 - [Referenzen](${base}/referenzen/): Umgesetzte Projekte mit Ausgangslage, Vorgehen und Ergebnis.
 - [Kontakt](${base}/kontakt/): Erstgespräch vereinbaren.
-- [Arbeitsweise](${base}/arbeitsweise/) und [Mission](${base}/mission/): Haltung und Vorgehen hinter der Arbeit.
+- [Arbeitsweise](${base}/arbeitsweise/): Haltung und Vorgehen hinter der Arbeit.
 
 ## Wobei RocketBase außerdem hilft
 
