@@ -10,7 +10,29 @@ import LandingLayout from '@/layouts/LandingLayout.astro';
 import { createServiceSchema } from '@/lib/schema';
 import SchlankPage from '@/components/funnel-schlank/SchlankPage.astro';
 import BerichtMock from '@/components/check/BerichtMock.astro';
+import FragenMosaik from '@/components/check/FragenMosaik.astro';
+import StackLeiste from '@/components/check/StackLeiste.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import { softwareCheck } from '@/data/funnelSchlank';
+
+const pakete = [
+  {
+    titel: 'Architektur-Review',
+    text: 'Für Gebautes und Geplantes. Ein erfahrener Entwickler sagt euch, was trägt und wo es später teuer wird.',
+    ergebnis: ['Liste der Funde nach Wichtigkeit', 'Empfehlung: so lassen, umbauen oder neu', 'Vorlage für eure Entscheidung'],
+    dauer: 'Ergebnis nach wenigen Tagen',
+  },
+  {
+    titel: 'Software-Check',
+    text: 'Vor dem Go-Live oder für Software, die läuft. Wir prüfen gegen OWASP ASVS 5.0.',
+    ergebnis: ['Prüfbericht mit Level und Abdeckung', 'Jeder Fund mit Einstufung und Vorschlag für eure KI', 'Stückliste aller Komponenten'],
+    dauer: 'Ab zwei Tagen, je nach Größe',
+  },
+];
+const ausbau = [
+  { titel: 'CRA-Fahrplan', text: 'Wenn ihr Software an andere abgebt: ob euch der Cyber Resilience Act trifft, und ein Plan bis Dezember 2027.' },
+  { titel: 'Begleitung', text: 'Wenn ihr weiterbaut: ein fester Termin, dazwischen Rückfragen und Code-Review.' },
+];
 
 const serviceSchema = createServiceSchema({
   name: 'Software-Check',
@@ -28,21 +50,64 @@ const serviceSchema = createServiceSchema({
   lang="de"
   extraSchemas={[serviceSchema]}
 >
-  <SchlankPage tor={softwareCheck} modus="seite" blogTuer="check">
+  <SchlankPage tor={softwareCheck} modus="seite" blogTuer="check" vergleichKurz>
   <BerichtMock slot="hero" />
-  <div class="grid gap-4 lg:grid-cols-2">
-    <div class="bg-brand-500/5 rounded-2xl p-5">
-      <p class="font-display text-foreground font-bold">Architektur-Review</p>
-      <p class="text-foreground-secondary mt-1.5 text-[0.95rem] leading-6">
-        Für Gebautes und Geplantes. Ein erfahrener Entwickler sagt euch, was trägt und wo es später teuer wird.
-      </p>
-    </div>
-    <div class="bg-brand-500/5 rounded-2xl p-5">
-      <p class="font-display text-foreground font-bold">Software-Check</p>
-      <p class="text-foreground-secondary mt-1.5 text-[0.95rem] leading-6">
-        Vor dem Go-Live oder für Software, die läuft. Wir prüfen gegen OWASP ASVS 5.0, ab zwei Tagen je nach Größe.
-      </p>
-    </div>
+  <div id="pakete" class="grid scroll-mt-24 gap-4 lg:grid-cols-2 lg:gap-6">
+    {
+      pakete.map((p) => (
+        <div class="bg-brand-500/5 rounded-2xl p-5 lg:p-7">
+          <p class="font-display text-foreground font-bold lg:text-xl">{p.titel}</p>
+          <p class="text-foreground-secondary mt-1.5 text-[0.95rem] leading-6">{p.text}</p>
+          <ul class="mt-4 hidden space-y-2 lg:block">
+            {p.ergebnis.map((e) => (
+              <li class="text-foreground-secondary flex gap-2 text-sm leading-6">
+                <Icon name="check" size="sm" class="text-brand-500 mt-0.5 shrink-0" />
+                {e}
+              </li>
+            ))}
+          </ul>
+          <p class="text-foreground-muted mt-3 hidden text-sm lg:block">{p.dauer}</p>
+        </div>
+      ))
+    }
+  </div>
+  <StackLeiste slot="mobil" kompakt />
+  <div slot="vollbreit">
+    <FragenMosaik />
+    <StackLeiste />
+    <section class="py-32">
+      <div class="container grid max-w-6xl grid-cols-2 items-start gap-16">
+        <div>
+          <h2 class="font-display text-foreground text-4xl font-bold tracking-tight text-balance">
+            Das prüfen Leute, die so etwas selbst bauen
+          </h2>
+          <p class="text-foreground-secondary mt-5 text-lg leading-8">
+            Wir sind ein Softwarehaus und bauen und betreiben seit zehn Jahren Anwendungen für Betriebe, früher für
+            Konzerne wie bonprix und Statista, heute für den Mittelstand. Wir wissen, wo die Fehler sitzen, weil wir
+            solchen Code selbst geschrieben haben.
+          </p>
+        </div>
+        <div class="text-foreground-secondary space-y-4 pt-2 text-[0.95rem] leading-7">
+          <p>
+            Wir liefern selbst Software, für die der Cyber Resilience Act gilt. Stückliste, Meldeprozess und
+            Risikobewertung, die wir euch empfehlen, führen wir für unsere eigenen Produkte.
+          </p>
+          <p class="text-foreground font-semibold">
+            Jeder Bericht nennt den Standard und das geprüfte Level. Das kann ein Auditor nachlesen.
+          </p>
+          <div class="grid grid-cols-2 gap-4 pt-2">
+            {
+              ausbau.map((a) => (
+                <div class="bg-brand-500/5 rounded-2xl p-4">
+                  <p class="font-display text-foreground font-bold">{a.titel}</p>
+                  <p class="mt-1 text-sm leading-6">{a.text}</p>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </SchlankPage>
 </LandingLayout>

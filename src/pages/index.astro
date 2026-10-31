@@ -1,7 +1,10 @@
 ---
 import SeitenHero from '@/components/landing/SeitenHero.astro';
-import { Image } from 'astro:assets';
 import kundenstandorte from '@/assets/references/kundenstandorte-uebersicht-demo-1920.png';
+import auftragsplanung from '@/assets/references/auftragsplanung-demo-1920.png';
+import cockpit from '@/assets/references/cockpit-demo-1920.png';
+import angebotBild from '@/assets/references/angebot-db-demo-1920.png';
+import BildWechsler from '@/components/landing/BildWechsler.astro';
 import MiniVisual from '@/components/loesungen/MiniVisual.astro';
 import LandingLayout from '@/layouts/LandingLayout.astro';
 import { Picture } from 'astro:assets';
@@ -40,6 +43,13 @@ type FeaturedCase = (typeof cases)[number] & { image?: ImageMetadata };
 // Die Angebotstreppe: jede Stufe hat einen Preis und ein Ergebnis, und jede
 // Stufe bepreist die nächste. Nur hier auf der Startseite — /leistungen nutzt
 // weiter die allgemeinen processSteps.
+const heroBilder = [
+  { src: angebotBild, alt: 'Angebot mit Positionen, Stunden und Gewinn je Baustein, Demo-Daten' },
+  { src: auftragsplanung, alt: 'Auftragsplanung mit Mitarbeitern, Einsätzen und Krankmeldungen, Demo-Daten' },
+  { src: cockpit, alt: 'Cockpit mit Umsatz, Auslastung und Forderungen, Demo-Daten' },
+  { src: kundenstandorte, alt: 'Kundenstandorte und Berater auf einer Deutschlandkarte, Demo-Daten' },
+];
+
 // Kurzfassung der früheren Abschnitte „Drei Dinge“ und „Weniger Overhead“.
 const kurzStaerken = [
   { titel: 'Ihr sprecht mit dem Gründer', text: 'Marten Prieß sitzt selbst in den Workshops und trifft die wichtigen Entscheidungen.' },
@@ -52,7 +62,7 @@ const ladderSteps = [
     title: 'Erstgespräch',
     price: 'kostenlos',
     description:
-      '30 Minuten direkt mit Marten Prieß. Ihr zeigt uns, wo es klemmt, gern an einem echten Beispiel. Wir sagen ehrlich, ob sich ein nächster Schritt lohnt – und welcher.',
+      '30 Minuten direkt mit Marten Prieß. Ihr zeigt uns, wo es klemmt, gern an einem echten Beispiel. Wir sagen ehrlich, ob sich ein nächster Schritt lohnt.',
   },
   {
     title: 'Workshop',
@@ -84,7 +94,7 @@ const caseImageMap: Record<string, ImageMetadata> = {
 // FKC (Standardsoftware-Ablösung, Hauptfokus), Schlosserei Diezinger
 // (Einsatzplanung) und Stage (Zahlen raus aus Excel). Statista und bonprix
 // stehen bewusst im Gründer-Block als Herkunft, nicht hier als Vergleichsfall.
-const featuredSlugs = ['fkc-consulting', 'schlosserei-diezinger', 'stage-cml'];
+const featuredSlugs = ['stage-cml', 'fkc-consulting', 'schlosserei-diezinger'];
 const caseBySlug = new Map([...cases, ...additionalCases].map((c) => [c.slug, c]));
 const featuredCases: FeaturedCase[] = featuredSlugs
   .map((slug) => caseBySlug.get(slug))
@@ -102,43 +112,28 @@ const calledForSituations = [
     icon: 'edit',
     visual: 'angebot' as const,
     eyebrow: 'Angebot & Kalkulation',
-    title: 'Die Kalkulation liegt in Excel, das Angebot entsteht in Word. Dazwischen tippt jemand ab.',
-    text: 'Anlagen mal Turnus, Geräte mal Prüfzeit, Mitarbeiter mal Betreuungsgruppe: Die Regel ist bei allen gleich. Entscheidend ist, wie schnell das Angebot steht, ob es sich rechnet und was der Kunde davon sieht.',
-    points: [
-      'Jede Rückfrage erzeugt eine neue Version im Postfach',
-      'Was ein Angebot wirklich einbringt, sieht man erst nach dem Auftrag',
-      'Das Angebot geht als PDF raus, und keiner weiß, ob es geöffnet wurde',
-    ],
+    title: 'Ihr rechnet in Excel und schreibt in Word',
+    text: 'Jemand tippt die Zahlen ab, und was ein Auftrag einbringt, seht ihr erst hinterher.',
     href: '/angebote/',
-    cta: 'Angebotsbaustein ansehen',
+    cta: 'Angebote ansehen',
   },
   {
     icon: 'users',
     visual: 'einsatz' as const,
     eyebrow: 'Einsatz & Abrechnung',
-    title: 'Disposition, Einsatzplanung und Abrechnung laufen über Excel.',
-    text: 'Geplant wird in einer Excel, umgeplant per Telefon, erfasst auf Stundenzetteln, abgerechnet aus allem, was sich findet. Mit jedem Auftrag wächst der Aufwand mit, und an jedem Übergang geht etwas verloren.',
-    points: [
-      'Wer wann an was arbeitet, steckt in Köpfen und Tabellen',
-      'Abwesenheiten und Auslastung müssen mühsam gepflegt werden',
-      'Rechnungen und Mahnungen hängen an einer Person im Büro',
-    ],
+    title: 'Ihr plant in Excel und telefoniert bei jeder Änderung',
+    text: 'Stunden kommen auf Zetteln zurück, und jede Rechnung wird von Hand zusammengebaut.',
     href: einsatzplanungUrl,
-    cta: 'Plantafel ansehen',
+    cta: 'Einsatzplanung ansehen',
   },
   {
     icon: 'table',
     visual: 'zahlen' as const,
     eyebrow: 'Zahlen & Steuerung',
-    title: 'Der Monatsabschluss ist ein Projekt, und die Zahlen sind alt, wenn sie da sind.',
-    text: 'Umsatz Ist und Prognose, Auslastung je Team, welche Verträge nächstes Jahr enden: Das steckt in fünf Systemen und einer Excel, die eine Person im Haus versteht. Wer den Betrieb steuern oder übergeben will, braucht die Zahlen live.',
-    points: [
-      'Reports kosten Tage statt Minuten',
-      'Auslaufende Verträge fallen erst auf, wenn sie weg sind',
-      'Bei den eigenen Zahlen bleibt ein ungutes Bauchgefühl',
-    ],
+    title: 'Eure Zahlen sind alt, wenn sie da sind',
+    text: 'Der Monatsabschluss dauert Tage, und auslaufende Verträge fallen zu spät auf.',
     href: '/zahlen/',
-    cta: 'Cockpit ansehen',
+    cta: 'Zahlen ansehen',
   },
 ];
 
@@ -201,14 +196,7 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
   routeId="home"
 >
   <SeitenHero eyebrow="Eigene Software für den Mittelstand" titel="Software für Betriebe," titelFarbe="die nicht in Standardlösungen passen." text="Was euer ERP oder eure Branchensoftware nicht kann, läuft heute daneben in Excel. Wir bauen die Software dafür, nach euren Regeln." zweiterKnopf={{ text: 'Leistungen ansehen', href: servicesUrl }}>
-    <Image
-      src={kundenstandorte}
-      alt="Kundenstandorte und Berater auf einer Deutschlandkarte, Demo-Daten"
-      widths={[640, 960, 1280]}
-      sizes="(min-width: 1024px) 50vw, 100vw"
-      class="border-border w-full rounded-2xl border shadow-xl"
-      loading="eager"
-    />
+    <BildWechsler bilder={heroBilder} />
   </SeitenHero>
 
   <div id="hero-next" class="scroll-mt-24" aria-hidden="true" />
@@ -245,7 +233,7 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
     })();
   </script>
 
-  <section class="border-border border-b py-24 lg:py-32">
+  <section class="border-border border-b py-14 sm:py-24 lg:py-32">
     <div class="container">
       <div data-reveal>
         <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Wofür wir gerufen werden</p>
@@ -254,10 +242,7 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
           <span class="text-brand-500">am meisten helfen</span>
         </h2>
         <p class="text-foreground-secondary mt-6 text-lg leading-8">
-          Ihr führt einen Betrieb, der läuft, und merkt an einer konkreten Stelle, dass die Software
-          den nächsten Schritt nicht mehr trägt. Meistens ist es eine von drei Stellen im Prozess,
-          manchmal die Branchensoftware als Ganzes, und manchmal habt ihr selbst gebaut und wollt
-          einen Blick von außen. Wir fangen dort an und bauen von da aus weiter.
+          Meistens hakt es an einer von drei Stellen. Dort fangen wir an.
         </p>
       </div>
 
@@ -266,7 +251,7 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
           calledForSituations.map((situation) => (
             <article
               data-reveal
-              class="group relative flex cursor-pointer flex-col lg:row-span-6 lg:grid lg:grid-rows-subgrid lg:gap-y-0 rounded-[2rem] border border-border bg-card p-7 shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_28px_60px_rgba(34,43,74,0.12)] has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-brand-500 has-[a:focus-visible]:ring-offset-2 sm:p-7"
+              class="group relative flex cursor-pointer flex-col lg:row-span-6 lg:grid lg:grid-rows-subgrid lg:gap-y-0 rounded-[2rem] border border-border bg-card p-7 shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:border-brand-300 hover:shadow-[0_28px_60px_rgba(34,43,74,0.12)] has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-brand-500 has-[a:focus-visible]:ring-offset-2 sm:p-7"
             >
               <div class="mb-6">
                 <MiniVisual kind={situation.visual} />
@@ -283,14 +268,6 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
                 {situation.title}
               </h3>
               <p class="text-foreground-secondary mt-4 text-base leading-7">{situation.text}</p>
-              <ul class="text-foreground-secondary mt-6 space-y-3 text-sm leading-6">
-                {situation.points.map((point) => (
-                  <li class="flex gap-3">
-                    <Icon name="alert-circle" size="sm" class="text-brand-400 mt-0.5 shrink-0" />
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
               <div class="mt-auto pt-8">
                 <a
                   href={situation.href}
@@ -307,49 +284,53 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
         }
       </div>
 
-      <!-- Tür 4 und 5: nicht die drei Stellen, aber dieselbe Tür ins Haus -->
-      <div data-reveal class="mt-8 grid gap-4 md:grid-cols-2">
-        {
-          [
-            {
-              eyebrow: 'Oder das Ganze',
-              titel: 'Standardsoftware ablösen',
-              text: 'Branchensoftware, Vertec oder ein gewachsenes System am Limit? Dann ist meist eine dieser drei Stellen der Grund.',
-              href: standardsoftwareUrl,
-              icon: 'layers',
-            },
-            {
-              eyebrow: 'Ihr baut selbst',
-              titel: 'Software-Check',
-              text: 'Mit KI gebaut und ihr wollt technischen Rat von jemandem, der es auch könnte? Review, Sicherheit, Betrieb.',
-              href: '/software-check/',
-              icon: 'shield',
-            },
-          ].map((t) => (
-            <a
-              href={t.href}
-              class="group border-border bg-card hover:border-brand-300 flex items-start gap-4 rounded-2xl border p-5 transition-[border-color,transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_oklch(40%_0.1_265_/_0.4)]"
-            >
-              <span class="border-brand-300/70 bg-brand-500/5 text-brand-600 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border">
-                <Icon name={t.icon} size="sm" />
-              </span>
-              <span class="min-w-0">
-                <span class="text-foreground-muted block text-[0.65rem] font-semibold tracking-[0.18em] uppercase">{t.eyebrow}</span>
-                <span class="font-display text-foreground mt-1 block text-base font-bold tracking-tight">{t.titel}</span>
-                <span class="text-foreground-secondary mt-1 block text-sm leading-6">{t.text}</span>
-                <span class="text-brand-600 mt-2 inline-flex items-center gap-1.5 text-sm font-semibold transition-transform duration-300 group-hover:translate-x-1">
-                  Mehr dazu
-                  <Icon name="arrow-right" size="xs" />
-                </span>
-              </span>
-            </a>
-          ))
-        }
-      </div>
+      <!-- Oder das Ganze -->
+      <a
+        href={standardsoftwareUrl}
+        data-reveal
+        class="group border-brand-300/70 bg-card hover:border-brand-400 dark:border-brand-700 mt-5 grid items-center gap-6 overflow-hidden rounded-[1.6rem] border p-5 shadow-sm transition-[transform,box-shadow] duration-300 hover:shadow-[0_26px_55px_-28px_oklch(40%_0.1_265_/_0.45)] md:grid-cols-[minmax(0,1fr)_17rem] md:p-7"
+      >
+        <div>
+          <p class="text-foreground-muted text-xs font-semibold tracking-[0.2em] uppercase">Oder das Ganze</p>
+          <h3 class="font-display text-foreground mt-2 text-2xl font-bold tracking-tight">Standardsoftware ablösen</h3>
+          <p class="text-foreground-secondary mt-2 max-w-xl text-sm leading-6 sm:text-base sm:leading-7">
+            Wenn mehr fehlt als ein einzelner Teil: Wir lösen eure Branchensoftware und die Excel-Listen
+            drumherum Schritt für Schritt ab. Das Alte läuft daneben weiter, und eure ganze Datenhistorie
+            zieht mit.
+          </p>
+          <span class="text-brand-600 mt-4 inline-flex items-center gap-2 text-sm font-semibold transition-transform duration-300 group-hover:translate-x-1">
+            So läuft eine Ablösung
+            <Icon name="arrow-right" size="sm" />
+          </span>
+        </div>
+        <MiniVisual kind="abloesung" />
+      </a>
+
+      <!-- Oder erst prüfen: für Betriebe, die Software schon haben -->
+      <a
+        href="/software-check/"
+        data-reveal
+        class="group border-border bg-card hover:border-brand-300 mt-5 grid items-center gap-6 overflow-hidden rounded-[1.6rem] border p-5 shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:shadow-[0_26px_55px_-28px_oklch(40%_0.1_265_/_0.45)] md:grid-cols-[minmax(0,1fr)_17rem] md:p-7"
+      >
+        <div>
+          <p class="text-foreground-muted text-xs font-semibold tracking-[0.2em] uppercase">Ihr baut selbst</p>
+          <h3 class="font-display text-foreground mt-2 text-2xl font-bold tracking-tight">Software-Check</h3>
+          <p class="text-foreground-secondary mt-2 max-w-xl text-sm leading-6 sm:text-base sm:leading-7">
+            Ihr habt mit KI gebaut und wollt technischen Rat von jemandem, der es auch könnte? Ein
+            erfahrener Entwickler und Architekt prüft Sicherheit, Struktur und Betrieb. Den Bericht könnt
+            ihr Kunden und Auditoren vorlegen.
+          </p>
+          <span class="text-brand-600 mt-4 inline-flex items-center gap-2 text-sm font-semibold transition-transform duration-300 group-hover:translate-x-1">
+            Was geprüft wird
+            <Icon name="arrow-right" size="sm" />
+          </span>
+        </div>
+        <MiniVisual kind="check" />
+      </a>
     </div>
   </section>
 
-  <section class="border-border relative overflow-hidden border-b py-24 lg:py-28">
+  <section class="border-border relative overflow-hidden border-b py-14 sm:py-24 lg:py-28">
     <div class="bg-brand-300/10 absolute left-0 top-1/3 h-80 w-80 rounded-full blur-3xl" />
     <div class="container relative z-10 grid items-center gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
       <div
@@ -357,7 +338,7 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
         class="group relative mx-auto w-full max-w-[220px] sm:max-w-[260px] lg:max-w-none"
       >
         <div class="bg-brand-300/15 absolute -inset-3 -z-10 rounded-[2rem] blur-2xl" aria-hidden="true" />
-        <div class="overflow-hidden rounded-[1.8rem] border border-border shadow-[0_20px_50px_rgba(34,43,74,0.12)] rotate-[-2.5deg] transition-transform duration-500 will-change-transform [backface-visibility:hidden] group-hover:rotate-0 group-hover:-translate-y-1">
+        <div class="overflow-hidden rounded-[1.8rem] border border-border shadow-[0_20px_50px_rgba(34,43,74,0.12)] rotate-[-2.5deg] transition-transform duration-500 will-change-transform [backface-visibility:hidden] group-hover:rotate-0">
           <Picture
             src={founderImage}
             alt="Marten Prieß, Gründer von RocketBase"
@@ -440,7 +421,7 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
 
 
 
-  <section class="border-border border-b py-28 lg:py-36">
+  <section class="border-border border-b py-14 sm:py-28 lg:py-36">
     <div class="container">
       <div data-reveal>
         <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Referenzen</p>
@@ -449,93 +430,38 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
           <span class="mt-2 block text-brand-500">andere Betriebe gebaut haben</span>
         </h2>
         <p class="text-foreground-secondary mt-6 text-lg leading-8">
-          Drei Beispiele dafür, wie RocketBase in sehr unterschiedlichen Ausgangslagen arbeitet:
-          Standardsoftware abgelöst, Einsatzplanung aus Excel geholt, Budgetsteuerung auf einen
-          belastbaren Prozess gestellt.
+          Standardsoftware abgelöst, Einsatzplanung aus Excel geholt, Budgets in eine eigene Software gebracht.
         </p>
       </div>
 
       <div class="mt-16 grid gap-6 lg:grid-cols-3 lg:items-stretch">
-        <article data-reveal class="group flex flex-col overflow-hidden rounded-[2rem] border border-border bg-card shadow-[0_22px_55px_rgba(34,43,74,0.08)] transition-[transform,box-shadow] duration-500 hover:-translate-y-1 hover:shadow-[0_30px_70px_rgba(34,43,74,0.12)] will-change-transform [backface-visibility:hidden]">
-          <a href={getReferenceUrl(featuredCases[0].slug)} class="flex h-full flex-col">
-            <div class="overflow-hidden">
-              {featuredCases[0].image && (
-                <Picture
-                  src={featuredCases[0].image}
-                  alt={featuredCases[0].title}
-                  widths={[320, 480, 640, 960]}
-                  sizes="(max-width: 1024px) 100vw, 33vw"
-                  formats={['avif', 'webp']}
-                  class="aspect-[16/10] max-h-[33vh] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] lg:max-h-none"
-                  loading="lazy"
-                />
-              )}
-            </div>
-            <div class="flex flex-1 flex-col p-6 lg:p-7">
-              <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
-                {featuredCases[0].client}
-              </p>
-              <h3 class="text-foreground mt-3 text-xl font-semibold leading-snug lg:text-2xl">
-                {featuredCases[0].title}
-              </h3>
-              <p class="text-foreground-secondary mt-3 text-sm leading-7">
-                {featuredCases[0].kicker}
-              </p>
-              <div class="mt-auto pt-6">
-                <p class="text-foreground-muted hidden text-xs leading-6 sm:block">
-                  Prozess im Fokus: {featuredCases[0].processFocus}
-                </p>
-                <div class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600">
-                  Case ansehen
-                  <Icon name="arrow-right" size="sm" />
-                </div>
-              </div>
-            </div>
-          </a>
-        </article>
-
         {
-          featuredCases.slice(1).map((item) => (
+          featuredCases.map((item) => (
             <article
               data-reveal
-              class="group flex h-full flex-col overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(34,43,74,0.1)] will-change-transform [backface-visibility:hidden]"
+              class="group flex flex-col overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm transition-shadow hover:shadow-lg"
             >
               <a href={getReferenceUrl(item.slug)} class="flex h-full flex-col">
-                {item.image ? (
-                  <div class="overflow-hidden">
+                <div class="overflow-hidden">
+                  {item.image && (
                     <Picture
                       src={item.image}
-                      alt={item.title}
+                      alt={item.heading}
                       widths={[320, 480, 640, 960]}
                       sizes="(max-width: 1024px) 100vw, 33vw"
                       formats={['avif', 'webp']}
-                      class="aspect-[16/10] max-h-[33vh] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] lg:max-h-none"
+                      class="aspect-[16/10] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                       loading="lazy"
                     />
-                  </div>
-                ) : (
-                  <div class="flex aspect-[16/10] max-h-[33vh] flex-col justify-between bg-[linear-gradient(160deg,rgba(243,245,249,0.96),rgba(229,234,242,0.92))] p-7 lg:max-h-none dark:bg-[linear-gradient(160deg,rgba(36,43,57,0.92),rgba(26,31,42,0.9))]">
-                    <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
-                      {item.client}
-                    </p>
-                    <p class="font-display text-foreground text-2xl leading-snug font-bold tracking-tight">
-                      Von Standardsoftware zur individuellen Plattform
-                    </p>
-                  </div>
-                )}
-
-                <div class="flex flex-1 flex-col p-6 lg:p-7">
+                  )}
+                </div>
+                <div class="flex flex-1 flex-col p-6">
                   <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">{item.client}</p>
-                  <h3 class="text-foreground mt-3 text-xl font-semibold leading-snug lg:text-2xl">{item.title}</h3>
-                  <p class="text-foreground-secondary mt-3 text-sm leading-7">{item.kicker}</p>
-                  <ul class="text-foreground-muted mt-4 hidden space-y-2 text-sm leading-6 sm:block">
-                    {item.highlights.slice(0, 2).map((highlight) => (
-                      <li class="flex gap-3">
-                        <Icon name="check-circle" size="sm" class="text-brand-400 mt-0.5 shrink-0" />
-                        <span>{highlight}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <h3 class="text-foreground mt-3 text-xl leading-snug font-semibold">{item.heading}</h3>
+                  <div class="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-brand-600">
+                    Projekt ansehen
+                    <Icon name="arrow-right" size="sm" />
+                  </div>
                 </div>
               </a>
             </article>
@@ -553,7 +479,7 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
   </section>
 
   {testimonialItems.length > 0 && (
-    <section class="border-border border-b py-20 lg:py-24">
+    <section class="border-border border-b py-12 sm:py-20 lg:py-24">
       <div class="container max-w-2xl">
         <header class="mb-10" data-reveal>
           <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
@@ -571,7 +497,7 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
   )}
 
   {featuredBlogPosts.length > 0 && (
-    <section class="hidden lg:block border-border border-b py-20 lg:py-24">
+    <section class="hidden lg:block border-border border-b py-12 sm:py-20 lg:py-24">
       <div class="container">
         <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between" data-reveal>
           <div class="max-w-2xl">
@@ -608,7 +534,7 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
     </section>
   )}
 
-  <section class="border-border bg-surface-invert text-on-invert border-b py-28 lg:py-36">
+  <section class="border-border bg-surface-invert text-on-invert border-b py-14 sm:py-28 lg:py-36">
     <div class="container grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
       <div data-reveal class="lg:sticky lg:top-28">
         <p class="text-brand-300 text-sm font-semibold tracking-[0.22em] uppercase">So startet ihr</p>
@@ -617,8 +543,7 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
           <span class="mt-2 block text-brand-200">Jede Stufe hat einen Preis und ein Ergebnis</span>
         </h2>
         <p class="text-on-invert-secondary mt-6 text-lg leading-8">
-          Niemand gibt hier blind Budget frei: Jede Stufe liefert etwas, das für sich stehen kann,
-          und nennt den Preis der nächsten. Aussteigen geht nach jeder – das Ergebnis behaltet ihr.
+          Nach jeder Stufe könnt ihr aufhören, das Ergebnis behaltet ihr.
         </p>
       </div>
 
@@ -649,7 +574,7 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
   </section>
 
 
-  <section id="cta" class="py-28 lg:py-36">
+  <section id="cta" class="py-14 sm:py-28 lg:py-36">
     <div class="container">
       <div class="relative overflow-hidden rounded-[2.8rem] border border-border bg-background-secondary p-8 shadow-[0_24px_60px_rgba(34,43,74,0.08)] sm:p-10 lg:p-12">
         <img
@@ -699,8 +624,8 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
                 Erstgespräch buchen
                 <Icon name="arrow-up-right" size="sm" />
               </Button>
-              <Button variant="link" href={contactUrl}>
-                Kontaktseite
+              <Button variant="link" href={`${contactUrl}#anfrage-stellen`}>
+                Lieber schreiben
                 <Icon name="arrow-right" size="sm" />
               </Button>
             </div>
