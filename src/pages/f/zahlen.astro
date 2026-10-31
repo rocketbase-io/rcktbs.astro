@@ -7,9 +7,10 @@
  * Liegt als statische Datei neben /f/[slug].astro und gewinnt gegen die
  * dynamische Route; in funnels.ts darf es deshalb keinen Slug „zahlen" geben.
  */
+import { Image } from 'astro:assets';
 import FunnelLayout from '@/layouts/FunnelLayout.astro';
 import SchlankPage from '@/components/funnel-schlank/SchlankPage.astro';
-import CockpitMock from '@/components/zahlen/CockpitMock.astro';
+import cockpit from '@/assets/references/cockpit-demo-1920.png';
 import AuslastungTeams from '@/components/zahlen/AuslastungTeams.astro';
 import HeuteKalender from '@/components/zahlen/HeuteKalender.astro';
 import { zahlen } from '@/data/funnelSchlank';
@@ -21,7 +22,15 @@ import { zahlen } from '@/data/funnelSchlank';
   headerCta
 >
   <SchlankPage tor={zahlen}>
-  <CockpitMock slot="hero" kompakt />
+  <Image
+    slot="hero"
+    src={cockpit}
+    alt="Cockpit mit Umsatz, Auslastung und Verträgen, Demo-Daten"
+    widths={[640, 960, 1280]}
+    sizes="(min-width: 1024px) 50vw, 100vw"
+    class="border-border w-full rounded-2xl border shadow-xl"
+    loading="eager"
+  />
   <div class="hidden lg:block"><AuslastungTeams /></div>
   <HeuteKalender slot="heute" />
 </SchlankPage>

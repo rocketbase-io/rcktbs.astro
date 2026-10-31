@@ -2,7 +2,7 @@
 export const angeboteFaqs = [
   {
     q: 'Ist das eine fertige Software?',
-    a: 'Nein. Der Angebotsbaustein stammt aus Lösungen, die wir für Kunden gebaut haben und die dort im Einsatz sind. Für euch passen wir ihn an: eure Kalkulation, eure Vorlagen, euer Ablauf. Ihr bekommt keine Lizenz von der Stange, sondern einen Baustein, der so arbeitet wie ihr.',
+    a: 'Nein. Die Software stammt aus Lösungen, die wir für Kunden gebaut haben und die dort im Einsatz sind. Für euch passen wir ihn an: eure Kalkulation, eure Vorlagen, euer Ablauf. Ihr bekommt keine Lizenz von der Stange, sondern einen Baustein, der so arbeitet wie ihr.',
   },
   {
     q: 'Wir haben schon eine Branchenlösung. Lohnt sich das trotzdem?',
