@@ -81,7 +81,7 @@ const casesRaw = [
     title: 'PLM/PIM-Neubau mit internationaler Teamintegration',
     heading: 'Neue Plattform für Produktdaten, gebaut mit Teams in Hamburg und Indien',
     description:
-      'Neubau einer Produktdaten-Plattform bei bonprix: RocketBase übernahm die technische Führung und brachte die Hamburger Delivery mit einem indischen Entwicklungsteam zusammen.',
+      'Neubau einer Produktdaten-Plattform bei bonprix: RocketBase übernahm die technische Führung und verband die Hamburger Delivery mit einem Team in Indien.',
     navTeaser: 'Eine Plattform für Produktdaten im Konzernalltag.',
     kicker:
       'Drei Jahre lang hat RocketBase mit vier Leuten den Neubau der Produktdaten-Software von bonprix geführt, während die alte weiterlief.',
@@ -189,7 +189,7 @@ const casesRaw = [
     title: 'Von der Vertec-Welt zur individuellen Beratungsplattform',
     heading: 'Vertec abgelöst durch eine Software, die zum Beratungsgeschäft passt',
     description:
-      'Eine etablierte Standardsoftware (Vertec) sollte das Beratungsgeschäft tragen, passte aber an entscheidenden Stellen nie richtig zum Unternehmen. RocketBase löste sie ab: Bestandsdaten herausgelöst und migriert, der reale Angebots- und Projektprozess sauber neu modelliert – von der Pipeline über die Durchführung bis zur Rechnung.',
+      'Vertec passte an entscheidenden Stellen nicht zu FKC. RocketBase löste es ab, migrierte die Daten und baute den Weg von der Pipeline zur Rechnung neu.',
     kicker:
       'Die Standardsoftware war sauber gebaut, aber für alle gedacht. Für das, worauf es bei FKC ankam, fehlte der Platz. Die neue Anwendung arbeitet so, wie FKC berät.',
     highlights: [
@@ -269,7 +269,7 @@ const casesRaw = [
     title: 'Einsatzplanung, die den Betrieb wirklich kennt',
     heading: 'Einsatzplanung für eine Schlosserei, die vorher in Excel plante',
     description:
-      'Wer wann an was arbeitet, wer ausfällt, welche Aufträge laufen – das alles lief bei Schlosserei Diezinger über Excel. Jetzt gibt es dafür ein System, das den handwerklichen Alltag versteht.',
+      'Wer wann woran arbeitet und wer ausfällt, lief bei Schlosserei Diezinger über Excel. Jetzt gibt es dafür ein System, das den Handwerksalltag versteht.',
     kicker:
       'Die aufwändige Planung von Hand ist abgelöst. Einsätze und Aufträge laufen jetzt in einer Software, in der jede Rolle ihre eigene Ansicht hat.',
     highlights: [
@@ -349,7 +349,7 @@ export const additionalCases = [
     title: 'Statista-Daten direkt in Canva nutzbar',
     heading: 'Statista-Daten direkt in Canva nutzbar',
     description:
-      'RocketBase entwickelte die Statista-App für das Canva-Ökosystem, über die Nutzerinnen und Nutzer geprüfte Statistiken direkt in ihre Designs und Präsentationen einbinden können – samt neu entwickeltem Image-Service für Preview-Grafiken.',
+      'RocketBase entwickelte die Statista-App für Canva: geprüfte Statistiken direkt in Designs und Präsentationen, samt Image-Service für Vorschaubilder.',
     kicker: 'Statistiken landen dort, wo die Präsentation ohnehin entsteht.',
     highlights: [
       'Pilot-App für eine neue Canva-Schnittstelle, die noch in der Erprobung war',
@@ -398,7 +398,7 @@ export const additionalCases = [
     title: 'Budgetplanung raus aus Excel, rein in einen belastbaren Prozess',
     heading: 'Budgetplanung aus Excel in eine eigene Plattform geholt',
     description:
-      'RocketBase überführte die Excel-gestützte Budgetplanung von Stage Entertainment in eine datenbankbasierte Plattform mit Validierung, nächtlichem Abgleich zur Buchhaltung und sauberen Reportings.',
+      'RocketBase holte die Budgetplanung von Stage Entertainment aus Excel in eine Plattform mit Validierung und nächtlichem Abgleich zur Buchhaltung.',
     kicker: 'Die Planung liegt jetzt an einem Ort, und die Zahlen passen zur Buchhaltung.',
     highlights: [
       'Gewachsene Excel-Modelle durch eine zentrale Plattform ersetzt',
@@ -447,7 +447,7 @@ export const additionalCases = [
     title: 'Gutscheinportal, das sich in fremde Checkouts einbettet',
     heading: 'Gutscheinportal für die Checkouts anderer Shops',
     description:
-      'Für Smart Active Media baute RocketBase ein Gutscheinportal, das per JavaScript in Partner-Websites und Checkouts eingebunden wird und Leads aus Käufen und Gewinnspielen weiterverwertet.',
+      'Für Smart Active Media baute RocketBase ein Gutscheinportal, das per JavaScript in Partner-Websites und Checkouts läuft und Leads weiterverwertet.',
     kicker: 'Ein Produkt, das in fremden Shops läuft, über die man keine Kontrolle hat.',
     highlights: [
       'Einbettung per JavaScript in Partner-Shops und Landingpages',
@@ -495,7 +495,7 @@ export const additionalCases = [
     title: 'Tourenplanung und mobile Einsatzerfassung im Außendienst',
     heading: 'Tourenplanung und mobile Einsatzerfassung im Außendienst',
     description:
-      'RocketBase löste ein nicht mehr tragfähiges Altsystem ab und entwickelte eine hybride App inklusive neuem Backend für Routen, Fahrzeuge, Objekte und Einsätze – mit Offline-Funktion für den harten Außendienst.',
+      'RocketBase löste ein Altsystem ab: hybride App und neues Backend für Routen, Fahrzeuge, Objekte und Einsätze, mit Offline-Funktion im Außendienst.',
     kicker:
       'Die App funktioniert auch dann, wenn draußen kein Netz ist, und gleicht die Daten später ab.',
     highlights: [
@@ -544,7 +544,7 @@ export const additionalCases = [
     title: 'VK- und Sortimentsplanung aus Excel in eine kollaborative Plattform überführt',
     heading: 'VK- und Sortimentsplanung aus Excel in eine gemeinsame Plattform geholt',
     description:
-      'RocketBase übertrug das in Excel entstandene VK-Planungsmodell und Sortimentsmengenmodell in eine datenbankgestützte Plattform mit Massenbearbeitung, Versionierung und verlässlichen Referenzwerten.',
+      'RocketBase holte das VK-Planungsmodell aus Excel in eine Plattform mit Massenbearbeitung, Versionierung und verlässlichen Referenzwerten.',
     kicker:
       'Die Flexibilität von Excel bleibt. Dazu kommen gemeinsames Arbeiten, saubere Daten und gesicherte Planstände.',
     highlights: [

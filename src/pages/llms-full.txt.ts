@@ -2,9 +2,17 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import siteConfig from '@/config/site.config';
 import { cases, additionalCases } from '@/data/rocketbase';
+import { preisFrage } from '@/data/funnelSchlank';
+import { tueren, type TuerId } from '@/data/tueren';
+import { angeboteFaqs } from '@/components/angebote/faqs';
+import { einsatzFaqs } from '@/components/einsatz/faqs';
+import { zahlenFaqs } from '@/components/zahlen/faqs';
+import { abloesungFaqs } from '@/components/abloesung/faqs';
+import { softwareCheckFaqs } from '@/components/check/faqs';
 
 /**
- * /llms-full.txt - Volltexte aller Fachbeiträge und Referenzen als Markdown.
+ * /llms-full.txt - Volltexte aller Fachbeiträge und Referenzen als Markdown,
+ * dazu die häufigen Fragen je Tür.
  *
  * Ergänzt /llms.txt (dort nur der Index): Ein Modell kann hier den kompletten
  * fachlichen Inhalt in einem Abruf erfassen, ohne jede Seite einzeln zu laden
@@ -58,6 +66,16 @@ function mdxToPlainText(body: string): string {
   return text;
 }
 
+// Dieselbe Preisfrage wie auf den Seiten (pages/*.astro).
+const mitPreis = (faqs: { q: string; a: string }[]) => faqs.map((f) => (f.q === preisFrage.q ? preisFrage : f));
+const tuerFaqs: [TuerId, { q: string; a: string }[]][] = [
+  ['angebot', mitPreis(angeboteFaqs)],
+  ['einsatz', mitPreis(einsatzFaqs)],
+  ['zahlen', mitPreis(zahlenFaqs)],
+  ['abloesung', abloesungFaqs],
+  ['check', softwareCheckFaqs],
+];
+
 export const GET: APIRoute = async ({ site }) => {
   const base = (site?.toString() || `${siteConfig.url}/`).replace(/\/$/, '');
 
@@ -105,12 +123,23 @@ ${content}`;
     return parts.join('\n');
   });
 
+  const tuerSections = tuerFaqs.map(([id, faqs]) => {
+    const { titel, href, text } = tueren[id];
+    return `## ${titel}
+
+Quelle: ${base}${href}
+
+${text}
+
+${faqs.map((f) => `### ${f.q}\n\n${f.a}`).join('\n\n')}`;
+  });
+
   const body = `# RocketBase - Volltexte
 
 > ${siteConfig.description}
 
-Diese Datei enthält die vollständigen Fachbeiträge und Referenzbeschreibungen
-von ${base} als Fließtext. Der Index mit allen Seiten steht unter
+Diese Datei enthält die häufigen Fragen je Lösung, die vollständigen Fachbeiträge
+und Referenzbeschreibungen von ${base} als Fließtext. Der Index mit allen Seiten steht unter
 ${base}/llms.txt.
 
 Anbieter: rocketbase.io software productions GmbH, ${siteConfig.address?.street}, ${siteConfig.address?.zip} ${siteConfig.address?.city}
@@ -118,6 +147,12 @@ Ansprechpartner: ${siteConfig.author}
 Stand: automatisch beim Seiten-Build erzeugt
 
 Bei Zitaten bitte die bei jedem Abschnitt angegebene Quell-URL nennen.
+
+---
+
+# Lösungen und häufige Fragen
+
+${tuerSections.join('\n\n---\n\n')}
 
 ---
 

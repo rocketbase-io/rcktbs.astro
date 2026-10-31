@@ -1,6 +1,18 @@
 /** FAQs der Ablösungs-Seite, auch fürs FAQ-Schema in pages/standardsoftware-abloesung.astro. */
 export const abloesungFaqs = [
   {
+    q: 'Wie lange dauert es, Branchensoftware abzulösen?',
+    a: 'Der erste Abschnitt läuft nach vier bis sechs Wochen. Jeder weitere Bereich dauert ein bis drei Monate, alle Bereiche zusammen vier bis sechs Monate, bis die alte Lizenz gekündigt ist.',
+  },
+  {
+    q: 'Was ist der Unterschied zwischen Individualsoftware und Standardsoftware?',
+    a: 'Standardsoftware ist für viele Betriebe gebaut, ihr passt euch ihr an. Individualsoftware folgt eurem Ablauf. In der Anschaffung kostet sie meist mehr, dafür fallen Workarounds und Excel daneben weg.',
+  },
+  {
+    q: 'Ab welcher Größe lohnt sich eine eigene Software?',
+    a: 'Am besten passen Betriebe ab etwa 30 Leuten, entscheidend ist aber das Vorhaben: wie viele Stunden täglich in Workarounds und Nachpflege fließen. In kleineren Teams lohnt es sich vor allem, wenn die Geschäftsführung selbst für IT und Prozesse brennt.',
+  },
+  {
     q: 'Müssen wir alles auf einmal ablösen?',
     a: 'Nein. Die neue Anwendung läuft neben dem Altsystem, Bereiche ziehen nacheinander um, meist zuerst der, der am meisten Zeit kostet. Abgeschaltet wird erst, wenn das Neue den ganzen Ablauf trägt. Das Tagesgeschäft bleibt dabei nie stehen.',
   },

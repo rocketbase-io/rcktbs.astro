@@ -1,6 +1,14 @@
 /** FAQs der Seite, auch fürs FAQ-Schema der indexierten Seite (pages/*.astro). */
 export const zahlenFaqs = [
   {
+    q: 'Was gehört in ein Kennzahlen-Dashboard für Dienstleister?',
+    a: 'Umsatz und Prognose, Auslastung bis zur Person, Deckungsbeitrag und auslaufende Verträge. Vorher legen wir fest, was diese Zahlen bei euch heißen, damit alle dasselbe meinen.',
+  },
+  {
+    q: 'Wie lange dauert es bis zum ersten Dashboard?',
+    a: 'Vier bis sechs Wochen nach dem Workshop steht die erste Übersicht mit Umsatz, Auslastung und Verträgen. Weitere Zahlen kommen dazu, sobald die ersten tragen.',
+  },
+  {
     q: 'Unser Reporting läuft über Excel. Was ist die Alternative?',
     a: 'Das Cockpit holt die Zahlen jeden Tag aus euren Programmen und zeigt sie auf einer Seite. Niemand muss dafür Exporte zusammenbauen. BWA und Steuerberater bleiben.',
   },

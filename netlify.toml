@@ -60,6 +60,17 @@
   to = "/f/eigene-software/"
   status = 301
 
+# Alte Startseite, auf die noch ein Link von itsteps.de zeigt.
+[[redirects]]
+  from = "/de"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/de/"
+  to = "/"
+  status = 301
+
 # Mission ist seit dem 31.10.2026 Teil von /arbeitsweise/.
 [[redirects]]
   from = "/mission"

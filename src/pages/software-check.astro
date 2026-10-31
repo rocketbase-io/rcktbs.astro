@@ -7,13 +7,14 @@
  * OWASP ASVS, Zweitmeinung zur Architektur, Fahrplan für den Cyber Resilience Act.
  */
 import LandingLayout from '@/layouts/LandingLayout.astro';
-import { createServiceSchema } from '@/lib/schema';
+import { createServiceSchema, createFAQSchema } from '@/lib/schema';
 import SchlankPage from '@/components/funnel-schlank/SchlankPage.astro';
 import BerichtMock from '@/components/check/BerichtMock.astro';
 import FragenMosaik from '@/components/check/FragenMosaik.astro';
 import StackLeiste from '@/components/check/StackLeiste.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import { softwareCheck } from '@/data/funnelSchlank';
+import { softwareCheckFaqs } from '@/components/check/faqs';
 
 const pakete = [
   {
@@ -34,6 +35,8 @@ const ausbau = [
   { titel: 'Begleitung', text: 'Wenn ihr weiterbaut: ein fester Termin, dazwischen Rückfragen und Code-Review.' },
 ];
 
+const faqSchema = createFAQSchema(softwareCheckFaqs.map((f) => ({ question: f.q, answer: f.a })));
+
 const serviceSchema = createServiceSchema({
   name: 'Software-Check',
   description:
@@ -45,12 +48,12 @@ const serviceSchema = createServiceSchema({
 ---
 
 <LandingLayout
-  title="Software-Check: mit KI gebaute Software prüfen lassen"
-  description="Erfahrene Entwickler prüfen eure Software gegen OWASP ASVS 5.0. Ihr bekommt einen Prüfbericht für Kunden und Auditoren und zu jedem Fund einen Vorschlag. Für Betriebe ab etwa 30 Leuten."
+  title="Software-Check: KI-Code prüfen lassen"
+  description="Erfahrene Entwickler prüfen eure Software gegen OWASP ASVS 5.0. Prüfbericht für Kunden und Auditoren, zu jedem Fund ein Vorschlag."
   lang="de"
-  extraSchemas={[serviceSchema]}
+  extraSchemas={[serviceSchema, faqSchema]}
 >
-  <SchlankPage tor={softwareCheck} modus="seite" blogTuer="check" vergleichKurz>
+  <SchlankPage tor={softwareCheck} modus="seite" blogTuer="check" faqs={softwareCheckFaqs} vergleichKurz>
   <BerichtMock slot="hero" />
   <div id="pakete" class="grid scroll-mt-24 gap-4 lg:grid-cols-2 lg:gap-6">
     {

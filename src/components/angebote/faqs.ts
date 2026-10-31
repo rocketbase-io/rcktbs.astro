@@ -1,6 +1,18 @@
 /** FAQs der Seite, auch fürs FAQ-Schema der indexierten Seite (pages/*.astro). */
 export const angeboteFaqs = [
   {
+    q: 'Für welche Betriebe lohnt sich eine eigene Angebotssoftware?',
+    a: 'Für Dienstleister in Prüfung, Wartung, Zertifizierung oder Handwerk, deren Preise aus einer eigenen Regel entstehen. Wer nur Standardleistungen nach Leistungsverzeichnis kalkuliert, fährt mit einer Branchenlösung meist besser.',
+  },
+  {
+    q: 'Was ist der Unterschied zu CPQ-Software?',
+    a: 'CPQ-Software stellt Produkte aus einem festen Katalog zusammen und rechnet daraus den Preis. Das passt, wenn ihr Varianten verkauft. Wer Leistungen anbietet und nach Anlagenbestand, Prüfzyklus oder Stunden kalkuliert, braucht die eigene Regel im System, und genau die bauen wir ein.',
+  },
+  {
+    q: 'Kann der Kunde ein Angebot online annehmen?',
+    a: 'Ja. Das Angebot kommt als Seite an, der Kunde sagt dort per Klick zu. Ihr seht, wie oft es geöffnet wurde und wann zuletzt, das Nachfassen läuft automatisch.',
+  },
+  {
     q: 'Ist das eine fertige Software?',
     a: 'Nein. Die Software stammt aus Lösungen, die wir für Kunden gebaut haben und die dort im Einsatz sind. Für euch passen wir ihn an: eure Kalkulation, eure Vorlagen, euer Ablauf. Ihr bekommt keine Lizenz von der Stange, sondern einen Baustein, der so arbeitet wie ihr.',
   },
