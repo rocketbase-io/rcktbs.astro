@@ -86,14 +86,14 @@ const casesRaw = [
     kicker:
       'Drei Jahre lang hat RocketBase mit vier Leuten den Neubau der Produktdaten-Software von bonprix geführt, während die alte weiterlief.',
     highlights: [
-      'Technische Leitung für ein Team aus 14 Entwicklern',
+      'Technische Leitung über mehrere Jahre',
       'Die alte Software lief während des Umbaus weiter',
       'Gemeinsame Entwicklung in Hamburg und Indien',
     ],
     challenge:
       'Die Software für Produktdaten war in die Jahre gekommen. Alles hing in einem großen Oracle/.NET-System, und neue Anforderungen wie Kollektionen und flexiblere Produktstrukturen ließen sich kaum noch umsetzen. Abschalten ging nicht, denn die Fachbereiche arbeiteten jeden Tag damit.',
     approach:
-      'Von 2019 bis 2022 übernahm RocketBase die technische Konzeption, die Leitung und die Qualitätssicherung in einem gemischten Team aus 14 Entwicklern in Hamburg und Indien. Wir bauten die Software Stück für Stück neu, aus kleinen, einzeln änderbaren Teilen. Daneben ordneten wir die Zusammenarbeit: Workshops, Übergaben, Zuständigkeiten. Auch die Oberflächen haben wir überarbeitet, damit sich Produkte und Stammdaten schneller erfassen lassen.',
+      'Von 2019 bis 2022 übernahm RocketBase die technische Konzeption, die Leitung und die Qualitätssicherung in einem gemischten Team in Hamburg und Indien. Wir bauten die Software Stück für Stück neu, aus kleinen, einzeln änderbaren Teilen. Daneben ordneten wir die Zusammenarbeit: Workshops, Übergaben, Zuständigkeiten. Auch die Oberflächen haben wir überarbeitet, damit sich Produkte und Stammdaten schneller erfassen lassen.',
     impact:
       'Die alte Software blieb die ganze Zeit in Betrieb, beide Datenstrukturen blieben kompatibel, und die Fachbereiche konnten jederzeit weiterarbeiten. Aus der einen großen Software wurden viele kleine Teile, und Kollektionen und flexiblere Produktstrukturen sind jetzt möglich.',
     processFocus: 'Pflege und Abstimmung von Produktdaten über mehrere Teams und Standorte hinweg.',
@@ -114,7 +114,6 @@ const casesRaw = [
       { label: 'Branche', wert: 'Handel, E-Commerce' },
       { label: 'Laufzeit', wert: '2019 bis 2022' },
       { label: 'RocketBase', wert: '4 Personen' },
-      { label: 'Gesamtteam', wert: '14 Entwickler' },
     ],
     screenshots: [
       { key: 'bonprix-wizard', alt: 'Create Wizard' },
