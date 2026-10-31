@@ -391,18 +391,18 @@ export const softwareCheck: SchlankTor = {
   ],
   ablaufTitel: 'In wenigen Tagen habt ihr den Bericht',
   ablauf: [
-    { wann: '1 Stunde', titel: 'Festlegen, was geprüft wird', text: 'Welche Anwendung, welches Level, wer Zugang zu Code und Testumgebung gibt.' },
+    { wann: 'Kostenlos', titel: 'Erstgespräch', text: 'Ihr zeigt uns grob euren Code. Wir legen fest, was geprüft wird, und ihr bekommt einen Preis je nach Umfang.' },
     { wann: 'Tag 1 bis 4', titel: 'Prüfen', text: 'Erst automatisch, dann von Hand: Rechte, Anmeldung, Eingaben, Schlüssel.' },
     { wann: '1,5 Stunden', titel: 'Bericht durchgehen', text: 'Was kritisch ist, was warten kann und was die Behebung kostet.' },
   ],
   fragenUndAntworten: [
-    { q: 'Was kostet das?', a: 'Das hängt von der Größe eurer Software ab, deshalb gibt es keinen Pauschalpreis. Im Erstgespräch schaut ihr mit Marten drauf und bekommt eine ehrliche Einschätzung. Das Gespräch ist kostenlos und verpflichtet euch zu nichts. Geprüft wird erst, wenn ihr den Preis kennt und zugesagt habt.' },
+    { q: 'Was kostet das?', a: 'Der Preis richtet sich nach dem Umfang des Codes. Im kostenlosen Erstgespräch zeigt ihr ihn Marten grob, danach bekommt ihr einen Preis. Das Gespräch verpflichtet euch zu nichts, geprüft wird erst, wenn ihr zugesagt habt.' },
     { q: 'Ist das ein Penetrationstest?', a: 'Nein. Wenn ihr einen braucht, sagen wir es und holen einen Partner dazu.' },
     { q: 'Bekommen wir ein Zertifikat?', a: 'Nein, das stellen Prüfstellen aus. Wir bereiten vor und begleiten.' },
     { q: 'Müssen wir danach alles neu bauen?', a: 'Selten. Der Bericht sagt je Fund, ob ihr ihn so lassen, umbauen oder neu machen solltet.' },
   ],
   schlussTitel: 'Erstgespräch vereinbaren',
-  schlussText: 'Ihr erzählt, was ihr gebaut habt, und wisst danach, welcher Check passt.',
+  schlussText: 'Ihr zeigt uns grob euren Code und wisst danach, welcher Check passt und was er kostet.',
   fragen: [
     {
       id: 'was',
