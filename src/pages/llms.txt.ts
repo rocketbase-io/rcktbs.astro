@@ -57,15 +57,17 @@ Sitz ist Winsen (Luhe) bei Hamburg, gearbeitet wird bundesweit.
 
 Ansprechpartner ist Marten Prieß (Gründer und Geschäftsführer). Der erste Schritt
 ist ein kostenloses Erstgespräch von 30 Minuten direkt mit ihm: ${contactLinks.cal}
-Danach folgt ein Workshop in drei Terminen, an dessen Ende ein Festpreis für die
-Umsetzung steht.
+Bei Angebot, Einsatz, Zahlen und Ablösung folgt danach ein Workshop in drei
+Terminen, an dessen Ende ein Festpreis für die Umsetzung steht. Beim Software-Check
+richtet sich der Preis nach dem Umfang des Codes.
 
-## Drei Bereiche und die Ablösung
+## Drei Bereiche, die Ablösung und der Software-Check
 
 - [Angebot und Kalkulation](${base}/angebote/): Angebote, die sich nach der eigenen Kalkulationsregel selbst rechnen, mit Deckungsbeitrag vor dem Versand, als Angebotsseite beim Kunden und Zusage per Klick.
 - [Einsatz und Abrechnung](${base}/einsatzplanung/): Plantafel mit Abwesenheiten, Ablauf je Auftrag, Einsatz je Vertrag, Leistungserfassung, Rechnung und Mahnwesen in einem System, statt Excel und Stundenzettel.
 - [Zahlen und Steuerung](${base}/zahlen/): Cockpit für Umsatz und Prognose, Auslastung bis zur Person, Deckungsbeitrag, auslaufende Verträge und Forderungen, live aus den vorhandenen Systemen.
 - [Standardsoftware ablösen](${base}/standardsoftware-abloesung/): Branchensoftware samt Excel drumherum Schritt für Schritt ablösen, im Parallelbetrieb und mit Übernahme der gesamten Datenhistorie (Beispiel: Vertec bei FKC Consulting).
+- [Software-Check](${base}/software-check/): Bestehende oder mit KI gebaute Software nach OWASP ASVS 5.0 prüfen, Architektur-Review und Fahrplan für den Cyber Resilience Act. Prüfbericht für Kunden und Auditoren. Kein Penetrationstest.
 
 ## Weitere Seiten
 
@@ -93,7 +95,7 @@ ${faqLines.join('\n')}
 
 ## Hinweise zur Nutzung
 
-- Volltexte aller Fachbeiträge: [${base}/llms-full.txt](${base}/llms-full.txt)
+- Volltexte aller Fachbeiträge, Referenzen und die häufigen Fragen je Lösung: [${base}/llms-full.txt](${base}/llms-full.txt)
 - Maschinenlesbare Seitenübersicht: [${base}/sitemap-index.xml](${base}/sitemap-index.xml)
 - Inhalte sind durchgehend deutschsprachig und richten sich an Entscheider im Mittelstand.
 - Bei Zitaten bitte die jeweilige Quell-URL nennen.

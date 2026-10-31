@@ -61,7 +61,7 @@ export const de = {
     meta: {
       title: 'Kontakt: Erstgespräch zu Individualsoftware',
       description:
-        '30 Minuten, kostenlos, direkt mit Marten Prieß: Ihr erzählt, wo Excel, Branchensoftware oder Handarbeit euch bremsen, wir sagen ehrlich, ob und wie wir helfen. Aus Winsen bei Hamburg, bundesweit remote.',
+        '30 Minuten, kostenlos, direkt mit Marten Prieß: Ihr erzählt, wo es hakt, wir sagen ehrlich, ob und wie wir helfen. Aus Winsen bei Hamburg, bundesweit remote.',
     },
     hero: {
       badge: 'Direkter Kontakt',
@@ -106,7 +106,7 @@ export const de = {
   blog: {
     title: 'Individualsoftware & Prozesse: Praxisberichte',
     description:
-      'Standardsoftware am Limit, Tool-Wildwuchs, Reporting aus Excel, Legacy-Hosting: Praxisbeiträge aus echten Ablöse- und Digitalisierungsprojekten im Mittelstand.',
+      'Standardsoftware am Limit, Tool-Wildwuchs, Reporting aus Excel, Legacy-Hosting: Praxisbeiträge aus echten Ablöseprojekten im Mittelstand.',
     descriptionHtml:
       'Einblicke aus echten Projekten: <strong>Standardsoftware-Ablösung</strong>, <strong>Prozessoptimierung</strong>, Reporting und der Weg vom Tool-Wildwuchs zur belastbaren Steuerung.',
     allPosts: 'Alle Beiträge',

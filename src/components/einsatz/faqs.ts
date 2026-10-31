@@ -1,6 +1,14 @@
 /** FAQs der Seite, auch fürs FAQ-Schema der indexierten Seite (pages/*.astro). */
 export const einsatzFaqs = [
   {
+    q: 'Wann reicht Excel für die Einsatzplanung nicht mehr?',
+    a: 'Wenn bei einem Ausfall erst jemand herausfinden muss, wer einspringen kann. Oder wenn Stunden am Monatsende von Zetteln abgetippt werden und die Rechnung deshalb später rausgeht.',
+  },
+  {
+    q: 'Was gehört zu einer Software für Einsatzplanung und Abrechnung?',
+    a: 'Bei uns sind das Plantafel, Ablauf je Auftrag, Leistungserfassung, Rechnung und Mahnwesen in einem System. Fällt jemand aus, seht ihr sofort, wer einspringen kann. Was erledigt ist, wird zur Rechnung.',
+  },
+  {
     q: 'Ist das nicht mit Standardsoftware günstiger gelöst?',
     a: 'Für manche Betriebe ja. Wenn euer Ablauf branchenüblich ist, passt ein Standard-Tool. Sobald eure Planung Besonderheiten hat, etwa Fremdvergaben mitten im Ablauf, eigene Qualifikationen oder Kontingente je Vertrag, landet ihr wieder bei Workarounds und einer Excel daneben. Dann lohnt eine Lösung, die euren Ablauf abbildet.',
   },
