@@ -1,166 +1,22 @@
-<!doctype html>
-<html lang="de">
-<head>
-<meta charset="utf-8">
-<title>Funnel-Konzept</title>
-<style>
-  :root { --ink:#14182b; --muted:#5b6275; --line:#dfe2ea; --brand:#4d5d96; --soft:#f4f5f9; --rot:#b42318; --gruen:#067a4b; }
-  * { box-sizing:border-box; }
-  body { margin:0; background:#fff; color:var(--ink); font:16px/1.6 Inter,system-ui,sans-serif; }
-  main { max-width:1040px; margin:0 auto; padding:32px 20px 80px; }
-  h1 { font-size:34px; line-height:1.15; margin:0 0 10px; letter-spacing:-.02em; }
-  h2 { font-size:24px; margin:52px 0 10px; letter-spacing:-.01em; }
-  h3 { font-size:17px; margin:26px 0 6px; }
-  p { margin:8px 0; max-width:75ch; } .klein { color:var(--muted); font-size:14px; }
-  table { width:100%; border-collapse:collapse; margin:12px 0; font-size:14.5px; }
-  th { text-align:left; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); padding:7px 10px; border-bottom:2px solid var(--line); }
-  td { padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
-  td.alt { color:var(--muted); } td.neu { font-weight:600; }
-  .zahl { white-space:nowrap; font-variant-numeric:tabular-nums; text-align:right; }
-  .wahl { background:var(--soft); border-radius:12px; padding:14px 18px; margin:12px 0; }
-  .wahl b { display:block; }
-  .karte { border:1px solid var(--line); border-radius:12px; padding:14px 18px; margin:12px 0; }
-  .sim { border-left:3px solid var(--brand); padding-left:12px; color:var(--muted); font-size:14px; }
-  ul { padding-left:20px; } li { margin:5px 0; }
-  code { background:var(--soft); padding:1px 5px; border-radius:4px; font-size:.9em; }
-  .breit { overflow-x:auto; }
-</style>
-</head>
-<body>
-<main>
-<h1>Alle Seiten, kürzer und einfacher</h1>
-<p>Zweite Runde nach dem Funnel: Oben in den Reitern steht je Seite links die Live-Fassung und rechts die neue, das Scrollen läuft mit. Blog, Impressum und Datenschutz sind nicht dabei. Titel und Beschreibungen für Google bleiben unverändert.</p>
-<div class="breit"><table>
-<tr><th>Seite</th><th class="zahl">Desktop vorher</th><th class="zahl">nachher</th><th>Überschrift neu</th></tr>
-<tr><td>Startseite</td><td class="zahl">13.676</td><td class="zahl">9.209</td><td class="neu">Software für Betriebe, die nicht in Standardlösungen passen (bleibt)</td></tr>
-<tr><td>/angebote/</td><td class="zahl">13.862</td><td class="zahl">5.675</td><td class="neu">Beim Angebotschreiben schon sehen, wie viel Gewinn übrig bleibt</td></tr>
-<tr><td>/einsatzplanung/</td><td class="zahl">12.024</td><td class="zahl">5.523</td><td class="neu">Bei jedem Ausfall sofort sehen, wer einspringen kann</td></tr>
-<tr><td>/zahlen/</td><td class="zahl">12.464</td><td class="zahl">6.089</td><td class="neu">Jeden Tag sehen, wie der Betrieb läuft und wo er in drei Monaten steht</td></tr>
-<tr><td>/standardsoftware-abloesung/</td><td class="zahl">11.467</td><td class="zahl">5.470</td><td class="neu">Eigene Software statt Branchensoftware, Schritt für Schritt</td></tr>
-<tr><td>/software-check/</td><td class="zahl">9.335</td><td class="zahl">4.548</td><td class="neu">Mit KI gebaute Software prüfen lassen, bevor ein Kunde nachfragt</td></tr>
-<tr><td>/arbeitsweise/</td><td class="zahl">9.127</td><td class="zahl">5.847</td><td class="neu">Schneller und günstiger zur passenden Software</td></tr>
-<tr><td>/discovery-workshop/</td><td class="zahl">10.159</td><td class="zahl">5.991</td><td class="neu">In drei Terminen wissen, was zu tun ist und was es kostet</td></tr>
-<tr><td>/kontakt/</td><td class="zahl">4.188</td><td class="zahl">3.948</td><td class="neu">In 30 Minuten klären, ob und wie wir helfen können</td></tr>
-<tr><td>/leistungen/</td><td class="zahl">4.990</td><td class="zahl">4.990</td><td class="neu">Software für Angebot, Einsatz und Zahlen, die zu eurem Betrieb passt</td></tr>
-<tr><td>/referenzen/</td><td class="zahl">6.959</td><td class="zahl">6.921</td><td class="neu">Echte Projekte, von der Ausgangslage bis zum Ergebnis</td></tr>
-</table></div>
-<p class="klein">Die Search-Console-Daten stammen vom August: Fast alle Klicks kommen über die Startseite und den Namen RocketBase, die Tür-Seiten hatten kaum Sichtbarkeit. Das Risiko beim Kürzen ist deshalb klein, aber nicht null.</p>
-
-<h1 style="margin-top:56px">Fünf Tore, einfacher gesagt</h1>
-<p>Alle fünf Funnel-Seiten sind lokal umgebaut. Oben in den Reitern seht ihr je Tor links die Live-Seite und rechts die neue Fassung, das Scrollen läuft mit. Rot gestrichelt ist, was wegfällt. Das Quiz lässt sich auf beiden Seiten durchklicken, abgeschickt wird dabei nichts.</p>
-
-<h2>Wo die Leute verloren gehen</h2>
-<div class="breit"><table>
-<tr><th>Tor</th><th class="zahl">Besucher</th><th class="zahl">Quiz gestartet</th><th class="zahl">Kontaktschritt</th><th>Erste Frage heute</th></tr>
-<tr><td>Software-Check</td><td class="zahl">136</td><td class="zahl">9,6 %</td><td class="zahl">10 von 13</td><td>5 Antworten mit Beschreibung</td></tr>
-<tr><td>Einsatz</td><td class="zahl">126</td><td class="zahl">4,8 %</td><td class="zahl">5 von 6</td><td>4 Antworten mit Beschreibung</td></tr>
-<tr><td>Eigene Software</td><td class="zahl">86</td><td class="zahl">4,7 %</td><td class="zahl">4 von 4</td><td>5 Antworten mit Beschreibung</td></tr>
-<tr><td>Zahlen</td><td class="zahl">58</td><td class="zahl">12,1 %</td><td class="zahl">5 von 7</td><td>5 Antworten mit Beschreibung</td></tr>
-<tr><td>Angebote</td><td class="zahl">36</td><td class="zahl">25 %</td><td class="zahl">9 von 9</td><td>5 Antworten mit Beschreibung</td></tr>
-</table></div>
-<p>Von 442 Besuchern fangen 39 an, und 33 von ihnen kommen bis zum Kontaktschritt. Wer einmal antwortet, bleibt also fast immer dabei. Gezählt wird der Start erst bei der ersten Antwort, deshalb passt dein Feedback trotzdem: Wer vor der ersten Frage zögert, taucht in den 91 % auf.</p>
-<p>Die zweite Lücke liegt am Formular. Vom 23. bis 29.10. hat von 31 Leuten einer abgeschickt. Pflichtfelder, Wegfall von „Firma“ und die Schnell-Einschätzung kamen am 29.10., ihre Wirkung ist in diesen Zahlen also kaum enthalten.</p>
-<p>Gemessen auf dem Handy: Im Instagram-Browser bleiben rund 674 px Höhe. Auf allen fünf Live-Seiten endet die erste Frage erst bei 729 bis 922 px, die letzten Antworten liegen also unter dem Rand. Deshalb erklärt der neue Hero zuerst, der Knopf endet mobil bei 407 bis 451 px, und das Quiz steht am Seitenende. Die Seiten schrumpfen mobil von 7.500 bis 9.500 px auf rund 5.200 bis 6.000 px.</p>
-<p class="klein">36 Besucher bei Angebote sind wenig. Die 25 % deuten in eine Richtung, belegt ist noch nichts.</p>
-
-<h2>Was der Rat dazu sagt</h2>
-<p class="sim">Simulierter Rat: Jede Sicht ist aus den veröffentlichten Methoden der Personen abgeleitet, keine echte Prüfung durch sie. Sitze: Schwartz, Hormozi, Hopkins, dazu Sutherland als Gegenstimme.</p>
-<p><b>Schwartz (Bewusstseinsstufen):</b> Kalte Klicks aus Meta kennen ihr Problem, aber keine Lösung. „Ein System, das eure Kalkulation kennt“ setzt schon voraus, dass jemand ein System sucht. Die Überschrift muss beim Wunsch beginnen, den der Leser schon hat.</p>
-<p><b>Hormozi (Wert-Gleichung):</b> Der Aufwand ist die schwächste Stelle. Die Stundenzahl über dem Formular macht den Wert sichtbar, kurz bevor jemand etwas hergibt.</p>
-<p><b>Hopkins (Tests, Begründung):</b> Konkrete Aussagen schlagen allgemeine, und Streit um Formulierungen klärt der Test. Er würde die Rechnung nur mit Zahlen zeigen, die man belegen kann.</p>
-<p><b>Sutherland (Gegenstimme):</b> Weniger ist nicht automatisch besser. Ein Formular direkt nach drei Klicks kann sich billig anfühlen, und ein ernsthafter Eindruck entsteht auch durch sichtbaren Aufwand. Deshalb bleiben das echte Bild aus Kundenlösungen und Martens Gesicht, und der Knopf heißt „Rückruf anfordern“.</p>
-<h3>Wo der Rat uneins ist</h3>
-<ul>
-<li><b>Quiz im Hero oder Knopf:</b> Entschieden für den Knopf: Erst abholen, dann fragen. Zu beobachten bleibt der Quiz-Start, denn das Quiz liegt jetzt weit unten und die Leiste muss die Strecke tragen.</li>
-<li><b>Aufwand oder Ersparnis:</b> Hormozi will die große Zahl, Hopkins den Beleg. Siehe Entscheidung 1 unten.</li>
-<li><b>Kürzen:</b> Bei Eigene Software fällt der FKC-Block weg, obwohl er der stärkste Beweis ist. Wenn dieses Tor nach zwei Wochen schlechter läuft, kommt er als Erstes zurück.</li>
-</ul>
-
-<h2>Überschriften der Funnel-Seiten</h2>
-<p>Bewertet nach dem Raster aus <code>meta-ads-playbook</code>, fünf Achsen, höchstens 25 Punkte, unter 18 wird überarbeitet. Die Punkte sind meine Einschätzung. Ein erster Einsatz-Entwurf („Einsätze planen, Stunden erfassen, Rechnung schreiben. In einer Software.“) kam auf 16 und flog raus.</p>
-<div class="breit"><table>
-<tr><th>Tor</th><th>Live</th><th class="zahl">Pkt.</th><th>Neu</th><th class="zahl">Pkt.</th></tr>
-<tr><td>Angebote</td><td class="alt">Ein System, das eure Kalkulation kennt. Und eure Marge gleich mit.</td><td class="zahl">12</td><td class="neu">Beim Angebotschreiben schon sehen, wie viel Gewinn übrig bleibt</td><td class="zahl">19</td></tr>
-<tr><td>Einsatz</td><td class="alt">Planen könnt ihr. Umplanen kostet euch den Tag.</td><td class="zahl">18</td><td class="neu">Bei jedem Ausfall sofort sehen, wer einspringen kann</td><td class="zahl">19</td></tr>
-<tr><td>Zahlen</td><td class="alt">Wie läuft der Betrieb? Heute sehen, nicht am Monatsende.</td><td class="zahl">17</td><td class="neu">Jeden Tag sehen, wie der Betrieb läuft und wo er in drei Monaten steht</td><td class="zahl">19</td></tr>
-<tr><td>Eigene Software</td><td class="alt">Ihr arbeitet anders als alle anderen. Nur eure Software weiß das nicht.</td><td class="zahl">16</td><td class="neu">Braucht ihr eine Software, die es so noch nicht gibt?</td><td class="zahl">20</td></tr>
-<tr><td>Software-Check</td><td class="alt">Ihr habt mit KI gebaut. Jetzt soll jemand draufschauen, der es auch selbst könnte.</td><td class="zahl">16</td><td class="neu">Mit KI gebaute Software prüfen lassen, bevor ein Kunde nachfragt</td><td class="zahl">19</td></tr>
-</table></div>
-<p>Die Frage bei Eigene Software ist die Anzeige von 2024, die FKC und Diezinger gebracht hat. Sie ist die einzige Headline mit Pronomen: Der Beleg wiegt hier schwerer als die Regel. Der Blick nach vorn bei Zahlen und der Ausfall bei Einsatz greifen die Motive F-Z und V-E auf. „Dezember“ steht bewusst nicht mehr in der Headline, weil es ab November kein Ausblick mehr ist. Das Motiv F-Z („Wo landet ihr im Dezember?“) sollte deshalb ebenfalls umgestellt werden. Das Einsatz-Motiv M-E („Ein Vertrag endet im März“) passt dagegen nicht zur Überschrift: Läuft es weiter, braucht es eine eigene Variante.</p>
-
-<h2>Das Quiz</h2>
-<p>Neue Regeln: höchstens vier kurze Antworten, keine Beschreibungen, kein Freitext. Jede Frage liefert eine Zahl für die Rechnung oder sortiert vor. Die Werkzeug-Fragen sind raus.</p>
-<div class="breit"><table>
-<tr><th>Tor</th><th>Live</th><th>Neu</th><th>Rechnung</th></tr>
-<tr><td>Angebote</td><td class="alt">Wie macht ihr heute ein Angebot? · Wie viele im Monat? · Wie viele Leute schreiben?</td><td class="neu">Wie viele Angebote im Monat? · Wie lange dauert eins? · Wie viele Leute arbeiten bei euch?</td><td>Menge × Dauer</td></tr>
-<tr><td>Einsatz</td><td class="alt">Wie plant ihr heute? · Wo hakt es? · Wie viele Leute?</td><td class="neu">Wie viele Aufträge im Monat? · Was kostet am meisten Zeit? · Wie viele Leute?</td><td>Aufträge × 20 min</td></tr>
-<tr><td>Zahlen</td><td class="alt">Woher kommen eure Zahlen? · Was zuerst sehen? · Wie viele Leute?</td><td class="neu">Wie aktuell sind eure Zahlen? · Wie viele Leute bauen Auswertungen? · Wie viele Leute arbeiten bei euch?</td><td>Personen × 10 h</td></tr>
-<tr><td>Eigene Software</td><td class="alt">Womit arbeitet ihr? · Was wolltet ihr anders machen? · Wie viele arbeiten damit?</td><td class="neu">Was wolltet ihr schon immer anders machen? · Wie viele arbeiten täglich damit?</td><td>Personen × 400 min</td></tr>
-<tr><td>Software-Check</td><td class="alt">Worum geht es? · Was ist der Anlass? · Wie viele Leute?</td><td class="neu">Dieselben Fragen, je vier kurze Antworten</td><td>Keine, Schnell-Einschätzung bleibt</td></tr>
-</table></div>
-<div class="karte">
-<b>So sieht es über dem Formular aus</b> (20 Angebote, ein halber Tag)
-<p style="font-size:22px;font-weight:700;margin:8px 0 2px">Rund 80 Stunden im Monat</p>
-<p>gehen bei euch in Angebote. Das sind etwa 29.000 € Arbeitszeit im Jahr.<br><b>Marten zeigt euch im Gespräch, wie viel davon ihr sparen könnt.</b></p>
-<p class="klein">Rund 20 Angebote mal 4 Stunden, 30 € je Stunde.</p>
-</div>
-<p>Darunter steht nur noch „Wohin darf Marten zurückrufen?“ mit Name, Telefon und E-Mail, alle drei Pflicht, und dem Knopf „Rückruf anfordern“. Die 20 Minuten, 10 Stunden und 400 Minuten sind dieselben Annahmen wie im Regler <code>LohntSich</code>. Der Stundensatz von 30 € folgt aus dessen 55.000 € je Stelle.</p>
-
-<h2>Was auf den Funnel-Seiten bleibt</h2>
-<p>Ein Gerüst für alle fünf, gebaut nach deiner schlanken Fassung: Hero mit Knopf und Bild, Logos, „Was es ist“ mit drei Schritten und einem Bild, Heute und Mit RocketBase mit Bild, eine Zahl, Ablauf, Quiz am Ende. Die vier häufigen Fragen stehen eingeklappt vor dem Quiz, der Preis zuerst. Raus sind Rechner, Ebenen-Stapel, Praxis-Blöcke, dunkles Band, „Von heute bis dahin“ und der Regler. Die Antworten auf die Einwände sind in die vier Fragen gewandert. Die alten Komponenten liegen unverändert im Repo und sind nur nicht mehr eingebunden.</p>
-
-<h2>Der Prompt deines Marketing-Kumpels</h2>
-<p>Das meiste passt und ist jetzt eingebaut. Die Prozentzahlen in seiner Aufstellung sind Schätzungen, die Regeln selbst sind das Wertvolle.</p>
-<div class="breit"><table>
-<tr><th>Aus dem Prompt</th><th>Umsetzung</th></tr>
-<tr><td>Headline nennt das Ergebnis, ohne Pronomen</td><td>Übernommen, außer bei Eigene Software</td></tr>
-<tr><td>Zeit, Aufwand und Risiko nach oben</td><td>Übernommen: vier Fakten im Hero, auf allen Größen sichtbar</td></tr>
-<tr><td>Block „Was es ist“ mit drei Schritten</td><td>Übernommen, auf allen fünf Seiten</td></tr>
-<tr><td>Eine Zahl, die den Schmerz zeigt</td><td>Übernommen, aus den Annahmen des Reglers. Beim Software-Check gibt es keine, also auch keinen Block</td></tr>
-<tr><td>Einfache Sprache, ein Wort pro Sache, keine Stakkato-Paare</td><td>Übernommen, auch in den Vorschlägen unten</td></tr>
-<tr><td>Tabelle mit fünf Zeilen</td><td>Vier Zeilen. Die fünfte („Jeder rechnet anders“) widerspricht <code>tor-hooks.md</code>: Bei ein bis drei Kalkulierenden gibt es die Streuung kaum</td></tr>
-<tr><td>Sechs Vorteile unter „Was drin ist“</td><td>Weggelassen, weil du im Funnel weniger wolltest. Das Wichtigste steht in Fakten und Fragen</td></tr>
-<tr><td>Das Quiz kommt nie vor die Erklärung</td><td>Übernommen: Hero mit Knopf, Quiz am Seitenende, Leiste unten bleibt</td></tr>
-</table></div>
-
-<h2>Überschriften der Seiten ohne Funnel</h2>
-<p>Diese Seiten sind noch nicht geändert, das ist der Vorschlag für den nächsten Schritt. Sie behalten ihre Tiefe, nur die Sprache wird einfacher. Bei <code>/standardsoftware-abloesung/</code> bleiben Vertec und Centric als Suchbegriffe stehen.</p>
-<div class="breit"><table>
-<tr><th>Seite</th><th>Heute</th><th>Vorschlag</th></tr>
-<tr><td>/angebote/</td><td class="alt">Euer Angebot rechnet sich selbst.</td><td class="neu">Software, die Angebote so rechnet wie der eigene Betrieb</td></tr>
-<tr><td></td><td class="alt">Die Kalkulation liegt neben dem System. Dazwischen tippt jemand ab.</td><td class="neu">Die Rechnung steht in Excel, das Angebot in Word. Dazwischen tippt jemand ab.</td></tr>
-<tr><td></td><td class="alt">Mehr als ein schönes Dokument.</td><td class="neu">Der Kunde sagt online per Klick zu</td></tr>
-<tr><td></td><td class="alt">Was der Angebotsbaustein sonst noch mitbringt.</td><td class="neu">Was sonst noch drin ist</td></tr>
-<tr><td></td><td class="alt">Der Angebotsbaustein ist erst der Anfang.</td><td class="neu">Was später dazukommen kann</td></tr>
-<tr><td>/einsatzplanung/</td><td class="alt">Geplant, erledigt, abgerechnet. In einem System.</td><td class="neu">Einsätze planen, erfassen und abrechnen in einer Software</td></tr>
-<tr><td></td><td class="alt">Jeder Schritt kennt seinen Vorgänger.</td><td class="neu">Verschiebt sich ein Schritt, rücken die nächsten mit</td></tr>
-<tr><td></td><td class="alt">Erfasst ist abgerechnet.</td><td class="neu">Was erledigt ist, wird zur Rechnung</td></tr>
-<tr><td></td><td class="alt">Was vereinbart ist, gegen das, was geplant ist.</td><td class="neu">Seht, ob der Plan zum Vertrag passt</td></tr>
-<tr><td>/zahlen/</td><td class="alt">Euer Betrieb auf einen Blick. Live, nicht am Monatsende.</td><td class="neu">Jeden Tag sehen, wo der Betrieb steht</td></tr>
-<tr><td></td><td class="alt">Ein Cockpit ist nur so gut wie die Fragen dahinter.</td><td class="neu">Wir fangen bei euren Fragen an, nicht bei den Diagrammen</td></tr>
-<tr><td></td><td class="alt">Soll gegen Ist, Monat für Monat.</td><td class="neu">Plan und Ergebnis nebeneinander, jeden Monat</td></tr>
-<tr><td>/standardsoftware-abloesung/</td><td class="alt">Raus aus der Branchensoftware. Ohne Stillstand.</td><td class="neu">Eigene Software statt Branchensoftware, Schritt für Schritt</td></tr>
-<tr><td></td><td class="alt">Angepasst, bis nichts mehr geht. Bezahlt wird trotzdem.</td><td class="neu">Jede Anpassung kostet extra und passt trotzdem nicht ganz</td></tr>
-<tr><td></td><td class="alt">Erst der Schnitt, dann die Ablösung.</td><td class="neu">Erst festlegen, was zuerst umzieht</td></tr>
-<tr><td>/software-check/</td><td class="alt">Ihr habt mit KI gebaut. Jetzt soll jemand draufschauen, der es auch selbst könnte.</td><td class="neu">Mit KI gebaute Software prüfen lassen, bevor ein Kunde nachfragt</td></tr>
-<tr><td></td><td class="alt">Nicht Prisma oder Drizzle. Die Fragen, die bleiben, wenn der Code läuft.</td><td class="neu">Diese Fragen entscheiden, ob eure Software hält</td></tr>
-<tr><td></td><td class="alt">Vier Schritte. Tage, nicht Wochen.</td><td class="neu">In wenigen Tagen habt ihr den Bericht</td></tr>
-</table></div>
-
-<h2>Drei Entscheidungen für dich</h2>
-<div class="wahl"><b>1. Zeigen wir eine Ersparnis oder den Aufwand?</b>
-Du wolltest „Marten zeigt, wie euer Team 50 Stunden einspart“. Gebaut ist vorerst der heutige Aufwand, weil es keine freigegebene Quote gibt und die FKC-Zahlen nicht öffentlich sind. Mit einer belegten Quote (etwa „rund die Hälfte fällt weg“) ist es eine Zeile Code.</div>
-<div class="wahl"><b>2. Stimmen die Wochen und Versprechen aus deiner schlanken Fassung?</b>
-Dort steht „In 4 bis 8 Wochen fertig“, im Code stehen bei Angebote 1 bis 2 Wochen Vorlauf und 2 bis 4 Wochen Bau. Gebaut sind daraus 3 bis 6 Wochen, die anderen Tore entsprechend. Den Satz „So geht kein Angebot mehr mit Verlust raus“ habe ich weggelassen, weil er absolut ist. „Erinnert ihn die Software automatisch“ ist übernommen: Bitte prüfen, ob das Produkt das heute kann.</div>
-<div class="wahl"><b>3. Wechsel oder Test?</b>
-Bei rund 440 Besuchern lässt sich ein A/B-Test je Tor kaum auswerten. Empfehlung: Alle fünf Seiten wechseln, zwei Wochen messen und gegen die Tabelle oben vergleichen. Das ist nur eine Vorher-nachher-Messung, sie zeigt große Effekte, keine kleinen.</div>
-
-<h2>Was beim Umbau mitzieht</h2>
-<ul>
-<li>Die neuen Antworten landen im Funnel-Board mit neuen Kennungen. Das Backend speichert sie frei, Auswertungen über „heute“ oder „impact“ müsstet ihr aber anpassen.</li>
-<li>Plausible bekommt am Kontaktschritt zusätzlich die Stundenzahl, so lässt sich später sehen, ab welcher Zahl mehr Leute abschicken.</li>
-<li>Die Einordnungs-Sätze aus <code>quizEinordnung.json</code> nutzt nur noch der Software-Check.</li>
-</ul>
-</main>
-</body>
-</html>
+<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Gesamtauswertung</title><style>
+:root{--i:#14182b;--m:#5b6275;--l:#dfe2ea;--b:#4d5d96}*{box-sizing:border-box}body{margin:0;color:var(--i);font:16px/1.6 Inter,system-ui,sans-serif}main{max-width:1040px;margin:0 auto;padding:32px 20px 80px}h1{font-size:34px;line-height:1.15;margin:0 0 10px;letter-spacing:-.02em}h2{font-size:24px;margin:48px 0 10px}p{max-width:75ch;margin:8px 0}.k{color:var(--m);font-size:14px}table{width:100%;border-collapse:collapse;font-size:14.5px;margin:12px 0}th{text-align:left;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--m);padding:7px 8px;border-bottom:2px solid var(--l)}td{padding:8px;border-bottom:1px solid var(--l)}.z,th.z{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}.s td{font-weight:700;border-top:2px solid var(--l)}.w{overflow-x:auto}ul{padding-left:20px}li{margin:5px 0}</style></head><body><main>
+<h1>Gesamtauswertung der Seiten</h1>
+<p>Stand 31.10.2026, Branch <code>shrink-marketing</code>. Vorher ist die Live-Seite, nachher die neue Fassung, gemessen auf 1.440 und 390 px Breite. Die Funnel-Seiten sind bereits live und nicht in der Tabelle.</p>
+<p><b>Gesamt:</b> Desktop 35 % kürzer, Handy 41 % kürzer, Text 35 % weniger. Aus 21 Seiten werden 20, weil Mission in Arbeitsweise aufgeht.</p>
+<div class=w><table><tr><th>Seite</th><th class=z>Desktop vorher</th><th class=z>nachher</th><th class=z>Handy vorher</th><th class=z>nachher</th><th class=z>Wörter vorher</th><th class=z>nachher</th></tr><tr><td>Startseite</td><td class=z>13.676</td><td class=z>8.911</td><td class=z>20.391</td><td class=z>11.474</td><td class=z>1.764</td><td class=z>953</td></tr><tr><td>Angebote</td><td class=z>13.862</td><td class=z>6.866</td><td class=z>21.213</td><td class=z>8.478</td><td class=z>2.245</td><td class=z>783</td></tr><tr><td>Einsatz</td><td class=z>12.024</td><td class=z>6.727</td><td class=z>18.192</td><td class=z>8.375</td><td class=z>1.770</td><td class=z>845</td></tr><tr><td>Zahlen</td><td class=z>12.464</td><td class=z>6.661</td><td class=z>18.738</td><td class=z>7.592</td><td class=z>1.822</td><td class=z>821</td></tr><tr><td>Standardsoftware ablösen</td><td class=z>11.467</td><td class=z>6.922</td><td class=z>16.066</td><td class=z>7.697</td><td class=z>1.367</td><td class=z>743</td></tr><tr><td>Software-Check</td><td class=z>9.335</td><td class=z>8.067</td><td class=z>12.651</td><td class=z>6.876</td><td class=z>1.631</td><td class=z>1.303</td></tr><tr><td>Arbeitsweise (mit Mission)</td><td class=z>18.294</td><td class=z>6.499</td><td class=z>27.892</td><td class=z>9.096</td><td class=z>1.641</td><td class=z>603</td></tr><tr><td>Workshop</td><td class=z>10.159</td><td class=z>7.203</td><td class=z>14.865</td><td class=z>9.684</td><td class=z>1.161</td><td class=z>808</td></tr><tr><td>Leistungen</td><td class=z>4.990</td><td class=z>6.078</td><td class=z>8.841</td><td class=z>8.736</td><td class=z>515</td><td class=z>721</td></tr><tr><td>Kontakt</td><td class=z>4.188</td><td class=z>3.948</td><td class=z>7.297</td><td class=z>6.481</td><td class=z>370</td><td class=z>328</td></tr><tr><td>Referenzen, Übersicht</td><td class=z>6.959</td><td class=z>6.151</td><td class=z>11.836</td><td class=z>10.190</td><td class=z>692</td><td class=z>552</td></tr><tr><td>FKC</td><td class=z>7.490</td><td class=z>5.646</td><td class=z>12.370</td><td class=z>8.983</td><td class=z>738</td><td class=z>673</td></tr><tr><td>bonprix</td><td class=z>5.827</td><td class=z>4.171</td><td class=z>8.406</td><td class=z>6.410</td><td class=z>369</td><td class=z>430</td></tr><tr><td>Statista</td><td class=z>5.950</td><td class=z>4.089</td><td class=z>8.513</td><td class=z>6.418</td><td class=z>378</td><td class=z>433</td></tr><tr><td>Stage</td><td class=z>5.866</td><td class=z>4.260</td><td class=z>8.362</td><td class=z>6.134</td><td class=z>329</td><td class=z>330</td></tr><tr><td>Diezinger</td><td class=z>6.809</td><td class=z>5.032</td><td class=z>10.624</td><td class=z>7.536</td><td class=z>502</td><td class=z>462</td></tr><tr><td>MAVOX</td><td class=z>5.818</td><td class=z>3.885</td><td class=z>8.335</td><td class=z>5.807</td><td class=z>341</td><td class=z>339</td></tr><tr><td>Smart Active Media</td><td class=z>5.778</td><td class=z>3.856</td><td class=z>8.248</td><td class=z>5.593</td><td class=z>335</td><td class=z>299</td></tr><tr><td>Statista & Canva</td><td class=z>5.799</td><td class=z>3.988</td><td class=z>8.356</td><td class=z>5.738</td><td class=z>351</td><td class=z>338</td></tr><tr><td>bonprix Collection Planning</td><td class=z>5.986</td><td class=z>3.841</td><td class=z>8.428</td><td class=z>5.692</td><td class=z>334</td><td class=z>306</td></tr><tr class=s><td>Summe</td><td class=z>172.741</td><td class=z>112.801</td><td class=z>259.624</td><td class=z>152.990</td><td class=z>18.655</td><td class=z>12.070</td></tr></table></div>
+<p class=k>Höhen in Pixeln, Wörter im sichtbaren Hauptinhalt auf dem Desktop. Arbeitsweise zeigt vorher die Summe aus Arbeitsweise und Mission. Handy-Werte sind höher als Desktop-Werte, weil dort alles untereinander steht, deshalb nur innerhalb einer Spalte vergleichen. Leistungen ist bewusst länger geworden, bonprix und Statista haben mehr Text, sind aber kürzer als vorher.</p>
+<h2>Was sich geändert hat</h2><ul>
+<li>Einheitlicher erster Screen: links Botschaft, rechts echtes Bild, kein Erstgespräch-Knopf ganz oben.</li>
+<li>Startseite mit Bilder-Fächer, kurzen Karten und Stage als erste Referenz.</li>
+<li>Leistungen als Vor-Tor mit Wegweiser und großen Zeilen je Bereich.</li>
+<li>Desktop zeigt mehr als das Handy, die Handy-Fassungen sind kürzer.</li>
+<li>Referenzen mit neuer Vorlage, echten Screenshots im Hero, Faktenleiste und „Das passt zu euch, wenn …“.</li>
+<li>Workshop: 1.500 € offen auf der Seite, ohne Anrechnung, im Funnel ohne Summe.</li>
+<li>Blog sprachlich vereinfacht, Suchbegriffe erhalten, zwei Grafiken im Software-Check-Artikel.</li></ul>
+<h2>Vor dem Livegang</h2><ul>
+<li>Delta-Sport die zwei Grafiken im Software-Check-Artikel zeigen.</li>
+<li>FKC-Freigabe abwarten, danach Zitate und Zahlen ergänzen.</li>
+<li>„Code-Check“ auf der Workshop-Seite auf „Software-Check“ vereinheitlichen.</li>
+<li>Anzeigenmotive prüfen: Dezember-Motiv und „Ein Vertrag endet im März“.</li>
+<li>Stand vor dem Livegang in Plausible und Search Console festhalten, die GSC-Daten sind von August.</li></ul>
+</main></body></html>
