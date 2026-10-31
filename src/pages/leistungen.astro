@@ -1,4 +1,12 @@
 ---
+import SeitenHero from '@/components/landing/SeitenHero.astro';
+import { Image } from 'astro:assets';
+import auftragsplanung from '@/assets/references/auftragsplanung-demo-1920.png';
+import cockpit from '@/assets/references/cockpit-demo-1920.png';
+import angebotBild from '@/assets/references/angebot-db-demo-1920.png';
+import kundenstandorte from '@/assets/references/kundenstandorte-uebersicht-demo-1920.png';
+import BerichtMock from '@/components/check/BerichtMock.astro';
+import { angebote, einsatz, eigeneSoftware, softwareCheck, zahlen } from '@/data/funnelSchlank';
 /**
  * „Alle Lösungen ansehen“: Übersicht über die drei Türen (Angebot, Einsatz, Zahlen), die Ablösung
  * als „das Ganze“ und den immer gleichen Weg dorthin. Seit 2026-10-07 neu, ersetzt die alte
@@ -8,10 +16,8 @@
 import PageLayout from '@/layouts/PageLayout.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
-import Blueprint from '@/components/hero-backgrounds/Blueprint.astro';
 import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
 import SectionHeader from '@/components/angebote/SectionHeader.astro';
-import MiniVisual from '@/components/loesungen/MiniVisual.astro';
 import { Picture } from 'astro:assets';
 import founderPortrait from '@/assets/rocketbase/founder-marten-priess.jpg';
 import { defaultLocale } from '@/i18n/config';
@@ -22,36 +28,24 @@ import { createProfessionalServiceSchema } from '@/lib/schema';
 const locale = defaultLocale;
 const contactUrl = getLocalizedPath('contact', locale);
 const workshopUrl = getLocalizedPath('discoveryWorkshop', locale);
-const einsatzUrl = getLocalizedPath('einsatzplanung', locale);
-const abloesungUrl = getLocalizedPath('standardsoftwareAbloesung', locale);
-const checkUrl = '/software-check/';
 
-const tueren = [
-  {
-    nr: '01',
-    kind: 'angebot' as const,
-    titel: 'Angebot & Kalkulation',
-    wenn: 'Wenn die Kalkulation neben dem System liegt und jemand die Summe abtippt.',
-    punkte: ['Angebote rechnen nach eurer Regel', 'Angebotsseite statt PDF, Zusage per Klick', 'Ihr seht, wann der Kunde geöffnet hat'],
-    href: '/angebote/',
-  },
-  {
-    nr: '02',
-    kind: 'einsatz' as const,
-    titel: 'Einsatz & Abrechnung',
-    wenn: 'Wenn geplant wird in Excel, umgeplant am Telefon und abgerechnet aus Stundenzetteln.',
-    punkte: ['Plantafel mit Abwesenheiten und Ablauf je Auftrag', 'Leistung erfassen, Rechnung per Klick', 'Mahnwesen mit Vorlagen je Stufe'],
-    href: einsatzUrl,
-  },
-  {
-    nr: '03',
-    kind: 'zahlen' as const,
-    titel: 'Zahlen & Steuerung',
-    wenn: 'Wenn der Monatsabschluss ein Projekt ist und die Zahlen alt sind, wenn sie kommen.',
-    punkte: ['Umsatz und Prognose, live statt am Monatsende', 'Auslastung bis zur einzelnen Person', 'Auslaufende Verträge, solange noch Zeit ist'],
-    href: '/zahlen/',
-  },
+const wegweiser = [
+  { icon: 'edit', satz: 'Angebote dauern zu lange', name: 'Angebot & Kalkulation', href: '#angebote' },
+  { icon: 'users', satz: 'Die Planung hängt an Excel', name: 'Einsatz & Abrechnung', href: '#einsatz' },
+  { icon: 'table', satz: 'Die Zahlen kommen zu spät', name: 'Zahlen & Steuerung', href: '#zahlen' },
+  { icon: 'layers', satz: 'Unsere Software passt nicht mehr', name: 'Standardsoftware ablösen', href: '#abloesung' },
+  { icon: 'shield', satz: 'Wir haben selbst mit KI gebaut', name: 'Software-Check', href: '#check' },
 ];
+
+// Nur ab lg: die Bereiche als große Zeilen mit echtem Bild, damit /leistungen/ als Vor-Tor trägt.
+const bereiche = [
+  { tor: angebote, bild: angebotBild, alt: 'Angebot mit Gewinn je Baustein, Demo-Daten', anker: 'angebote', href: '/angebote/', link: 'Angebot & Kalkulation ansehen' },
+  { tor: einsatz, bild: auftragsplanung, alt: 'Auftragsplanung mit Mitarbeitern und Einsätzen, Demo-Daten', anker: 'einsatz', href: '/einsatzplanung/', link: 'Einsatz & Abrechnung ansehen' },
+  { tor: zahlen, bild: cockpit, alt: 'Cockpit mit Umsatz und Auslastung, Demo-Daten', anker: 'zahlen', href: '/zahlen/', link: 'Zahlen & Steuerung ansehen' },
+  { tor: eigeneSoftware, bild: kundenstandorte, alt: 'Kundenstandorte auf einer Karte, Demo-Daten', anker: 'abloesung', href: '/standardsoftware-abloesung/', link: 'So läuft eine Ablösung' },
+  { tor: softwareCheck, bild: null, alt: '', anker: 'check', href: '/software-check/', link: 'Was geprüft wird' },
+];
+
 
 const weg = [
   { nr: '01', titel: 'Erstgespräch', meta: '30 Minuten · kostenlos', text: 'Ihr erzählt, wo es hakt. Wir sagen ehrlich, ob und wie wir helfen können.' },
@@ -61,9 +55,9 @@ const weg = [
 ];
 
 const ausserdem = [
-  { icon: 'layers', titel: 'Interne Plattformen', text: 'Für Produktdaten, Inhalte oder operative Abläufe, die in kein Standardwerkzeug passen.' },
-  { icon: 'globe', titel: 'Schnittstellen', text: 'Wenn eure Systeme miteinander reden sollen, statt dass Daten von Hand wandern.' },
-  { icon: 'users', titel: 'Portale für Kunden', text: 'Bestellen, Rückfragen beantworten, Unterlagen abholen, ohne Mail-Pingpong.' },
+  { icon: 'layers', titel: 'Interne Plattformen', text: 'Für Produktdaten, Inhalte oder Abläufe, die in kein Standardprogramm passen.' },
+  { icon: 'globe', titel: 'Schnittstellen', text: 'Damit eure Programme Daten austauschen und niemand sie von Hand überträgt.' },
+  { icon: 'users', titel: 'Portale für Kunden', text: 'Eure Kunden bestellen, beantworten Rückfragen und holen Unterlagen ab, ohne lange Mailwechsel.' },
 ];
 
 const clientLogos = [
@@ -79,7 +73,7 @@ const professionalServiceSchema = createProfessionalServiceSchema({
   url: servicesPageUrl,
   description:
     'Individuelle Software für inhabergeführte Betriebe: Angebot und Kalkulation, Einsatz und Abrechnung, Zahlen und Steuerung, oder die Ablösung der Branchensoftware. Vom Erstgespräch über den Workshop bis zum Betrieb aus einer Hand.',
-  services: [...tueren.map((t) => t.titel), 'Standardsoftware ablösen', 'Software-Check'],
+  services: wegweiser.map((w) => w.name),
 });
 ---
 
@@ -91,137 +85,87 @@ const professionalServiceSchema = createProfessionalServiceSchema({
   extraSchemas={professionalServiceSchema}
 >
   <!-- HERO -->
-  <section class="relative overflow-x-clip">
-    <Blueprint />
-    <div
-      class="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_60%_55%_at_50%_45%,var(--color-background)_0%,transparent_75%)] opacity-80"
-      aria-hidden="true"
-    >
-    </div>
-    <div class="relative z-10 container max-w-5xl py-20 text-center sm:py-28">
-      <p data-reveal="fade-down" class="text-brand-600 dark:text-brand-300 text-sm font-semibold tracking-[0.22em] uppercase">Lösungen</p>
-      <h1
-        data-reveal="fade-down"
-        lang="de"
-        class="font-display text-foreground mt-5 text-4xl leading-[1.08] font-bold tracking-tight text-balance sm:text-5xl lg:text-6xl"
-      >
-        Software für Betriebe,
-        <span class="text-brand-500 block">die nicht in Standardlösungen passen.</span>
-      </h1>
-      <p data-reveal class="text-foreground-secondary mx-auto mt-7 max-w-2xl text-lg leading-8">
-        Drei Bereiche, in denen wir am häufigsten gebraucht werden. Ihr könnt mit einem anfangen oder
-        die Branchensoftware ganz ablösen. Der erste Schritt ist immer ein Gespräch.
+  <SeitenHero eyebrow="Lösungen" titel="Software für Angebot, Einsatz und Zahlen, die zu eurem Betrieb passt" text="In diesen drei Bereichen werden wir am häufigsten gebraucht. Ihr könnt mit einem anfangen oder eure Branchensoftware ganz ablösen.">
+    <nav aria-label="Wegweiser zu den Bereichen" class="border-border bg-card/90 rounded-2xl border p-3 shadow-xl backdrop-blur-sm sm:p-4">
+      <p class="text-foreground-muted px-3 pt-2 pb-1 text-xs font-semibold tracking-[0.14em] uppercase">
+        Was passt am ehesten?
       </p>
-      <div data-reveal class="mt-9 flex flex-wrap items-center justify-center gap-4">
-        <Button size="lg" href={contactLinks.cal} target="_blank">
-          Erstgespräch buchen
-          <Icon name="arrow-up-right" size="sm" />
-        </Button>
-        <Button variant="link" href="#tueren" class="text-foreground-secondary hover:text-foreground">
-          Die drei Bereiche
-          <Icon name="chevron-down" size="sm" />
-        </Button>
-      </div>
-    </div>
-    <div class="relative z-10">
-      <ClientLogoStrip heading="Aus Projekten mit" logos={clientLogos} variant="light" uniform class="py-10" />
-    </div>
-  </section>
-
-  <!-- 01 DIE DREI TÜREN -->
-  <section id="tueren" class="bg-background relative scroll-mt-16 overflow-x-clip py-24 lg:py-28">
-    <div class="bg-brand-300/10 pointer-events-none absolute top-40 left-1/2 h-[36rem] w-[56rem] -translate-x-1/2 rounded-full blur-[120px]" aria-hidden="true"></div>
-    <div class="relative z-10 container max-w-6xl">
-      <SectionHeader
-        size="md"
-        number="01"
-        eyebrow="Drei Bereiche"
-        title="Wo bei euch die meiste Zeit verloren geht."
-        lead="Jeder Bereich ist für sich ein Einstieg. Mit eigener Seite, echten Ansichten aus Kundenlösungen und dem gleichen Weg: erst reden, dann der Workshop, dann bauen."
-      />
-      <div class="mt-14 grid gap-5 lg:grid-cols-3 lg:gap-y-0">
+      <ul>
         {
-          tueren.map((t) => (
-            <a href={t.href} data-reveal class="group border-border bg-card hover:border-brand-300 flex flex-col overflow-hidden rounded-[1.6rem] border p-4 pb-6 shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:shadow-[0_26px_55px_-28px_oklch(40%_0.1_265_/_0.45)] lg:row-span-6 lg:grid lg:grid-rows-subgrid lg:gap-y-0">
-              <MiniVisual kind={t.kind} />
-              <p class="text-brand-600 dark:text-brand-300 mt-5 px-2 font-mono text-xs font-semibold tracking-[0.2em]">{t.nr}</p>
-              <h3 class="font-display text-foreground mt-2 px-2 text-xl font-bold tracking-tight">{t.titel}</h3>
-              <p class="text-foreground-secondary mt-2 px-2 text-sm leading-6">{t.wenn}</p>
-              <ul class="mt-4 space-y-2 px-2">
-                {t.punkte.map((p) => (
+          wegweiser.map((w) => (
+            <li>
+              <a href={w.href} class="hover:bg-brand-500/5 group flex min-h-14 items-center gap-3 rounded-xl px-3 py-2.5 transition-colors">
+                <span class="bg-brand-500/10 text-brand-600 dark:text-brand-300 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
+                  <Icon name={w.icon} size="sm" />
+                </span>
+                <span class="min-w-0 flex-1">
+                  <span class="text-foreground block font-semibold">{w.satz}</span>
+                  <span class="text-foreground-muted block text-sm">{w.name}</span>
+                </span>
+                <Icon name="chevron-down" size="sm" class="text-foreground-muted group-hover:text-brand-500 shrink-0 transition-colors" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </SeitenHero>
+  <ClientLogoStrip heading="Aus Projekten mit" logos={clientLogos} variant="light" uniform class="py-8" />
+
+  <!-- BEREICHE IM DETAIL -->
+  <section class="py-14 sm:py-24 lg:py-28">
+    <div class="container max-w-6xl space-y-14 lg:space-y-28">
+      {
+        bereiche.map((b, i) => (
+          <div id={b.anker} class="grid scroll-mt-24 items-center gap-6 lg:grid-cols-2 lg:gap-16">
+            <div class:list={[i % 2 === 1 && 'lg:order-2']}>
+              <p class="text-brand-600 dark:text-brand-300 text-xs font-semibold tracking-[0.14em] uppercase">
+                {b.tor.fuerWen}
+              </p>
+              <h2 class="font-display text-foreground mt-3 text-2xl leading-tight sm:text-3xl font-bold tracking-tight text-balance">
+                {b.tor.headline}
+              </h2>
+              <p class="text-foreground-secondary mt-4 text-base leading-7">{b.tor.lead}</p>
+              <ul class="mt-5 hidden space-y-2 lg:block">
+                {b.tor.vergleich.slice(0, 3).map(([, danach]) => (
                   <li class="text-foreground-secondary flex gap-2.5 text-sm leading-6">
                     <Icon name="check-circle" size="sm" class="text-brand-500 mt-0.5 shrink-0" />
-                    <span>{p}</span>
+                    <span>{danach}</span>
                   </li>
                 ))}
               </ul>
-              <span class="mt-auto px-2 pt-6">
-                <span class="border-brand-300/70 bg-brand-500/5 text-brand-600 group-hover:border-brand-500 group-hover:bg-brand-500 dark:text-brand-200 flex items-center justify-between gap-3 rounded-2xl border py-2.5 pr-2.5 pl-5 text-sm font-semibold transition-colors duration-300 group-hover:text-white">
-                  {t.titel} ansehen
-                  <span class="bg-brand-500 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-white transition-colors duration-300 group-hover:bg-white/20">
-                    <Icon name="arrow-right" size="sm" />
-                  </span>
-                </span>
-              </span>
-            </a>
-          ))
-        }
-      </div>
-
-      <!-- Oder das Ganze -->
-      <a
-        href={abloesungUrl}
-        data-reveal
-        class="group border-brand-300/70 bg-card hover:border-brand-400 dark:border-brand-700 mt-5 grid items-center gap-6 overflow-hidden rounded-[1.6rem] border p-5 shadow-sm transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_26px_55px_-28px_oklch(40%_0.1_265_/_0.45)] md:grid-cols-[minmax(0,1fr)_17rem] md:p-7"
-      >
-        <div>
-          <p class="text-foreground-muted text-xs font-semibold tracking-[0.2em] uppercase">Oder das Ganze</p>
-          <h3 class="font-display text-foreground mt-2 text-2xl font-bold tracking-tight">Standardsoftware ablösen</h3>
-          <p class="text-foreground-secondary mt-2 max-w-xl text-sm leading-6 sm:text-base sm:leading-7">
-            Wenn es mehr ist als ein fehlender Teil: Branchensoftware samt Excel drumherum, Schritt für
-            Schritt abgelöst, im Parallelbetrieb und mit der ganzen Datenhistorie.
-          </p>
-          <span class="text-brand-600 mt-4 inline-flex items-center gap-2 text-sm font-semibold transition-transform duration-300 group-hover:translate-x-1">
-            So läuft eine Ablösung
-            <Icon name="arrow-right" size="sm" />
-          </span>
-        </div>
-        <MiniVisual kind="abloesung" />
-      </a>
-
-      <!-- Oder erst prüfen: für Betriebe, die Software schon haben -->
-      <a
-        href={checkUrl}
-        data-reveal
-        class="group border-border bg-card hover:border-brand-300 mt-5 grid items-center gap-6 overflow-hidden rounded-[1.6rem] border p-5 shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:shadow-[0_26px_55px_-28px_oklch(40%_0.1_265_/_0.45)] md:grid-cols-[minmax(0,1fr)_17rem] md:p-7"
-      >
-        <div>
-          <p class="text-foreground-muted text-xs font-semibold tracking-[0.2em] uppercase">Ihr baut selbst</p>
-          <h3 class="font-display text-foreground mt-2 text-2xl font-bold tracking-tight">Software-Check</h3>
-          <p class="text-foreground-secondary mt-2 max-w-xl text-sm leading-6 sm:text-base sm:leading-7">
-            Mit KI gebaut und ihr wollt technischen Rat von jemandem, der es auch könnte: Ein
-            erfahrener Entwickler und Architekt schaut drauf. Sicherheit, Struktur, Betrieb, mit Bericht,
-            den ihr Kunden und Auditoren vorlegen könnt.
-          </p>
-          <span class="text-brand-600 mt-4 inline-flex items-center gap-2 text-sm font-semibold transition-transform duration-300 group-hover:translate-x-1">
-            Was geprüft wird
-            <Icon name="arrow-right" size="sm" />
-          </span>
-        </div>
-        <MiniVisual kind="check" />
-      </a>
+              <Button variant="link" href={b.href} class="mt-4 px-0">
+                {b.link}
+                <Icon name="arrow-right" size="sm" />
+              </Button>
+            </div>
+            {b.bild ? (
+              <Image
+                src={b.bild}
+                alt={b.alt}
+                widths={[640, 960, 1280]}
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                class="border-border w-full rounded-2xl border shadow-xl"
+                loading="lazy"
+              />
+            ) : (
+              <BerichtMock />
+            )}
+          </div>
+        ))
+      }
     </div>
   </section>
 
   <!-- 02 DER WEG -->
-  <section class="bg-background-secondary border-border relative border-y py-24 lg:py-28">
+  <section class="bg-background-secondary border-border relative border-y py-14 sm:py-24 lg:py-28">
     <div class="relative z-10 container max-w-6xl">
       <SectionHeader
         size="md"
         number="02"
         eyebrow="Der Weg"
-        title="Egal welcher Bereich: Es fängt gleich an."
-        lead="Beratung, Konzept, Umsetzung und Betrieb aus einer Hand. Keine Übergaben, bei denen Wissen verloren geht. Gebaut von uns, oder von euch mit uns: Wer jemanden hat, der baut und bleibt, bekommt Review und Begleitung statt Umsetzung."
+        title="Bei Angebot, Einsatz, Zahlen und Ablösung fängt es gleich an"
+        lead="Beratung, Konzept, Umsetzung und Betrieb kommen aus einer Hand, damit bei Übergaben kein Wissen verloren geht. Habt ihr selbst gebaut, entfällt der Workshop: Beim Software-Check seht ihr im Erstgespräch gemeinsam auf den Code, danach kommt direkt ein Preis je nach Umfang."
       />
       <ol class="relative mt-14 grid gap-4 md:grid-cols-4">
         <span class="bg-border absolute top-[1.35rem] right-[12%] left-[12%] hidden h-px md:block" aria-hidden="true"></span>
@@ -250,14 +194,13 @@ const professionalServiceSchema = createProfessionalServiceSchema({
   </section>
 
   <!-- 03 AUSSERDEM -->
-  <section class="bg-background relative py-24 lg:py-28">
+  <section class="bg-background relative py-14 sm:py-24 lg:py-28">
     <div class="relative z-10 container max-w-6xl">
       <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:gap-16">
         <div data-reveal>
-          <SectionHeader size="md" align="left" number="03" eyebrow="Was wir außerdem bauen" title="Nicht jede Anfrage passt in einen Bereich." />
+          <SectionHeader size="md" align="left" number="03" eyebrow="Was wir außerdem bauen" title="Manche Anfragen passen in keinen dieser Bereiche" />
           <p class="text-foreground-secondary mt-6 text-base leading-7">
-            Manches liegt quer dazu oder ist kleiner. Auch dafür gilt: erst reden, dann sagen wir ehrlich,
-            ob wir die Richtigen sind.
+            Auch dann reden wir zuerst miteinander und sagen euch ehrlich, ob wir die Richtigen sind.
           </p>
         </div>
         <div class="grid gap-4 sm:grid-cols-2">
@@ -278,7 +221,7 @@ const professionalServiceSchema = createProfessionalServiceSchema({
   </section>
 
   <!-- KONTAKT -->
-  <section class="loes-kontakt border-border relative overflow-x-clip border-t py-20 lg:py-24">
+  <section class="loes-kontakt border-border relative overflow-x-clip border-t py-12 sm:py-20 lg:py-24">
     <div class="relative z-10 container grid max-w-6xl gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-16">
       <div data-reveal class="flex items-start gap-5">
         <Picture src={founderPortrait} alt="Marten Prieß" widths={[64, 128]} sizes="64px" formats={['avif', 'webp']} class="hidden h-16 w-16 shrink-0 rounded-full object-cover sm:block" loading="lazy" />
@@ -287,8 +230,8 @@ const professionalServiceSchema = createProfessionalServiceSchema({
             Nicht sicher, welcher Bereich passt?
           </h2>
           <p class="text-foreground-secondary mt-3 max-w-xl text-[0.95rem] leading-7">
-            Das klären wir in 30 Minuten. Ihr erzählt, wo es hakt, wir sagen ehrlich, wo wir anfangen
-            würden. Das Gespräch führt Marten Prieß, Gründer von RocketBase, selbst.
+            Das klären wir in 30 Minuten. Ihr erzählt, wo es hakt, und wir sagen ehrlich, wo wir anfangen
+            würden. Das Gespräch führt Marten Prieß selbst, der Gründer von RocketBase.
           </p>
         </div>
       </div>
@@ -297,7 +240,7 @@ const professionalServiceSchema = createProfessionalServiceSchema({
           Erstgespräch buchen
           <Icon name="arrow-up-right" size="sm" />
         </Button>
-        <Button variant="outline" size="lg" href={contactUrl}>
+        <Button variant="outline" size="lg" href={`${contactUrl}#anfrage-stellen`}>
           Lieber schreiben
           <Icon name="arrow-right" size="sm" />
         </Button>

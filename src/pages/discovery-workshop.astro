@@ -1,10 +1,10 @@
 ---
-import BlogQuerverweis from '@/components/blog/BlogQuerverweis.astro';
+import SeitenHero from '@/components/landing/SeitenHero.astro';
+import { Image } from 'astro:assets';
+import teamBild from '@/assets/rocketbase/team-am-laptop.jpg';
 import PageLayout from '@/layouts/PageLayout.astro';
-import { Picture } from 'astro:assets';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
-import Blueprint from '@/components/hero-backgrounds/Blueprint.astro';
 import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
 import { defaultLocale } from '@/i18n/config';
 import { getLocalizedPath } from '@/i18n/index';
@@ -14,11 +14,9 @@ import { createServiceSchema, createFAQSchema } from '@/lib/schema';
 import Prozessbild from '@/components/workshop/Prozessbild.astro';
 import Entwurf from '@/components/workshop/Entwurf.astro';
 import '@/components/angebote/frame.css';
-import founderPortrait from '@/assets/rocketbase/founder-marten-priess.jpg';
 
 const locale = defaultLocale;
 const contactUrl = getLocalizedPath('contact', locale);
-const referencesUrl = getLocalizedPath('references', locale);
 
 const clientLogos = [
   { key: 'bonprix_logo', name: 'bonprix' },
@@ -34,41 +32,41 @@ const clientLogos = [
 const deliverables = [
   {
     icon: 'share',
-    title: 'Ein klares Bild eurer Datenflüsse',
-    text: 'Ihr seht schwarz auf weiß, welche Infos zwischen welchen Systemen und Abteilungen wandern - und wo heute Reibung, Doppelarbeit oder blinde Flecken entstehen.',
+    title: 'Ihr seht, wo Zeit verloren geht',
+    text: 'Wir zeigen, welche Infos zwischen euren Programmen und Abteilungen wandern und wo heute doppelt gearbeitet oder abgetippt wird.',
   },
   {
     icon: 'layers',
-    title: 'Ein Prozessbild, das alle verstehen',
-    text: 'Eure Kernprozesse in einer standardisierten Darstellung - lesbar für Fachbereich, Geschäftsführung und IT. Kein Raum mehr für Missverständnisse oder unterschiedliche Sichtweisen im Team.',
+    title: 'Euer Ablauf auf einem Bild',
+    text: 'So einfach aufgezeichnet, dass Fachbereich, Geschäftsführung und IT dasselbe darunter verstehen.',
   },
   {
     icon: 'palette',
-    title: 'Greifbare Entwürfe statt abstrakter Ideen',
-    text: 'Konkrete Oberflächen-Skizzen der wichtigsten Abläufe - damit sich Stakeholder sofort ein Bild machen können, wie eine Lösung aussehen würde, statt über Konzepte zu diskutieren.',
+    title: 'Ihr seht eure Software, bevor sie gebaut wird',
+    text: 'Skizzen der Oberflächen für euren wichtigsten Ablauf. So könnt ihr über etwas Konkretes sprechen.',
   },
   {
     icon: 'file-text',
-    title: 'Eine Entscheidung, die euch gehört',
-    text: 'Schriftliche Zusammenfassung mit einer klaren Empfehlung: ausbauen, ablösen oder so lassen, mit Festpreis für die erste Stufe und priorisierten nächsten Schritten. Geeignet für interne Weichenstellungen, Aufsichtsrat oder die Weiterarbeit mit uns.',
+    title: 'Eine klare Empfehlung mit festem Preis',
+    text: 'Schriftlich: ausbauen, ablösen oder so lassen, dazu ein fester Preis für die erste Stufe und die nächsten Schritte. Damit könnt ihr intern entscheiden.',
   },
 ];
 
-// Ein Format, ein Preis (entschieden 2026-10-07). Vertieft und Individuell sind raus:
+// Ein Format (entschieden 2026-10-07). Preis seit 2026-10-31: 1.500 €, ohne Anrechnung. Steht nur hier, nicht im Funnel. Vertieft und Individuell sind raus:
 // Reicht ein Workshop nicht, sagen wir das im dritten Termin und machen einen Vorschlag.
 const formats = [
   {
     name: 'Workshop',
     duration: 'drei Termine',
     sessions: '3 h + 2 h + 1 h, verteilt über ein bis zwei Wochen',
-    price: '2.400 €',
-    summary: 'Drei Termine, ein Dokument, ein Festpreis. Der Betrag wird bei Beauftragung der Umsetzung voll angerechnet.',
+    price: '1.500 €',
+    summary: 'Drei Termine, ein Dokument, ein Festpreis für die Umsetzung. Das Ergebnis gehört euch, auch wenn ihr danach nicht mit uns weitermacht.',
     includes: [
-      'Aufnahme (3 Stunden, gern vor Ort): euer Ablauf von der Anfrage bis zur Rechnung, eingesetzte Tools, Systembrüche, Keyuser-Gespräche',
-      'Abstimmung (2 Stunden, remote, wenige Tage später): Aufgeschriebenes gegenlesen, Lücken schließen, erste Stufe abgrenzen',
-      'Übergabe (1 Stunde, mit Geschäftsführung): Ergebnis vorstellen, Dokument übergeben, Festpreis für die Umsetzung',
-      'Prozessbild, Datenflüsse und Oberflächen-Entwürfe für die Kernabläufe',
-      'Schriftliche Ausarbeitung mit Empfehlung: ausbauen, ablösen oder so lassen',
+      'Aufnahme (3 Stunden, gern vor Ort): euer Ablauf von der Anfrage bis zur Rechnung, eure Programme und Gespräche mit den Leuten, die täglich damit arbeiten',
+      'Abstimmung (2 Stunden, online, wenige Tage später): gemeinsam gegenlesen, Lücken schließen, festlegen, was zuerst gebaut wird',
+      'Übergabe (1 Stunde, mit der Geschäftsführung): Ergebnis vorstellen, Dokument übergeben, festen Preis nennen',
+      'Bild eures Ablaufs und Entwürfe für euren wichtigsten Ablauf',
+      'Schriftliche Empfehlung: ausbauen, ablösen oder so lassen',
     ],
     fit: 'Wenn ihr wissen wollt, was eine Lösung bei euch leisten muss und was sie kostet, bevor ihr Budget freigebt.',
     featured: true,
@@ -80,33 +78,26 @@ const processSteps = [
     number: '01',
     icon: 'monitor',
     title: 'Vorbereitung',
-    text: 'Etwa 30 Minuten online zur Ausgangslage, meist das Erstgespräch. Danach bekommt ihr Agenda und eine kurze Liste mit Fragen oder benötigten Unterlagen - der Workshop startet beim Kern.',
+    text: 'Etwa 30 Minuten online, meist im Erstgespräch. Danach bekommt ihr die Agenda und eine kurze Liste mit Fragen und Unterlagen.',
   },
   {
     number: '02',
     icon: 'users',
     title: 'Aufnahme · 3 Stunden',
-    text: 'Gern bei euch vor Ort. Wir gehen den Ablauf durch, wie er wirklich läuft: wer was womit macht, wo abgetippt wird, welche Regel hinter den Zahlen steckt. Keyuser dabei, echte Beispiele auf dem Tisch.',
+    text: 'Gern bei euch vor Ort. Wir gehen euren Ablauf mit den Leuten durch, die ihn täglich machen: wer was womit macht, wo abgetippt wird und nach welcher Regel ihr rechnet.',
   },
   {
     number: '03',
     icon: 'layers',
     title: 'Abstimmung · 2 Stunden',
-    text: 'Wenige Tage später, remote. Wir lesen gemeinsam gegen, was wir aufgeschrieben haben, schließen Lücken und grenzen die erste Stufe ab. Danach entstehen Prozessbild, Entwürfe und das Dokument.',
+    text: 'Wenige Tage später, online. Wir lesen gemeinsam, was wir aufgeschrieben haben, schließen Lücken und legen fest, was zuerst gebaut wird.',
   },
   {
     number: '04',
     icon: 'check-circle',
     title: 'Übergabe · 1 Stunde',
-    text: 'Mit der Geschäftsführung. Wir stellen das Ergebnis vor, übergeben das Dokument und nennen den Festpreis für die Umsetzung. Danach gehört das Dokument euch - ohne Bindung.',
+    text: 'Mit der Geschäftsführung. Wir stellen das Ergebnis vor und nennen den festen Preis für die Umsetzung. Das Dokument gehört euch, ohne Bindung.',
   },
-];
-
-const notAWorkshop = [
-  { nicht: 'Ein Verkaufsgespräch mit Workshop-Etikett', sondern: 'Arbeit an eurem Ablauf, mit euren Beispielen auf dem Tisch.' },
-  { nicht: 'Eine Präsentation über uns', sondern: 'Ihr erzählt, wir fragen nach und schreiben mit.' },
-  { nicht: 'Generische Folien', sondern: 'Ein Dokument, das nur auf euren Betrieb passt.' },
-  { nicht: 'Ein Projekt, das danach von allein weiterläuft', sondern: 'Ein Festpreis auf dem Tisch, und ihr entscheidet.' },
 ];
 
 const workshopUrl = new URL(Astro.url.pathname, Astro.site).toString();
@@ -120,7 +111,7 @@ const workshopServiceSchema = createServiceSchema({
   offers: [
     {
       name: 'Workshop',
-      price: '2400',
+      price: '1500',
       description: 'Drei Termine (3 h Aufnahme, 2 h Abstimmung, 1 h Übergabe), Dokument mit Empfehlung und Festpreis für die Umsetzung.',
     },
   ],
@@ -128,35 +119,31 @@ const workshopServiceSchema = createServiceSchema({
 
 const miniFaqs = [
   {
-    q: 'Was muss ich vorbereiten?',
-    a: 'Sehr wenig. Wir führen vorab ein kurzes Online-Gespräch von etwa 30 Minuten, legen eine grobe Agenda fest und verschicken diese zusammen mit ein paar vorbereitenden Fragen an alle Teilnehmenden. Mehr nicht - der Fokus liegt auf dem direkten Austausch im Workshop selbst, nicht auf ausführlicher Vorarbeit.',
+    q: 'Was müssen wir vorbereiten?',
+    a: 'Sehr wenig. Wir sprechen vorab etwa 30 Minuten online und legen eine grobe Agenda fest. Die schicken wir mit ein paar Fragen an alle Teilnehmenden.',
   },
   {
-    q: 'Kann ich das Dokument intern weiterverwenden?',
-    a: 'Ja, uneingeschränkt. Das Ergebnis gehört euch und eignet sich als Arbeitsgrundlage für interne Planung oder die Zusammenarbeit mit uns. Der Workshop endet mit einem Festpreis für die erste Stufe der Umsetzung. Das Dokument beschreibt, was vorhanden ist, wo die Engpässe liegen und wie die Lösung aussieht - damit lässt es sich auch mit anderen Angeboten vergleichen.',
+    q: 'Können wir das Dokument intern weiterverwenden?',
+    a: 'Ja, uneingeschränkt, denn das Ergebnis gehört euch. Das Dokument beschreibt, was vorhanden ist, wo es hakt und wie die Lösung aussieht. Damit könnt ihr intern planen oder andere Angebote vergleichen.',
   },
   {
     q: 'Reicht ein Workshop immer?',
-    a: 'Für den Einstieg ja. Drei Termine reichen, um einen Ablauf aufzunehmen, die erste Stufe abzugrenzen und einen Festpreis dafür zu nennen. Wenn im Workshop sichtbar wird, dass es größer ist - mehrere Abteilungen, eine Ablösung mit Datenübernahme aus Vertec oder dem ERP, mehrere Standorte - sagen wir das im dritten Termin und machen einen Vorschlag, wie wir die Analyse vertiefen. Das Dokument aus dem Workshop behaltet ihr in jedem Fall.',
+    a: 'Für den Einstieg ja. Drei Termine reichen, um einen Ablauf aufzunehmen, die erste Stufe festzulegen und einen Festpreis dafür zu nennen. Ist es größer, zum Beispiel mehrere Abteilungen, eine Ablösung mit Datenübernahme aus Vertec oder dem ERP oder mehrere Standorte, sagen wir das im dritten Termin und schlagen vor, wie wir die Analyse vertiefen. Das Dokument behaltet ihr in jedem Fall.',
   },
   {
-    q: 'Vor Ort, remote oder hybrid?',
-    a: 'Ihr entscheidet. Wir empfehlen, sich mindestens einmal in Präsenz zu sehen, wenn Distanz und Aufwand es zulassen - das hebt die Gesprächsqualität spürbar. Für die Anfahrt legen wir eine Pauschale fest (Kilometergeld und anteilig Fahrtzeit), damit Aufwand und Kosten im Rahmen bleiben und für beide Seiten planbar sind. Die Anfahrt wird nicht von den Workshop-Stunden abgezogen.',
+    q: 'Treffen wir uns vor Ort oder online?',
+    a: 'Das entscheidet ihr. Wir empfehlen, sich mindestens einmal persönlich zu sehen, wenn der Weg es zulässt. Für die Anfahrt legen wir vorher eine Pauschale fest. Sie wird nicht von den Workshop-Stunden abgezogen.',
   },
   {
     q: 'Bei uns läuft schon eine Anwendung, der wir nicht ganz trauen. Passt der Workshop dafür?',
-    a: 'Dafür gibt es die technische Variante: den Code-Check. Gleicher Rahmen wie der Workshop, aber statt Prozessaufnahme schauen wir in Code, Zugriffe, Datenhaltung und Betrieb einer bestehenden Anwendung, egal ob sie ein Dienstleister, ein ehemaliger Kollege oder ihr selbst mit KI-Werkzeugen gebaut habt. Geprüft wird entlang OWASP ASVS, am Ende steht eine schriftliche Empfehlung: betreiben, härten oder neu aufsetzen. Ein Penetrationstest ist das nicht; wenn ihr einen braucht, sagen wir das im Dokument. Sprecht uns im Erstgespräch darauf an.',
-  },
-  {
-    q: 'Was, wenn wir uns danach gegen eine Zusammenarbeit entscheiden?',
-    a: 'Das wäre schade, aber in Ordnung. Der Workshop ist eigenständig wertvoll und soll es auch bleiben - gleichzeitig ist er eine Voraussetzung für ein tiefgreifendes Konzept und eine belastbare Aufwandsschätzung. Ohne diese Grundlage einfach loszulegen und zu schauen, wo man landet, funktioniert erfahrungsgemäß nicht. Mit dem Workshop ist diese Analyse abgeschlossen, und der Festpreis für die Umsetzung steht im Dokument. Beauftragt ihr innerhalb von acht Wochen, rechnen wir die 2.400 € voll an.',
+    a: 'Dafür ist der Workshop nicht gedacht. Für Software, die schon läuft oder die ihr selbst gebaut habt, gibt es den Software-Check. Dort zeigt ihr uns im kostenlosen Gespräch grob euren Code, danach bekommt ihr einen Preis je nach Umfang.',
   },
 ];
 ---
 
 <PageLayout
   title="Discovery-Workshop für Entscheider"
-  description="Strukturierter Außenblick auf Prozesse und Systemlandschaft: Datenflüsse, Mockups und eine Empfehlung mit Festpreis. Drei Termine, ein Dokument, ein Festpreis - 2.400 €, bei Beauftragung angerechnet."
+  description="Strukturierter Außenblick auf Prozesse und Systemlandschaft: Datenflüsse, Mockups und eine Empfehlung mit Festpreis. Drei Termine, ein Dokument, ein Festpreis für die Umsetzung. Das Ergebnis gehört euch."
   lang={locale}
   routeId="discoveryWorkshop"
   extraSchemas={[
@@ -165,58 +152,16 @@ const miniFaqs = [
   ]}
 >
   <!-- HERO -->
-  <section
-    class="relative flex min-h-[60vh] items-center overflow-hidden py-24 sm:py-32"
-  >
-    <Blueprint />
-    <div
-      class="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,var(--color-background)_0%,transparent_75%)] opacity-70"
-      aria-hidden="true"
-    ></div>
-
-    <div class="container relative z-10 max-w-5xl text-center">
-      <p
-        data-reveal="fade-down"
-        class="text-brand-600 dark:text-brand-300 text-sm font-semibold tracking-[0.22em] uppercase"
-      >
-        Discovery-Workshop
-      </p>
-      <h1
-        data-reveal="fade-down"
-        lang="de"
-        class="font-display text-foreground mt-6 text-4xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-5xl lg:text-6xl"
-      >
-        Ihr wisst, dass es komplex ist.
-        <span class="mt-2 block text-brand-500">
-          Wir ordnen es ein.
-        </span>
-      </h1>
-      <p
-        data-reveal
-        class="text-foreground-secondary mx-auto mt-8 max-w-2xl text-lg leading-8 sm:text-xl"
-      >
-        Drei Termine, in denen wir euren Ablauf aufnehmen, wie er wirklich läuft. Am Ende habt ihr
-        ein Prozessbild, erste Entwürfe und einen <strong>Festpreis für die Umsetzung</strong>.
-      </p>
-      <div
-        data-reveal
-        class="mt-10 flex flex-wrap items-center justify-center gap-4"
-      >
-        <Button size="lg" href={contactLinks.calDiscovery} target="_blank">
-          Workshop anfragen
-          <Icon name="arrow-up-right" size="sm" />
-        </Button>
-        <Button
-          variant="link"
-          href="#formate"
-          class="text-foreground-secondary hover:text-foreground"
-        >
-          Ablauf &amp; Preis
-          <Icon name="chevron-down" size="sm" />
-        </Button>
-      </div>
-    </div>
-  </section>
+  <SeitenHero eyebrow="Discovery-Workshop" titel="In drei Terminen wissen, was zu tun ist und was es kostet" text="Wir nehmen euren Ablauf auf, wie er wirklich läuft. Am Ende habt ihr ein Prozessbild, erste Entwürfe und einen festen Preis für die Umsetzung. Das Ergebnis gehört euch." knopf="Workshop anfragen" href={contactLinks.calDiscovery} zweiterKnopf={{ text: 'Ablauf und Preis', href: '#formate' }}>
+    <Image
+      src={teamBild}
+      alt="Marten Prieß und ein Kollege arbeiten gemeinsam am Laptop"
+      widths={[640, 960, 1280]}
+      sizes="(min-width: 1024px) 50vw, 100vw"
+      class="border-border mx-auto aspect-[3/2] w-full max-w-lg rounded-2xl border object-cover shadow-xl"
+      loading="eager"
+    />
+  </SeitenHero>
 
   <!-- CLIENT LOGOS -->
   <ClientLogoStrip
@@ -226,7 +171,7 @@ const miniFaqs = [
   />
 
   <!-- DELIVERABLES -->
-  <section class="bg-background relative overflow-hidden py-24 lg:py-32">
+  <section class="bg-background relative overflow-hidden py-14 sm:py-24 lg:py-32">
     <div class="container relative z-10 max-w-6xl">
       <header data-reveal class="mx-auto max-w-3xl text-center">
         <div class="mx-auto flex max-w-md items-center gap-4">
@@ -247,7 +192,7 @@ const miniFaqs = [
           lang="de"
           class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-4xl"
         >
-          Danach wisst ihr, was zu tun ist - und was es kostet.
+          Das habt ihr nach dem Workshop in der Hand
         </h2>
         <p class="text-foreground-secondary mt-6 text-lg leading-8">
           Drei Termine, ein Dokument, ein Festpreis. Am Ende stehen Unterlagen, mit denen
@@ -257,11 +202,11 @@ const miniFaqs = [
 
       <div
         data-reveal
-        class="mt-16 grid gap-6 md:grid-cols-2 md:gap-7"
+        class="mt-8 grid gap-4 md:mt-16 md:grid-cols-2 md:gap-7"
       >
         {
           deliverables.map((item) => (
-            <article class="group border-border bg-card relative flex flex-col gap-4 rounded-2xl border p-7 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg sm:p-8">
+            <article class="group border-border bg-card relative flex flex-col gap-4 rounded-2xl border p-7 shadow-sm transition-all duration-300 ease-out hover:shadow-lg sm:p-8">
               <div class="flex items-start gap-4">
                 <div class="border-brand-300/70 bg-brand-500/5 text-brand-600 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border transition-colors duration-300 group-hover:bg-brand-500 group-hover:text-on-invert group-hover:border-brand-500">
                   <Icon name={item.icon} size="md" />
@@ -282,7 +227,7 @@ const miniFaqs = [
 
   <!-- ABLAUF -->
   <section
-    class="bg-background-secondary border-border relative overflow-hidden border-y py-24 lg:py-32"
+    class="bg-background-secondary border-border relative overflow-hidden border-y py-14 sm:py-24 lg:py-32"
   >
     <div
       class="bg-grid-pattern pointer-events-none absolute inset-0 opacity-30 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]"
@@ -308,7 +253,7 @@ const miniFaqs = [
         <h2
           class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl"
         >
-          Vier Schritte, keine Überraschungen.
+          So läuft der Workshop ab
         </h2>
       </header>
 
@@ -323,7 +268,7 @@ const miniFaqs = [
           {
             processSteps.map((step) => (
               <li class="flex flex-col items-center text-center">
-                <div class="border-brand-300 bg-card text-brand-600 relative z-10 flex h-16 w-16 items-center justify-center rounded-2xl border-2 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-brand-500 hover:bg-brand-500 hover:text-on-invert">
+                <div class="border-brand-300 bg-card text-brand-600 relative z-10 flex h-16 w-16 items-center justify-center rounded-2xl border-2 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-brand-500 hover:bg-brand-500 hover:text-on-invert">
                   <Icon name={step.icon} size="lg" />
                 </div>
                 <p class="text-foreground-muted mt-4 font-mono text-xs font-semibold tracking-[0.22em] uppercase">
@@ -341,11 +286,11 @@ const miniFaqs = [
       <!-- Detail-Cards -->
       <div
         data-reveal
-        class="mt-12 grid gap-5 md:mt-16 md:grid-cols-2 md:gap-6"
+        class="mt-8 grid gap-4 md:mt-16 md:grid-cols-2 md:gap-6"
       >
         {
           processSteps.map((step) => (
-            <article class="border-border bg-card group relative flex gap-4 rounded-2xl border p-6 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg">
+            <article class="border-border bg-card group relative flex gap-4 rounded-2xl border p-6 shadow-sm transition-all duration-300 ease-out hover:shadow-lg">
               <div class="border-brand-300/70 bg-brand-500/5 text-brand-600 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border transition-colors duration-300 group-hover:bg-brand-500 group-hover:text-on-invert group-hover:border-brand-500 md:hidden">
                 <Icon name={step.icon} size="md" />
               </div>
@@ -367,100 +312,81 @@ const miniFaqs = [
     </div>
   </section>
 
-  <!-- KI + EXPERTISE -->
-  <section class="bg-background relative overflow-hidden py-24 lg:py-32">
-    <div
-      class="bg-brand-300/10 pointer-events-none absolute -left-24 top-1/3 h-96 w-96 rounded-full blur-3xl"
-      aria-hidden="true"
-    >
-    </div>
 
-    <div class="container relative z-10 max-w-5xl">
+  <!-- VISUAL EXAMPLES -->
+  <section class="bg-background relative overflow-hidden py-14 sm:py-24 lg:py-32">
+    <div class="container relative z-10 max-w-6xl">
       <header data-reveal class="mx-auto max-w-3xl text-center">
         <div class="mx-auto flex max-w-md items-center gap-4">
           <span class="bg-border h-px flex-1"></span>
           <span
             class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold"
           >
-            03
+            02
           </span>
           <span
             class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase"
           >
-            KI + Expertise
+            Ergebnis
           </span>
           <span class="bg-border h-px flex-1"></span>
         </div>
         <h2
-          lang="de"
-          class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-4xl"
+          class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl"
         >
-          Warum dafür nicht einfach KI?
+          So sieht das Ergebnis aus
         </h2>
+        <p class="text-foreground-secondary mt-6 text-lg leading-8">
+          Das sind zwei Ausschnitte, nachgebaut nach echten Workshops. Das ganze Dokument ist deutlich
+          länger.
+        </p>
       </header>
 
-      <div
-        data-reveal
-        class="mt-12 grid gap-6 md:grid-cols-[1.1fr_0.9fr] md:items-stretch md:gap-8"
-      >
-        <article class="border-border bg-card relative flex flex-col gap-5 rounded-2xl border p-7 shadow-sm sm:p-8">
-          <div class="flex items-center gap-3">
-            <div class="border-brand-300/70 bg-brand-500/5 text-brand-600 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border">
-              <Icon name="zap" size="md" />
+      <div data-reveal class="mx-auto mt-8 grid max-w-6xl gap-6 md:mt-16 lg:grid-cols-2 lg:gap-8">
+        <figure class="min-w-0">
+          <div class="af-frame">
+            <div class="af-bar" aria-hidden="true">
+              <span class="af-dots"><span></span><span></span><span></span></span>
+              <span class="af-url">workshop · prozessbild</span>
+              <span class="af-dots invisible"><span></span><span></span><span></span></span>
             </div>
-            <h3 class="font-display text-foreground text-lg font-bold tracking-tight sm:text-xl">
-              Wo KI bei uns mitarbeitet
-            </h3>
+            <div class="p-3 sm:p-4"><Prozessbild /></div>
           </div>
-          <p class="text-foreground-secondary text-[0.95rem] leading-7">
-            KI ist ein hervorragender Verstärker: in der Entwicklung, für
-            Dokumentation, für schnelle Entwürfe. Sie beschleunigt Arbeit
-            messbar - dort, wo die Aufgabe bereits klar umrissen ist.
-          </p>
-          <p class="text-foreground-secondary text-[0.95rem] leading-7">
-            Vor einem Discovery-Workshop ist die Aufgabe aber gerade noch
-            nicht klar umrissen. Wo Prozesse, Interessen einzelner Beteiligter
-            und gewachsene Systeme zusammenkommen, hilft kein Prompt. Da braucht
-            es jemanden, der im Gespräch die Zwischentöne hört.
-          </p>
-        </article>
-
-        <article class="border-brand-300 bg-card relative flex flex-col gap-5 rounded-2xl border-2 p-7 shadow-[0_20px_50px_-20px_rgba(99,102,241,0.35)] sm:p-8">
-          <div class="flex items-center gap-3">
-            <div class="border-brand-500 bg-brand-500 text-on-invert flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border-2">
-              <Icon name="users" size="md" />
+          <figcaption class="text-foreground-muted mt-5 flex items-start gap-2 text-sm leading-6">
+            <Icon name="layers" size="xs" class="text-brand-500 mt-1 shrink-0" />
+            <span>
+              <strong class="text-foreground">Prozessbild.</strong>{' '}
+              Euer Ablauf über alle Beteiligten, so wie er wirklich läuft. Rot markiert ist, wo heute
+              abgetippt oder in Excel gerechnet wird. Geschäftsführung, Fachbereich und IT können es lesen.
+            </span>
+          </figcaption>
+        </figure>
+        <figure class="min-w-0">
+          <div class="af-frame">
+            <div class="af-bar" aria-hidden="true">
+              <span class="af-dots"><span></span><span></span><span></span></span>
+              <span class="af-url">workshop · entwurf</span>
+              <span class="af-dots invisible"><span></span><span></span><span></span></span>
             </div>
-            <h3 class="font-display text-foreground text-lg font-bold tracking-tight sm:text-xl">
-              Warum Erfahrung hier den Unterschied macht
-            </h3>
+            <div class="p-3 sm:p-4"><Entwurf /></div>
           </div>
-          <p class="text-foreground-secondary text-[0.95rem] leading-7">
-            Eine tragfähige Lösung entsteht, wenn jemand genug Systemlandschaften
-            gesehen hat, um die richtige Frage zum richtigen Zeitpunkt zu
-            stellen. In Konzernen wie im Mittelstand.
-          </p>
-          <p class="text-foreground text-[0.95rem] font-medium leading-7">
-            Genau das bringe ich mit: über 15 Jahre als Softwarearchitekt, sechs
-            davon bei bonprix, und ein Team, das KI dort einsetzt, wo sie Hebel
-            hat.
-          </p>
-        </article>
+          <figcaption class="text-foreground-muted mt-5 flex items-start gap-2 text-sm leading-6">
+            <Icon name="palette" size="xs" class="text-brand-500 mt-1 shrink-0" />
+            <span>
+              <strong class="text-foreground">Oberflächen-Entwurf.</strong>{' '}
+              Die wichtigsten Bildschirmseiten als klickbare Skizze. So sieht jeder im Raum, wie die
+              Lösung arbeiten würde.
+            </span>
+          </figcaption>
+        </figure>
       </div>
-
-      <p
-        data-reveal
-        class="text-foreground-muted mx-auto mt-10 max-w-3xl text-center text-sm leading-6"
-      >
-        So kommt der Workshop schneller in die Tiefe als klassische Beratung und
-        behält die Substanz, die ein KI-Output allein nicht liefert.
-      </p>
     </div>
   </section>
 
   <!-- FORMATE & PREISE -->
   <section
     id="formate"
-    class="bg-background-secondary border-border relative overflow-hidden border-y py-24 lg:py-32"
+    class="bg-background-secondary border-border relative overflow-hidden border-y py-14 sm:py-24 lg:py-32"
   >
     <div
       class="bg-brand-300/15 pointer-events-none absolute -right-24 top-1/3 h-96 w-96 rounded-full blur-3xl"
@@ -475,35 +401,35 @@ const miniFaqs = [
           <span
             class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold"
           >
-            04
+            03
           </span>
           <span
             class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase"
           >
-            Ablauf &amp; Preis
+            Preis
           </span>
           <span class="bg-border h-px flex-1"></span>
         </div>
         <h2
           class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl"
         >
-          Ein Format. Ein Festpreis.
+          Der Workshop kostet 1.500 €, das Ergebnis gehört euch
         </h2>
         <p class="text-foreground-secondary mt-6 text-lg leading-8">
-          Preis zzgl. USt., fällig bei Buchung. Wird die Umsetzung innerhalb von acht Wochen
-          beauftragt, wird der Betrag voll angerechnet. Anreise bei Vor-Ort-Terminen nach Pauschale.
+          Der Preis gilt zzgl. USt. und ist bei Buchung fällig. Für Termine vor Ort kommt eine
+          Anreisepauschale dazu.
         </p>
       </header>
 
       <div
         data-reveal
-        class="mt-16 grid gap-6 md:grid-cols-[1.15fr_0.85fr] md:gap-7"
+        class="mt-8 grid gap-4 md:mt-16 md:grid-cols-[1.15fr_0.85fr] md:gap-7"
       >
         {
           formats.map((format) => (
             <article
               class:list={[
-                'relative flex flex-col rounded-2xl border p-7 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg sm:p-8',
+                'relative flex flex-col rounded-2xl border p-7 transition-all duration-300 ease-out hover:shadow-lg sm:p-8',
                 format.featured
                   ? 'border-brand-300 bg-card shadow-[0_20px_50px_-20px_rgba(99,102,241,0.35)]'
                   : 'border-border bg-card shadow-sm',
@@ -555,9 +481,9 @@ const miniFaqs = [
             Und wenn es größer ist?
           </h3>
           <p class="text-foreground-secondary mt-4 text-[0.95rem] leading-7">
-            Dann sehen wir das im Workshop. Mehrere Abteilungen, eine Ablösung mit Datenübernahme
-            aus Vertec oder dem ERP, mehrere Standorte: Das sagen wir im dritten Termin offen und
-            machen einen Vorschlag, wie wir die Analyse vertiefen - mit eigenem Festpreis.
+            Dann sehen wir das im Workshop, etwa bei einer Ablösung mit Datenübernahme aus Vertec oder
+            dem ERP. Das sagen wir im dritten Termin offen und schlagen vor, wie wir die Analyse
+            vertiefen, mit eigenem Festpreis.
           </p>
           <p class="text-foreground-secondary mt-4 text-[0.95rem] leading-7">
             Das Dokument aus dem Workshop behaltet ihr in jedem Fall, auch wenn ihr danach mit
@@ -574,7 +500,7 @@ const miniFaqs = [
             </li>
             <li class="text-foreground flex items-start gap-2.5 text-sm leading-6">
               <Icon name="check-circle" size="sm" class="text-brand-500 mt-0.5 shrink-0" />
-              <span>Keine Lizenzkosten, keine Laufzeitbindung über den Betrieb hinaus</span>
+              <span>Ihr zahlt keine Lizenzkosten und seid über den Betrieb hinaus an keine Laufzeit gebunden</span>
             </li>
           </ul>
         </article>
@@ -582,226 +508,8 @@ const miniFaqs = [
     </div>
   </section>
 
-  <!-- VISUAL EXAMPLES -->
-  <section class="bg-background relative overflow-hidden py-24 lg:py-32">
-    <div class="container relative z-10 max-w-6xl">
-      <header data-reveal class="mx-auto max-w-3xl text-center">
-        <div class="mx-auto flex max-w-md items-center gap-4">
-          <span class="bg-border h-px flex-1"></span>
-          <span
-            class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold"
-          >
-            05
-          </span>
-          <span
-            class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase"
-          >
-            So sehen Ergebnisse aus
-          </span>
-          <span class="bg-border h-px flex-1"></span>
-        </div>
-        <h2
-          class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl"
-        >
-          So sieht ein Workshop-Ergebnis aus.
-        </h2>
-        <p class="text-foreground-secondary mt-6 text-lg leading-8">
-          Zwei Ausschnitte, nachgebaut nach echten Workshops. Das ganze Dokument ist deutlich
-          umfangreicher.
-        </p>
-      </header>
-
-      <div data-reveal class="mx-auto mt-16 grid max-w-6xl gap-10 lg:grid-cols-2 lg:gap-8">
-        <figure class="min-w-0">
-          <div class="af-frame">
-            <div class="af-bar" aria-hidden="true">
-              <span class="af-dots"><span></span><span></span><span></span></span>
-              <span class="af-url">workshop · prozessbild</span>
-              <span class="af-dots invisible"><span></span><span></span><span></span></span>
-            </div>
-            <div class="p-3 sm:p-4"><Prozessbild /></div>
-          </div>
-          <figcaption class="text-foreground-muted mt-5 flex items-start gap-2 text-sm leading-6">
-            <Icon name="layers" size="xs" class="text-brand-500 mt-1 shrink-0" />
-            <span>
-              <strong class="text-foreground">Prozessbild.</strong>{' '}
-              Euer Ablauf über alle Beteiligten, so wie er wirklich läuft. Rot markiert, wo heute
-              abgetippt oder in Excel gerechnet wird. Lesbar für Geschäftsführung, Fachbereich und IT.
-            </span>
-          </figcaption>
-        </figure>
-        <figure class="min-w-0">
-          <div class="af-frame">
-            <div class="af-bar" aria-hidden="true">
-              <span class="af-dots"><span></span><span></span><span></span></span>
-              <span class="af-url">workshop · entwurf</span>
-              <span class="af-dots invisible"><span></span><span></span><span></span></span>
-            </div>
-            <div class="p-3 sm:p-4"><Entwurf /></div>
-          </div>
-          <figcaption class="text-foreground-muted mt-5 flex items-start gap-2 text-sm leading-6">
-            <Icon name="palette" size="xs" class="text-brand-500 mt-1 shrink-0" />
-            <span>
-              <strong class="text-foreground">Oberflächen-Entwurf.</strong>{' '}
-              Die wichtigsten Masken als klickbare Skizze. So sieht jeder im Raum, wie die Lösung
-              arbeiten würde, statt über Konzepte zu reden.
-            </span>
-          </figcaption>
-        </figure>
-      </div>
-    </div>
-  </section>
-
-  <!-- HALTUNG / KLARSTELLUNG -->
-  <section
-    class="bg-background-secondary border-border relative overflow-hidden border-y py-24 lg:py-32"
-  >
-    <div
-      class="bg-grid-pattern pointer-events-none absolute inset-0 opacity-30 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]"
-      aria-hidden="true"
-    >
-    </div>
-    <div
-      class="bg-brand-300/10 pointer-events-none absolute -right-32 top-1/4 h-96 w-96 rounded-full blur-3xl"
-      aria-hidden="true"
-    >
-    </div>
-
-    <div class="container relative z-10 max-w-6xl">
-      <div
-        data-reveal
-        class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-stretch lg:gap-10"
-      >
-        <!-- Haltung / Statement -->
-        <article
-          class="border-brand-300 bg-card relative flex flex-col gap-6 overflow-hidden rounded-[2rem] border-2 p-8 shadow-[0_24px_60px_-24px_rgba(99,102,241,0.35)] sm:p-10"
-        >
-          <div
-            class="bg-brand-500/5 pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full blur-2xl"
-            aria-hidden="true"
-          >
-          </div>
-
-          <div class="relative flex items-center gap-4">
-            <div
-              class="relative shrink-0"
-              aria-hidden="true"
-            >
-              <div
-                class="bg-brand-400/30 absolute -inset-1.5 -z-10 rounded-full blur-md"
-              >
-              </div>
-              <div
-                class="border-brand-300 bg-card h-16 w-16 overflow-hidden rounded-full border-2 shadow-md"
-              >
-                <Picture
-                  src={founderPortrait}
-                  alt="Marten Prieß"
-                  widths={[64, 96, 128]}
-                  sizes="64px"
-                  formats={['avif', 'webp']}
-                  class="h-full w-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-            </div>
-            <div class="min-w-0">
-              <p
-                class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase"
-              >
-                Haltung
-              </p>
-              <p class="text-foreground-muted mt-1 text-sm font-semibold">
-                Marten Prieß · Gründer
-              </p>
-            </div>
-          </div>
-
-          <h2
-            lang="de"
-            class="font-display text-foreground relative text-2xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-3xl"
-          >
-            Kein Vertriebsblabla. Keine leeren Versprechen.
-          </h2>
-
-          <div class="relative">
-            <Icon
-              name="zap"
-              size="lg"
-              class="text-brand-500/40 absolute -top-2 -left-1"
-            />
-            <blockquote
-              class="text-foreground-secondary relative flex flex-col gap-4 pl-9 text-lg leading-8"
-            >
-              <p>
-                „Ich bin Konzepter und Entwickler mit Herzblut. Was ich kann:
-                gut zuhören, Prozesse verstehen - und im Gespräch eigene Ideen
-                einbringen, die oft schon einen Schritt weiter denken, als man
-                im ersten Moment im Kopf hatte."
-              </p>
-              <p class="text-foreground font-medium">
-                „Das macht den Unterschied zwischen einer Umsetzung und einer
-                Lösung."
-              </p>
-            </blockquote>
-          </div>
-        </article>
-
-        <!-- Was dieser Workshop nicht ist -->
-        <article class="border-border bg-card flex flex-col rounded-[2rem] border p-8 shadow-sm sm:p-10">
-          <p class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase">Klarstellung</p>
-          <h3 class="font-display text-foreground mt-4 text-xl font-bold tracking-tight sm:text-2xl">
-            Was dieser Workshop <span class="text-brand-500">nicht</span> ist.
-            <span class="text-foreground-muted block">Und was stattdessen.</span>
-          </h3>
-          <ul class="mt-7 flex flex-1 flex-col justify-between gap-5">
-            {
-              notAWorkshop.map((item) => (
-                <li class="border-border/70 border-t pt-4 first:border-t-0 first:pt-0">
-                  <p class="text-foreground-muted flex items-start gap-2.5 text-[0.95rem] leading-6">
-                    <Icon name="x-circle" size="sm" class="mt-0.5 shrink-0 text-[oklch(60%_0.18_25)]" />
-                    <span class="line-through decoration-[oklch(60%_0.18_25)]/60 decoration-2">{item.nicht}</span>
-                  </p>
-                  <p class="text-foreground mt-1.5 flex items-start gap-2.5 text-[0.95rem] leading-6 font-medium">
-                    <Icon name="check-circle" size="sm" class="text-brand-500 mt-0.5 shrink-0" />
-                    <span>{item.sondern}</span>
-                  </p>
-                </li>
-              ))
-            }
-          </ul>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- REFERENZ-CALLOUT -->
-  <section
-    class="border-border bg-background relative overflow-hidden border-y py-10"
-  >
-    <div class="container">
-      <a
-        href={referencesUrl}
-        data-reveal
-        class="group mx-auto flex max-w-3xl flex-col items-center justify-center gap-3 text-center sm:flex-row sm:gap-5 sm:text-left"
-      >
-        <p class="text-foreground-secondary text-base leading-7">
-          Wie aus Workshops echte Projekte werden, zeigen unsere
-          <span class="text-brand-600 font-semibold underline decoration-brand-300/60 underline-offset-4 group-hover:text-brand-700 transition-colors"
-            >Referenzen</span
-          >.
-        </p>
-        <Icon
-          name="arrow-right"
-          size="sm"
-          class="text-brand-500 transition-transform duration-200 group-hover:translate-x-1"
-        />
-      </a>
-    </div>
-  </section>
-
   <!-- FAQ -->
-  <section class="bg-background relative overflow-hidden py-24 lg:py-32">
+  <section class="bg-background relative overflow-hidden py-14 sm:py-24 lg:py-32">
     <div class="container relative z-10 max-w-4xl">
       <header data-reveal class="mx-auto max-w-3xl text-center">
         <div class="mx-auto flex max-w-md items-center gap-4">
@@ -809,19 +517,19 @@ const miniFaqs = [
           <span
             class="border-brand-300 bg-card text-brand-600 flex h-10 w-10 items-center justify-center rounded-full border-2 font-mono text-sm font-bold"
           >
-            06
+            04
           </span>
           <span
             class="text-foreground-muted text-xs font-semibold tracking-[0.22em] uppercase"
           >
-            Häufige Fragen
+            Fragen
           </span>
           <span class="bg-border h-px flex-1"></span>
         </div>
         <h2
           class="font-display text-foreground mt-8 text-3xl font-bold tracking-tight sm:text-4xl"
         >
-          Was Interessenten oft fragen.
+          Häufige Fragen zum Workshop
         </h2>
       </header>
 
@@ -849,11 +557,8 @@ const miniFaqs = [
     </div>
   </section>
 
-  <!-- Blog: Artikel zum Thema Workshop / Vorgehen -->
-  <BlogQuerverweis tuer="workshop" titel="Warum wir mit dem Workshop anfangen" />
-
   <!-- CTA -->
-  <section class="border-border bg-background-secondary border-t py-24">
+  <section class="border-border bg-background-secondary border-t py-14 sm:py-24">
     <div class="container max-w-4xl">
       <div
         data-reveal="zoom-in"
@@ -868,11 +573,10 @@ const miniFaqs = [
               lang="de"
               class="font-display text-foreground mt-4 text-2xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-3xl lg:text-4xl"
             >
-              Wollt ihr einen strukturierten Blick auf eure Prozesse?
+              Wollt ihr wissen, was bei euch zu tun ist und was es kostet?
             </h2>
             <p class="text-foreground-secondary mt-6 text-lg leading-8">
-              Vereinbart ein kurzes Klärungsgespräch - wir finden
-              gemeinsam das passende Format und einen Termin.
+              Vereinbart ein kurzes Vorgespräch mit Marten Prieß: über 15 Jahre als Softwarearchitekt, sechs davon bei bonprix.
             </p>
           </div>
           <div class="bg-background-secondary flex flex-wrap items-center gap-4 rounded-[1.5rem] p-5 sm:p-6">
@@ -880,8 +584,8 @@ const miniFaqs = [
               Workshop anfragen
               <Icon name="arrow-up-right" size="sm" />
             </Button>
-            <Button variant="link" href={contactUrl}>
-              Kontaktseite
+            <Button variant="link" href={`${contactUrl}#anfrage-stellen`}>
+              Lieber schreiben
               <Icon name="arrow-right" size="sm" />
             </Button>
           </div>

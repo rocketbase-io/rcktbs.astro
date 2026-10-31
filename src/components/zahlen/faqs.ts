@@ -1,6 +1,10 @@
 /** FAQs der Seite, auch fürs FAQ-Schema der indexierten Seite (pages/*.astro). */
 export const zahlenFaqs = [
   {
+    q: 'Unser Reporting läuft über Excel. Was ist die Alternative?',
+    a: 'Das Cockpit holt die Zahlen jeden Tag aus euren Programmen und zeigt sie auf einer Seite. Niemand muss dafür Exporte zusammenbauen. BWA und Steuerberater bleiben.',
+  },
+  {
     q: 'Brauchen wir dafür ein neues ERP?',
     a: 'Nein. Das Cockpit holt sich die Daten aus dem, was ihr habt: ERP oder Branchensoftware, Zeiterfassung, Buchhaltung, auch aus gepflegten Excel-Listen. Wo ein System die Daten nicht hergibt, klären wir im Workshop, ob sich das lohnt oder ob ein kleiner Baustein die Lücke schließt.',
   },
