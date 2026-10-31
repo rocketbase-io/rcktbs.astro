@@ -97,6 +97,18 @@ const caseImages = {
 const hasImage = item.slug in caseImages;
 const clientLogo = logoMap[caseLogoKey[item.slug] ?? ''];
 const loesungen = referenzTueren[item.slug] ?? [];
+// Kurz genug, dass Google sie nicht abschneidet. Der Name vorn ist, wonach gesucht wird.
+const seoTitel: Record<string, string> = {
+  bonprix: 'bonprix: Neue Plattform für Produktdaten',
+  'bonprix-collection-planning': 'bonprix: Sortimentsplanung statt Excel',
+  'fkc-consulting': 'FKC Consulting: Vertec-Ablösung',
+  'schlosserei-diezinger': 'Schlosserei Diezinger: Einsatzplanung',
+  'stage-cml': 'Stage Entertainment: Budgetplanung statt Excel',
+  statista: 'Statista: Neue Redaktionsplattform',
+  'statista-canva': 'Statista: Daten direkt in Canva',
+  'sam-vorteilsguru': 'Smart Active Media: Gutscheinportal',
+  'mavox-winterdienst': 'MAVOX Winterdienst: Tourenplanung und App',
+};
 const passtWenn = referenzPasstWenn[item.slug] ?? [];
 const fakten = (item as { fakten?: { label: string; wert: string }[] }).fakten ?? [];
 const laufzeit = fakten.find((f) => f.label === 'Laufzeit')?.wert;
@@ -131,7 +143,7 @@ const [heroShot, ...galerieShots] = resolvedScreenshots;
 ---
 
 <PageLayout
-  title={buildSeoTitle(item.client, item.title)}
+  title={seoTitel[item.slug] ?? buildSeoTitle(item.client, item.title)}
   description={item.description}
   imageAlt={`${item.client} – ${item.title}`}
   lang={locale}
