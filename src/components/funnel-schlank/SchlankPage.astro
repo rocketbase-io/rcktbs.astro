@@ -19,6 +19,7 @@
  * (`*-funnel/`, `CheckPage variant="funnel"`) sind nur nicht mehr eingebunden.
  */
 import Button from '@/components/ui/form/Button/Button.astro';
+import BlogQuerverweis from '@/components/blog/BlogQuerverweis.astro';
 import Blueprint from '@/components/hero-backgrounds/Blueprint.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
@@ -26,12 +27,26 @@ import FunnelQuiz from '@/components/funnel/FunnelQuiz';
 import { getImage, Picture } from 'astro:assets';
 import founderPortrait from '@/assets/rocketbase/founder-marten-priess.jpg';
 import '@/styles/szene.css';
+import { contactLinks } from '@/data/rocketbase';
 import type { SchlankTor } from '@/data/funnelSchlank';
 
 interface Props {
   tor: SchlankTor;
+  /** „funnel“: Anzeigen-Landing mit Quiz. „seite“: indexierte Tür mit Terminbuchung und allen FAQ. */
+  modus?: 'funnel' | 'seite';
+  /** Tür-Seiten: eigene H1, wenn sie vom Anzeigen-Hook abweichen soll. */
+  headline?: string;
+  /** Tür-Seiten: alle Fragen, dieselben wie im FAQ-Schema der Seite. */
+  faqs?: { q: string; a: string }[];
+  /** Tür-Seiten: Blog-Tür für die Querverweise. */
+  blogTuer?: 'angebot' | 'einsatz' | 'zahlen' | 'abloesung' | 'check';
+  /** Tür-Seiten: Kundenstimme aus den Referenzen. */
+  zitat?: { quote: string; author: string; position: string };
+  /** Tür-Seiten: Überschrift für das zusätzliche Bild im Slot `mehr`, nur ab lg sichtbar. */
+  mehrTitel?: string;
 }
-const { tor } = Astro.props;
+const { tor, modus = 'funnel', headline = tor.headline, faqs = tor.fragenUndAntworten, blogTuer, zitat, mehrTitel } = Astro.props;
+const istSeite = modus === 'seite';
 const mitHeuteBild = Astro.slots.has('heute');
 
 const martenBild = await getImage({ src: founderPortrait, width: 112, format: 'webp' });
@@ -65,7 +80,7 @@ const quizProps = {
   <!-- Sobald dieser Punkt aus dem Bild ist, fährt mobil die Leiste ein. -->
   <div class="absolute top-6 h-px w-px" data-leiste-start aria-hidden="true"></div>
   <div
-    class="relative z-10 mx-auto grid w-full max-w-7xl gap-x-14 gap-y-6 px-5 pt-6 pb-10 sm:px-8 sm:pt-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:grid-rows-[auto_auto] lg:py-16"
+    class:list={[istSeite ? 'pt-24 sm:pt-28 lg:pt-24' : 'pt-6 sm:pt-12', 'relative z-10 mx-auto grid w-full max-w-7xl gap-x-14 gap-y-6 px-5 pb-10 sm:px-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:grid-rows-[auto_auto] lg:pb-16', !istSeite && 'lg:pt-16']}
   >
     <div class="lg:self-end">
       <p class="text-brand-600 dark:text-brand-300 text-xs font-semibold tracking-[0.14em] uppercase">
@@ -75,7 +90,7 @@ const quizProps = {
         lang="de"
         class="font-display text-foreground mt-3 text-[2rem] leading-[1.1] font-bold tracking-tight text-balance sm:text-5xl sm:leading-[1.08] lg:text-[2.75rem] lg:leading-[1.12]"
       >
-        {tor.headline}
+        {headline}
       </h1>
       <p class="text-foreground-secondary mt-3 text-base leading-7 sm:mt-5 sm:text-lg sm:leading-8">
         <span class="sm:hidden">{tor.leadMobil}</span>
@@ -86,8 +101,8 @@ const quizProps = {
       <slot name="hero" />
     </div>
     <div class="lg:self-start">
-      <div class="mb-4 hidden sm:block">
-        <Button size="lg" href="#quiz">
+      <div class:list={['mb-4', !istSeite && 'hidden sm:block']}>
+        <Button size="lg" href={istSeite ? '#kontakt' : '#quiz'}>
           Kostenloses Erstgespräch anfragen
           <Icon name="arrow-right" size="sm" />
         </Button>
@@ -188,6 +203,21 @@ const quizProps = {
   </div>
 </section>
 
+{
+  mehrTitel && (
+    <section class="hidden pb-20 lg:block">
+      <div class="container max-w-6xl">
+        <h2 class="font-display text-foreground text-4xl font-bold tracking-tight text-balance">
+          {mehrTitel}
+        </h2>
+        <div class="szene-auf mt-8 min-w-0" data-szene>
+          <slot name="mehr" />
+        </div>
+      </div>
+    </section>
+  )
+}
+
 <section id="ablauf" class="ablauf-sec scroll-mt-20 py-14 lg:py-20">
   <div class="container max-w-6xl">
     <h2 class="font-display text-foreground text-2xl font-bold tracking-tight text-balance sm:text-4xl">
@@ -209,6 +239,21 @@ const quizProps = {
   </div>
 </section>
 
+{
+  zitat && (
+    <section class="py-10 lg:py-14">
+      <figure class="container max-w-3xl">
+        <blockquote class="font-display text-foreground text-xl leading-8 font-semibold text-balance sm:text-2xl sm:leading-9">
+          „{zitat.quote}“
+        </blockquote>
+        <figcaption class="text-foreground-muted mt-3 text-sm">
+          {zitat.author}, {zitat.position}
+        </figcaption>
+      </figure>
+    </section>
+  )
+}
+
 <section class="pt-14 lg:pt-20">
   <div class="container max-w-3xl">
     <h2 class="font-display text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
@@ -216,7 +261,7 @@ const quizProps = {
     </h2>
     <div class="divide-border mt-4 divide-y">
       {
-        tor.fragenUndAntworten.map((f) => (
+        faqs.map((f) => (
           <details class="group">
             <summary class="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 py-2 [&::-webkit-details-marker]:hidden">
               <span class="text-foreground font-semibold">{f.q}</span>
@@ -234,6 +279,8 @@ const quizProps = {
   </div>
 </section>
 
+{blogTuer && <BlogQuerverweis tuer={blogTuer} />}
+
 <section id="kontakt" class="scroll-mt-20 py-14 lg:py-20">
   <div class="container grid max-w-6xl items-start gap-8 lg:grid-cols-[1fr_0.9fr] lg:gap-14">
     <div>
@@ -241,9 +288,10 @@ const quizProps = {
         {tor.schlussTitel}
       </h2>
       <p class="text-foreground-secondary mt-4 text-base leading-7 sm:text-lg sm:leading-8">
-        Ein paar kurze Fragen, dann ruft Marten euch werktags an. {tor.schlussText}
+        {istSeite ? 'Bucht direkt einen Termin.' : 'Ein paar kurze Fragen, dann ruft Marten euch werktags an.'}{' '}
+        {tor.schlussText}
       </p>
-      <div class="border-border mt-6 hidden items-center gap-4 border-t pt-6 lg:flex">
+      <div class:list={['border-border mt-6 items-center gap-4 border-t pt-6', istSeite ? 'flex' : 'hidden lg:flex']}>
         <Picture
           src={founderPortrait}
           alt="Marten Prieß"
@@ -260,9 +308,27 @@ const quizProps = {
         </p>
       </div>
     </div>
-    <div id="quiz" class="scroll-mt-20" data-quiz>
-      <FunnelQuiz client:visible {...quizProps} compact markRequired />
-    </div>
+    {
+      istSeite ? (
+        <div class="flex flex-col gap-4 lg:pt-3">
+          <Button size="lg" href={contactLinks.cal} target="_blank">
+            Erstgespräch buchen
+            <Icon name="arrow-up-right" size="sm" />
+          </Button>
+          <p class="text-foreground-muted text-sm leading-6">
+            30 Minuten, online, kostenlos. Oder per Mail an{' '}
+            <a href={`mailto:${contactLinks.email}`} class="text-brand-600 font-semibold">
+              {contactLinks.email}
+            </a>
+            .
+          </p>
+        </div>
+      ) : (
+        <div id="quiz" class="scroll-mt-20" data-quiz>
+          <FunnelQuiz client:visible {...quizProps} compact markRequired />
+        </div>
+      )
+    }
   </div>
 </section>
 

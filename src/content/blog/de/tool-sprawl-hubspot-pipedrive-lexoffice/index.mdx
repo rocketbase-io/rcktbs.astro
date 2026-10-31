@@ -21,17 +21,17 @@ import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import { contactLinks } from '@/data/rocketbase';
 
-Die Ausgangssituation ist in vielen mittelständischen Unternehmen die gleiche: Über die Jahre sind für verschiedene Bereiche die jeweils besten Tools eingeführt worden. HubSpot oder Pipedrive im Vertrieb. lexoffice oder sevdesk für die Buchhaltung. Asana oder Jira in der Projektarbeit. Slack für die Kommunikation. Vielleicht ein spezielles Tool für Marketing-Automation, eins für HR, eins für Zeiterfassung. Jede dieser Entscheidungen war zum Zeitpunkt der Einführung sinnvoll und ist es oft bis heute.
+In vielen mittelständischen Unternehmen ist es gleich gelaufen: Über die Jahre kam für jeden Bereich das jeweils beste Tool dazu. HubSpot oder Pipedrive im Vertrieb. lexoffice oder sevdesk für die Buchhaltung. Asana oder Jira in der Projektarbeit. Slack für die Kommunikation. Vielleicht ein spezielles Tool für Marketing-Automation, eins für HR, eins für Zeiterfassung. Jede dieser Entscheidungen war zum Zeitpunkt der Einführung sinnvoll und ist es oft bis heute.
 
 Trotzdem steht die Geschäftsführung regelmäßig vor derselben Frage: _"Wie stehen wir eigentlich gerade da?"_ Die Antwort liegt in keinem einzelnen System. Sie setzt sich aus Teilantworten mehrerer Systeme zusammen, plus Excel-Zwischenschritten, plus manuellen Abgleichen.
 
 Gut gewählte Einzeltools können also zu einem Steuerungsproblem werden. Aus dem Tool-Wildwuchs führen zwei Wege heraus.
 
-## Das Paradox der spezialisierten Tools
+## Warum gute Einzeltools zum Problem werden
 
 Die meisten dieser Tools sind in ihrem Bereich exzellent. HubSpot kann Vertriebspipelines und Marketing-Automation besser, als eine generische Unternehmenssoftware es je könnte. lexoffice deckt den Finanzalltag einer mittelständischen Firma nahezu perfekt ab. Das liegt daran, dass beide sich auf einen Ausschnitt konzentrieren.
 
-Genau diese Stärke erzeugt das Problem. Jedes Tool ist für sich optimiert. Für die Integration mit eurer speziellen Systemlandschaft ist keines optimiert. Daraus entstehen drei typische Muster:
+Genau diese Stärke erzeugt das Problem. Jedes Tool ist für sich optimiert, keines für das Zusammenspiel mit eurer speziellen Systemlandschaft. Daraus entstehen drei typische Muster:
 
 <div className="not-prose my-10 grid gap-4 md:grid-cols-3" data-reveal="fade-up">
   <div className="border-border bg-background-secondary rounded-2xl border p-6">
@@ -46,7 +46,7 @@ Genau diese Stärke erzeugt das Problem. Jedes Tool ist für sich optimiert. Fü
     </p>
     <p className="text-foreground-secondary mt-3 text-sm leading-6">
       Irgendwo liegt die eine Excel-Tabelle, die den Gesamtüberblick halten soll. Einmal im Monat
-      aus vier oder fünf Quellen gefüllt, ohne Versionierung, ohne festen Owner. Die Qualität hängt
+      aus vier oder fünf Quellen gefüllt, ohne Versionsstand, ohne feste Zuständigkeit. Die Qualität hängt
       an einer Person.
     </p>
   </div>
@@ -77,16 +77,16 @@ Genau diese Stärke erzeugt das Problem. Jedes Tool ist für sich optimiert. Fü
       Kein System kennt die ganze Wahrheit
     </p>
     <p className="text-foreground-secondary mt-3 text-sm leading-6">
-      Vertriebstool kennt die Pipeline. Buchhaltung kennt Zahlungen. Projekt-Tool kennt Aufwände.
+      Das Vertriebstool kennt die Pipeline, die Buchhaltung die Zahlungen, das Projekt-Tool die Aufwände.
       Niemand kennt die Antwort auf *"Wie profitabel ist dieser Kunde über die gesamte Beziehung?"*
-      - die Antwort liegt zwischen den Systemen.
+      Sie liegt zwischen den Systemen.
     </p>
   </div>
 </div>
 
 Gesteuert wird dann entweder nach Teilwahrheiten, also dem, was einzelne Tools ausgeben, oder nach der monatlichen Excel-Zusammenstellung mit ihrem Verzug. Für eine Steuerung in Echtzeit fehlt in dieser Konstellation schlicht die Grundlage.
 
-Das ist der Normalfall, nicht der Ausnahmefall. Die europäische Erhebung zur IKT-Nutzung fragt Unternehmen ab zehn Beschäftigten, ob sie Software einsetzen, die Informationen zwischen verschiedenen Funktionsbereichen austauscht. Genau das ist die Gesamtsicht, um die es hier geht. In Deutschland bejahen das knapp 44 Prozent. Die Mehrheit hat also kein System, das diese Informationen zusammenführt. Wie sie es stattdessen tut, erhebt die Statistik nicht. Nach dem, was wir in Projekten sehen, ist es meistens Handarbeit.
+Das ist der Normalfall. Die europäische Erhebung zur IKT-Nutzung fragt Unternehmen ab zehn Beschäftigten, ob sie Software einsetzen, die Informationen zwischen verschiedenen Funktionsbereichen austauscht. Genau das ist die Gesamtsicht, um die es hier geht. In Deutschland bejahen das knapp 44 Prozent. Die Mehrheit hat also kein System, das diese Informationen zusammenführt. Wie sie es stattdessen tut, erhebt die Statistik nicht. Nach dem, was wir in Projekten sehen, ist es meistens Handarbeit.
 
 ## Die typische Folge: Entscheidungen kommen zu spät
 
@@ -98,7 +98,7 @@ Das sind keine Einzelfälle, sondern die Folge einer Landschaft, in der die Date
 
 Unternehmerisches Gespür ist eine der unterschätztesten Stärken im Mittelstand, und kein Dashboard ersetzt es. Zahlen können aber etwas, das Gespür allein nicht leistet: Sie machen eine Entwicklung sichtbar, **bevor** man sie spürt. Sie sind das Frühwarnsystem, das dem Gespür Zeit verschafft.
 
-Es geht also nicht darum, dass die Geschäftsführung täglich alle Zahlen im Kopf hat. Es geht um eine verlässliche Oberfläche: gespeist aus allen Quellsystemen, mit einheitlicher Logik, aktuell.
+Die Geschäftsführung muss dafür nicht täglich alle Zahlen im Kopf haben. Sie braucht eine verlässliche Oberfläche: gespeist aus allen Quellsystemen, mit einheitlicher Logik, aktuell.
 
 <aside className="not-prose my-8" data-reveal="fade-up">
   <div className="border-brand-200 bg-brand-50/60 dark:border-brand-800 dark:bg-brand-900/15 rounded-2xl border p-6 sm:p-7">
@@ -128,11 +128,11 @@ Die historisch naheliegende Antwort auf Tool-Wildwuchs: alles in eine große Sta
 
 In der Theorie funktioniert das. In der Praxis handelt man sich ein anderes Problem ein: Die Suite ist in jedem einzelnen Bereich schwächer als das Tool, das sie ersetzt. Der Vertrieb, der vorher gern mit HubSpot gearbeitet hat, bekommt ein schwächeres CRM-Modul. Die Buchhaltung verliert gegenüber lexoffice an Komfort. Und das Projekt-Team bekommt ein Werkzeug, das ihm die Arbeit erschwert.
 
-Das Ergebnis: Die Suite wird eingeführt, aber in der Praxis entstehen trotzdem parallele Tools, weil die Fachabteilungen ihre Arbeitsweise nicht opfern wollen. Am Ende hat das Unternehmen eine teure Suite plus die ursprünglichen Speziallösungen - und das Integrationsproblem ist nicht gelöst, sondern komplizierter geworden.
+Das Ergebnis: Die Suite wird eingeführt, aber in der Praxis entstehen trotzdem parallele Tools, weil die Fachabteilungen ihre Arbeitsweise nicht opfern wollen. Am Ende hat das Unternehmen eine teure Suite plus die ursprünglichen Speziallösungen, und das Integrationsproblem ist noch komplizierter geworden.
 
 ## Zwei Wege, die wirklich tragen
 
-In Projekten sehen wir zwei Ansätze, die den Tool-Wildwuchs auflösen, ohne dabei die Vorteile der guten Einzeltools zu verlieren. Welcher passt, hängt davon ab, wie stark die Kernprozesse das Unternehmen ausmachen - und wie weit ihr in die Zukunft plant.
+In Projekten sehen wir zwei Ansätze, die den Tool-Wildwuchs auflösen, ohne dabei die Vorteile der guten Einzeltools zu verlieren. Welcher passt, hängt davon ab, wie stark die Kernprozesse das Unternehmen ausmachen, und wie weit ihr in die Zukunft plant.
 
 <div className="not-prose my-10 grid gap-4 md:grid-cols-2 md:items-stretch" data-reveal="fade-up">
   <div className="border-border bg-background-secondary rounded-2xl border p-6 sm:p-7">
@@ -149,14 +149,14 @@ In Projekten sehen wir zwei Ansätze, die den Tool-Wildwuchs auflösen, ohne dab
     </p>
     <p className="text-foreground-secondary mt-4 text-sm leading-6">
       Die Fachabteilungen behalten ihre guten Tools. Im Hintergrund entsteht eine schlanke Ebene,
-      die Daten einsammelt, einheitlich strukturiert und verfügbar macht. Nicht die Tools
-      vereinheitlichen - die Daten zusammenführen.
+      die Daten einsammelt, einheitlich strukturiert und verfügbar macht. Zusammengeführt werden die
+      Daten, die Tools bleiben.
     </p>
     <div className="text-foreground-muted mt-5 flex items-start gap-2 text-xs leading-5">
       <Icon name="info" size="xs" class="text-brand-500 mt-0.5 shrink-0" />
       <span>
-        Pragmatischer Einstieg: niedriger Scope, kein Tool-Wechsel, schnell wirksam. Langfristig
-        wächst die Klammer mit jedem neuen Anwendungsfall mit - und wird irgendwann selbst zur
+        Pragmatischer Einstieg: kleiner Umfang, kein Tool-Wechsel, schnell wirksam. Langfristig
+        wächst die Klammer mit jedem neuen Anwendungsfall mit und wird irgendwann selbst zur
         Kernanwendung.
       </span>
     </div>
@@ -182,7 +182,7 @@ In Projekten sehen wir zwei Ansätze, die den Tool-Wildwuchs auflösen, ohne dab
       <Icon name="check-circle" size="xs" class="text-brand-500 mt-0.5 shrink-0" />
       <span>
         Unsere Empfehlung, wenn die Kernprozesse das Unternehmen wirklich ausmachen. Größere
-        Investition, aber eine Basis, die 10+ Jahre trägt - statt eine Klammer, die Jahr für Jahr
+        Investition, aber eine Basis, die 10+ Jahre trägt, statt eine Klammer, die Jahr für Jahr
         mehr umschließt.
       </span>
     </div>
@@ -212,7 +212,7 @@ Steht ihr heute vor einer gewachsenen Tool-Landschaft, ist die Klammer meist der
       Saubere Datenflüsse
     </p>
     <p className="text-foreground-secondary mt-3 text-sm leading-6">
-      Über die APIs der Einzeltools fließen die relevanten Daten laufend ins zentrale Modell. Die
+      Über die Schnittstellen (APIs) der Einzeltools fließen die relevanten Daten laufend ins zentrale Modell. Die
       Tools bleiben Quellsysteme, die Datenbank kennt den Gesamtstand.
     </p>
   </div>
@@ -235,7 +235,7 @@ Ausgewertet wird dann auf dem zentralen Modell. Ob das über ein Metabase-Dashbo
 
 Die Klammer ist ein guter Startpunkt mit einem strukturellen Haken: Sie wächst. Mit jeder neuen Auswertung, jeder Validierungsregel, jedem Workflow. Aus einer schlanken Datenebene wird über Jahre eine Schattenplattform, die immer mehr Geschäftslogik trägt, ohne je dafür gebaut worden zu sein.
 
-Dann kippt das Verhältnis. Was als pragmatischer Shortcut begann, trägt inzwischen Kernprozesse, für die es nie gedacht war. Ab hier wird eine individuelle Kernanwendung der sauberere Weg: **das Geschäft direkt abbilden** und die Fachtools dort andocken, wo sie stark bleiben.
+Dann kippt das Verhältnis. Was als pragmatische Abkürzung begann, trägt inzwischen Kernprozesse, für die es nie gedacht war. Ab hier wird eine individuelle Kernanwendung der sauberere Weg: **das Geschäft direkt abbilden** und die Fachtools dort andocken, wo sie stark bleiben.
 
 Machen eure Kernprozesse den Wettbewerbsvorteil aus, also die eigene Leistungsverrechnung, das eigene Margenmodell, die besondere Projektabwicklung, dann ist die individuelle Kernanwendung ohnehin die ehrlichere Antwort. Die Klammer ist dann ein Zwischenschritt.
 
@@ -245,9 +245,9 @@ Der naheliegende Einwand ist: Klingt nach teuer. Tatsächlich ist dieser Ansatz 
 
 Erstens ersetzt er keine funktionierenden Tools. Lizenzen bleiben, wo sie sind. Einarbeitung der Mitarbeiter bleibt, wo sie ist. Es gibt keine Umstellungsphase, in der das operative Geschäft leidet.
 
-Zweitens ist der Scope überschaubar. Wir sprechen nicht über ein zweijähriges Großprojekt, sondern typischerweise über einen mehrmonatigen Aufbau, der nach Fertigstellung einen sehr niedrigen Betriebsaufwand hat. Das zentrale Modell plus die Integrationen laufen auf einer kleinen Infrastruktur, Weiterentwicklungen erfolgen bedarfsgetrieben.
+Zweitens ist der Scope überschaubar. Typisch ist ein mehrmonatiger Aufbau statt eines zweijährigen Großprojekts, und nach der Fertigstellung ist der Betriebsaufwand sehr niedrig. Das zentrale Modell und die Integrationen laufen auf einer kleinen Infrastruktur, weiterentwickelt wird nach Bedarf.
 
-Die eigentliche Investition steckt im Datenmodell, nicht in der Technik. Welche Entitäten sind in eurem Geschäft wirklich zentral? Wie hängen sie zusammen? Welches System führt welche Stammdaten? Diese Klärung ist die Wertschöpfung des Projekts, und sie bleibt euch erhalten, egal welche Tools ihr in fünf Jahren einsetzt.
+Die eigentliche Investition steckt im Datenmodell. Was ist in eurem Geschäft wirklich zentral? Wie hängt es zusammen? Welches System führt welche Stammdaten? In dieser Klärung liegt der Wert des Projekts, und sie bleibt euch erhalten, egal welche Tools ihr in fünf Jahren einsetzt.
 
 ## Ein ehrlicher Einwand
 

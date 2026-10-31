@@ -93,13 +93,7 @@ export const routes = {
     nav: { show: true, order: 4, label: 'nav.references' },
   },
 
-  // Mission / Haltung
-  mission: {
-    de: 'mission',
-    nav: { show: false, order: 5, label: 'nav.mission' },
-  },
-
-  // Discovery-Workshop: einzige Seite mit Preisen, deshalb direkt in der Hauptnavigation
+  // Discovery-Workshop: direkt in der Hauptnavigation
   discoveryWorkshop: {
     de: 'discovery-workshop',
     nav: { show: true, order: 2, label: 'nav.discoveryWorkshop' },

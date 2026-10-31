@@ -53,7 +53,7 @@ const groesse: FunnelQuizQuestion = {
   ],
 };
 
-const preisFrage = {
+export const preisFrage = {
   q: 'Was kostet das?',
   a: 'Das lässt sich pauschal nicht seriös sagen, weil wir für jeden Betrieb einzeln bauen. Im Erstgespräch schauen wir uns an, was ihr braucht, und ihr bekommt eine ehrliche Einschätzung. Das Gespräch ist kostenlos und verpflichtet euch zu nichts. Gebaut wird erst, wenn ihr den festen Preis kennt und zugesagt habt.',
 };
@@ -102,7 +102,7 @@ export const angebote: SchlankTor = {
   ablaufTitel: 'In wenigen Wochen läuft eure Kalkulation',
   ablauf: [
     { wann: 'Tag 1', titel: 'Erstgespräch', text: '30 Minuten am Bildschirm, kostenlos. Ihr zeigt uns euer schwierigstes Angebot und wisst danach, ob es passt.' },
-    { wann: 'Woche 1 bis 2', titel: 'Eure Rechnung aufschreiben', text: 'Wir schreiben auf, wie ihr heute rechnet. Dann bekommt ihr einen festen Preis.' },
+    { wann: 'Woche 1 bis 2', titel: 'Genau hinschauen', text: 'Passt es, schreiben wir in einem bezahlten Schritt auf, wie ihr rechnet. Was er kostet, sagt euch Marten vorher. Danach bekommt ihr einen festen Preis.' },
     { wann: 'Danach, 2 bis 4 Wochen', titel: 'Software bauen', text: 'Mit eurem Briefkopf. Euer altes System läuft weiter, bis das neue funktioniert.' },
   ],
   fragenUndAntworten: [
@@ -177,7 +177,7 @@ export const einsatz: SchlankTor = {
   ablaufTitel: 'In wenigen Wochen läuft eure Planung',
   ablauf: [
     { wann: 'Tag 1', titel: 'Erstgespräch', text: '30 Minuten, kostenlos. Ihr erzählt, wie ihr heute plant, und wisst danach, ob es passt.' },
-    { wann: 'Woche 1 bis 2', titel: 'Euren Ablauf aufschreiben', text: 'So, wie er wirklich läuft. Dann bekommt ihr einen festen Preis.' },
+    { wann: 'Woche 1 bis 2', titel: 'Genau hinschauen', text: 'Passt es, schreiben wir in einem bezahlten Schritt euren Ablauf auf, so wie er wirklich läuft. Was er kostet, sagt euch Marten vorher. Danach bekommt ihr einen festen Preis.' },
     { wann: 'Danach, 3 bis 6 Wochen', titel: 'Software bauen', text: 'Erfassung und Rechnung folgen Stufe für Stufe. Eure Wochenplanung bleibt, bis das Neue trägt.' },
   ],
   fragenUndAntworten: [
@@ -251,7 +251,7 @@ export const zahlen: SchlankTor = {
   ablaufTitel: 'In wenigen Wochen steht eure Übersicht',
   ablauf: [
     { wann: 'Tag 1', titel: 'Erstgespräch', text: '30 Minuten, kostenlos. Wir reden über eure Zahlen, und ihr wisst danach, ob es passt.' },
-    { wann: 'Woche 1 bis 2', titel: 'Eure Daten ansehen', text: 'Wo sie liegen und was zuerst fehlt. Dann bekommt ihr einen festen Preis.' },
+    { wann: 'Woche 1 bis 2', titel: 'Genau hinschauen', text: 'Passt es, sehen wir uns in einem bezahlten Schritt an, wo eure Daten liegen und was zuerst fehlt. Was er kostet, sagt euch Marten vorher. Danach bekommt ihr einen festen Preis.' },
     { wann: 'Danach, 4 bis 6 Wochen', titel: 'Übersicht bauen', text: 'Umsatz, Auslastung und Verträge aus euren Systemen. Weitere Zahlen kommen dazu, sobald die ersten tragen.' },
   ],
   fragenUndAntworten: [
@@ -321,7 +321,7 @@ export const eigeneSoftware: SchlankTor = {
   ablaufTitel: 'In wenigen Wochen läuft der erste Abschnitt',
   ablauf: [
     { wann: 'Tag 1', titel: 'Erstgespräch', text: '30 Minuten, kostenlos. Ihr erzählt, wie ihr arbeiten wollt. Wir sagen, was davon heute geht.' },
-    { wann: 'Woche 1 bis 2', titel: 'Ersten Abschnitt festlegen', text: 'Wir schreiben auf, was zuerst umzieht und welche Daten mitmüssen. Dann bekommt ihr einen festen Preis.' },
+    { wann: 'Woche 1 bis 2', titel: 'Genau hinschauen', text: 'Passt es, legen wir in einem bezahlten Schritt fest, was zuerst umzieht und welche Daten mitmüssen. Was er kostet, sagt euch Marten vorher. Danach bekommt ihr einen festen Preis.' },
     { wann: 'Danach, 4 bis 6 Wochen', titel: 'Der erste Abschnitt läuft', text: 'Mit euren Daten darin und dem alten Programm daneben. Jeder weitere Bereich dauert ein bis drei Monate.' },
   ],
   fragenUndAntworten: [
