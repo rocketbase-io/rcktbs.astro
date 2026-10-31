@@ -61,7 +61,7 @@ const teaserCaptions: Record<string, string> = {
   lang={locale}
   routeId="references"
 >
-  <SeitenHero eyebrow="Referenzen" titel="Echte Projekte, von der Ausgangslage bis zum Ergebnis" text="Zu jedem Projekt steht hier, was gebaut wurde und warum: im Konzern, bei der Erneuerung alter Systeme oder beim Wechsel von Standardsoftware zu einer eigenen Lösung." knopf="Erstgespräch buchen">
+  <SeitenHero eyebrow="Referenzen" titel="Echte Projekte, von der Ausgangslage bis zum Ergebnis" text="Zu jedem Projekt steht hier, was gebaut wurde und warum: im Konzern, bei der Erneuerung alter Systeme oder beim Wechsel von Standardsoftware zu einer eigenen Lösung.">
     <Image
       src={referenzBild}
       alt="Kundenstandorte und Berater auf einer Deutschlandkarte, Demo-Daten"
@@ -74,7 +74,7 @@ const teaserCaptions: Record<string, string> = {
 
   <ClientLogoStrip logos={clientLogos} variant="light" />
 
-  <section class="py-28">
+  <section class="py-14 sm:py-28">
     <div class="container space-y-16">
       {cases.map((item, idx) => (
         <article
@@ -142,10 +142,6 @@ const teaserCaptions: Record<string, string> = {
               <p class="mt-4 text-xs font-semibold uppercase tracking-[0.22em] text-brand-600">{item.client}</p>
             )}
             <p class="mt-5 text-base leading-8 text-foreground-secondary">{item.kicker}</p>
-            <p class="mt-4 text-sm leading-7 text-foreground-muted">
-              Darum ging es: {item.processFocus}
-            </p>
-            <p class="mt-5 text-base leading-8 text-foreground-secondary">{item.description}</p>
 
             <ul class="mt-8 space-y-4 border-l border-border pl-5 text-sm leading-7 text-foreground-secondary">
               {item.highlights.map((highlight) => (
@@ -174,7 +170,7 @@ const teaserCaptions: Record<string, string> = {
   </section>
 
   {additionalCases.length > 0 && (
-    <section class="border-t border-border py-24">
+    <section class="border-t border-border py-14 sm:py-24">
       <div class="container max-w-6xl">
         <header class="max-w-3xl">
           <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Weitere Projekte</p>
@@ -191,7 +187,7 @@ const teaserCaptions: Record<string, string> = {
             <li>
               <a
                 href={`/referenzen/${item.slug}/`}
-                class="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-[transform,border-color,box-shadow] duration-200 will-change-transform [backface-visibility:hidden] hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-sm"
+                class="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-[transform,border-color,box-shadow] duration-200 will-change-transform [backface-visibility:hidden] hover:border-brand-300 hover:shadow-sm"
               >
                 {item.slug in caseImages && (
                   <div class="overflow-hidden">
@@ -227,7 +223,7 @@ const teaserCaptions: Record<string, string> = {
     </section>
   )}
 
-  <section class="border-t border-border bg-background-secondary py-24">
+  <section class="border-t border-border bg-background-secondary py-14 sm:py-24">
     <div class="container grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
       <div>
         <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Nächster Schritt</p>
@@ -244,8 +240,8 @@ const teaserCaptions: Record<string, string> = {
           Erstgespräch buchen
           <Icon name="arrow-up-right" size="sm" />
         </Button>
-        <Button variant="outline" href="/kontakt/">
-          Kontakt
+        <Button variant="outline" href="/kontakt/#anfrage-stellen">
+          Lieber schreiben
         </Button>
       </div>
     </div>

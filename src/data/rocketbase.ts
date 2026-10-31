@@ -84,27 +84,37 @@ const casesRaw = [
       'Neubau einer Produktdaten-Plattform bei bonprix: RocketBase übernahm die technische Führung und brachte die Hamburger Delivery mit einem indischen Entwicklungsteam zusammen.',
     navTeaser: 'Eine Plattform für Produktdaten im Konzernalltag.',
     kicker:
-      'Eine große Software wurde in kleine, einzeln änderbare Teile zerlegt. Das dauerte mehrere Jahre, die Teams saßen auf zwei Kontinenten.',
+      'Drei Jahre lang hat RocketBase mit vier Leuten den Neubau der Produktdaten-Software von bonprix geführt, während die alte weiterlief.',
     highlights: [
-      'Technische Führung und Teamaufbau über mehrere Jahre',
-      'Eine große Software in kleine Teile zerlegt',
+      'Technische Leitung für ein Team aus 14 Entwicklern',
+      'Die alte Software lief während des Umbaus weiter',
       'Gemeinsame Entwicklung in Hamburg und Indien',
     ],
     challenge:
-      'Die Logik hinter den Produktdaten war über Jahre gewachsen und sollte neu gebaut werden. Daran arbeiteten Teams in Hamburg und Indien gleichzeitig. Dazwischen lagen Zeitverschiebung, Sprache und unterschiedliche Arbeitsweisen.',
+      'Die Software für Produktdaten war in die Jahre gekommen. Alles hing in einem großen Oracle/.NET-System, und neue Anforderungen wie Kollektionen und flexiblere Produktstrukturen ließen sich kaum noch umsetzen. Abschalten ging nicht, denn die Fachbereiche arbeiteten jeden Tag damit.',
     approach:
-      'RocketBase schrieb Code und ordnete daneben die Zusammenarbeit: Workshops, Übergaben, Zuständigkeiten. Wenn Teams weit auseinander sitzen, entscheidet das oft mehr über den Erfolg als die Technik.',
+      'Von 2019 bis 2022 übernahm RocketBase die technische Konzeption, die Leitung und die Qualitätssicherung in einem gemischten Team aus 14 Entwicklern in Hamburg und Indien. Wir bauten die Software Stück für Stück neu, aus kleinen, einzeln änderbaren Teilen. Daneben ordneten wir die Zusammenarbeit: Workshops, Übergaben, Zuständigkeiten. Auch die Oberflächen haben wir überarbeitet, damit sich Produkte und Stammdaten schneller erfassen lassen.',
     impact:
-      'Aus der einen großen Software wurden viele kleine Teile, und die Teams auf beiden Kontinenten arbeiteten am Ende zusammen. Das Muster passt, wenn ihr gewachsene Daten neu ordnen müsst und eure Teams an mehreren Orten sitzen.',
+      'Die alte Software blieb die ganze Zeit in Betrieb, beide Datenstrukturen blieben kompatibel, und die Fachbereiche konnten jederzeit weiterarbeiten. Aus der einen großen Software wurden viele kleine Teile, und Kollektionen und flexiblere Produktstrukturen sind jetzt möglich.',
     processFocus: 'Pflege und Abstimmung von Produktdaten über mehrere Teams und Standorte hinweg.',
     outcomes: [
-      'Klare Übergaben und Zuständigkeiten zwischen den Standorten',
+      'Umbau im laufenden Betrieb, die Fachbereiche konnten jederzeit weiterarbeiten',
+      'Produkte und Stammdaten lassen sich spürbar schneller erfassen',
+      'Kollektionen und flexiblere Produktstrukturen sind möglich',
       'Die Software lässt sich jetzt in Teilen weiterentwickeln',
+      'Klare Übergaben und Zuständigkeiten zwischen den Standorten',
     ],
     services: [
-      'Technische Führung',
-      'Teams und Systeme zusammengeführt',
-      'Workshops und Organisation der Zusammenarbeit',
+      'Technische Konzeption und Leitung',
+      'Qualitätssicherung',
+      'Zusammenarbeit der Teams in Hamburg und Indien',
+      'Überarbeitung der Oberflächen',
+    ],
+    fakten: [
+      { label: 'Branche', wert: 'Handel, E-Commerce' },
+      { label: 'Laufzeit', wert: '2019 bis 2022' },
+      { label: 'RocketBase', wert: '4 Personen' },
+      { label: 'Gesamtteam', wert: '14 Entwickler' },
     ],
     screenshots: [
       { key: 'bonprix-wizard', alt: 'Create Wizard' },
@@ -134,22 +144,32 @@ const casesRaw = [
       'Die Redakteure saßen von Anfang an mit am Tisch',
     ],
     challenge:
-      'Die Redaktion pflegte Statistiken und Inhalte in einem über Jahre gewachsenen System. Es sollte ersetzt werden, während die tägliche Arbeit weiterlief und die Redakteure ihre eingespielten Abläufe behielten.',
+      'Die Redaktion pflegte Statistiken und Inhalte in einer veralteten .NET-Plattform im eigenen Rechenzentrum. Sie sollte ersetzt werden, doch Statista veröffentlicht jeden Tag: Ein Stillstand kam nicht infrage, und die Redakteure sollten ihre eingespielten Abläufe behalten.',
     approach:
-      'Zuerst saß RocketBase bei den Redakteuren und schaute zu, wie sie arbeiten. Was dabei auffiel, bestimmte den Aufbau der neuen Oberflächen. Beim Umzug der Daten liefen beide Systeme eine Zeit lang nebeneinander.',
+      'Zuerst saß RocketBase bei den Redakteuren und schaute zu, wie sie arbeiten. Was dabei auffiel, bestimmte den Aufbau der neuen Oberflächen. Gemeinsam mit dem Statista-Team entstand ein neues System in der AWS-Cloud. Alt und Neu liefen nebeneinander und glichen ihre Daten in beide Richtungen ab, sodass die Funktionen einzeln umziehen konnten.',
     impact:
-      'Die alte Software ist ersetzt, und die Redaktion hat ihren Alltag behalten. Das gelang, weil die späteren Nutzer vom ersten Workshop an dabei waren.',
+      'Statista ist ohne großen Stichtag umgezogen, die Redaktion konnte durchgehend weiterarbeiten. Die alte Software ist ersetzt, und die neuen Oberflächen sparen im Alltag spürbar Klicks und Wartezeit. Das gelang, weil die späteren Nutzer vom ersten Workshop an dabei waren.',
     processFocus:
       'Pflege, Ordnung und Veröffentlichung von Statistiken und Inhalten in der Redaktion.',
     outcomes: [
+      'Umzug in die Cloud ohne Stillstand, die Redaktion arbeitete durchgehend weiter',
+      'Funktionen zogen einzeln um, statt alles an einem Stichtag',
+      'Weniger Klicks und Wartezeit in den neuen Pflegeoberflächen',
       'Weniger Umwege und Handarbeit bei der Pflege der Inhalte',
-      'Mehr Zeit für die Inhalte',
       'Die Plattform lässt sich weiterentwickeln',
     ],
     services: [
-      'Erneuerung der Plattform',
-      'Enge Abstimmung mit den Nutzern',
+      'Technische Leitung und Architektur',
+      'Entwicklung von Serverteil und Oberflächen',
+      'Betrieb in der AWS-Cloud',
       'Datenumzug und Parallelbetrieb',
+      'Enge Abstimmung mit der Redaktion',
+    ],
+    fakten: [
+      { label: 'Branche', wert: 'Daten und Medien' },
+      { label: 'Laufzeit', wert: '2022 bis 2024' },
+      { label: 'Unsere Rolle', wert: 'Technische Leitung' },
+      { label: 'Ergebnis', wert: 'Umzug ohne Stillstand in der Redaktion' },
     ],
     screenshots: [
       { key: 'statista-search', alt: 'Flexible Suche' },
@@ -270,6 +290,7 @@ const casesRaw = [
       'Deutlich weniger Handarbeit, weil die Excel-Planung wegfällt',
       'Auslastung, Verfügbarkeit und Auftragsstand sind jederzeit aktuell sichtbar',
       'Einfachere Bedienung im Alltag durch Barcodes, Druckfunktion und Anmeldung per Personalkarte',
+      'Seit 2026 produktiv im Einsatz',
     ],
     services: [
       'Eigene Software für Planung und Steuerung',
@@ -307,9 +328,9 @@ const casesRaw = [
       },
     ],
     screenshots: [
+      { key: 'metall-board-highlighted', alt: 'Einsatzplanung mit hervorgehobenem Auftrag' },
       { key: 'metall-dashboard', alt: 'Rollenbasiertes Dashboard' },
       { key: 'metall-board', alt: 'Einsatzplanungs-Board' },
-      { key: 'metall-board-highlighted', alt: 'Einsatzplanung mit hervorgehobenem Auftrag' },
       { key: 'metall-order', alt: 'Auftragsübersicht' },
     ],
   },
@@ -354,6 +375,11 @@ export const additionalCases = [
       'Bilderdienst und Serverbetrieb auf AWS',
       'Automatische Auslieferung und Betrieb',
     ],
+    fakten: [
+      { label: 'Branche', wert: 'Daten und Medien' },
+      { label: 'Laufzeit', wert: '2024 bis 2025' },
+      { label: 'Ergebnis', wert: 'Neuer Vertriebsweg in Canva' },
+    ],
     screenshots: [
       { key: 'statista-canva-chart-drawing', alt: 'Canva-Chart erstellen mit Statista-Daten' },
       { key: 'statista-canva-search-results', alt: 'Suche nach Statistiken innerhalb der App' },
@@ -391,15 +417,21 @@ export const additionalCases = [
       'Spürbar weniger unentdeckte Fehlbuchungen im laufenden Betrieb',
       'Deutlich kürzere Wege im Monatsabschluss durch automatische Berichte',
       'Die Plattform hat einen Wechsel des Buchhaltungssystems überstanden',
+      'Bis heute täglich im Controlling im Einsatz',
     ],
     services: [
       'Analyse der Abläufe und Beratung',
       'Entwicklung der Planungsplattform',
       'Anbindung an das Buchhaltungssystem',
     ],
+    fakten: [
+      { label: 'Branche', wert: 'Entertainment' },
+      { label: 'Laufzeit', wert: '2021 bis 2022' },
+      { label: 'Ergebnis', wert: 'Bis heute täglich im Controlling' },
+    ],
     screenshots: [
-      { key: 'stage-cml-planausgaben', alt: 'Erfassung von Planausgaben' },
       { key: 'stage-cml-buchungsliste', alt: 'Buchungsliste mit Validierungs-Info' },
+      { key: 'stage-cml-planausgaben', alt: 'Erfassung von Planausgaben' },
       { key: 'stage-cml-reports', alt: 'Reports und Exporte' },
     ],
     testimonial: {
@@ -440,10 +472,15 @@ export const additionalCases = [
       'Frontend- und Backend-Entwicklung',
       'Hosting und Betrieb unter Last',
     ],
+    fakten: [
+      { label: 'Branche', wert: 'E-Commerce' },
+      { label: 'Laufzeit', wert: '2018 bis 2020' },
+      { label: 'Ergebnis', wert: 'Vom MVP zur etablierten Plattform' },
+    ],
     screenshots: [
+      { key: 'sam-vorteilsguru-workflows', alt: 'Ausgefeilte Workflows' },
       { key: 'sam-vorteilsguru-embed', alt: 'Embed-Testumgebung' },
       { key: 'sam-vorteilsguru-einbindung', alt: 'Flexible Einbindung in Partner-Sites' },
-      { key: 'sam-vorteilsguru-workflows', alt: 'Ausgefeilte Workflows' },
     ],
     testimonial: {
       quote:
@@ -478,11 +515,18 @@ export const additionalCases = [
       'Weniger manuelle Nacharbeit durch direkte Erfassung im Einsatz',
       'Touren, Einsätze und Objekte sind jederzeit aktuell sichtbar',
       'Neue Dienstleistungen und weitere Mandanten lassen sich aufnehmen',
+      'Einsätze sind auch bei Reklamationen lückenlos nachweisbar',
+      'Die App betreuen wir seither durchgehend weiter',
     ],
     services: [
       'Analyse der alten Software und Datenübernahme',
       'Serverteil und App, die auch ohne Netz läuft',
       'Hosting und Veröffentlichung in App Store und Play Store',
+    ],
+    fakten: [
+      { label: 'Branche', wert: 'Dienstleistung, Facility' },
+      { label: 'Laufzeit', wert: '2020 bis 2021' },
+      { label: 'Ergebnis', wert: 'Einsätze lückenlos nachweisbar' },
     ],
     screenshots: [
       { key: 'mavox-winterdienst-mobile', alt: 'Mobile App im Einsatz' },
