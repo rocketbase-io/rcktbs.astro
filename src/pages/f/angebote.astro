@@ -7,9 +7,10 @@
  * Liegt als statische Datei neben /f/[slug].astro und gewinnt gegen die
  * dynamische Route; in funnels.ts darf es deshalb keinen Slug „angebote" geben.
  */
+import { Image } from 'astro:assets';
 import FunnelLayout from '@/layouts/FunnelLayout.astro';
 import SchlankPage from '@/components/funnel-schlank/SchlankPage.astro';
-import AngebotMini from '@/components/funnel-schlank/AngebotMini.astro';
+import angebotBild from '@/assets/references/angebot-db-demo-1920.png';
 import AngebotEbenen, { type Ebene } from '@/components/angebote-funnel/AngebotEbenen.astro';
 import HeuteChaos from '@/components/angebote/HeuteChaos.astro';
 import editor from '@/assets/angebote/v2-editor-praesentation.webp';
@@ -32,7 +33,15 @@ const ebenen: Ebene[] = [
   headerCta
 >
   <SchlankPage tor={angebote}>
-  <AngebotMini slot="hero" stapel />
+  <Image
+    slot="hero"
+    src={angebotBild}
+    alt="Angebot mit Positionen, Stunden und Gewinn je Baustein, Demo-Daten"
+    widths={[640, 960, 1280]}
+    sizes="(min-width: 1024px) 50vw, 100vw"
+    class="border-border w-full rounded-2xl border shadow-xl"
+    loading="eager"
+  />
   <AngebotEbenen ebenen={ebenen} start={2} />
   <HeuteChaos slot="heute" szene />
 </SchlankPage>

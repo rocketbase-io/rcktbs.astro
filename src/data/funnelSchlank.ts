@@ -53,7 +53,7 @@ const groesse: FunnelQuizQuestion = {
   ],
 };
 
-const preisFrage = {
+export const preisFrage = {
   q: 'Was kostet das?',
   a: 'Das lässt sich pauschal nicht seriös sagen, weil wir für jeden Betrieb einzeln bauen. Im Erstgespräch schauen wir uns an, was ihr braucht, und ihr bekommt eine ehrliche Einschätzung. Das Gespräch ist kostenlos und verpflichtet euch zu nichts. Gebaut wird erst, wenn ihr den festen Preis kennt und zugesagt habt.',
 };
@@ -102,7 +102,7 @@ export const angebote: SchlankTor = {
   ablaufTitel: 'In wenigen Wochen läuft eure Kalkulation',
   ablauf: [
     { wann: 'Tag 1', titel: 'Erstgespräch', text: '30 Minuten am Bildschirm, kostenlos. Ihr zeigt uns euer schwierigstes Angebot und wisst danach, ob es passt.' },
-    { wann: 'Woche 1 bis 2', titel: 'Eure Rechnung aufschreiben', text: 'Wir schreiben auf, wie ihr heute rechnet. Dann bekommt ihr einen festen Preis.' },
+    { wann: 'Woche 1 bis 2', titel: 'Genau hinschauen', text: 'Passt es, schreiben wir in einem bezahlten Schritt auf, wie ihr rechnet. Was er kostet, sagt euch Marten vorher. Danach bekommt ihr einen festen Preis.' },
     { wann: 'Danach, 2 bis 4 Wochen', titel: 'Software bauen', text: 'Mit eurem Briefkopf. Euer altes System läuft weiter, bis das neue funktioniert.' },
   ],
   fragenUndAntworten: [
@@ -177,7 +177,7 @@ export const einsatz: SchlankTor = {
   ablaufTitel: 'In wenigen Wochen läuft eure Planung',
   ablauf: [
     { wann: 'Tag 1', titel: 'Erstgespräch', text: '30 Minuten, kostenlos. Ihr erzählt, wie ihr heute plant, und wisst danach, ob es passt.' },
-    { wann: 'Woche 1 bis 2', titel: 'Euren Ablauf aufschreiben', text: 'So, wie er wirklich läuft. Dann bekommt ihr einen festen Preis.' },
+    { wann: 'Woche 1 bis 2', titel: 'Genau hinschauen', text: 'Passt es, schreiben wir in einem bezahlten Schritt euren Ablauf auf, so wie er wirklich läuft. Was er kostet, sagt euch Marten vorher. Danach bekommt ihr einen festen Preis.' },
     { wann: 'Danach, 3 bis 6 Wochen', titel: 'Software bauen', text: 'Erfassung und Rechnung folgen Stufe für Stufe. Eure Wochenplanung bleibt, bis das Neue trägt.' },
   ],
   fragenUndAntworten: [
@@ -251,7 +251,7 @@ export const zahlen: SchlankTor = {
   ablaufTitel: 'In wenigen Wochen steht eure Übersicht',
   ablauf: [
     { wann: 'Tag 1', titel: 'Erstgespräch', text: '30 Minuten, kostenlos. Wir reden über eure Zahlen, und ihr wisst danach, ob es passt.' },
-    { wann: 'Woche 1 bis 2', titel: 'Eure Daten ansehen', text: 'Wo sie liegen und was zuerst fehlt. Dann bekommt ihr einen festen Preis.' },
+    { wann: 'Woche 1 bis 2', titel: 'Genau hinschauen', text: 'Passt es, sehen wir uns in einem bezahlten Schritt an, wo eure Daten liegen und was zuerst fehlt. Was er kostet, sagt euch Marten vorher. Danach bekommt ihr einen festen Preis.' },
     { wann: 'Danach, 4 bis 6 Wochen', titel: 'Übersicht bauen', text: 'Umsatz, Auslastung und Verträge aus euren Systemen. Weitere Zahlen kommen dazu, sobald die ersten tragen.' },
   ],
   fragenUndAntworten: [
@@ -321,7 +321,7 @@ export const eigeneSoftware: SchlankTor = {
   ablaufTitel: 'In wenigen Wochen läuft der erste Abschnitt',
   ablauf: [
     { wann: 'Tag 1', titel: 'Erstgespräch', text: '30 Minuten, kostenlos. Ihr erzählt, wie ihr arbeiten wollt. Wir sagen, was davon heute geht.' },
-    { wann: 'Woche 1 bis 2', titel: 'Ersten Abschnitt festlegen', text: 'Wir schreiben auf, was zuerst umzieht und welche Daten mitmüssen. Dann bekommt ihr einen festen Preis.' },
+    { wann: 'Woche 1 bis 2', titel: 'Genau hinschauen', text: 'Passt es, legen wir in einem bezahlten Schritt fest, was zuerst umzieht und welche Daten mitmüssen. Was er kostet, sagt euch Marten vorher. Danach bekommt ihr einen festen Preis.' },
     { wann: 'Danach, 4 bis 6 Wochen', titel: 'Der erste Abschnitt läuft', text: 'Mit euren Daten darin und dem alten Programm daneben. Jeder weitere Bereich dauert ein bis drei Monate.' },
   ],
   fragenUndAntworten: [
@@ -381,7 +381,7 @@ export const softwareCheck: SchlankTor = {
       { titel: 'Besprechen', text: 'Wir gehen ihn durch: Was ist kritisch, was kann warten?' },
     ],
   },
-  beweis: { hinweis: 'Beispiel. Euer Bericht enthält eure Befunde.' },
+  beweis: { hinweis: '' },
   vergleichTitel: 'Was sich nach dem Check ändert',
   vergleich: [
     ['Die Software läuft, von außen hat sie keiner gesehen', 'Jemand mit Erfahrung hat sie geprüft'],
@@ -391,18 +391,18 @@ export const softwareCheck: SchlankTor = {
   ],
   ablaufTitel: 'In wenigen Tagen habt ihr den Bericht',
   ablauf: [
-    { wann: '1 Stunde', titel: 'Festlegen, was geprüft wird', text: 'Welche Anwendung, welches Level, wer Zugang zu Code und Testumgebung gibt.' },
+    { wann: 'Kostenlos', titel: 'Erstgespräch', text: 'Ihr zeigt uns grob euren Code. Wir legen fest, was geprüft wird, und ihr bekommt einen Preis je nach Umfang.' },
     { wann: 'Tag 1 bis 4', titel: 'Prüfen', text: 'Erst automatisch, dann von Hand: Rechte, Anmeldung, Eingaben, Schlüssel.' },
     { wann: '1,5 Stunden', titel: 'Bericht durchgehen', text: 'Was kritisch ist, was warten kann und was die Behebung kostet.' },
   ],
   fragenUndAntworten: [
-    { q: 'Was kostet das?', a: 'Das hängt von der Größe eurer Software ab, deshalb gibt es keinen Pauschalpreis. Im Erstgespräch schaut ihr mit Marten drauf und bekommt eine ehrliche Einschätzung. Das Gespräch ist kostenlos und verpflichtet euch zu nichts. Geprüft wird erst, wenn ihr den Preis kennt und zugesagt habt.' },
+    { q: 'Was kostet das?', a: 'Der Preis richtet sich nach dem Umfang des Codes. Im kostenlosen Erstgespräch zeigt ihr ihn Marten grob, danach bekommt ihr einen Preis. Das Gespräch verpflichtet euch zu nichts, geprüft wird erst, wenn ihr zugesagt habt.' },
     { q: 'Ist das ein Penetrationstest?', a: 'Nein. Wenn ihr einen braucht, sagen wir es und holen einen Partner dazu.' },
     { q: 'Bekommen wir ein Zertifikat?', a: 'Nein, das stellen Prüfstellen aus. Wir bereiten vor und begleiten.' },
     { q: 'Müssen wir danach alles neu bauen?', a: 'Selten. Der Bericht sagt je Fund, ob ihr ihn so lassen, umbauen oder neu machen solltet.' },
   ],
   schlussTitel: 'Erstgespräch vereinbaren',
-  schlussText: 'Ihr erzählt, was ihr gebaut habt, und wisst danach, welcher Check passt.',
+  schlussText: 'Ihr zeigt uns grob euren Code und wisst danach, welcher Check passt und was er kostet.',
   fragen: [
     {
       id: 'was',
