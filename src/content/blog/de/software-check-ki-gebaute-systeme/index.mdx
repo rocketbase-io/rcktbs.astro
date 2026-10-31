@@ -16,6 +16,9 @@ cta:
   body: 'Dreißig Minuten, in denen wir einordnen, ob ein Blick von außen etwas bringt und welcher. Kostenlos, ohne Folien.'
 ---
 
+import FundeUebersicht from '@/components/blog/diagrams/FundeUebersicht.astro';
+import CodeUndBetrieb from '@/components/blog/diagrams/CodeUndBetrieb.astro';
+
 Im September hat mich Daniel Rübensam von Delta-Sport gebeten, zwei Systeme anzuschauen, die in den nächsten Wochen gemeinsam produktiv gehen: ein Lagersystem mit Anbindung an die Warenwirtschaft und den Paketdienst und eine Service-App. Die App nimmt Reklamationen entgegen, führt Kundenmails, klassifiziert sie per Sprachmodell und erzeugt Erstattungen als Bankdatei. Beides entstand in wenigen Monaten, zum großen Teil mit Claude.
 
 Zum Zeitpunkt der Durchsicht lief keines der Systeme live, und es waren keine Kundendaten darin. Genau der richtige Moment für einen Blick von außen.
@@ -33,6 +36,8 @@ In keinem der beiden Systeme habe ich eine Schwachstelle gefunden, die einem Ang
 ## Was trotzdem offen war
 
 Einige Dutzend Befunde, eine Handvoll davon kritisch. Sie lagen abseits der Stellen, an denen man Sicherheitslücken vermutet, in drei Bereichen, und zwar in beiden Systemen an denselben Stellen.
+
+<FundeUebersicht />
 
 **Gleichzeitige Zugriffe.** Beide Anwendungen gehen davon aus, dass zwei Vorgänge nicht zur selben Zeit dieselben Daten anfassen. Im Lager betrifft das die Bestandszusage: Zwei gleichzeitige Reservierungen auf das letzte Stück wurden beide angenommen, und der nächtliche Abgleich hat die Spur davon beseitigt. Das habe ich mit einem Integrationstest gegen eine echte Datenbank gemessen. In der Service-App betraf dasselbe Muster den Zahllauf, also die Stelle, an der Geld das Haus verlässt.
 
@@ -63,6 +68,8 @@ Abgeschlossen hat das ein Termin von anderthalb Stunden mit zwei Live-Nachweisen
 ## Was mit dem Code nichts zu tun hatte
 
 Der Teil, der mir im Nachhinein am wichtigsten erscheint, stand in keinem Befund. Er kam im Termin auf und wurde danach ein eigenes Papier: die Themen, die man im Repository, also im Quellcode-Archiv, nicht sieht und die erst im Betrieb auffallen.
+
+<CodeUndBetrieb />
 
 Der Mailweg zum Beispiel. Die Service-App verschickt viele Mails im Jahr und holt Antworten automatisch ab. Was passiert, wenn eine Adresse nicht existiert oder ein Postfach voll ist? Der Mailserver der Gegenseite schickt eine Unzustellbarkeitsmeldung, mit der Ticketnummer im Text. Die sieht für die Anwendung aus wie eine Kundenantwort und landet als solche am Vorgang. Der Sachbearbeiter sieht eine neue Nachricht und darunter seine eigene, scheinbar versendete. Der Fall sieht bearbeitet aus. Er ist es nicht, und niemand erfährt es. Dazu kommt die Absenderdomain. Ist sie so eingerichtet, dass große Mailanbieter die Mails überhaupt annehmen? Und gibt es eine Stelle, an der jemand merkt, wenn ab morgen jede zehnte Mail zurückkommt?
 
