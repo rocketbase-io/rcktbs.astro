@@ -161,7 +161,7 @@ const sections = [
         <section
           id={section.id}
           class={cn(
-            'relative overflow-hidden py-24 lg:py-32',
+            'relative overflow-hidden py-14 sm:py-24 lg:py-32',
             section.background === 'secondary'
               ? 'bg-background-secondary'
               : 'bg-background'
@@ -234,7 +234,7 @@ const sections = [
                       widths={[320, 480, 640, 900]}
                       sizes="(max-width: 768px) calc(100vw - 3rem), 448px"
                       formats={['avif', 'webp']}
-                      class="border-border w-full rotate-1 rounded-3xl border shadow-xl transition-all duration-500 ease-out group-hover:rotate-0 group-hover:-translate-y-1 group-hover:shadow-2xl"
+                      class="border-border w-full rotate-1 rounded-3xl border shadow-xl transition-all duration-500 ease-out group-hover:rotate-0 group-hover:shadow-2xl"
                       loading="lazy"
                     />
                     <Picture
@@ -270,7 +270,7 @@ const sections = [
                     widths={[256, 384, 512]}
                     sizes="256px"
                     formats={['avif', 'webp']}
-                    class="border-border absolute top-0 right-0 w-64 rotate-3 rounded-2xl border shadow-2xl transition-all duration-500 ease-out group-hover:translate-x-4 group-hover:rotate-6 group-hover:-translate-y-2"
+                    class="border-border absolute top-0 right-0 w-64 rotate-3 rounded-2xl border shadow-2xl transition-all duration-500 ease-out group-hover:translate-x-4 group-hover:rotate-6"
                     loading="lazy"
                   />
                   <div
@@ -319,7 +319,7 @@ const sections = [
                     widths={[288, 320, 576, 640]}
                     sizes="(max-width: 640px) 288px, 320px"
                     formats={['avif', 'webp']}
-                    class="border-brand-300 absolute top-0 right-0 w-72 rotate-2 rounded-3xl border-2 shadow-[0_30px_60px_-15px_rgba(99,102,241,0.4)] transition-all duration-500 ease-out group-hover:rotate-0 group-hover:-translate-y-2 group-hover:shadow-[0_40px_80px_-15px_rgba(99,102,241,0.6)] sm:w-80"
+                    class="border-brand-300 absolute top-0 right-0 w-72 rotate-2 rounded-3xl border-2 shadow-[0_30px_60px_-15px_rgba(99,102,241,0.4)] transition-all duration-500 ease-out group-hover:rotate-0 group-hover:shadow-[0_40px_80px_-15px_rgba(99,102,241,0.6)] sm:w-80"
                     loading="lazy"
                   />
                 </div>
@@ -352,7 +352,7 @@ const sections = [
   </div>
 
   <!-- BSFZ-Anerkennung -->
-  <section class="border-border border-t py-20 lg:py-24">
+  <section class="border-border border-t py-12 sm:py-20 lg:py-24">
     <div class="container max-w-5xl">
       <div data-reveal class="grid items-center gap-10 rounded-[2rem] border border-border bg-card p-8 shadow-sm sm:p-10 md:grid-cols-[auto_1fr] md:gap-12 lg:p-12">
         <div class="flex items-center justify-center gap-4 md:flex-col md:gap-5">
@@ -405,7 +405,7 @@ const sections = [
   </section>
 
   <!-- CTA -->
-  <section class="border-border bg-background-secondary border-t py-24">
+  <section class="border-border bg-background-secondary border-t py-14 sm:py-24">
     <div class="container max-w-4xl">
       <div
         data-reveal="zoom-in"

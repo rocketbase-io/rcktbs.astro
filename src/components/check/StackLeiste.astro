@@ -12,8 +12,10 @@ import * as icons from 'simple-icons';
 
 interface Props {
   class?: string;
+  /** Kurzfassung fürs Handy: ein Satz und die Logos. */
+  kompakt?: boolean;
 }
-const { class: className } = Astro.props;
+const { class: className, kompakt = false } = Astro.props;
 
 type Si = { path: string; hex: string; title: string };
 const si = icons as unknown as Record<string, Si | undefined>;
@@ -65,11 +67,19 @@ const eherNicht = ['Python (Django, FastAPI)', 'PHP (Laravel, WordPress)', '.NET
       <h2 class="font-display text-foreground mt-3 text-2xl font-bold tracking-tight sm:text-3xl">
         Das, was KI-Werkzeuge meistens bauen.
       </h2>
-      <p class="text-foreground-secondary mt-4 text-[0.95rem] leading-7">
-        Ob mit Claude Code, Cursor, ChatGPT, Lovable, Bolt oder v0 gebaut: Herauskommt in der Regel
-        TypeScript mit React oder Next.js, dazu Postgres oder Supabase. Genau das bauen und betreiben
-        wir seit Jahren, auch ohne KI.
-      </p>
+      {
+        kompakt ? (
+          <p class="text-foreground-secondary mt-3 text-[0.95rem] leading-7">
+            Genau das bauen und betreiben wir seit Jahren, auch ohne KI.
+          </p>
+        ) : (
+          <p class="text-foreground-secondary mt-4 text-[0.95rem] leading-7">
+            Ob mit Claude Code, Cursor, ChatGPT, Lovable, Bolt oder v0 gebaut: Herauskommt in der Regel
+            TypeScript mit React oder Next.js, dazu Postgres oder Supabase. Genau das bauen und betreiben
+            wir seit Jahren, auch ohne KI.
+          </p>
+        )
+      }
     </header>
 
     <!-- Bühne: Kern fest in der Mitte, Umfeld schwebt (ab md), darunter als Reihe -->
@@ -120,7 +130,7 @@ const eherNicht = ['Python (Django, FastAPI)', 'PHP (Laravel, WordPress)', '.NET
       </ul>
     </div>
 
-    <p data-reveal class="text-foreground-muted mx-auto mt-10 max-w-3xl text-center text-sm leading-6">
+    <p data-reveal class:list={['text-foreground-muted mx-auto mt-10 max-w-3xl text-center text-sm leading-6', kompakt && 'hidden']}>
       <span class="text-foreground-secondary font-semibold">Eher nicht bei uns:</span> {eherNicht.join(' · ')}.
       Bei Stacks, die wir nicht täglich betreiben, sagen wir das im Erstgespräch und empfehlen jemand anderen.
     </p>

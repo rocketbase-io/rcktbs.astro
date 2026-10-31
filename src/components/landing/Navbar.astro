@@ -59,19 +59,19 @@ const serviceLinks = [
     href: '/zahlen/',
     icon: 'table',
     title: 'Zahlen & Steuerung',
-    text: 'Umsatz, Auslastung, Verträge live statt am Monatsende.',
+    text: 'Umsatz, Auslastung und Verträge täglich aktuell.',
   },
   {
     href: getLocalizedPath('standardsoftwareAbloesung', locale),
     icon: 'layers',
     title: t('nav.standardsoftwareAbloesung'),
-    text: 'Branchensoftware samt Excel Schritt für Schritt ablösen.',
+    text: 'Branchensoftware Schritt für Schritt ablösen.',
   },
   {
     href: '/software-check/',
     icon: 'shield',
     title: 'Software-Check',
-    text: 'Technischer Rat für Software, die ihr selbst gebaut habt.',
+    text: 'Prüfung für selbst gebaute Software.',
   },
 ] as const;
 
@@ -161,14 +161,16 @@ const featuredReferences = cases
                   </Fragment>
                 ))}
 
+                <div class="border-border mt-1 border-t pt-1">
                 <a
                   href={servicesPath}
-                  class="mt-1 flex items-center justify-between rounded-xl border-t border-border px-3 py-3 text-sm font-semibold text-brand-600 hover:text-brand-500"
+                  class="flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold text-brand-600 hover:text-brand-500"
                   role="menuitem"
                 >
                   Alle Lösungen ansehen
                   <Icon name="arrow-right" size="xs" />
                 </a>
+                </div>
               </div>
             </div>
           </div>
@@ -217,14 +219,16 @@ const featuredReferences = cases
                   </a>
                 ))}
 
+                <div class="border-border mt-1 border-t pt-1">
                 <a
                   href={referencesPath}
-                  class="mt-1 flex items-center justify-between rounded-xl border-t border-border px-3 py-3 text-sm font-semibold text-brand-600 hover:text-brand-500"
+                  class="flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold text-brand-600 hover:text-brand-500"
                   role="menuitem"
                 >
                   Alle Referenzen ansehen
                   <Icon name="arrow-right" size="xs" />
                 </a>
+                </div>
               </div>
             </div>
           </div>
@@ -276,14 +280,16 @@ const featuredReferences = cases
                   </a>
                 ))}
 
+                <div class="border-border mt-1 border-t pt-1">
                 <a
                   href={blogPath}
-                  class="mt-1 flex items-center justify-between rounded-xl border-t border-border px-3 py-3 text-sm font-semibold text-brand-600 hover:text-brand-500"
+                  class="flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold text-brand-600 hover:text-brand-500"
                   role="menuitem"
                 >
                   Alle Beiträge ansehen
                   <Icon name="arrow-right" size="xs" />
                 </a>
+                </div>
               </div>
             </div>
           </div>

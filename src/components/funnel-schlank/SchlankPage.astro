@@ -7,6 +7,8 @@
  *   Hero     für wen, Versprechen, Erklärung, Bild (Slot `hero`), Knopf ab sm, vier Fakten
  *   Was      was es ist, drei Schritte, Bild (Standard-Slot)
  *   Heute    vorher und nachher mit Bild (Slot `heute`, optional), dazu die Zahl
+ *   Extras   nur ab lg: Slot `mehr` mit Überschrift, Slot `vollbreit` für ganze Abschnitte;
+ *            unter lg stattdessen Slot `mobil`
  *   Ablauf   drei Schritte (#ablauf)
  *   Fragen   vier Antworten, eingeklappt: kosten kaum Platz, der Preis bleibt auffindbar
  *   Kontakt  Marten, Quiz (#kontakt, #quiz)
@@ -44,8 +46,10 @@ interface Props {
   zitat?: { quote: string; author: string; position: string };
   /** Tür-Seiten: Überschrift für das zusätzliche Bild im Slot `mehr`, nur ab lg sichtbar. */
   mehrTitel?: string;
+  /** Mobil nur die Seite „danach“ zeigen, weniger Text. */
+  vergleichKurz?: boolean;
 }
-const { tor, modus = 'funnel', headline = tor.headline, faqs = tor.fragenUndAntworten, blogTuer, zitat, mehrTitel } = Astro.props;
+const { tor, modus = 'funnel', headline = tor.headline, faqs = tor.fragenUndAntworten, blogTuer, zitat, mehrTitel, vergleichKurz = false } = Astro.props;
 const istSeite = modus === 'seite';
 const mitHeuteBild = Astro.slots.has('heute');
 
@@ -101,13 +105,24 @@ const quizProps = {
       <slot name="hero" />
     </div>
     <div class="lg:self-start">
-      <div class:list={['mb-4', !istSeite && 'hidden sm:block']}>
-        <Button size="lg" href={istSeite ? '#kontakt' : '#quiz'}>
-          Kostenloses Erstgespräch anfragen
-          <Icon name="arrow-right" size="sm" />
-        </Button>
-      </div>
-      <div class="flex items-center gap-3">
+      {
+        istSeite ? (
+          <div class="mb-4">
+            <Button variant="link" href="#beweis">
+              So funktioniert es
+              <Icon name="arrow-right" size="sm" />
+            </Button>
+          </div>
+        ) : (
+          <div class="mb-4 hidden sm:block">
+            <Button size="lg" href="#quiz">
+              Kostenloses Erstgespräch anfragen
+              <Icon name="arrow-right" size="sm" />
+            </Button>
+          </div>
+        )
+      }
+      <div class:list={['items-center gap-3', istSeite ? 'hidden' : 'flex']}>
         <Picture
           src={founderPortrait}
           alt="Marten Prieß, Gründer von RocketBase"
@@ -138,13 +153,13 @@ const quizProps = {
 
 <ClientLogoStrip heading="Aus Projekten mit" logos={tor.logos} variant="light" uniform class="py-8" />
 
-<section id="beweis" class="scroll-mt-20 py-14 lg:py-20">
+<section id="beweis" class="scroll-mt-20 py-14 lg:py-32">
   <div class="container max-w-6xl">
     <h2 class="font-display text-foreground text-2xl font-bold tracking-tight text-balance sm:text-4xl">
       {tor.wasEsIst.titel}
     </h2>
     <p class="text-foreground-secondary mt-3 max-w-2xl text-base leading-7">{tor.wasEsIst.text}</p>
-    <ol class="mt-7 grid gap-4 lg:grid-cols-3">
+    <ol class="mt-7 grid gap-4 lg:mt-10 lg:grid-cols-3 lg:gap-6">
       {
         tor.wasEsIst.schritte.map((s, i) => (
           <li class="bg-brand-500/5 rounded-2xl p-5">
@@ -157,17 +172,17 @@ const quizProps = {
         ))
       }
     </ol>
-    <div class="szene-auf mt-8 min-w-0" data-szene><slot /></div>
-    <p class="text-foreground-muted mt-3 text-sm">{tor.beweis.hinweis}</p>
+    <div class="szene-auf mt-8 min-w-0 lg:mt-12" data-szene><slot /></div>
+    {tor.beweis.hinweis && <p class="text-foreground-muted mt-3 text-sm">{tor.beweis.hinweis}</p>}
   </div>
 </section>
 
-<section id="heute" class="scroll-mt-20 pb-14 lg:pb-20">
+<section id="heute" class="scroll-mt-20 pb-14 lg:pb-32">
   <div class="container max-w-6xl">
     <h2 class="font-display text-foreground text-2xl font-bold tracking-tight text-balance sm:text-4xl">
       {tor.vergleichTitel}
     </h2>
-    <div class:list={['mt-7 grid gap-8', mitHeuteBild && 'lg:grid-cols-2 lg:items-center lg:gap-12']}>
+    <div class:list={['mt-7 grid gap-8 lg:mt-12', mitHeuteBild && 'lg:grid-cols-2 lg:items-center lg:gap-16']}>
       {
         mitHeuteBild && (
           <div class="szene-auf min-w-0" data-szene>
@@ -179,7 +194,7 @@ const quizProps = {
         {
           tor.vergleich.map(([heute, danach]) => (
             <div class:list={['border-border grid gap-1.5 border-t px-5 py-3.5 first:border-t-0', !mitHeuteBild && 'sm:grid-cols-2 sm:gap-6']}>
-              <p class="text-foreground-muted text-[0.95rem] leading-6 line-through decoration-[var(--color-border-strong)]">{heute}</p>
+              <p class:list={['text-foreground-muted text-[0.95rem] leading-6 line-through decoration-[var(--color-border-strong)]', vergleichKurz && 'hidden sm:block']}>{heute}</p>
               <p class="text-foreground flex gap-2 text-[0.95rem] leading-6 font-semibold">
                 <Icon name="check" size="sm" class="text-brand-500 mt-0.5 shrink-0" />
                 {danach}
@@ -191,7 +206,7 @@ const quizProps = {
     </div>
     {
       tor.schmerz && (
-        <div class="mt-6 flex flex-col gap-3 rounded-2xl bg-[oklch(18%_0.03_265)] p-6 text-white sm:flex-row sm:items-center sm:justify-between sm:gap-8">
+        <div class="mt-6 flex flex-col gap-3 rounded-2xl bg-[oklch(18%_0.03_265)] p-6 lg:mt-16 lg:p-8 text-white sm:flex-row sm:items-center sm:justify-between sm:gap-8">
           <p class="font-display text-lg leading-7 font-bold">{tor.schmerz.text}</p>
           <p class="shrink-0 sm:text-right">
             <span class="font-display block text-4xl font-bold">{tor.schmerz.zahl}</span>
@@ -205,12 +220,12 @@ const quizProps = {
 
 {
   mehrTitel && (
-    <section class="hidden pb-20 lg:block">
+    <section class="hidden pb-32 lg:block">
       <div class="container max-w-6xl">
         <h2 class="font-display text-foreground text-4xl font-bold tracking-tight text-balance">
           {mehrTitel}
         </h2>
-        <div class="szene-auf mt-8 min-w-0" data-szene>
+        <div class="szene-auf mt-12 min-w-0" data-szene>
           <slot name="mehr" />
         </div>
       </div>
@@ -218,12 +233,28 @@ const quizProps = {
   )
 }
 
-<section id="ablauf" class="ablauf-sec scroll-mt-20 py-14 lg:py-20">
+{
+  Astro.slots.has('vollbreit') && (
+    <div class="hidden lg:block">
+      <slot name="vollbreit" />
+    </div>
+  )
+}
+
+{
+  Astro.slots.has('mobil') && (
+    <div class="lg:hidden">
+      <slot name="mobil" />
+    </div>
+  )
+}
+
+<section id="ablauf" class="ablauf-sec scroll-mt-20 py-14 lg:py-32">
   <div class="container max-w-6xl">
     <h2 class="font-display text-foreground text-2xl font-bold tracking-tight text-balance sm:text-4xl">
       {tor.ablaufTitel}
     </h2>
-    <ol class="mt-8 grid gap-7 lg:grid-cols-3 lg:gap-8">
+    <ol class="mt-8 grid gap-7 lg:mt-12 lg:grid-cols-3 lg:gap-10">
       {
         tor.ablauf.map((s) => (
           <li class="border-brand-500 border-t-2 pt-4">
@@ -254,7 +285,7 @@ const quizProps = {
   )
 }
 
-<section class="pt-14 lg:pt-20">
+<section class="pt-14 lg:pt-28">
   <div class="container max-w-3xl">
     <h2 class="font-display text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
       Häufige Fragen
@@ -281,7 +312,7 @@ const quizProps = {
 
 {blogTuer && <BlogQuerverweis tuer={blogTuer} />}
 
-<section id="kontakt" class="scroll-mt-20 py-14 lg:py-20">
+<section id="kontakt" class="scroll-mt-20 py-14 lg:py-32">
   <div class="container grid max-w-6xl items-start gap-8 lg:grid-cols-[1fr_0.9fr] lg:gap-14">
     <div>
       <h2 class="font-display text-foreground text-3xl font-bold tracking-tight sm:text-4xl">

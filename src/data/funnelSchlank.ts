@@ -381,7 +381,7 @@ export const softwareCheck: SchlankTor = {
       { titel: 'Besprechen', text: 'Wir gehen ihn durch: Was ist kritisch, was kann warten?' },
     ],
   },
-  beweis: { hinweis: 'Beispiel. Euer Bericht enthält eure Befunde.' },
+  beweis: { hinweis: '' },
   vergleichTitel: 'Was sich nach dem Check ändert',
   vergleich: [
     ['Die Software läuft, von außen hat sie keiner gesehen', 'Jemand mit Erfahrung hat sie geprüft'],

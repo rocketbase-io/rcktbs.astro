@@ -1,8 +1,7 @@
 ---
 /**
  * Erster Bildschirm der Seiten außerhalb des Funnels, dasselbe Muster wie `SchlankPage`: links
- * Botschaft, Knopf und Marten, rechts ein Bild. Mobil steht der Knopf vor dem Bild, weil es dort
- * keine Leiste unten gibt. Das Bild kommt über den Standard-Slot.
+ * Botschaft und ein Weiterlesen-Link, rechts ein Bild. Mobil steht der Link unter dem Bild. Das Bild kommt über den Standard-Slot.
  */
 import { Picture } from 'astro:assets';
 import Blueprint from '@/components/hero-backgrounds/Blueprint.astro';
@@ -17,6 +16,7 @@ interface Props {
   /** Zweiter Teil der Überschrift in Markenfarbe. */
   titelFarbe?: string;
   text: string;
+  /** Ohne Angabe gibt es im Hero keinen Hauptknopf: Erst lesen, Kontakt steht im Menü. */
   knopf?: string;
   href?: string;
   zweiterKnopf?: { text: string; href: string };
@@ -26,10 +26,11 @@ const {
   titel,
   titelFarbe,
   text,
-  knopf = 'Erstgespräch buchen',
+  knopf,
   href = contactLinks.cal,
   zweiterKnopf,
 } = Astro.props;
+const mitBild = Astro.slots.has('default');
 ---
 
 <section class="relative overflow-x-clip">
@@ -40,9 +41,9 @@ const {
   >
   </div>
   <div
-    class="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-x-14 gap-y-7 px-5 pt-24 pb-10 sm:px-8 sm:pt-28 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:pb-16"
+    class:list={['relative z-10 mx-auto grid w-full max-w-7xl gap-x-14 gap-y-6 px-5 pt-24 pb-10 sm:px-8 sm:pt-28 lg:pb-16', mitBild && 'lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:grid-rows-[auto_auto]']}
   >
-    <div>
+    <div class:list={[mitBild ? 'lg:self-end' : 'max-w-3xl']}>
       <p class="text-brand-600 dark:text-brand-300 text-xs font-semibold tracking-[0.14em] uppercase">
         {eyebrow}
       </p>
@@ -54,11 +55,18 @@ const {
         {titelFarbe && <span class="text-brand-500 block">{titelFarbe}</span>}
       </h1>
       <p class="text-foreground-secondary mt-4 text-base leading-7 sm:text-lg sm:leading-8">{text}</p>
-      <div class="mt-5 flex flex-wrap items-center gap-3">
-        <Button size="lg" href={href} target={href.startsWith('http') ? '_blank' : undefined}>
-          {knopf}
-          <Icon name={href.startsWith('http') ? 'arrow-up-right' : 'arrow-right'} size="sm" />
-        </Button>
+    </div>
+    {mitBild && <div class="min-w-0 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center"><slot /></div>}
+    <div class="lg:self-start">
+      <div class="flex flex-wrap items-center gap-3">
+        {
+          knopf && (
+            <Button size="lg" href={href} target={href.startsWith('http') ? '_blank' : undefined}>
+              {knopf}
+              <Icon name={href.startsWith('http') ? 'arrow-up-right' : 'arrow-right'} size="sm" />
+            </Button>
+          )
+        }
         {
           zweiterKnopf && (
             <Button variant="link" href={zweiterKnopf.href}>
@@ -68,7 +76,7 @@ const {
           )
         }
       </div>
-      <div class="mt-4 flex items-center gap-3">
+      <div class:list={['mt-4 hidden items-center gap-3', knopf && 'lg:flex']}>
         <Picture
           src={founderPortrait}
           alt="Marten Prieß, Gründer von RocketBase"
@@ -84,6 +92,5 @@ const {
         </p>
       </div>
     </div>
-    <div class="min-w-0"><slot /></div>
   </div>
 </section>
