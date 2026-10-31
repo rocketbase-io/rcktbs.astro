@@ -1,5 +1,5 @@
 ---
-title: 'Der Server im Büroschrank kostet mehr, als er scheint'
+title: 'Der Server im Büroschrank kostet mehr, als ihr denkt'
 seoTitle: 'Legacy-Hosting ablösen: Hetzner statt Büro-Server'
 description: 'Was der eigene Server im Büro wirklich kostet, wenn man Ausfälle, VPN-Reibung und Wartungswissen mitrechnet. Und was ein deutsches Rechenzentrum dagegen kostet: unter 50 Euro im Monat.'
 publishedAt: 2026-03-01
@@ -21,11 +21,11 @@ import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import { contactLinks } from '@/data/rocketbase';
 
-Am Anfang unserer Ablöseprojekte geht es meistens um die Anwendung. Kurz danach um die Umgebung, in der sie läuft, und die sieht erstaunlich oft gleich aus: **ein Server im Büroraum, ein NAS für Backups, ein VPN für den Zugriff von außen**. Dazu das seit Jahren mitlaufende Gefühl, dass das "so nicht mehr zeitgemäß" ist, ohne dass es je oben auf der Agenda stand.
+Am Anfang unserer Ablöseprojekte geht es meistens um die Anwendung. Kurz danach geht es um die Umgebung, in der sie läuft, und die sieht erstaunlich oft gleich aus: **ein Server im Büroraum, ein NAS (Netzwerkspeicher) für Backups, ein VPN für den Zugriff von außen**. Dazu kommt das Gefühl, dass das "so nicht mehr zeitgemäß" ist. Es läuft seit Jahren mit und stand nie oben auf der Agenda.
 
-Wir sehen das bei Handwerksbetrieben mit einer Eigenentwicklung aus den späten Neunzigern genauso wie bei Beratungshäusern mit gewachsener Standardsoftware im lokalen Betrieb. Die Rechnung, die dabei aufgeht, überrascht die Beteiligten regelmäßig.
+Wir sehen das bei Handwerksbetrieben mit einer Eigenentwicklung aus den späten Neunzigern genauso wie bei Beratungshäusern mit gewachsener Standardsoftware im lokalen Betrieb. Die Rechnung dahinter überrascht die Beteiligten regelmäßig.
 
-Dass der Eigenbetrieb in dieser Größenordnung noch Normalfall ist, zeigt die amtliche Statistik. Nach der [IKT-Erhebung des Statistischen Bundesamts](https://www.destatis.de/DE/Presse/Pressemitteilungen/2025/11/PD25_416_52911.html) vom November 2025 nutzen 51 Prozent der kleinen Unternehmen mit 10 bis 49 Beschäftigten kostenpflichtige Cloud-Dienste. Bei den Großunternehmen sind es 86 Prozent. Die Lücke zwischen beiden ist ziemlich genau die Gruppe, um die es in diesem Beitrag geht.
+Dass der Eigenbetrieb in dieser Größenordnung noch Normalfall ist, zeigt die amtliche Statistik. Nach der [IKT-Erhebung des Statistischen Bundesamts](https://www.destatis.de/DE/Presse/Pressemitteilungen/2025/11/PD25_416_52911.html) vom November 2025 nutzen 51 Prozent der kleinen Unternehmen mit 10 bis 49 Beschäftigten kostenpflichtige Cloud-Dienste. Bei den Großunternehmen sind es 86 Prozent. Zwischen beiden liegt ziemlich genau die Gruppe, um die es hier geht.
 
 ## Was typischerweise im Einsatz ist
 
@@ -51,7 +51,7 @@ Die Ausgangslage sieht meistens so aus:
       <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Backup</p>
     </div>
     <p className="text-foreground mt-2 text-sm leading-6">
-      Ein zweites Gerät als Backup-Ziel, meist ein NAS - häufig im gleichen Raum wie der Server.
+      Ein zweites Gerät als Backup-Ziel, meist ein NAS, häufig im gleichen Raum wie der Server.
     </p>
   </div>
   <div className="border-border bg-background-secondary rounded-2xl border p-5">
@@ -62,7 +62,7 @@ Die Ausgangslage sieht meistens so aus:
       <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Zugriff</p>
     </div>
     <p className="text-foreground mt-2 text-sm leading-6">
-      Ein VPN, damit Mitarbeiter aus dem Homeoffice oder von unterwegs arbeiten können - mit den
+      Ein VPN, damit Mitarbeiter aus dem Homeoffice oder von unterwegs arbeiten können, mit den
       üblichen Reibungen.
     </p>
   </div>
@@ -74,7 +74,7 @@ Die Ausgangslage sieht meistens so aus:
       <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Wartung</p>
     </div>
     <p className="text-foreground mt-2 text-sm leading-6">
-      Ein IT-affiner Kollege hält den Betrieb am Laufen - oft neben seiner eigentlichen Rolle, ohne
+      Ein IT-affiner Kollege hält den Betrieb am Laufen, oft neben seiner eigentlichen Rolle, ohne
       formale Zuständigkeit.
     </p>
   </div>
@@ -86,7 +86,7 @@ Die Ausgangslage sieht meistens so aus:
       <p className="text-brand-600 text-xs font-semibold tracking-[0.18em] uppercase">Updates</p>
     </div>
     <p className="text-foreground mt-2 text-sm leading-6">
-      Updates laufen, wenn niemand im System arbeitet - Freitagabend, am Wochenende, manchmal
+      Updates laufen, wenn niemand im System arbeitet: Freitagabend, am Wochenende, manchmal
       nachts.
     </p>
   </div>
@@ -94,9 +94,9 @@ Die Ausgangslage sieht meistens so aus:
 
 Das funktioniert. Es hat jahrelang funktioniert. Genau deshalb bleibt es so, bis ein Anlass kommt.
 
-## Was dieser Status quo wirklich kostet
+## Was dieser Zustand wirklich kostet
 
-Rechnet man die Konstellation durch, kommen Zahlen zusammen, mit denen die Beteiligten selten rechnen. Die Hardware ist meist längst abgeschrieben. Teuer wird die Summe aus vier Effekten:
+Rechnet man das durch, kommen Zahlen zusammen, die kaum jemand erwartet. Die Hardware ist meist längst abgeschrieben. Teuer wird die Summe aus vier Effekten:
 
 <div className="not-prose my-10 grid gap-4 md:grid-cols-2" data-reveal="fade-up">
   <div className="border-border bg-background-secondary rounded-2xl border p-6 sm:p-7">
@@ -109,12 +109,12 @@ Rechnet man die Konstellation durch, kommen Zahlen zusammen, mit denen die Betei
       </p>
     </div>
     <p className="font-display text-foreground mt-3 text-lg leading-snug font-semibold">
-      Keine echte Redundanz
+      Kein Ersatz, wenn etwas ausfällt
     </p>
     <p className="text-foreground-secondary mt-3 text-sm leading-6">
       Fällt die Festplatte, das Netzteil oder das Board aus, steht das System. Bis ein Ersatzgerät
       beschafft und das Backup zurückgespielt ist, vergehen Stunden bis Tage. In vielen Unternehmen
-      waren das in den letzten Jahren zwei, drei reale Arbeitstage - verbucht als „ist halt
+      waren das in den letzten Jahren zwei, drei reale Arbeitstage, verbucht als „ist halt
       passiert".
     </p>
   </div>
@@ -132,8 +132,8 @@ Rechnet man die Konstellation durch, kommen Zahlen zusammen, mit denen die Betei
     </p>
     <p className="text-foreground-secondary mt-3 text-sm leading-6">
       Die Verbindung hängt, der Client braucht ein Update, der Tunnel bricht ab, wenn das Handy ins
-      WLAN wechselt. Einzeln klein. Summiert über 50 Mitarbeiter × 250 Tage ein messbarer
-      Produktivitätsverlust - und ein subtiler Kultur-Effekt: Arbeit außerhalb des Büros wird
+      WLAN wechselt. Einzeln ist das klein. Über 50 Mitarbeiter × 250 Tage summiert es sich zu einem
+      messbaren Produktivitätsverlust. Dazu kommt ein Kultur-Effekt: Arbeit außerhalb des Büros wird
       unangenehmer als drinnen.
     </p>
   </div>
@@ -143,7 +143,7 @@ Rechnet man die Konstellation durch, kommen Zahlen zusammen, mit denen die Betei
         <Icon name="users" size="sm" />
       </span>
       <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">
-        03 · Wartungs-Klumpenrisiko
+        03 · Wartungsrisiko
       </p>
     </div>
     <p className="font-display text-foreground mt-3 text-lg leading-snug font-semibold">
@@ -151,7 +151,7 @@ Rechnet man die Konstellation durch, kommen Zahlen zusammen, mit denen die Betei
     </p>
     <p className="text-foreground-secondary mt-3 text-sm leading-6">
       Der Kollege, der den Server betreut, macht das, weil er es kann und niemand sonst es macht.
-      Günstig für das Unternehmen - bis er ausfällt, wechselt oder in Rente geht. Dann zeigt sich,
+      Günstig für das Unternehmen, bis er ausfällt, wechselt oder in Rente geht. Dann zeigt sich,
       dass das gesamte Infrastruktur-Wissen an einer Person hing.
     </p>
   </div>
@@ -175,7 +175,7 @@ Rechnet man die Konstellation durch, kommen Zahlen zusammen, mit denen die Betei
   </div>
 </div>
 
-Das dritte Risiko hat einen Beleg, der aus einer anderen Richtung kommt. Der [Lagebericht des BSI](https://www.bsi.bund.de/DE/Service-Navi/Publikationen/Lagebericht/lagebericht_node.html) für 2025 zählt rund 80 Prozent der angezeigten Angriffe gegen kleine und mittlere Unternehmen, „denen häufig die Mittel und das Wissen fehlen". Gemeint ist dort Ransomware, nicht der Ausfall einer Festplatte. Der Halbsatz beschreibt aber genau die Lage, in der ein Betrieb steckt, dessen Infrastruktur an einer Person hängt.
+Das dritte Risiko hat einen Beleg, der aus einer anderen Richtung kommt. Der [Lagebericht des BSI](https://www.bsi.bund.de/DE/Service-Navi/Publikationen/Lagebericht/lagebericht_node.html) für 2025 zählt rund 80 Prozent der angezeigten Angriffe gegen kleine und mittlere Unternehmen, „denen häufig die Mittel und das Wissen fehlen". Gemeint ist dort Ransomware (Erpressungssoftware), nicht der Ausfall einer Festplatte. Der Halbsatz beschreibt aber genau die Lage, in der ein Betrieb steckt, dessen Infrastruktur an einer Person hängt.
 
 <aside className="not-prose my-8" data-reveal="fade-up">
   <div className="border-brand-200 bg-brand-50/60 dark:border-brand-800 dark:bg-brand-900/15 rounded-2xl border p-6 sm:p-7">
@@ -201,15 +201,15 @@ Das dritte Risiko hat einen Beleg, der aus einer anderen Richtung kommt. Der [La
 
 ## Was ein deutsches Rechenzentrum konkret kostet
 
-In vielen unserer Projekte läuft das bei Hetzner, Standort Falkenstein oder Nürnberg. Es gibt andere gute Anbieter. Für mittelständische Kontexte in Deutschland passt dieser aber besonders oft: deutsche Rechenzentren, deutsches Recht, DSGVO-konform, transparente Preise.
+In vielen unserer Projekte läuft das bei Hetzner, Standort Falkenstein oder Nürnberg. Es gibt andere gute Anbieter. Für den Mittelstand in Deutschland passt Hetzner aber besonders oft: deutsche Rechenzentren, deutsches Recht, DSGVO-konform, transparente Preise.
 
 Die Zahlen überraschen die meisten. Eine individuelle Anwendung mit Datenbank, moderatem Traffic und Backup-Infrastruktur liegt bei unter 50 Euro Infrastrukturkosten im Monat. Teilen sich mehrere Anwendungen eine Umgebung, sinkt der Betrag pro Anwendung weiter.
 
-Dahinter steckt kein Lockangebot. Hardware ist seit den frühen 2010ern erheblich billiger geworden, und moderne Provider betreiben sie hochautomatisiert. Für das Geld, das vor zehn Jahren einen Low-End-Rootserver gekostet hat, bekommt man heute mehrere Gigabyte RAM, brauchbare CPU-Leistung, schnelles Netzwerk und eine Uptime, die man nicht selbst herstellen muss.
+Dahinter steckt kein Lockangebot. Hardware ist seit den frühen 2010ern erheblich billiger geworden, und moderne Provider betreiben sie hochautomatisiert. Für das Geld, das vor zehn Jahren einen kleinen Mietserver gekostet hat, bekommt man heute mehrere Gigabyte RAM, brauchbare CPU-Leistung, schnelles Netzwerk und eine Verfügbarkeit, die man nicht selbst herstellen muss.
 
 ## Was dafür gebraucht wird
 
-Eine Migration ist Handwerk, kein Großprojekt. Drei Bausteine gehören dazu:
+Eine Migration ist Handwerk. Drei Bausteine gehören dazu:
 
 <div className="not-prose my-10 grid gap-4 md:grid-cols-3" data-reveal="fade-up">
   <div className="border-border bg-background-secondary rounded-2xl border p-6">
@@ -218,9 +218,9 @@ Eine Migration ist Handwerk, kein Großprojekt. Drei Bausteine gehören dazu:
       Saubere Container-Basis
     </p>
     <p className="text-foreground-secondary mt-3 text-sm leading-6">
-      Die Anwendung läuft in einem reproduzierbaren Setup - meist Docker-basiert - statt in einer
-      über Jahre gewachsenen Installation. Die Umgebung lässt sich danach in Minuten neu aufsetzen,
-      nicht in Tagen.
+      Die Anwendung läuft in einem reproduzierbaren Setup, meist Docker-basiert, statt in einer
+      über Jahre gewachsenen Installation. Die Umgebung lässt sich danach in Minuten neu aufsetzen
+      statt in Tagen.
     </p>
   </div>
   <div className="border-border bg-background-secondary rounded-2xl border p-6">
@@ -229,8 +229,8 @@ Eine Migration ist Handwerk, kein Großprojekt. Drei Bausteine gehören dazu:
       Backups, die wirklich funktionieren
     </p>
     <p className="text-foreground-secondary mt-3 text-sm leading-6">
-      Tägliche verschlüsselte Backups in eine zweite Region, mit regelmäßigen automatisierten
-      Restore-Tests. Hier ist der Abstand zwischen Büro-Server und professionellem Betrieb am
+      Tägliche verschlüsselte Backups in eine zweite Region, mit regelmäßigen automatisierten Tests,
+      ob sich die Daten zurückspielen lassen (Restore-Tests). Hier ist der Abstand zwischen Büro-Server und professionellem Betrieb am
       größten.
     </p>
   </div>
@@ -240,7 +240,7 @@ Eine Migration ist Handwerk, kein Großprojekt. Drei Bausteine gehören dazu:
       Zugriff ohne VPN
     </p>
     <p className="text-foreground-secondary mt-3 text-sm leading-6">
-      HTTPS mit Identity-Provider-Anbindung - der tägliche Zugriff läuft im Standard-Browser, von
+      HTTPS mit Identity-Provider-Anbindung, also zentraler Anmeldung: Der tägliche Zugriff läuft im Standard-Browser, von
       überall, ohne VPN-Client. Für viele Unternehmen der spürbarste Gewinn der Migration.
     </p>
   </div>
@@ -287,10 +287,10 @@ Eine realistische Grobplanung für die Migration einer bestehenden Anwendung:
   </div>
   <div className="border-brand-300 bg-card dark:border-brand-800 rounded-2xl border p-6 shadow-[0_22px_55px_rgba(34,43,74,0.08)]">
     <p className="text-brand-600 font-mono text-xs font-semibold tracking-wider">Wochen 7–8</p>
-    <p className="font-display text-foreground mt-2 text-lg leading-snug font-semibold">Cut-over</p>
+    <p className="font-display text-foreground mt-2 text-lg leading-snug font-semibold">Umstellung (Cut-over)</p>
     <p className="text-foreground-secondary mt-3 text-sm leading-6">
       Geplante Umstellung an einem Wochenende. Datenübernahme, DNS-Umstellung, Abschaltung des alten
-      Systems - mit definierter Rückfallzeit.
+      Systems, mit definierter Rückfallzeit.
     </p>
   </div>
 </div>
@@ -301,7 +301,7 @@ In beiden Fällen bleibt es ein überschaubares Projekt.
 
 ## Wann ihr besser bleibt, wo ihr seid
 
-Drei Fälle sprechen dafür, den Status quo weiterzubetreiben:
+Drei Fälle sprechen dafür, alles so zu lassen:
 
 <div className="not-prose my-10 grid gap-4 md:grid-cols-3" data-reveal="fade-up">
   <div className="border-border bg-background-secondary rounded-2xl border p-5">
@@ -342,13 +342,13 @@ Drei Fälle sprechen dafür, den Status quo weiterzubetreiben:
       </p>
     </div>
     <p className="text-foreground-secondary mt-3 text-sm leading-6">
-      Wenn bestimmte Datenkategorien aus rechtlichen Gründen zwingend in einem spezifischen Setup
-      liegen müssen, gelten eigene Regeln.
+      Müssen bestimmte Daten aus rechtlichen Gründen zwingend in einer bestimmten Umgebung liegen,
+      gelten eigene Regeln.
     </p>
   </div>
 </div>
 
-In der Mehrheit der mittelständischen Setups, die uns begegnen, trifft keiner dieser drei Punkte zu. Dann ist der Weg ins Rechenzentrum eine der risikoärmsten Verbesserungen, die sich an einer IT-Landschaft überhaupt machen lassen: überschaubare Kosten, planbarer Aufwand, und danach arbeitet es sich aus dem Homeoffice genauso wie im Büro.
+Bei den meisten mittelständischen Unternehmen, die uns begegnen, trifft keiner dieser drei Punkte zu. Dann ist der Weg ins Rechenzentrum eine der risikoärmsten Verbesserungen, die sich an einer IT-Landschaft überhaupt machen lassen: überschaubare Kosten, planbarer Aufwand, und danach arbeitet es sich aus dem Homeoffice genauso wie im Büro.
 
 <div className="not-prose my-10" data-reveal="fade-up">
   <div className="border-border bg-background-secondary rounded-2xl border p-6 sm:p-7">

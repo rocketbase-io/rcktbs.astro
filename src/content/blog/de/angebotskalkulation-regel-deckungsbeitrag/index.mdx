@@ -1,5 +1,5 @@
 ---
-title: 'Wenn fünf Angebote gleich aussehen, entscheidet das Angebot'
+title: 'Wenn alle Anbieter gleich rechnen, entscheidet das Angebot'
 seoTitle: 'Angebotskalkulation: Regel statt Excel, Marge vor Versand'
 description: 'Betreuungs- und Wartungsverträge rechnen alle Anbieter nach derselben Regel. Warum dann die Form des Angebots entscheidet und wie die Marge vor dem Versand ans Angebot kommt.'
 publishedAt: 2026-09-14
@@ -110,7 +110,7 @@ Wie ein Angebot als Webseite statt als PDF ankommt und was das mit dem Nachfasse
 
 In den meisten Betrieben, die wir kennenlernen, liegt die Kalkulation in einer Excel-Datei. Eine Person hat sie gebaut, alle anderen kopieren sie. Sie kennt die Betreuungsgruppen, die Einsatzzeiten, die Fahrtkostenpauschale und den Stundensatz je Berater. Sie kennt auch die siebzehn Sonderfälle, die im Lauf der Jahre dazugekommen sind, und die stehen in Zelle AF43 als Kommentar.
 
-Das Problem ist nicht, dass die Regel in Excel steht. Das Problem ist, dass sie dort für jedes Angebot neu angewendet wird und dass niemand außer der einen Person weiß, ob sie richtig angewendet wurde.
+Dass die Regel in Excel steht, ist gar nicht das Problem. Sie wird dort für jedes Angebot neu angewendet, und niemand außer der einen Person weiß, ob das richtig geschah.
 
 <div className="not-prose my-10 grid gap-4 md:grid-cols-2 md:items-stretch" data-reveal="fade-up">
   <div className="border-border bg-background-secondary rounded-2xl border p-6 sm:p-7">
@@ -141,7 +141,7 @@ Das Problem ist nicht, dass die Regel in Excel steht. Das Problem ist, dass sie 
 
 Ein Baustein ist dabei mehr als eine Formel. Er kennt seinen Preis pro Einheit und den Satz für Zusatzstunden, weiß, ob er jährlich wiederkehrt oder einmalig ist, und ob nach drei Jahren eine Preisanpassung fällig wird. Er kennt den Berater, der ihn ausführt, und dessen kalkulatorischen Stundensatz. Aus zwei Eingaben des Vertrieblers werden fünfzehn Werte, und keiner davon ist abgetippt.
 
-Es bleibt ein Vorschlag. Jede dieser Größen ist eine Stellschraube, und wo der Einzelfall es verlangt, wird eine Position überschrieben. Eingegriffen wird also weiterhin. Der Unterschied zur Tabelle liegt darin, dass ein Eingriff als Abweichung sichtbar bleibt statt als Zahl ohne Herkunft.
+Es bleibt ein Vorschlag. Jede dieser Größen ist eine Stellschraube, und wo der Einzelfall es verlangt, wird eine Position überschrieben. Eingegriffen wird also weiterhin. Anders als in der Tabelle bleibt ein Eingriff aber als Abweichung sichtbar und wird nicht zur Zahl ohne Herkunft.
 
 <Figure
   src={angebotBausteinDetail}
@@ -150,7 +150,7 @@ Es bleibt ein Vorschlag. Jede dieser Größen ist eine Stellschraube, und wo der
   source="Beispielansicht aus einer RocketBase-Lösung"
 />
 
-## Die Marge steht am Angebot, nicht im Jahresabschluss
+## Die Marge steht schon am Angebot
 
 Das ist der Punkt, an dem sich eine Regel im System von einer Regel in Excel unterscheidet. Excel kann rechnen, was der Kunde bezahlt. Ein System, das die Berater, ihre Sätze und ihre Standorte kennt, kann rechnen, was davon übrig bleibt.
 
@@ -205,8 +205,8 @@ Was ändert sich, wenn die Marge vor dem Versand sichtbar ist?
         </div>
         <div className="text-foreground-secondary mt-2 text-sm leading-6">
           Weil der Auftrag aus dem Angebot entsteht, stehen die kalkulierten Stunden neben den
-          erfassten. Zwanzig Stunden kalkuliert, neunundzwanzig gebucht: Das sieht man nach dem
-          ersten Quartal, nicht nach dem ersten Jahr, und das nächste Angebot für diesen Kunden
+          erfassten. Zwanzig Stunden kalkuliert, neunundzwanzig gebucht: Das sieht man schon nach
+          dem ersten Quartal, und das nächste Angebot für diesen Kunden
           rechnet mit der Wahrheit.
         </div>
       </div>
@@ -239,9 +239,9 @@ Was ändert sich, wenn die Marge vor dem Versand sichtbar ist?
 
 Eine belastbare Statistik über die Kosten eines Angebots im Dienstleistungsmittelstand gibt es nicht. Es gibt Rechenbeispiele und Anbieterdaten, und beide sind mit Vorsicht zu lesen.
 
-Das Fachmagazin handwerk.com rechnet in seinem [Angebotsrechner](https://handwerk.com/steuern-und-finanzen/angebotsrechner-so-teuer-sind-ihre-angebote-wirklich) mit sechs Stunden pro Angebot bei 75 Euro je Stunde, also 450 Euro. Bei einer Auftragsquote von 30 Prozent kostet jeder gewonnene Auftrag 1.500 Euro an Angebotsarbeit. Das ist ein Beispiel, keine Erhebung, und es rechnet mit zehn Angeboten im Monat. Für eine Betreuung nach Vorschrift sind sechs Stunden zu viel, eine Stunde ist realistisch. Wer dreißig solcher Angebote im Monat schreibt, verbringt dreißig Stunden damit, eine Regel abzuschreiben, die eine Maschine kennt. Das ist unsere Annahme, nicht die des Rechenbeispiels.
+Das Fachmagazin handwerk.com rechnet in seinem [Angebotsrechner](https://handwerk.com/steuern-und-finanzen/angebotsrechner-so-teuer-sind-ihre-angebote-wirklich) mit sechs Stunden pro Angebot bei 75 Euro je Stunde, also 450 Euro. Bei einer Auftragsquote von 30 Prozent kostet jeder gewonnene Auftrag 1.500 Euro an Angebotsarbeit. Das ist ein Rechenbeispiel ohne Erhebung dahinter, und es rechnet mit zehn Angeboten im Monat. Für eine Betreuung nach Vorschrift sind sechs Stunden zu viel, eine Stunde ist realistisch. Wer dreißig solcher Angebote im Monat schreibt, verbringt dreißig Stunden damit, eine Regel abzuschreiben, die eine Maschine kennt. Diese Annahme stammt von uns und steht so nicht im Rechenbeispiel.
 
-Wie viel von einem Vertriebstag überhaupt für den Verkauf übrig bleibt, misst Salesforce seit Jahren. In der [aktuellen Ausgabe von State of Sales](https://www.salesforce.com/news/stories/state-of-sales-report-announcement-2026/) mit gut 4.000 Befragten sind es 40 Prozent der Arbeitszeit. Der Rest geht in Verwaltung, Datenpflege und Dokumente. Das ist ein globaler Durchschnitt über alle Branchen, kein Wert für Betreuungsverträge. Die Richtung stimmt trotzdem: Die Stunde am Angebot ist die Stunde, die nicht beim Kunden stattfindet.
+Wie viel von einem Vertriebstag überhaupt für den Verkauf übrig bleibt, misst Salesforce seit Jahren. In der [aktuellen Ausgabe von State of Sales](https://www.salesforce.com/news/stories/state-of-sales-report-announcement-2026/) mit gut 4.000 Befragten sind es 40 Prozent der Arbeitszeit. Der Rest geht in Verwaltung, Datenpflege und Dokumente. Das ist ein globaler Durchschnitt über alle Branchen und gilt nicht speziell für Betreuungsverträge. Die Richtung stimmt trotzdem: Die Stunde am Angebot ist die Stunde, die nicht beim Kunden stattfindet.
 
 Der Anbieter Proposify wertet in seinem [State of Proposals 2024](https://www.proposify.com/state-of-proposals-2024) 1,3 Millionen Angebote von seiner eigenen Plattform aus. Gewonnene Angebote hatten im Schnitt elf Seiten, verlorene dreizehn, und 85 Prozent der gewonnenen enthielten Bilder. Das sind Daten eines Herstellers über seine eigenen Kunden, ohne Kontrollgruppe. Als Hinweis taugen sie trotzdem: Kürzer und anschaulicher gewinnt gegen länger und vollständiger.
 
@@ -251,13 +251,13 @@ Was der Bitkom für das Handwerk gemessen hat, passt in dieses Bild, auch wenn d
 
 Für [FKC Consulting](/referenzen/fkc-consulting/), eine Beratung für Arbeitsschutz, Datenschutz und Weiterbildung, haben wir genau diese Regel in Bausteine übersetzt. Die Vorschrift gibt die Einsatzzeit je Beschäftigten und Betreuungsgruppe vor, der Baustein rechnet daraus die Stunden, teilt sie auf Vor-Ort-Termine, Remote-Arbeit und Administration und holt die Fahrzeit vom Standort des zuständigen Beraters. Der Deckungsbeitrag steht am Baustein und am Vertrag, bevor das Angebot als Webseite oder PDF beim Kunden ankommt.
 
-Der Vertriebler wählt einen Baustein und trägt zwei Zahlen ein. Was er nicht mehr tut, ist rechnen.
+Der Vertriebler wählt einen Baustein und trägt zwei Zahlen ein. Das Rechnen übernimmt das System.
 
 ## Ein ehrlicher Einwand
 
 Das Modell braucht einen wiederholbaren Ausgangspunkt. Es liefert einen begründeten Vorschlag, und der bleibt verhandelbar: Stundensätze, Fahrzeiten, Aufteilung zwischen Vor-Ort und Remote, Zusatzstunden und Preis pro Einheit sind Stellschrauben, jede Position lässt sich im Einzelfall überschreiben. Die Regel gibt vor, wo die Kalkulation beginnt, nicht wo sie endet.
 
-Es passt trotzdem nicht überall. Wenn der Aufwand sich erst aus einer Begehung ergibt, wenn zwei Aufträge nie genug Ähnlichkeit haben, um denselben Ausgangspunkt zu rechtfertigen, dann ist die Regel eine Attrappe, an der man vorbeiarbeitet. Das Modell lohnt dort, wo eine Vorschrift, eine Norm oder ein Zyklus den Rahmen setzt und die Kunst im Rest liegt: in der Aufteilung, in den Zusatzleistungen, im Preis.
+Es passt trotzdem nicht überall. Ergibt sich der Aufwand erst aus einer Begehung, oder sind sich zwei Aufträge nie ähnlich genug für denselben Ausgangspunkt, dann ist die Regel eine Attrappe, an der man vorbeiarbeitet. Das Modell lohnt dort, wo eine Vorschrift, eine Norm oder ein Zyklus den Rahmen setzt und die Kunst im Rest liegt: in der Aufteilung, in den Zusatzleistungen, im Preis.
 
 Und es passt nicht bei fünf Angeboten im Monat. Der Umbau trägt sich über die Stunden, die er spart, und über die Marge, die er sichtbar macht. Unter zehn Angeboten im Monat reicht eine gute Vorlage. Wer überwiegend in Ausschreibungen antritt, bekommt das Format ohnehin vorgegeben, und dort zählt die Regel nur intern.
 

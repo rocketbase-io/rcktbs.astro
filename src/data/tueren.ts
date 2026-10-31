@@ -49,6 +49,20 @@ export const tueren: Record<TuerId, { titel: string; href: string; icon: string;
 /** Welche Lösungen aus welcher Referenz entstanden sind (Slug aus data/rocketbase.ts). */
 export const referenzTueren: Record<string, TuerId[]> = {
   'fkc-consulting': ['abloesung', 'angebot', 'zahlen'],
+  'stage-cml': ['zahlen'],
   'schlosserei-diezinger': ['einsatz'],
   'mavox-winterdienst': ['einsatz'],
+};
+
+/** „Das passt zu euch, wenn …“ auf Referenzseiten: damit sich Interessenten im Projekt wiederfinden. */
+export const referenzPasstWenn: Record<string, string[]> = {
+  'fkc-consulting': ['Eure Standardsoftware passt nicht zu eurem Angebotsprozess', 'Angebot, Projekt und Rechnung sollen an einem Ort liegen'],
+  'schlosserei-diezinger': ['Ihr plant Einsätze und Aufträge heute von Hand', 'Verschiedene Rollen brauchen eine eigene Ansicht'],
+  'stage-cml': ['Eure Planung läuft in gewachsenen Excel-Modellen', 'Eure Planzahlen müssen zur Buchhaltung passen'],
+  statista: ['Ein altes System soll im laufenden Betrieb ersetzt werden', 'Euer Team soll dabei weiterarbeiten können'],
+  'statista-canva': ['Eure Daten sollen direkt in den Programmen eurer Kunden nutzbar sein'],
+  bonprix: ['Eine große Software soll in kleinere Teile zerlegt werden', 'Teams an mehreren Standorten bauen gemeinsam daran'],
+  'bonprix-collection-planning': ['Mehrere Leute planen in denselben Excel-Dateien', 'Die Flexibilität von Excel soll erhalten bleiben'],
+  'mavox-winterdienst': ['Eure Leute arbeiten draußen, oft ohne Netz', 'Touren und Einsätze sollen in einem System liegen'],
+  'sam-vorteilsguru': ['Euer Produkt soll sich in fremde Shops einbetten lassen'],
 };

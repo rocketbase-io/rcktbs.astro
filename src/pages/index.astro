@@ -1,4 +1,10 @@
 ---
+import SeitenHero from '@/components/landing/SeitenHero.astro';
+import kundenstandorte from '@/assets/references/kundenstandorte-uebersicht-demo-1920.png';
+import auftragsplanung from '@/assets/references/auftragsplanung-demo-1920.png';
+import cockpit from '@/assets/references/cockpit-demo-1920.png';
+import angebotBild from '@/assets/references/angebot-db-demo-1920.png';
+import BildWechsler from '@/components/landing/BildWechsler.astro';
 import MiniVisual from '@/components/loesungen/MiniVisual.astro';
 import LandingLayout from '@/layouts/LandingLayout.astro';
 import { Picture } from 'astro:assets';
@@ -16,26 +22,19 @@ import founderImage from '@/assets/rocketbase/founder-marten-priess.jpg';
 import stageCaseImage from '@/assets/references/teaser-stage-cml.jpeg';
 import fkcCaseImage from '@/assets/references/teaser-fkc.jpeg';
 import schlossereiCaseImage from '@/assets/references/teaser-schlosserei.jpeg';
-import toolsBefore from '@/assets/work/tools-before.png';
-import toolsAfter from '@/assets/work/tools-after.png';
 import logomark from '@/assets/branding/logomark.svg?url';
 import logomarkDark from '@/assets/branding/logomark-dark.svg?url';
 import {
   cases,
   additionalCases,
   contactLinks,
-  discoveryOffer,
-  serviceAreas,
-  strengths,
 } from '@/data/rocketbase';
 
 const locale = defaultLocale;
 const servicesUrl = getLocalizedPath('services', locale);
 const contactUrl = getLocalizedPath('contact', locale);
-const missionUrl = getLocalizedPath('mission', locale);
-const workshopUrl = getLocalizedPath('discoveryWorkshop', locale);
-const referencesUrl = '/referenzen/';
 const workUrl = getLocalizedPath('work', locale);
+const referencesUrl = '/referenzen/';
 const standardsoftwareUrl = getLocalizedPath('standardsoftwareAbloesung', locale);
 const einsatzplanungUrl = getLocalizedPath('einsatzplanung', locale);
 
@@ -44,18 +43,32 @@ type FeaturedCase = (typeof cases)[number] & { image?: ImageMetadata };
 // Die Angebotstreppe: jede Stufe hat einen Preis und ein Ergebnis, und jede
 // Stufe bepreist die nächste. Nur hier auf der Startseite — /leistungen nutzt
 // weiter die allgemeinen processSteps.
+const heroBilder = [
+  { src: angebotBild, alt: 'Angebot mit Positionen, Stunden und Gewinn je Baustein, Demo-Daten' },
+  { src: auftragsplanung, alt: 'Auftragsplanung mit Mitarbeitern, Einsätzen und Krankmeldungen, Demo-Daten' },
+  { src: cockpit, alt: 'Cockpit mit Umsatz, Auslastung und Forderungen, Demo-Daten' },
+  { src: kundenstandorte, alt: 'Kundenstandorte und Berater auf einer Deutschlandkarte, Demo-Daten' },
+];
+
+// Kurzfassung der früheren Abschnitte „Drei Dinge“ und „Weniger Overhead“.
+const kurzStaerken = [
+  { titel: 'Ihr sprecht mit dem Gründer', text: 'Marten Prieß sitzt selbst in den Workshops und trifft die wichtigen Entscheidungen.' },
+  { titel: 'Erfahrung aus dem Konzern', text: 'Auch bonprix und Statista gehören zu unseren Projekten. Das bringen wir in den Mittelstand.' },
+  { titel: 'Ein kleines, festes Team', text: 'Wenige Übergaben, kurze Wege und ein Ansprechpartner vom ersten Gespräch bis in den Betrieb.' },
+];
+
 const ladderSteps = [
   {
     title: 'Erstgespräch',
     price: 'kostenlos',
     description:
-      '30 Minuten direkt mit Marten Prieß. Ihr zeigt uns, wo es klemmt, gern an einem echten Beispiel. Wir sagen ehrlich, ob sich ein nächster Schritt lohnt – und welcher.',
+      '30 Minuten direkt mit Marten Prieß. Ihr zeigt uns, wo es klemmt, gern an einem echten Beispiel. Wir sagen ehrlich, ob sich ein nächster Schritt lohnt.',
   },
   {
     title: 'Workshop',
-    price: '2.400 € Festpreis',
+    price: 'fester Preis',
     description:
-      'Drei Termine: Aufnahme, Abstimmung, Übergabe. Am Ende steht euer Ablauf schriftlich, ein Zielbild für die erste Stufe und ein Festpreis für die Umsetzung. Das Dokument gehört euch, der Betrag wird bei Beauftragung angerechnet.',
+      'Drei Termine: Aufnahme, Abstimmung, Übergabe. Am Ende steht euer Ablauf schriftlich, ein Zielbild für die erste Stufe und ein Festpreis für die Umsetzung. Das Dokument gehört euch.',
   },
   {
     title: 'Umsetzung',
@@ -81,7 +94,7 @@ const caseImageMap: Record<string, ImageMetadata> = {
 // FKC (Standardsoftware-Ablösung, Hauptfokus), Schlosserei Diezinger
 // (Einsatzplanung) und Stage (Zahlen raus aus Excel). Statista und bonprix
 // stehen bewusst im Gründer-Block als Herkunft, nicht hier als Vergleichsfall.
-const featuredSlugs = ['fkc-consulting', 'schlosserei-diezinger', 'stage-cml'];
+const featuredSlugs = ['stage-cml', 'fkc-consulting', 'schlosserei-diezinger'];
 const caseBySlug = new Map([...cases, ...additionalCases].map((c) => [c.slug, c]));
 const featuredCases: FeaturedCase[] = featuredSlugs
   .map((slug) => caseBySlug.get(slug))
@@ -91,7 +104,6 @@ const featuredCases: FeaturedCase[] = featuredSlugs
 // Bewusst die Stärken, die NICHT schon im Marten-Block stehen (direkte
 // Zusammenarbeit / Team sind dort abgedeckt): Konzernniveau, Datenmigration
 // aus Altsystemen und die Bereitschaft zu widersprechen.
-const topStrengths = [strengths[1], strengths[4], strengths[5]];
 
 // "Wofür wir gerufen werden" – drei Türen, durch die ein Betrieb einsteigt. Jede ist
 // ein Prozess, der heute in Excel, Word oder einer verbogenen Branchensoftware steckt.
@@ -100,43 +112,28 @@ const calledForSituations = [
     icon: 'edit',
     visual: 'angebot' as const,
     eyebrow: 'Angebot & Kalkulation',
-    title: 'Die Kalkulation liegt in Excel, das Angebot entsteht in Word. Dazwischen tippt jemand ab.',
-    text: 'Anlagen mal Turnus, Geräte mal Prüfzeit, Mitarbeiter mal Betreuungsgruppe: Die Regel ist bei allen gleich. Entscheidend ist, wie schnell das Angebot steht, ob es sich rechnet und was der Kunde davon sieht.',
-    points: [
-      'Jede Rückfrage erzeugt eine neue Version im Postfach',
-      'Was ein Angebot wirklich einbringt, sieht man erst nach dem Auftrag',
-      'Das Angebot geht als PDF raus, und keiner weiß, ob es geöffnet wurde',
-    ],
+    title: 'Ihr rechnet in Excel und schreibt in Word',
+    text: 'Jemand tippt die Zahlen ab, und was ein Auftrag einbringt, seht ihr erst hinterher.',
     href: '/angebote/',
-    cta: 'Angebotsbaustein ansehen',
+    cta: 'Angebote ansehen',
   },
   {
     icon: 'users',
     visual: 'einsatz' as const,
     eyebrow: 'Einsatz & Abrechnung',
-    title: 'Disposition, Einsatzplanung und Abrechnung laufen über Excel.',
-    text: 'Geplant wird in einer Excel, umgeplant per Telefon, erfasst auf Stundenzetteln, abgerechnet aus allem, was sich findet. Mit jedem Auftrag wächst der Aufwand mit, und an jedem Übergang geht etwas verloren.',
-    points: [
-      'Wer wann an was arbeitet, steckt in Köpfen und Tabellen',
-      'Abwesenheiten und Auslastung müssen mühsam gepflegt werden',
-      'Rechnungen und Mahnungen hängen an einer Person im Büro',
-    ],
+    title: 'Ihr plant in Excel und telefoniert bei jeder Änderung',
+    text: 'Stunden kommen auf Zetteln zurück, und jede Rechnung wird von Hand zusammengebaut.',
     href: einsatzplanungUrl,
-    cta: 'Plantafel ansehen',
+    cta: 'Einsatzplanung ansehen',
   },
   {
     icon: 'table',
     visual: 'zahlen' as const,
     eyebrow: 'Zahlen & Steuerung',
-    title: 'Der Monatsabschluss ist ein Projekt, und die Zahlen sind alt, wenn sie da sind.',
-    text: 'Umsatz Ist und Prognose, Auslastung je Team, welche Verträge nächstes Jahr enden: Das steckt in fünf Systemen und einer Excel, die eine Person im Haus versteht. Wer den Betrieb steuern oder übergeben will, braucht die Zahlen live.',
-    points: [
-      'Reports kosten Tage statt Minuten',
-      'Auslaufende Verträge fallen erst auf, wenn sie weg sind',
-      'Bei den eigenen Zahlen bleibt ein ungutes Bauchgefühl',
-    ],
+    title: 'Eure Zahlen sind alt, wenn sie da sind',
+    text: 'Der Monatsabschluss dauert Tage, und auslaufende Verträge fallen zu spät auf.',
     href: '/zahlen/',
-    cta: 'Cockpit ansehen',
+    cta: 'Zahlen ansehen',
   },
 ];
 
@@ -198,65 +195,9 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
   lang={locale}
   routeId="home"
 >
-  <section class="hero-landing border-border relative min-h-[62vh] max-h-[880px] overflow-hidden border-b max-[760px]:min-h-0 max-[760px]:max-h-none" data-hero-root>
-    <div
-      class="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(99,114,165,0.14),transparent_0,transparent_28%),radial-gradient(circle_at_82%_20%,rgba(99,114,165,0.16),transparent_0,transparent_32%),linear-gradient(135deg,rgba(255,255,255,0.98)_0%,rgba(248,250,253,0.97)_36%,rgba(242,246,251,0.96)_100%)] dark:bg-[radial-gradient(circle_at_18%_18%,rgba(99,114,165,0.18),transparent_0,transparent_28%),radial-gradient(circle_at_82%_20%,rgba(99,114,165,0.2),transparent_0,transparent_32%),linear-gradient(135deg,rgba(18,22,31,0.98)_0%,rgba(20,25,35,0.97)_36%,rgba(15,19,27,0.96)_100%)]"
-    />
-    <div
-      class="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(99,114,165,0.22),transparent)]"
-      aria-hidden="true"
-    />
-    <div
-      class="pointer-events-none absolute left-[8%] top-[14%] h-40 w-40 rounded-full border border-white/40 opacity-40 blur-[2px] dark:border-white/10 dark:opacity-25"
-      aria-hidden="true"
-    />
-    <div
-      class="pointer-events-none absolute right-[10%] bottom-[18%] h-56 w-56 rounded-full border border-brand-300/30 opacity-50 blur-[2px] dark:border-brand-300/15 dark:opacity-30"
-      aria-hidden="true"
-    />
-    <div class="container relative z-10 flex min-h-[62vh] max-h-[880px] flex-col justify-center pt-32 pb-32 max-[760px]:min-h-0 max-[760px]:max-h-none max-[760px]:pt-24 max-[760px]:pb-28 sm:pt-36 lg:pt-32 lg:pb-32">
-      <div data-reveal="fade-right" class="hero-landing-copy will-change-transform" data-hero-copy>
-        <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
-          Insellösungen verbinden · Prozesse bauen · Weiterdenken
-        </p>
-        <h1 class="hero-landing-title font-display text-foreground mt-5 text-4xl font-bold tracking-tight max-[760px]:mt-4 max-[760px]:text-[2.15rem] sm:text-5xl">
-          <span class="block sm:whitespace-nowrap">Software für Betriebe,</span>
-          <span class="mt-2 block text-brand-500">die nicht in Standardlösungen passen.</span>
-        </h1>
-
-        <p class="hero-landing-intro text-foreground-secondary mt-6 text-lg leading-8 max-[760px]:mt-5 max-[760px]:text-base max-[760px]:leading-7">
-          Ihr habt ein ERP, ein CRM oder eine Branchensoftware. Was die nicht kann, läuft daneben in
-          Excel: eure Kalkulation, die Einsatzplanung, die Zahlen für die Steuerung. Wir bauen die
-          Anwendung, die nach euren Regeln arbeitet. Mal den Teil, der fehlt, angebunden an das, was
-          ihr habt. Mal das Ganze, wenn das System mehr bremst als trägt. Der erste Schritt ist ein
-          Gespräch, kostenlos und ohne Folien.
-        </p>
-
-        <div data-reveal class="hero-landing-actions mt-8 flex flex-wrap items-center gap-4 max-[760px]:mt-6 max-[760px]:gap-3">
-          <Button size="lg" href={contactLinks.cal} target="_blank">
-            Erstgespräch buchen
-            <Icon name="arrow-up-right" size="sm" />
-          </Button>
-          <Button variant="link" href={servicesUrl}>
-            Leistungen ansehen
-            <Icon name="arrow-right" size="sm" />
-          </Button>
-        </div>
-      </div>
-    </div>
-
-    {/* Scroll indicator */}
-    <a
-      href="#hero-next"
-      aria-label="Weiter scrollen"
-      class="group text-foreground-muted hover:text-brand-500 absolute bottom-6 left-1/2 z-10 -translate-x-1/2 transition-colors duration-300 max-[760px]:hidden"
-    >
-      <span class="block text-[10px] font-semibold tracking-[0.3em] uppercase">Scrollen</span>
-      <span class="border-foreground-muted/40 group-hover:border-brand-500 mx-auto mt-3 flex h-10 w-6 justify-center rounded-full border-2 transition-colors duration-300">
-        <span class="bg-foreground-muted/60 group-hover:bg-brand-500 mt-2 h-2 w-1 animate-bounce rounded-full transition-colors duration-300" />
-      </span>
-    </a>
-  </section>
+  <SeitenHero eyebrow="Eigene Software für den Mittelstand" titel="Software für Betriebe," titelFarbe="die nicht in Standardlösungen passen." text="Was euer ERP oder eure Branchensoftware nicht kann, läuft heute daneben in Excel. Wir bauen die Software dafür, nach euren Regeln." zweiterKnopf={{ text: 'Leistungen ansehen', href: servicesUrl }}>
+    <BildWechsler bilder={heroBilder} />
+  </SeitenHero>
 
   <div id="hero-next" class="scroll-mt-24" aria-hidden="true" />
 
@@ -292,19 +233,16 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
     })();
   </script>
 
-  <section class="border-border border-b py-24 lg:py-32">
+  <section class="border-border border-b py-14 sm:py-24 lg:py-32">
     <div class="container">
       <div data-reveal>
         <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Wofür wir gerufen werden</p>
         <h2 class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
-          Die Stelle,{' '}
-          <span class="text-brand-500">an der man uns dazuholt.</span>
+          Wo wir Betrieben{' '}
+          <span class="text-brand-500">am meisten helfen</span>
         </h2>
         <p class="text-foreground-secondary mt-6 text-lg leading-8">
-          Ihr führt einen Betrieb, der läuft, und merkt an einer konkreten Stelle, dass die Software
-          den nächsten Schritt nicht mehr trägt. Meistens ist es eine von drei Stellen im Prozess,
-          manchmal die Branchensoftware als Ganzes, und manchmal habt ihr selbst gebaut und wollt
-          einen Blick von außen. Wir fangen dort an und bauen von da aus weiter.
+          Meistens hakt es an einer von drei Stellen. Dort fangen wir an.
         </p>
       </div>
 
@@ -313,7 +251,7 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
           calledForSituations.map((situation) => (
             <article
               data-reveal
-              class="group relative flex cursor-pointer flex-col lg:row-span-6 lg:grid lg:grid-rows-subgrid lg:gap-y-0 rounded-[2rem] border border-border bg-card p-7 shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-[0_28px_60px_rgba(34,43,74,0.12)] has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-brand-500 has-[a:focus-visible]:ring-offset-2 sm:p-7"
+              class="group relative flex cursor-pointer flex-col lg:row-span-6 lg:grid lg:grid-rows-subgrid lg:gap-y-0 rounded-[2rem] border border-border bg-card p-7 shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:border-brand-300 hover:shadow-[0_28px_60px_rgba(34,43,74,0.12)] has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-brand-500 has-[a:focus-visible]:ring-offset-2 sm:p-7"
             >
               <div class="mb-6">
                 <MiniVisual kind={situation.visual} />
@@ -330,14 +268,6 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
                 {situation.title}
               </h3>
               <p class="text-foreground-secondary mt-4 text-base leading-7">{situation.text}</p>
-              <ul class="text-foreground-secondary mt-6 space-y-3 text-sm leading-6">
-                {situation.points.map((point) => (
-                  <li class="flex gap-3">
-                    <Icon name="alert-circle" size="sm" class="text-brand-400 mt-0.5 shrink-0" />
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
               <div class="mt-auto pt-8">
                 <a
                   href={situation.href}
@@ -354,57 +284,61 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
         }
       </div>
 
-      <!-- Tür 4 und 5: nicht die drei Stellen, aber dieselbe Tür ins Haus -->
-      <div data-reveal class="mt-8 grid gap-4 md:grid-cols-2">
-        {
-          [
-            {
-              eyebrow: 'Oder das Ganze',
-              titel: 'Standardsoftware ablösen',
-              text: 'Branchensoftware, Vertec oder ein gewachsenes System am Limit? Dann ist meist eine dieser drei Stellen der Grund.',
-              href: standardsoftwareUrl,
-              icon: 'layers',
-            },
-            {
-              eyebrow: 'Ihr baut selbst',
-              titel: 'Software-Check',
-              text: 'Mit KI gebaut und ihr wollt technischen Rat von jemandem, der es auch könnte? Review, Sicherheit, Betrieb.',
-              href: '/software-check/',
-              icon: 'shield',
-            },
-          ].map((t) => (
-            <a
-              href={t.href}
-              class="group border-border bg-card hover:border-brand-300 flex items-start gap-4 rounded-2xl border p-5 transition-[border-color,transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-28px_oklch(40%_0.1_265_/_0.4)]"
-            >
-              <span class="border-brand-300/70 bg-brand-500/5 text-brand-600 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border">
-                <Icon name={t.icon} size="sm" />
-              </span>
-              <span class="min-w-0">
-                <span class="text-foreground-muted block text-[0.65rem] font-semibold tracking-[0.18em] uppercase">{t.eyebrow}</span>
-                <span class="font-display text-foreground mt-1 block text-base font-bold tracking-tight">{t.titel}</span>
-                <span class="text-foreground-secondary mt-1 block text-sm leading-6">{t.text}</span>
-                <span class="text-brand-600 mt-2 inline-flex items-center gap-1.5 text-sm font-semibold transition-transform duration-300 group-hover:translate-x-1">
-                  Mehr dazu
-                  <Icon name="arrow-right" size="xs" />
-                </span>
-              </span>
-            </a>
-          ))
-        }
-      </div>
+      <!-- Oder das Ganze -->
+      <a
+        href={standardsoftwareUrl}
+        data-reveal
+        class="group border-brand-300/70 bg-card hover:border-brand-400 dark:border-brand-700 mt-5 grid items-center gap-6 overflow-hidden rounded-[1.6rem] border p-5 shadow-sm transition-[transform,box-shadow] duration-300 hover:shadow-[0_26px_55px_-28px_oklch(40%_0.1_265_/_0.45)] md:grid-cols-[minmax(0,1fr)_17rem] md:p-7"
+      >
+        <div>
+          <p class="text-foreground-muted text-xs font-semibold tracking-[0.2em] uppercase">Oder das Ganze</p>
+          <h3 class="font-display text-foreground mt-2 text-2xl font-bold tracking-tight">Standardsoftware ablösen</h3>
+          <p class="text-foreground-secondary mt-2 max-w-xl text-sm leading-6 sm:text-base sm:leading-7">
+            Wenn mehr fehlt als ein einzelner Teil: Wir lösen eure Branchensoftware und die Excel-Listen
+            drumherum Schritt für Schritt ab. Das Alte läuft daneben weiter, und eure ganze Datenhistorie
+            zieht mit.
+          </p>
+          <span class="text-brand-600 mt-4 inline-flex items-center gap-2 text-sm font-semibold transition-transform duration-300 group-hover:translate-x-1">
+            So läuft eine Ablösung
+            <Icon name="arrow-right" size="sm" />
+          </span>
+        </div>
+        <MiniVisual kind="abloesung" />
+      </a>
+
+      <!-- Oder erst prüfen: für Betriebe, die Software schon haben -->
+      <a
+        href="/software-check/"
+        data-reveal
+        class="group border-border bg-card hover:border-brand-300 mt-5 grid items-center gap-6 overflow-hidden rounded-[1.6rem] border p-5 shadow-sm transition-[transform,box-shadow,border-color] duration-300 hover:shadow-[0_26px_55px_-28px_oklch(40%_0.1_265_/_0.45)] md:grid-cols-[minmax(0,1fr)_17rem] md:p-7"
+      >
+        <div>
+          <p class="text-foreground-muted text-xs font-semibold tracking-[0.2em] uppercase">Ihr baut selbst</p>
+          <h3 class="font-display text-foreground mt-2 text-2xl font-bold tracking-tight">Software-Check</h3>
+          <p class="text-foreground-secondary mt-2 max-w-xl text-sm leading-6 sm:text-base sm:leading-7">
+            Ihr habt mit KI gebaut und wollt technischen Rat von jemandem, der es auch könnte? Ein
+            erfahrener Entwickler und Architekt prüft Sicherheit, Struktur und Betrieb. Den Bericht könnt
+            ihr Kunden und Auditoren vorlegen.
+          </p>
+          <span class="text-brand-600 mt-4 inline-flex items-center gap-2 text-sm font-semibold transition-transform duration-300 group-hover:translate-x-1">
+            Was geprüft wird
+            <Icon name="arrow-right" size="sm" />
+          </span>
+        </div>
+        <MiniVisual kind="check" />
+      </a>
     </div>
   </section>
 
-  <section class="border-border relative overflow-hidden border-b py-24 lg:py-28">
+  <section class="border-border relative overflow-hidden border-b py-14 sm:py-24 lg:py-28">
     <div class="bg-brand-300/10 absolute left-0 top-1/3 h-80 w-80 rounded-full blur-3xl" />
     <div class="container relative z-10 grid items-center gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
       <div
-        data-reveal="fade-right"
+        data-reveal
         class="group relative mx-auto w-full max-w-[220px] sm:max-w-[260px] lg:max-w-none"
       >
         <div class="bg-brand-300/15 absolute -inset-3 -z-10 rounded-[2rem] blur-2xl" aria-hidden="true" />
-        <div class="overflow-hidden rounded-[1.8rem] border border-border shadow-[0_20px_50px_rgba(34,43,74,0.12)] rotate-[-2.5deg] transition-transform duration-500 will-change-transform [backface-visibility:hidden] group-hover:rotate-0 group-hover:-translate-y-1">
+        <div class="overflow-hidden rounded-[1.8rem] border border-border shadow-[0_20px_50px_rgba(34,43,74,0.12)] rotate-[-2.5deg] transition-transform duration-500 will-change-transform [backface-visibility:hidden] group-hover:rotate-0">
           <Picture
             src={founderImage}
             alt="Marten Prieß, Gründer von RocketBase"
@@ -417,7 +351,7 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
         </div>
       </div>
 
-      <div data-reveal="fade-left">
+      <div data-reveal>
         <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Über RocketBase</p>
         <h2 class="font-display text-foreground mt-6 text-3xl font-bold tracking-tight sm:text-4xl">
           Marten Prieß
@@ -440,8 +374,8 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
             Erstgespräch buchen
             <Icon name="arrow-up-right" size="sm" />
           </Button>
-          <Button variant="outline" href={missionUrl}>
-            Zur Mission
+          <Button variant="outline" href={workUrl}>
+            So arbeiten wir
             <Icon name="arrow-right" size="sm" />
           </Button>
         </div>
@@ -470,358 +404,64 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
     variant="subtle"
   />
 
-  <section class="border-border bg-background-secondary relative overflow-hidden border-b py-28 lg:py-36">
-    <div class="bg-grid-pattern pointer-events-none absolute inset-0 opacity-25 [mask-image:radial-gradient(circle_at_center,black_24%,transparent_78%)]" />
-    <div class="container relative z-10 space-y-14">
-      <div data-reveal="fade-right">
-        <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Worauf ihr euch verlassen könnt</p>
-        <h2 class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
-          <span class="block">Drei Dinge, die den Unterschied&nbsp;machen –</span>
-          <span class="mt-2 block text-brand-500">vom ersten Gespräch bis in den Betrieb.</span>
-        </h2>
-      </div>
-
-      <div class="why-rocketbase-track relative space-y-6">
-        {
-          topStrengths.map((strength, index) => (
-            <article
-              data-reveal="fade-left"
-
-              data-why-card
-              class:list={[
-                'why-rocketbase-card rounded-[2rem] border p-8 transition-all duration-300',
-                index === 0
-                  ? 'border-brand-300 bg-card shadow-[0_20px_50px_rgba(34,43,74,0.08)]'
-                  : 'border-border bg-background/80',
-              ]}
-            >
-              <div class="grid gap-5 md:grid-cols-[72px_1fr] md:items-start">
-                <div class="bg-background text-brand-600 flex h-13 w-13 items-center justify-center rounded-2xl border border-border text-sm font-semibold">
-                  0{index + 1}
-                </div>
-                <div>
-                  <h3 class="text-foreground text-2xl font-semibold">{strength.title}</h3>
-                  <p class="text-foreground-secondary mt-4 max-w-2xl text-base leading-7">
-                    {strength.description}
-                  </p>
-                </div>
-              </div>
-            </article>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <section class="border-border relative overflow-hidden border-b py-24 lg:py-32">
-    <div class="container">
-      <a data-reveal="zoom-in" href={workUrl} class="how-we-work group block" data-how-we-work>
-        <div class="relative overflow-hidden py-2 transition-all duration-500">
-          <div class="bg-brand-300/12 absolute top-12 right-0 h-48 w-48 rounded-full blur-3xl transition-all duration-500 group-hover:bg-brand-300/20" />
-          <div class="relative space-y-10">
-            <div class="grid gap-10 xl:grid-cols-[0.9fr_1.1fr] xl:items-start xl:gap-12">
-              <div>
-                <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Wie wir arbeiten</p>
-                <h2 class="font-display text-foreground mt-5 text-3xl font-bold tracking-tight sm:text-4xl">
-                  <span class="block">Weniger Overhead.</span>
-                  <span class="mt-2 block whitespace-nowrap text-brand-500">Mehr Geschwindigkeit.</span>
-                </h2>
-                <p class="text-foreground-secondary mt-6 max-w-3xl text-lg leading-8">
-                  Wir zeigen euch, wie Softwareentwicklung heute abläuft und wo klassische Ansätze
-                  Projekte ausbremsen.
-                </p>
-              </div>
-
-              <div class="relative mx-auto w-full max-w-xl xl:pt-2">
-                <div class="relative min-h-[18rem] sm:min-h-[22rem]">
-                  <div class="how-we-work-after absolute right-0 top-0 z-10 w-[64%] sm:w-[62%]" data-reveal="fade-left">
-                    <div class="relative overflow-hidden rounded-[2.4rem] shadow-[0_30px_70px_rgba(34,43,74,0.16)] transition-[transform,box-shadow] duration-500 will-change-transform [backface-visibility:hidden] group-hover:z-20 group-hover:-translate-y-2 group-hover:scale-[1.03] group-hover:shadow-[0_38px_90px_rgba(34,43,74,0.22)]">
-                      <Picture
-                        src={toolsAfter}
-                        alt="Nachher: integriertes System mit klaren Datenflüssen"
-                        widths={[320, 480, 640, 800, 1000]}
-                        sizes="(max-width: 640px) 74vw, (max-width: 1024px) 480px, 500px"
-                        formats={['avif', 'webp']}
-                        class="aspect-[4/3.8] w-full object-cover"
-                        loading="lazy"
-                      />
-                      <div class="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/35 to-transparent" />
-                      <div class="absolute right-5 bottom-5 rounded-full bg-white/88 px-3 py-1 text-[11px] font-semibold tracking-[0.22em] uppercase text-brand-700 backdrop-blur">
-                        Mit RocketBase
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="how-we-work-before absolute bottom-0 left-0 z-0 w-[42%] sm:w-[40%]" data-reveal="fade-right">
-                    <div class="relative overflow-hidden rounded-[2rem] shadow-[0_20px_45px_rgba(34,43,74,0.08)] transition-[transform,box-shadow,opacity] duration-500 will-change-transform [backface-visibility:hidden] group-hover:translate-y-2 group-hover:scale-[0.97] group-hover:opacity-85 group-hover:shadow-[0_16px_30px_rgba(34,43,74,0.08)]">
-                      <Picture
-                        src={toolsBefore}
-                        alt="Vorher: gewachsener Tool-Zoo mit verteilten Systemen"
-                        widths={[220, 320, 440, 560, 680]}
-                        sizes="(max-width: 640px) 48vw, (max-width: 1024px) 310px, 320px"
-                        formats={['avif', 'webp']}
-                        class="aspect-[4/4.5] w-full object-cover grayscale transition-[filter] duration-500 group-hover:grayscale-[0.15]"
-                        loading="lazy"
-                      />
-                      <div class="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/35 to-transparent" />
-                      <div class="absolute right-4 bottom-4 rounded-full bg-white/80 px-3 py-1 text-[11px] font-semibold tracking-[0.22em] uppercase text-foreground backdrop-blur">
-                        Vorher
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="hidden gap-8 border-t border-border/70 pt-8 sm:grid lg:grid-cols-2 lg:gap-12">
-              <div data-reveal>
-                <p class="text-foreground text-lg font-semibold">Vorher</p>
-                <p class="text-foreground-secondary mt-3 max-w-2xl text-base leading-7">
-                  Gewachsener Tool-Zoo: Bestellungen in Excel, Kunden im CRM, Versand in Trello,
-                  Reports per Mail. Jedes System kennt nur seinen Teil, vieles läuft von Hand,
-                  Doppelarbeit überall.
-                </p>
-              </div>
-
-              <div data-reveal>
-                <p class="text-brand-600 text-lg font-semibold">Mit RocketBase</p>
-                <p class="text-foreground-secondary mt-3 max-w-2xl text-base leading-7">
-                  Eine Lösung statt zehn Tools: Bestellungen, Stammdaten und Auswertungen greifen
-                  ineinander. Eine Stelle, auf die sich alle verlassen.
-                </p>
-              </div>
-            </div>
-
-            <div class="inline-flex items-center gap-3 text-sm font-semibold text-brand-600 transition-transform duration-300 group-hover:translate-x-1">
-              Weitere Vergleiche ansehen
-              <Icon name="arrow-right" size="sm" />
-            </div>
+  <section class="border-border border-b py-12 lg:py-16">
+    <div class="container grid gap-6 lg:grid-cols-3 lg:gap-8">
+      {
+        kurzStaerken.map((s) => (
+          <div>
+            <p class="font-display text-foreground text-lg font-bold">{s.titel}</p>
+            <p class="text-foreground-secondary mt-1.5 text-[0.95rem] leading-7">{s.text}</p>
           </div>
-        </div>
-      </a>
-    </div>
-  </section>
-
-  <script is:inline>
-    (() => {
-      const compareSection = document.querySelector('[data-how-we-work]');
-      const compareBefore = document.querySelector('.how-we-work-before');
-      const compareAfter = document.querySelector('.how-we-work-after');
-      const cards = Array.from(document.querySelectorAll('[data-why-card]'));
-
-      if (compareSection && compareBefore && compareAfter) {
-        let compareTicking = false;
-
-        const updateCompare = () => {
-          const rect = compareSection.getBoundingClientRect();
-          const viewport = window.innerHeight || 1;
-          const progress = Math.min(Math.max((viewport - rect.top) / (viewport + rect.height), 0), 1);
-          const eased = 1 - Math.pow(1 - progress, 2);
-
-          compareAfter.style.transform = `translate3d(0, ${eased * -8}px, 0) scale(${1 + eased * 0.01})`;
-          compareBefore.style.transform = `translate3d(0, ${eased * 6}px, 0) scale(${1 - eased * 0.01})`;
-          compareAfter.style.opacity = `${0.96 + eased * 0.04}`;
-          compareBefore.style.opacity = `${1 - eased * 0.08}`;
-
-          compareTicking = false;
-        };
-
-        const onCompareScroll = () => {
-          if (compareTicking) return;
-          compareTicking = true;
-          window.requestAnimationFrame(updateCompare);
-        };
-
-        updateCompare();
-        document.addEventListener('scroll', onCompareScroll, { passive: true });
-        window.addEventListener('resize', onCompareScroll);
+        ))
       }
-
-      if (cards.length === 0) return;
-
-      let activeIndex = 0;
-
-      const updateActiveCard = () => {
-        const trigger = window.innerHeight * 0.42;
-        let closestIndex = 0;
-        let closestDistance = Number.POSITIVE_INFINITY;
-
-        cards.forEach((card, index) => {
-          const rect = card.getBoundingClientRect();
-          const center = rect.top + rect.height / 2;
-          const distance = Math.abs(center - trigger);
-
-          if (distance < closestDistance) {
-            closestDistance = distance;
-            closestIndex = index;
-          }
-        });
-
-        activeIndex = closestIndex;
-        cards.forEach((card, index) => {
-          card.classList.toggle('is-active', index === activeIndex);
-        });
-      };
-
-      const onChange = () => window.requestAnimationFrame(updateActiveCard);
-
-      updateActiveCard();
-      document.addEventListener('scroll', onChange, { passive: true });
-      window.addEventListener('resize', onChange);
-    })();
-  </script>
-
-  <section class="border-border bg-background-secondary border-b py-28 lg:py-36">
-    <div class="container grid gap-14 lg:grid-cols-[0.84fr_1.16fr] lg:items-start">
-      <div data-reveal="fade-right" class="lg:sticky lg:top-28">
-        <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Leistungen</p>
-        <h2 class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
-          Beratung, Konzeption und Umsetzung
-          <span class="mt-2 block text-brand-500">mit möglichst wenig Reibung.</span>
-        </h2>
-        <p class="text-foreground-secondary mt-6 text-lg leading-8">
-          Beratung, Architektur und Umsetzung liegen bei uns in einer Hand. Das spart Übergaben,
-          und Entscheidungen fallen schneller.
-        </p>
-        <div class="text-foreground-muted mt-8 text-sm leading-7">
-          Discovery · Konzeption · Individualsoftware · Integration · Betrieb
-        </div>
-        <div class="mt-8">
-          <Button variant="outline" href={servicesUrl}>
-            Alle Leistungen im Detail
-            <Icon name="arrow-right" size="sm" />
-          </Button>
-        </div>
-      </div>
-
-      <div class="space-y-6" data-reveal="fade-left">
-        {
-          serviceAreas.map((service, index) => (
-            <article class="hover-stable relative rounded-[2rem] border border-border bg-card p-7 shadow-sm transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(34,43,74,0.08)]">
-              <div class="grid gap-5 md:grid-cols-[68px_1fr] md:items-start">
-                <div class="text-brand-600 text-sm font-semibold">0{index + 1}</div>
-                <div>
-                  <h3 class="text-foreground text-2xl font-semibold">{service.title}</h3>
-                  <p class="text-foreground-secondary mt-3 max-w-2xl text-base leading-7">
-                    {service.description}
-                  </p>
-                  <ul class="text-foreground-secondary mt-6 hidden gap-x-8 gap-y-3 text-sm sm:grid sm:grid-cols-2">
-                    {service.bullets.map((bullet) => (
-                      <li class="flex gap-3">
-                        <Icon name="arrow-right" size="sm" class="text-brand-400 mt-0.5 shrink-0" />
-                        <span>{bullet}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <a href={servicesUrl} class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 sm:hidden">
-                    Details ansehen
-                    <Icon name="arrow-right" size="xs" />
-                  </a>
-                </div>
-              </div>
-            </article>
-          ))
-        }
-      </div>
     </div>
   </section>
 
-  <section class="border-border border-b py-28 lg:py-36">
+
+
+
+
+  <section class="border-border border-b py-14 sm:py-28 lg:py-36">
     <div class="container">
       <div data-reveal>
         <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Referenzen</p>
         <h2 class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
-          Konzern-Erfahrung, sauber übersetzt
-          <span class="mt-2 block text-brand-500">in mittelständische Realität.</span>
+          Was wir für
+          <span class="mt-2 block text-brand-500">andere Betriebe gebaut haben</span>
         </h2>
         <p class="text-foreground-secondary mt-6 text-lg leading-8">
-          Drei Beispiele dafür, wie RocketBase in sehr unterschiedlichen Ausgangslagen arbeitet:
-          Standardsoftware abgelöst, Einsatzplanung aus Excel geholt, Budgetsteuerung auf einen
-          belastbaren Prozess gestellt.
+          Standardsoftware abgelöst, Einsatzplanung aus Excel geholt, Budgets in eine eigene Software gebracht.
         </p>
       </div>
 
       <div class="mt-16 grid gap-6 lg:grid-cols-3 lg:items-stretch">
-        <article data-reveal="fade-right" class="group flex flex-col overflow-hidden rounded-[2rem] border border-border bg-card shadow-[0_22px_55px_rgba(34,43,74,0.08)] transition-[transform,box-shadow] duration-500 hover:-translate-y-1 hover:shadow-[0_30px_70px_rgba(34,43,74,0.12)] will-change-transform [backface-visibility:hidden]">
-          <a href={getReferenceUrl(featuredCases[0].slug)} class="flex h-full flex-col">
-            <div class="overflow-hidden">
-              {featuredCases[0].image && (
-                <Picture
-                  src={featuredCases[0].image}
-                  alt={featuredCases[0].title}
-                  widths={[320, 480, 640, 960]}
-                  sizes="(max-width: 1024px) 100vw, 33vw"
-                  formats={['avif', 'webp']}
-                  class="aspect-[16/10] max-h-[33vh] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] lg:max-h-none"
-                  loading="lazy"
-                />
-              )}
-            </div>
-            <div class="flex flex-1 flex-col p-6 lg:p-7">
-              <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
-                {featuredCases[0].client}
-              </p>
-              <h3 class="text-foreground mt-3 text-xl font-semibold leading-snug lg:text-2xl">
-                {featuredCases[0].title}
-              </h3>
-              <p class="text-foreground-secondary mt-3 text-sm leading-7">
-                {featuredCases[0].kicker}
-              </p>
-              <div class="mt-auto pt-6">
-                <p class="text-foreground-muted hidden text-xs leading-6 sm:block">
-                  Prozess im Fokus: {featuredCases[0].processFocus}
-                </p>
-                <div class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600">
-                  Case ansehen
-                  <Icon name="arrow-right" size="sm" />
-                </div>
-              </div>
-            </div>
-          </a>
-        </article>
-
         {
-          featuredCases.slice(1).map((item) => (
+          featuredCases.map((item) => (
             <article
-              data-reveal="fade-left"
-              class="group flex h-full flex-col overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(34,43,74,0.1)] will-change-transform [backface-visibility:hidden]"
+              data-reveal
+              class="group flex flex-col overflow-hidden rounded-[2rem] border border-border bg-card shadow-sm transition-shadow hover:shadow-lg"
             >
               <a href={getReferenceUrl(item.slug)} class="flex h-full flex-col">
-                {item.image ? (
-                  <div class="overflow-hidden">
+                <div class="overflow-hidden">
+                  {item.image && (
                     <Picture
                       src={item.image}
-                      alt={item.title}
+                      alt={item.heading}
                       widths={[320, 480, 640, 960]}
                       sizes="(max-width: 1024px) 100vw, 33vw"
                       formats={['avif', 'webp']}
-                      class="aspect-[16/10] max-h-[33vh] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] lg:max-h-none"
+                      class="aspect-[16/10] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                       loading="lazy"
                     />
-                  </div>
-                ) : (
-                  <div class="flex aspect-[16/10] max-h-[33vh] flex-col justify-between bg-[linear-gradient(160deg,rgba(243,245,249,0.96),rgba(229,234,242,0.92))] p-7 lg:max-h-none dark:bg-[linear-gradient(160deg,rgba(36,43,57,0.92),rgba(26,31,42,0.9))]">
-                    <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
-                      {item.client}
-                    </p>
-                    <p class="font-display text-foreground text-2xl leading-snug font-bold tracking-tight">
-                      Von Standardsoftware zur individuellen Plattform
-                    </p>
-                  </div>
-                )}
-
-                <div class="flex flex-1 flex-col p-6 lg:p-7">
+                  )}
+                </div>
+                <div class="flex flex-1 flex-col p-6">
                   <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">{item.client}</p>
-                  <h3 class="text-foreground mt-3 text-xl font-semibold leading-snug lg:text-2xl">{item.title}</h3>
-                  <p class="text-foreground-secondary mt-3 text-sm leading-7">{item.kicker}</p>
-                  <ul class="text-foreground-muted mt-4 hidden space-y-2 text-sm leading-6 sm:block">
-                    {item.highlights.slice(0, 2).map((highlight) => (
-                      <li class="flex gap-3">
-                        <Icon name="check-circle" size="sm" class="text-brand-400 mt-0.5 shrink-0" />
-                        <span>{highlight}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <h3 class="text-foreground mt-3 text-xl leading-snug font-semibold">{item.heading}</h3>
+                  <div class="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-semibold text-brand-600">
+                    Projekt ansehen
+                    <Icon name="arrow-right" size="sm" />
+                  </div>
                 </div>
               </a>
             </article>
@@ -839,14 +479,14 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
   </section>
 
   {testimonialItems.length > 0 && (
-    <section class="border-border border-b py-20 lg:py-24">
+    <section class="border-border border-b py-12 sm:py-20 lg:py-24">
       <div class="container max-w-2xl">
         <header class="mb-10" data-reveal>
           <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
             Stimmen aus Projekten
           </p>
           <h2 class="font-display text-foreground mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-            O-Töne unserer Kunden.
+            Was unsere Kunden sagen
           </h2>
         </header>
         <div data-reveal>
@@ -857,7 +497,7 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
   )}
 
   {featuredBlogPosts.length > 0 && (
-    <section class="border-border border-b py-20 lg:py-24">
+    <section class="hidden lg:block border-border border-b py-12 sm:py-20 lg:py-24">
       <div class="container">
         <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between" data-reveal>
           <div class="max-w-2xl">
@@ -865,7 +505,7 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
               Einblicke aus der Praxis
             </p>
             <h2 class="font-display text-foreground mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-              Was uns in Projekten auffällt.
+              Aus unseren Projekten
             </h2>
           </div>
           <a
@@ -894,17 +534,16 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
     </section>
   )}
 
-  <section class="border-border bg-surface-invert text-on-invert border-b py-28 lg:py-36">
+  <section class="border-border bg-surface-invert text-on-invert border-b py-14 sm:py-28 lg:py-36">
     <div class="container grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-      <div data-reveal="fade-right" class="lg:sticky lg:top-28">
+      <div data-reveal class="lg:sticky lg:top-28">
         <p class="text-brand-300 text-sm font-semibold tracking-[0.22em] uppercase">So startet ihr</p>
         <h2 class="font-display mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
-          Kein Blindflug.
-          <span class="mt-2 block text-brand-200">Jede Stufe hat einen Preis und ein Ergebnis.</span>
+          So fangen wir an:
+          <span class="mt-2 block text-brand-200">Jede Stufe hat einen Preis und ein Ergebnis</span>
         </h2>
         <p class="text-on-invert-secondary mt-6 text-lg leading-8">
-          Niemand gibt hier blind Budget frei: Jede Stufe liefert etwas, das für sich stehen kann,
-          und nennt den Preis der nächsten. Aussteigen geht nach jeder – das Ergebnis behaltet ihr.
+          Nach jeder Stufe könnt ihr aufhören, das Ergebnis behaltet ihr.
         </p>
       </div>
 
@@ -912,7 +551,7 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
         {
           ladderSteps.map((step, index) => (
             <article
-              data-reveal="fade-left"
+              data-reveal
               class="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur sm:rounded-[2rem] sm:p-7"
             >
               <div class="flex items-center gap-4 sm:grid sm:gap-5 md:grid-cols-[72px_1fr] md:items-start">
@@ -934,55 +573,8 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
     </div>
   </section>
 
-  <section class="border-border bg-background-secondary border-b py-28 lg:py-36">
-    <div class="container max-w-6xl">
-      <div class="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
-        <div data-reveal="fade-right">
-          <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">
-            So fängt es an
-          </p>
-          <h2 class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
-            {discoveryOffer.title}
-          </h2>
-          <p class="text-foreground-secondary mt-4 text-xl">{discoveryOffer.subtitle}</p>
-          <p class="text-foreground-secondary mt-6 max-w-2xl text-lg leading-8">
-            {discoveryOffer.description}
-          </p>
-        </div>
 
-        <div
-          data-reveal="fade-left"
-          class="rounded-[2.2rem] border border-border bg-card p-8 shadow-[0_22px_55px_rgba(34,43,74,0.08)]"
-        >
-          <p class="text-brand-600 text-xs font-semibold tracking-[0.22em] uppercase">
-            Typische Ergebnisse
-          </p>
-          <ul class="text-foreground-secondary mt-6 space-y-4 text-base leading-7">
-            {
-              discoveryOffer.deliverables.map((item) => (
-                <li data-reveal="zoom-in" class="flex gap-3">
-                  <Icon name="check-circle" size="sm" class="text-brand-500 mt-1 shrink-0" />
-                  <span>{item}</span>
-                </li>
-              ))
-            }
-          </ul>
-          <div class="mt-8 flex flex-wrap items-center gap-4">
-            <Button href={contactLinks.calDiscovery} target="_blank">
-              Workshop anfragen
-              <Icon name="arrow-up-right" size="sm" />
-            </Button>
-            <Button variant="link" href={workshopUrl}>
-              Details zum Workshop
-              <Icon name="arrow-right" size="sm" />
-            </Button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="cta" class="py-28 lg:py-36">
+  <section id="cta" class="py-14 sm:py-28 lg:py-36">
     <div class="container">
       <div class="relative overflow-hidden rounded-[2.8rem] border border-border bg-background-secondary p-8 shadow-[0_24px_60px_rgba(34,43,74,0.08)] sm:p-10 lg:p-12">
         <img
@@ -997,14 +589,14 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
           aria-hidden="true"
           class="pointer-events-none absolute -right-12 -top-16 hidden w-72 opacity-[0.08] select-none dark:lg:block"
         />
-        <div data-reveal="fade-right" class="relative max-w-4xl">
+        <div data-reveal class="relative max-w-4xl">
           <p class="text-brand-600 text-sm font-semibold tracking-[0.22em] uppercase">Nächster Schritt</p>
           <h2
             lang="de"
             class="font-display text-foreground mt-4 text-3xl font-bold tracking-tight text-balance hyphens-auto [-webkit-hyphens:auto] sm:text-4xl"
           >
-            Von Standardsoftware zur Lösung,{' '}
-            <span class="text-brand-500">die wirklich zu eurem Unternehmen passt.</span>
+            Software,{' '}
+            <span class="text-brand-500">die zu eurem Betrieb passt</span>
           </h2>
           <p class="text-foreground-secondary mt-6 max-w-3xl text-lg leading-8">
             Wenn Prozesse mehr bremsen als tragen, lohnt ein strukturierter Blick von außen. Wir
@@ -1032,8 +624,8 @@ const getBlogPostUrl = (postId: string) => '/blog/' + postId.replace(locale + '/
                 Erstgespräch buchen
                 <Icon name="arrow-up-right" size="sm" />
               </Button>
-              <Button variant="link" href={contactUrl}>
-                Kontaktseite
+              <Button variant="link" href={`${contactUrl}#anfrage-stellen`}>
+                Lieber schreiben
                 <Icon name="arrow-right" size="sm" />
               </Button>
             </div>

@@ -1,4 +1,7 @@
 ---
+import SeitenHero from '@/components/landing/SeitenHero.astro';
+import { Image } from 'astro:assets';
+import referenzBild from '@/assets/references/kundenstandorte-uebersicht-demo-1920.png';
 import { Picture } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import PageLayout from '@/layouts/PageLayout.astro';
@@ -45,10 +48,10 @@ const clientLogos = [
 ];
 
 const teaserCaptions: Record<string, string> = {
-  bonprix: 'Konzernumfeld, saubere Datenflüsse, viele beteiligte Systeme.',
-  statista: 'Modernisierung eines gewachsenen Kernsystems im laufenden Betrieb.',
-  'fkc-consulting': 'Ablösung einer Standardsoftware durch eine individuelle Plattform.',
-  'schlosserei-diezinger': 'Handwerk statt Tabelle: Einsatzplanung im echten Werkstatt-Alltag.',
+  bonprix: 'Viele Systeme im Konzern, die zusammenarbeiten müssen.',
+  statista: 'Ein altes Kernsystem erneuert, während die Arbeit weiterlief.',
+  'fkc-consulting': 'Standardsoftware durch eine eigene Plattform ersetzt.',
+  'schlosserei-diezinger': 'Einsatzplanung für den Alltag in der Werkstatt.',
 };
 ---
 
@@ -58,23 +61,20 @@ const teaserCaptions: Record<string, string> = {
   lang={locale}
   routeId="references"
 >
-  <section class="border-b border-border bg-background-secondary py-24">
-    <div class="container max-w-4xl">
-      <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Referenzen</p>
-      <h1 class="mt-4 font-display text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
-        Ausgewählte Projekte mit mehr Hintergrund.
-      </h1>
-      <p class="mt-6 text-lg leading-8 text-foreground-secondary">
-        Zu jedem Projekt steht hier, was gebaut wurde und in welchem Kontext: Konzernumfeld,
-        Modernisierung gewachsener Systeme oder der Schritt von Standardsoftware zu einer
-        individuellen Lösung.
-      </p>
-    </div>
-  </section>
+  <SeitenHero eyebrow="Referenzen" titel="Echte Projekte, von der Ausgangslage bis zum Ergebnis" text="Zu jedem Projekt steht hier, was gebaut wurde und warum: im Konzern, bei der Erneuerung alter Systeme oder beim Wechsel von Standardsoftware zu einer eigenen Lösung.">
+    <Image
+      src={referenzBild}
+      alt="Kundenstandorte und Berater auf einer Deutschlandkarte, Demo-Daten"
+      widths={[640, 960, 1280]}
+      sizes="(min-width: 1024px) 50vw, 100vw"
+      class="border-border w-full rounded-2xl border shadow-xl"
+      loading="eager"
+    />
+  </SeitenHero>
 
   <ClientLogoStrip logos={clientLogos} variant="light" />
 
-  <section class="py-28">
+  <section class="py-14 sm:py-28">
     <div class="container space-y-16">
       {cases.map((item, idx) => (
         <article
@@ -127,7 +127,7 @@ const teaserCaptions: Record<string, string> = {
             ]}
           >
             <h2 class="font-display text-3xl font-bold tracking-tight text-foreground">
-              <a href={`/referenzen/${item.slug}/`}>{item.title}</a>
+              <a href={`/referenzen/${item.slug}/`}>{item.heading}</a>
             </h2>
             {logoMap[caseLogoKey[item.slug] ?? ''] ? (
               <img
@@ -142,10 +142,6 @@ const teaserCaptions: Record<string, string> = {
               <p class="mt-4 text-xs font-semibold uppercase tracking-[0.22em] text-brand-600">{item.client}</p>
             )}
             <p class="mt-5 text-base leading-8 text-foreground-secondary">{item.kicker}</p>
-            <p class="mt-4 text-sm leading-7 text-foreground-muted">
-              Prozess im Fokus: {item.processFocus}
-            </p>
-            <p class="mt-5 text-base leading-8 text-foreground-secondary">{item.description}</p>
 
             <ul class="mt-8 space-y-4 border-l border-border pl-5 text-sm leading-7 text-foreground-secondary">
               {item.highlights.map((highlight) => (
@@ -164,7 +160,7 @@ const teaserCaptions: Record<string, string> = {
 
             <div class="mt-8">
               <a href={`/referenzen/${item.slug}/`} class="text-sm font-semibold text-brand-600 transition-colors hover:text-brand-500">
-                Mehr Hintergründe ansehen
+                Ganzes Projekt ansehen
               </a>
             </div>
           </div>
@@ -174,16 +170,15 @@ const teaserCaptions: Record<string, string> = {
   </section>
 
   {additionalCases.length > 0 && (
-    <section class="border-t border-border py-24">
+    <section class="border-t border-border py-14 sm:py-24">
       <div class="container max-w-6xl">
         <header class="max-w-3xl">
           <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Weitere Projekte</p>
           <h2 class="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Ein Ausschnitt weiterer Arbeiten.
+            Noch mehr Beispiele
           </h2>
           <p class="mt-4 text-base leading-7 text-foreground-secondary">
-            Projekte, die nicht im Hauptfokus der Referenzliste stehen, aber einen Blick wert sind –
-            kompakter aufbereitet und mit eigener Detailseite.
+            Diese Projekte sind hier kürzer beschrieben und haben jeweils eine eigene Seite.
           </p>
         </header>
 
@@ -192,7 +187,7 @@ const teaserCaptions: Record<string, string> = {
             <li>
               <a
                 href={`/referenzen/${item.slug}/`}
-                class="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-[transform,border-color,box-shadow] duration-200 will-change-transform [backface-visibility:hidden] hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-sm"
+                class="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-[transform,border-color,box-shadow] duration-200 will-change-transform [backface-visibility:hidden] hover:border-brand-300 hover:shadow-sm"
               >
                 {item.slug in caseImages && (
                   <div class="overflow-hidden">
@@ -210,7 +205,7 @@ const teaserCaptions: Record<string, string> = {
                 <div class="flex flex-1 flex-col p-6">
                   <p class="text-xs font-semibold uppercase tracking-[0.22em] text-brand-600">{item.client}</p>
                   <h3 class="mt-3 text-base font-semibold leading-6 text-foreground transition-colors group-hover:text-brand-600">
-                    {item.title}
+                    {item.heading}
                   </h3>
                   <p class="mt-3 flex-1 text-sm leading-6 text-foreground-secondary">
                     {item.kicker}
@@ -228,17 +223,16 @@ const teaserCaptions: Record<string, string> = {
     </section>
   )}
 
-  <section class="border-t border-border bg-background-secondary py-24">
+  <section class="border-t border-border bg-background-secondary py-14 sm:py-24">
     <div class="container grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
       <div>
         <p class="text-sm font-semibold uppercase tracking-[0.22em] text-brand-600">Nächster Schritt</p>
         <h2 class="mt-4 font-display text-4xl font-bold tracking-tight text-foreground">
-          Wenn euer Vorhaben ähnlich gelagert ist, lohnt ein Gespräch.
+          Habt ihr ein ähnliches Vorhaben?
         </h2>
         <p class="mt-6 text-lg leading-8 text-foreground-secondary">
-          Viele Projekte starten nicht mit einer klaren Spezifikation, sondern mit Reibung im
-          Prozess, Grenzen in Standardsoftware oder gewachsenen Systemen. Genau dort setzt
-          RocketBase an.
+          Viele Projekte beginnen ohne fertige Beschreibung. Am Anfang steht oft ein Ablauf, der hakt,
+          oder eine Standardsoftware, die an Grenzen stößt. Genau dort fangen wir an.
         </p>
       </div>
       <div class="flex flex-wrap gap-4">
@@ -246,8 +240,8 @@ const teaserCaptions: Record<string, string> = {
           Erstgespräch buchen
           <Icon name="arrow-up-right" size="sm" />
         </Button>
-        <Button variant="outline" href="/kontakt/">
-          Kontakt
+        <Button variant="outline" href="/kontakt/#anfrage-stellen">
+          Lieber schreiben
         </Button>
       </div>
     </div>
