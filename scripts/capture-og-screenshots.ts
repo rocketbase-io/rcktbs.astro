@@ -37,10 +37,12 @@ const OG_HEIGHT = 630;
 //   1. jede statische .astro-Datei unter src/pages (ohne [dynamische], 404, [lang])
 //   2. die Funnel-Slugs aus src/data/funnels.ts         -> /f/<slug>/
 //   3. die Brief-Slugs aus src/data/briefLandings.ts     -> /b/<slug>/
+//   4. die Referenz-Slugs aus src/data/rocketbase.ts     -> /referenzen/<slug>/
 // /f/ und /b/ sind noindex, werden aber weitergeleitet (Angebot an den Chef,
 // Link per WhatsApp), und dann zeigt die Vorschau genau dieses Bild.
-// Referenz-Details und der ganze Blog (auch die Übersicht) bleiben bei ihren
-// generierten Bildern mit Titel (/og/...), dort gibt es keine Screenshots.
+// Referenzen seit 2026-11-02: Der Hero zeigt Logo, Überschrift und das echte
+// Produkt, das generierte Bild hatte den alten Titel über abgedunkeltem Teaser.
+// Der Blog (auch die Übersicht) bleibt beim generierten Bild mit Titel (/og/...).
 // Der Slug entspricht dem in SEO.astro: Pfad ohne Rand-Schrägstriche, also
 // /f/zahlen/ -> public/og-screenshots/f/zahlen.jpg.
 //
@@ -75,6 +77,7 @@ async function collectTargets(): Promise<Array<{ path: string; slug: string }>> 
   const paths = new Set(await collectStaticPages(PAGES_DIR));
   for (const s of await slugsFrom('src/data/funnels.ts')) paths.add(`/f/${s}/`);
   for (const s of await slugsFrom('src/data/briefLandings.ts')) paths.add(`/b/${s}/`);
+  for (const s of await slugsFrom('src/data/rocketbase.ts')) paths.add(`/referenzen/${s}/`);
   const all = [...paths].sort().map((path) => ({ path, slug: path.replace(/^\/|\/$/g, '') || 'index' }));
   const only = process.argv.slice(2).map((a) => a.replace(/^\/|\/$/g, '') || 'index');
   return only.length ? all.filter((t) => only.includes(t.slug)) : all;
