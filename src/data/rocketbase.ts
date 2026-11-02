@@ -122,7 +122,7 @@ const casesRaw = [
     ],
     testimonial: {
       quote:
-        'Unsere Zusammenarbeit mit RocketBase war durchweg positiv. Die langjährige Erfahrung in der Individualentwicklung und das umfassende Know-how von Bonrpix haben sich wirklich ausgezahlt. Selbst die Herausforderung, mit indischen Entwicklungsteams zu kooperieren, hat RocketBase hervorragend gemeistert. Letztendlich sind wir äußerst zufrieden, dass wir unseren Monolithen erfolgreich in Microservices aufgeteilt haben, was uns nun eine flexible und effiziente Systemarchitektur ermöglicht.',
+        'Unsere Zusammenarbeit mit RocketBase war durchweg positiv. Die langjährige Erfahrung in der Individualentwicklung hat sich wirklich ausgezahlt. Selbst die Zusammenarbeit mit unseren Entwicklungsteams in Indien hat RocketBase hervorragend gemeistert. Heute ist unser Monolith in Microservices aufgeteilt, und wir haben eine flexible und effiziente Systemarchitektur.',
       author: 'Lars Globisch',
       position: 'Head of Product & Technology',
       portraitKey: 'globisch',
