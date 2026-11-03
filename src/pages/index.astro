@@ -166,7 +166,7 @@ const testimonialItems = allCases
   .map((c) => {
     const t = c.testimonial!;
     return {
-      quote: t.quote,
+      quote: 'homeQuote' in t && t.homeQuote ? t.homeQuote : t.quote,
       author: t.author,
       position: t.position,
       client: c.client,

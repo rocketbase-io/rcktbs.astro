@@ -326,12 +326,26 @@ const casesRaw = [
           'Anmeldung am Werkstatt-Terminal mit der Karte, die jeder ohnehin dabei hat. Das ist schnell genug für den Alltag.',
       },
     ],
+    fakten: [
+      { label: 'Branche', wert: 'Metallbau, Handwerk' },
+      { label: 'Betrieb', wert: 'Über 50 Mitarbeitende' },
+      { label: 'Ergebnis', wert: 'Eigene Lösung statt Standardtool mit Jahreslizenz' },
+    ],
     screenshots: [
       { key: 'metall-board-highlighted', alt: 'Einsatzplanung mit hervorgehobenem Auftrag' },
       { key: 'metall-dashboard', alt: 'Rollenbasiertes Dashboard' },
-      { key: 'metall-board', alt: 'Einsatzplanungs-Board' },
       { key: 'metall-order', alt: 'Auftragsübersicht' },
     ],
+    testimonial: {
+      quote:
+        'Die großen Tools waren uns zu kompliziert und zu teuer. Jetzt haben wir genau das, was wir brauchen, und wenn etwas fehlt, wird es ergänzt.',
+      // Zweites freigegebenes Zitat, nur für die Kundenstimmen auf der Startseite.
+      homeQuote:
+        'Wir kamen aus Excel und hätten fast ein großes Standardtool eingeführt. Jetzt haben wir etwas dazwischen: so einfach wie unsere alte Tabelle, aber mit Blick über mehrere Wochen und ohne jährliche Lizenzkosten.',
+      author: 'Lukas Diezinger',
+      position: 'Geschäftsführer',
+      portraitKey: 'diezinger',
+    },
   },
 ];
 

@@ -170,15 +170,31 @@ const [heroShot, ...galerieShots] = resolvedScreenshots;
         <p class="mt-4 text-base leading-7 text-foreground-secondary sm:text-lg sm:leading-8">{item.kicker}</p>
       </div>
       {heroShot ? (
-        <Picture
-          src={heroShot.image}
-          alt={heroShot.alt}
-          widths={[640, 960, 1280]}
-          sizes="(max-width: 1024px) 100vw, 55vw"
-          formats={['avif', 'webp']}
-          class="border-border w-full rounded-2xl border object-cover object-top shadow-xl"
-          loading="eager"
-        />
+        <button
+          type="button"
+          class="group relative block w-full cursor-zoom-in rounded-2xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          data-lightbox-trigger
+          data-src={heroShot.largeSrc}
+          data-alt={heroShot.alt}
+          aria-label={`${heroShot.alt} vergrößern`}
+        >
+          <Picture
+            src={heroShot.image}
+            alt={heroShot.alt}
+            widths={[640, 960, 1280]}
+            sizes="(max-width: 1024px) 100vw, 55vw"
+            formats={['avif', 'webp']}
+            class="border-border w-full rounded-2xl border object-cover object-top shadow-xl"
+            loading="eager"
+          />
+          <span
+            aria-hidden="true"
+            class="pointer-events-none absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full bg-background/95 px-3 py-1.5 text-xs font-semibold text-brand-600 shadow-md transition-opacity duration-300 lg:opacity-0 lg:group-hover:opacity-100"
+          >
+            Vergrößern
+            <Icon name="arrow-up-right" size="xs" />
+          </span>
+        </button>
       ) : hasImage && (
         <Picture
           src={caseImages[item.slug as keyof typeof caseImages]}
@@ -311,7 +327,8 @@ const [heroShot, ...galerieShots] = resolvedScreenshots;
                     aria-hidden="true"
                     class="absolute left-3 top-3 z-10 font-mono text-[10px] font-bold tracking-[0.22em] text-foreground-muted/70"
                   >
-                    {String(i + 1).padStart(2, '0')}
+                    {/* 01 ist das Hero-Bild, die Lightbox zählt es mit */}
+                    {String(i + 2).padStart(2, '0')}
                   </span>
                   <span class="relative block overflow-hidden rounded-md bg-background-secondary">
                     <Picture
@@ -353,8 +370,12 @@ const [heroShot, ...galerieShots] = resolvedScreenshots;
           })}
         </div>
       </div>
+    </section>
+  )}
 
-      <!-- Lightbox -->
+  <!-- Lightbox: Hero-Bild und Galerie in einer Folge, Hero zuerst -->
+  {resolvedScreenshots.length > 0 && (
+    <>
       <div
         id="screenshot-lightbox"
         class="fixed inset-0 z-[60] hidden items-center justify-center"
@@ -422,12 +443,11 @@ const [heroShot, ...galerieShots] = resolvedScreenshots;
           if (!lightbox || lightbox.dataset.init) return;
           lightbox.dataset.init = 'true';
 
-          const gallery = document.querySelector<HTMLElement>('[data-lightbox-gallery]');
-          if (!gallery) return;
-
+          // Dokument-Reihenfolge: Hero-Bild zuerst, dann die Galerie.
           const triggers = Array.from(
-            gallery.querySelectorAll<HTMLButtonElement>('[data-lightbox-trigger]')
+            document.querySelectorAll<HTMLButtonElement>('[data-lightbox-trigger]')
           );
+          if (triggers.length === 0) return;
           const backdrop = lightbox.querySelector<HTMLElement>('[data-lightbox-backdrop]');
           const panel = lightbox.querySelector<HTMLElement>('[data-lightbox-panel]');
           const image = lightbox.querySelector<HTMLImageElement>('[data-lightbox-image]');
@@ -516,7 +536,7 @@ const [heroShot, ...galerieShots] = resolvedScreenshots;
         initLightbox();
         document.addEventListener('astro:page-load', initLightbox);
       </script>
-    </section>
+    </>
   )}
 
   <!-- Passt das zu euch? -->
