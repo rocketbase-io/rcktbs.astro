@@ -1,0 +1,55 @@
+---
+/**
+ * Wo die Befunde der Durchsicht lagen, nach den 14 Kapiteln des OWASP ASVS 4.0.3 (die Version, nach der
+ * geprüft wurde). n = Kapitelverweise im Bericht. Angezeigt werden nur relative Balken und vier Stufen, keine Zahlen.
+ */
+const kapitel = [
+  { nr: 1, titel: 'Architektur und Bedrohungsmodell', n: 4 },
+  { nr: 2, titel: 'Anmeldung', n: 0 },
+  { nr: 3, titel: 'Sitzungen', n: 2 },
+  { nr: 4, titel: 'Zugriffskontrolle', n: 3 },
+  { nr: 5, titel: 'Prüfung und Bereinigung von Eingaben', n: 3 },
+  { nr: 6, titel: 'Gespeicherte Daten verschlüsseln', n: 1 },
+  { nr: 7, titel: 'Fehlerbehandlung und Protokollierung', n: 4 },
+  { nr: 8, titel: 'Datenschutz', n: 4 },
+  { nr: 9, titel: 'Kommunikation', n: 2 },
+  { nr: 10, titel: 'Schadcode und Abhängigkeiten', n: 4 },
+  { nr: 11, titel: 'Geschäftslogik', n: 14 },
+  { nr: 12, titel: 'Dateien und Ressourcen', n: 1 },
+  { nr: 13, titel: 'APIs und Webservices', n: 3 },
+  { nr: 14, titel: 'Konfiguration', n: 11 },
+];
+const max = Math.max(...kapitel.map((k) => k.n));
+const stufe = (n: number) => (n === 0 ? 'kein Befund' : n <= 2 ? 'vereinzelt' : n <= 5 ? 'mehrere' : 'Schwerpunkt');
+const breite = (n: number) => (n === 0 ? 0 : Math.max(6, Math.round((n / max) * 100)));
+---
+
+<figure class="not-prose my-10">
+  <p class="text-brand-600 dark:text-brand-300 text-xs font-semibold tracking-[0.14em] uppercase">Wo die Befunde lagen</p>
+  <p class="text-foreground-secondary mt-1 text-sm leading-6">Die 14 Kapitel des OWASP ASVS, des internationalen Standards für Anwendungssicherheit</p>
+  <ol class="mt-4 grid gap-3 sm:gap-1.5">
+    {
+      kapitel.map((k) => {
+        const s = stufe(k.n);
+        return (
+          <li class="grid grid-cols-[2.25rem_1fr_auto] items-center gap-x-3 gap-y-1.5 text-sm sm:grid-cols-[2.25rem_16rem_1fr_5.5rem]">
+            <span class="text-foreground-muted font-mono text-xs">V{k.nr}</span>
+            <span class:list={['sm:truncate', s === 'Schwerpunkt' ? 'text-foreground font-semibold' : 'text-foreground-secondary']}>{k.titel}</span>
+            <span class="bg-background-secondary col-span-3 col-start-1 row-start-2 h-2 overflow-hidden rounded-full sm:col-span-1 sm:col-start-3 sm:row-start-1 sm:h-2.5">
+              <span
+                class:list={['block h-full rounded-full', s === 'Schwerpunkt' ? 'bg-amber-500' : s === 'mehrere' ? 'bg-brand-500' : 'bg-brand-300']}
+                style={`width:${breite(k.n)}%`}
+              />
+            </span>
+            <span class:list={['text-right font-mono text-xs tabular-nums sm:col-start-4 sm:row-start-1', k.n === 0 ? 'font-semibold text-emerald-600 dark:text-emerald-400' : 'text-foreground-secondary']}>
+              {s}
+            </span>
+          </li>
+        );
+      })
+    }
+  </ol>
+  <figcaption class="text-foreground-muted mt-4 text-sm leading-6">
+    Die Schwerpunkte lagen bei Geschäftslogik und Konfiguration. Bei der Anmeldung, wo solche Prüfungen sonst die schwersten Mängel finden, gab es keinen Befund.
+  </figcaption>
+</figure>

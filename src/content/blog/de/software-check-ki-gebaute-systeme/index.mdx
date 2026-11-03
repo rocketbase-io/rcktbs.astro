@@ -18,12 +18,22 @@ cta:
 
 import FundeUebersicht from '@/components/blog/diagrams/FundeUebersicht.astro';
 import CodeUndBetrieb from '@/components/blog/diagrams/CodeUndBetrieb.astro';
+import AufEinenBlick from '@/components/blog/diagrams/AufEinenBlick.astro';
+import BerichtAufbau from '@/components/blog/diagrams/BerichtAufbau.astro';
+import OwaspKapitel from '@/components/blog/diagrams/OwaspKapitel.astro';
+import Figure from '@/components/blog/Figure.astro';
+import berichtAuszug from './bericht-auszug.png';
+import berichtAuszugMobil from './bericht-auszug-mobil.png';
+import liveNachweise from './live-nachweise.png';
+import liveNachweiseMobil from './live-nachweise-mobil.png';
 
 Im September hat mich Daniel Rübensam von Delta-Sport gebeten, zwei Systeme anzuschauen, die in den nächsten Wochen gemeinsam produktiv gehen: ein Lagersystem mit Anbindung an die Warenwirtschaft und den Paketdienst und eine Service-App. Die App nimmt Reklamationen entgegen, führt Kundenmails, klassifiziert sie per Sprachmodell und erzeugt Erstattungen als Bankdatei. Beides entstand in wenigen Monaten, zum großen Teil mit Claude.
 
 Zum Zeitpunkt der Durchsicht lief keines der Systeme live, und es waren keine Kundendaten darin. Genau der richtige Moment für einen Blick von außen.
 
 Ich will hier nicht erzählen, dass KI-gebaute Software schlecht ist. Das Gegenteil ist der Fall, und das ist der eigentliche Punkt.
+
+<AufEinenBlick />
 
 ## Was ich vorgefunden habe
 
@@ -43,11 +53,11 @@ Einige Dutzend Befunde, eine Handvoll davon kritisch. Sie lagen abseits der Stel
 
 Dabei beherrschte das Projekt das Gegenmittel: An mehreren anderen Stellen waren die Sperren korrekt gesetzt. Das Wissen war da. Es fehlte der Blick darauf, wo es am meisten zählt.
 
-**Die Produktionsumgebung.** Sie unterschied sich von der Entwicklungsumgebung in Rechengröße, Ausfallsicherheit und Aufbewahrungsfristen, aber in keinem Sicherheitsaspekt. Netzregeln und Dienstkonten waren für die Entwicklung gedacht und für den Betrieb noch nicht enger gezogen, und die Laufzeitumgebung war eine Version, die keine Sicherheitspatches mehr bekommt. So etwas meldet kein Werkzeug. Das sieht man nur, wenn man die Support-Zyklen im Kopf hat.
+**Die Produktionsumgebung.** Sie unterschied sich von der Entwicklungsumgebung in Rechengröße, Ausfallsicherheit und Aufbewahrungsfristen, aber in keinem Sicherheitsaspekt. Netzregeln und Dienstkonten waren für die Entwicklung gedacht und mussten für den Betrieb noch enger gezogen werden, und die Laufzeitumgebung brauchte ein Update auf eine Version, die noch Sicherheitspatches bekommt. Beides ist inzwischen umgesetzt. So etwas meldet kein Werkzeug. Das sieht man nur, wenn man die Support-Zyklen im Kopf hat.
 
 **Die Erkennbarkeit von Störungen.** In keinem der beiden Systeme gab es eine Alarmierung. Beide Zustandsmeldungen antworteten mit "ok", auch bei gestoppter Datenbank. Ich habe es ausprobiert. Genau diese Meldung war der Rauchtest der Auslieferung, also die erste Prüfung, ob eine neue Version läuft. Im Betrieb hieße das: Ein Ausfall fällt erst auf, wenn jemand anruft.
 
-Dazu kam Kleineres, das sich summiert. Eine sorgfältig gebaute Schutzmaßnahme im Logging zielte auf Feldnamen, die der Code so nicht verwendet. Der Test dazu war grün, weil er genau diese Schreibweise prüfte. Ein Rate-Limiting, das die Zahl der Anfragen begrenzt, war installiert und nirgends eingebunden. Kommandozeilen-Werkzeuge liefen gegen die Datenbank aus der lokalen Konfiguration, ohne zu zeigen, gegen welche. Solange es nur eine Entwicklungsumgebung gibt, ist das harmlos. Mit dem Go-Live ist die Produktion einen Kopierfehler entfernt.
+Dazu kam Kleineres, das sich summiert. Eine sorgfältig gebaute Schutzmaßnahme im Logging zielte auf Feldnamen, die der Code so nicht verwendet. Der Test dazu war grün, weil er genau diese Schreibweise prüfte. Ein Rate-Limiting, das die Zahl der Anfragen begrenzt, war installiert, aber noch nicht eingebunden. Kommandozeilen-Werkzeuge liefen gegen die Datenbank aus der lokalen Konfiguration, ohne zu zeigen, gegen welche. Solange es nur eine Entwicklungsumgebung gibt, ist das harmlos. Mit dem Go-Live ist die Produktion einen Kopierfehler entfernt.
 
 ## Warum KI das nicht sieht
 
@@ -61,9 +71,29 @@ Deshalb hatten die zwei vorherigen Durchsichten andere Schwerpunkte: Ein Pentest
 
 Ich habe Quellcode und Infrastrukturvorlagen beider Systeme in zwei Durchgängen gelesen: einmal mit der Projektdokumentation, einmal bewusst ohne. Kommentare habe ich dabei als Behauptung behandelt. Für das Lagersystem gab es eine lokal aufgesetzte Instanz, an der sich Dinge messen ließen. Den Rahmen gab die Kapitelsystematik des OWASP Application Security Verification Standard vor, damit nachvollziehbar bleibt, was geprüft wurde und was nicht.
 
+<OwaspKapitel />
+
 Ein Pentest, ein Lasttest oder ein Zertifikat war das nicht. Das Ergebnis war ein Bericht mit Einordnung und Grenzen. Jeder Befund hatte eine Fundstelle, eine Einstufung und einen Auftrag, den das Team so an Claude geben konnte. Dazu kam, und das halte ich für den wichtigeren Teil, eine Seite "Was ausdrücklich so bleiben darf". Das ist Bestand, den ein Team verteidigen kann, wenn der nächste Berater kommt und alles neu bauen will.
 
+<Figure
+  src={berichtAuszug}
+  srcMobile={berichtAuszugMobil}
+  alt="Aufbau eines Befunds im Prüfbericht mit Fundstelle, Beobachtung, Nachweis, Abgleich und Auftrag, daneben die Seite mit den Punkten, die so bleiben dürfen"
+  caption="Jeder Befund hat Fundstelle, Einstufung, Nachweis und einen Auftrag, den das Team direkt weitergeben kann. Daneben steht, was ausdrücklich so bleiben darf."
+  source="Beispiel, keine Originalseite"
+/>
+
+<BerichtAufbau />
+
 Abgeschlossen hat das ein Termin von anderthalb Stunden mit zwei Live-Nachweisen (der rote Test, der Health-Endpunkt bei gestoppter Datenbank) und den Fragen zum Dokument.
+
+<Figure
+  src={liveNachweise}
+  srcMobile={liveNachweiseMobil}
+  alt="Zwei Terminalfenster: links meldet die Zustandsabfrage ok, obwohl die Datenbank gestoppt ist, rechts schlägt ein Test fehl, weil zwei gleichzeitige Reservierungen auf das letzte Stück beide angenommen werden"
+  caption="Die zwei Live-Nachweise aus dem Abschlusstermin. Beides lässt sich in Minuten vorführen, und beides findet kein Scanner."
+  source="Abschlusstermin, Darstellung vereinfacht"
+/>
 
 ## Was mit dem Code nichts zu tun hatte
 

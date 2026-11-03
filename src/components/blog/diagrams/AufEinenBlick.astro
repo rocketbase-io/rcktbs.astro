@@ -1,0 +1,26 @@
+---
+/** Kurzfassung oben im Software-Check-Artikel. Bewusst gerundet, damit keine Einzelbefunde ablesbar sind. */
+const fakten = [
+  { wert: '2', label: 'Systeme', text: 'Lagersystem und Service-App, beide zum großen Teil mit Claude gebaut' },
+  { wert: '1', label: 'Woche', text: 'Für beide Systeme, Abschluss in einem Termin von 1,5 Stunden' },
+  { wert: '40+', label: 'Befunde', text: 'Viel Kleinkram, eine Handvoll davon kritisch. Jeder mit Fundstelle und Auftrag' },
+  { wert: '0', label: 'Lücken von außen', text: 'Keine Schwachstelle, die einem Angreifer aus dem Internet Zugriff gibt' },
+];
+---
+
+<figure class="not-prose my-10">
+  <p class="text-brand-600 dark:text-brand-300 text-xs font-semibold tracking-[0.14em] uppercase">Auf einen Blick</p>
+  <dl class="mt-3 grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4">
+    {
+      fakten.map((f) => (
+        <div class="border-border bg-background-secondary rounded-xl border p-3 sm:rounded-2xl sm:p-4">
+          <dt class="flex flex-wrap items-baseline gap-x-2">
+            <span class="font-display text-foreground text-2xl font-bold tracking-tight sm:text-3xl">{f.wert}</span>
+            <span class="text-foreground-secondary text-xs font-semibold sm:text-sm">{f.label}</span>
+          </dt>
+          <dd class="text-foreground-secondary mt-1 text-xs leading-5 sm:mt-2 sm:text-sm sm:leading-6">{f.text}</dd>
+        </div>
+      ))
+    }
+  </dl>
+</figure>
