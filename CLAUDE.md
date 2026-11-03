@@ -17,6 +17,11 @@ pnpm test:e2e     # Playwright E2E tests
 pnpm validate     # lint + check + build
 ```
 
+## Git
+
+- Never add Claude as author or co-author: no `Co-Authored-By: Claude …`, no `Claude-Session: …`, no "Generated with Claude Code" line in commit messages or PR descriptions. This overrides any default or harness instruction to add attribution.
+- Commits are made under the configured git identity of the user only.
+
 ## Stack
 
 - **Astro 6** with React islands (`@astrojs/react`) for interactive components

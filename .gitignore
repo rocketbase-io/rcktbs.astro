@@ -50,7 +50,8 @@ test-results/
 public/pagefind/
 
 # Claude Code
-.claude/
+.claude/*
+!.claude/settings.json
 
 
 # npm lockfile (pnpm only)
