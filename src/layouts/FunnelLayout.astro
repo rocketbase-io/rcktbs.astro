@@ -23,9 +23,11 @@ interface Props {
   headerNote?: string;
   /** Knopf „Erstgespräch anfragen“ im Header ab lg, springt zu #quiz. */
   headerCta?: boolean;
+  /** Beschriftung von Header-Knopf und Leiste unten, z. B. „Rückruf anfordern“ beim Software-Check. */
+  ctaLabel?: string;
 }
 
-const { title, description, headerNote = 'Kostenlose Ersteinschätzung', headerCta = false } = Astro.props;
+const { title, description, headerNote = 'Kostenlose Ersteinschätzung', headerCta = false, ctaLabel = 'Erstgespräch anfragen' } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
@@ -49,7 +51,7 @@ const year = new Date().getFullYear();
       {
         headerCta ? (
           <Button size="sm" href="#quiz" class="hidden whitespace-nowrap lg:inline-flex">
-            Erstgespräch anfragen
+            {ctaLabel}
           </Button>
         ) : (
           <span class="text-foreground-muted hidden text-xs font-semibold tracking-[0.18em] uppercase sm:block">
@@ -75,7 +77,7 @@ const year = new Date().getFullYear();
     >
       <img src={rocketbaseLogo.src} alt="" class="h-5 w-auto dark:invert" width="72" height="20" loading="lazy" />
       <Button size="md" href="#quiz" class="whitespace-nowrap">
-        Erstgespräch anfragen
+        {ctaLabel}
         <Icon name="arrow-up-right" size="sm" />
       </Button>
     </div>

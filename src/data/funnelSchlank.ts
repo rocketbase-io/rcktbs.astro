@@ -36,6 +36,8 @@ export interface SchlankTor {
   vergleich: [string, string][];
   ablaufTitel: string;
   ablauf: Schritt[];
+  /** Dauer des Rückrufs, wenn kürzer als das übliche 30-Minuten-Gespräch, z. B. „15 Minuten“. */
+  telefonat?: string;
   fragenUndAntworten: { q: string; a: string }[];
   schlussTitel: string;
   schlussText: string;
@@ -392,9 +394,10 @@ export const softwareCheck: SchlankTor = {
     ['Ein Kunde fragt nach einem Nachweis', 'Ihr schickt den Prüfbericht'],
     ['Unklar, was zuerst zu tun ist', 'Ihr wisst, was kritisch ist und was warten kann'],
   ],
+  telefonat: '15 Minuten',
   ablaufTitel: 'In 4 bis 5 Werktagen habt ihr den Bericht',
   ablauf: [
-    { wann: 'Kostenlos', titel: 'Erstgespräch', text: '30 Minuten: was gebaut ist und was ansteht. Passt es in einen Check, gilt der Festpreis.' },
+    { wann: 'Kostenlos, 15 Minuten', titel: 'Kurzes Telefonat', text: 'Was gebaut ist und was ansteht. Passt es in einen Check, machen wir den Termin zum Zeigen aus.' },
     { wann: 'Tag 1 bis 4', titel: 'Zeigen und prüfen', text: 'Euer Entwickler zeigt uns die Software. Dann lesen und messen wir: Rechte, Anmeldung, Geschäftslogik, Ausfälle.' },
     { wann: '1,5 Stunden', titel: 'Bericht durchgehen', text: 'Was kritisch ist, was warten kann. Die wichtigsten Befunde führen wir live vor.' },
   ],
@@ -405,8 +408,8 @@ export const softwareCheck: SchlankTor = {
     { q: 'Bekommen wir ein Zertifikat?', a: 'Nein, das stellen Prüfstellen aus. Wir bereiten vor und begleiten.' },
     { q: 'Müssen wir danach alles neu bauen?', a: 'Selten. Der Bericht sagt je Fund, ob ihr ihn so lassen, umbauen oder neu machen solltet.' },
   ],
-  schlussTitel: 'Erstgespräch vereinbaren',
-  schlussText: 'Erzählt uns, was gebaut ist und was ansteht. Danach wisst ihr, ob der Festpreis passt.',
+  schlussTitel: 'Kurz telefonieren',
+  schlussText: '15 Minuten: was gebaut ist und was ansteht. Passt es in einen Check, machen wir direkt den Termin zum Zeigen mit eurem Entwickler aus.',
   fragen: [
     {
       id: 'was',

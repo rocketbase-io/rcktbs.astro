@@ -48,9 +48,14 @@ interface Props {
   mehrTitel?: string;
   /** Mobil nur die Seite „danach“ zeigen, weniger Text. */
   vergleichKurz?: boolean;
+  /** Kontakt am Ende: Terminbuchung oder Quiz mit Rückruf. Standard: Seite bucht, Funnel fragt. */
+  kontakt?: 'termin' | 'quiz';
 }
 const { tor, modus = 'funnel', headline = tor.headline, faqs = tor.fragenUndAntworten, blogTuer, zitat, mehrTitel, vergleichKurz = false } = Astro.props;
 const istSeite = modus === 'seite';
+const mitQuiz = (Astro.props.kontakt ?? (istSeite ? 'termin' : 'quiz')) === 'quiz';
+/** Rückruf statt Videotermin, wenn das Tor eine Dauer fürs Telefonat nennt (Software-Check: 15 Minuten). */
+const gespraech = tor.telefonat ? `${tor.telefonat} am Telefon, ohne Vorbereitung.` : '30 Minuten, online, ohne Vorbereitung.';
 const mitHeuteBild = Astro.slots.has('heute');
 
 const martenBild = await getImage({ src: founderPortrait, width: 112, format: 'webp' });
@@ -69,7 +74,7 @@ const quizProps = {
     text: 'Marten ruft euch werktags an.',
   },
   submitLabel: 'Rückruf anfordern',
-  phoneHint: 'Rückruf werktags, 30 Minuten, kostenlos.',
+  phoneHint: `Rückruf werktags, ${tor.telefonat ?? '30 Minuten'}, kostenlos.`,
   privacyUrl: '/datenschutz/',
 };
 ---
@@ -116,7 +121,7 @@ const quizProps = {
         ) : (
           <div class="mb-4 hidden sm:block">
             <Button size="lg" href="#quiz">
-              Kostenloses Erstgespräch anfragen
+              {tor.telefonat ? 'Kostenlosen Rückruf anfordern' : 'Kostenloses Erstgespräch anfragen'}
               <Icon name="arrow-right" size="sm" />
             </Button>
           </div>
@@ -134,7 +139,7 @@ const quizProps = {
           loading="eager"
         />
         <p class="text-foreground-muted text-sm leading-5">
-          Marten Prieß ruft euch selbst an.<br />30 Minuten, online, ohne Vorbereitung.
+          Marten Prieß ruft euch selbst an.<br />{gespraech}
         </p>
       </div>
       <ul class="mt-5 grid gap-x-5 gap-y-2 sm:grid-cols-2">
@@ -319,7 +324,7 @@ const quizProps = {
         {tor.schlussTitel}
       </h2>
       <p class="text-foreground-secondary mt-4 text-base leading-7 sm:text-lg sm:leading-8">
-        {istSeite ? 'Bucht direkt einen Termin.' : 'Ein paar kurze Fragen, dann ruft Marten euch werktags an.'}{' '}
+        {mitQuiz ? 'Ein paar kurze Fragen, dann ruft Marten euch werktags an.' : 'Bucht direkt einen Termin.'}{' '}
         {tor.schlussText}
       </p>
       <div class:list={['border-border mt-6 items-center gap-4 border-t pt-6', istSeite ? 'flex' : 'hidden lg:flex']}>
@@ -340,7 +345,7 @@ const quizProps = {
       </div>
     </div>
     {
-      istSeite ? (
+      !mitQuiz ? (
         <div class="flex flex-col gap-4 lg:pt-3">
           <Button size="lg" href={contactLinks.cal} target="_blank">
             Erstgespräch buchen
