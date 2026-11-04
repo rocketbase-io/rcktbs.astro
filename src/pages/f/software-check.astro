@@ -12,7 +12,7 @@ import SchlankPage from '@/components/funnel-schlank/SchlankPage.astro';
 import BerichtMock from '@/components/check/BerichtMock.astro';
 import StackLeiste from '@/components/check/StackLeiste.astro';
 import MusterberichtDownload from '@/components/check/MusterberichtDownload.astro';
-import { softwareCheck } from '@/data/funnelSchlank';
+import { softwareCheckFunnel } from '@/data/funnelSchlank';
 ---
 
 <FunnelLayout
@@ -20,7 +20,7 @@ import { softwareCheck } from '@/data/funnelSchlank';
   description="Kundenportal, internes Tool oder Produkt mit Software drin: Wir prüfen nach OWASP ASVS und darüber hinaus und schreiben auf, was offen ist. Mit Bericht, den ihr Kunden vorlegen könnt. Für Betriebe ab etwa 30 Leuten."
   headerCta
 >
-  <SchlankPage tor={softwareCheck}>
+  <SchlankPage tor={softwareCheckFunnel}>
   <BerichtMock slot="hero" />
   <StackLeiste />
   <MusterberichtDownload ort="funnel" />
