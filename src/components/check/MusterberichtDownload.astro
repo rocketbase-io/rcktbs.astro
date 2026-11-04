@@ -4,7 +4,7 @@
  * Tür-Seite /software-check/, damit Text und Datei an beiden Stellen gleich bleiben.
  *
  * Bewusst ohne E-Mail-Abfrage: Der Bericht ist Beleg, kein Köder. Gezählt wird der Klick als
- * Plausible-Event „Musterbericht Download“ mit der Eigenschaft `ort` (blog, check, …). Das Ziel
+ * Plausible-Event „musterbericht_download“ mit der Eigenschaft `ort` (blog, check, …). Das Ziel
  * muss in Plausible einmal unter Goals angelegt werden, sonst taucht es nicht in der Auswertung auf.
  *
  * Der Bericht ist ein Muster mit fiktivem Betrieb und hat nichts mit einem Kundenbericht zu tun.
@@ -27,7 +27,7 @@ const href = '/downloads/musterbericht-software-check.pdf';
   <div class="min-w-0 flex-1">
     <p class="font-display text-foreground font-bold">Musterbericht zum Software-Check</p>
     <p class="text-foreground-secondary mt-1 text-sm leading-6">
-      So sieht aus, was ihr am Ende bekommt: Management-Summary, die Prüffelder über OWASP hinaus und wie eingestuft wird,
+      So sieht aus, was ihr am Ende bekommt: Ablauf in wenigen Tagen, Management-Summary, die Prüffelder über OWASP hinaus und wie eingestuft wird,
       Befunde mit Fundstelle und Empfehlung, Reihenfolge, Papier zum Betrieb und Fragen an eure Dienstleister. Betrieb
       und Befunde sind ausgedacht, es ist kein Bericht eines Kunden.
     </p>
@@ -39,7 +39,7 @@ const href = '/downloads/musterbericht-software-check.pdf';
     class="bg-foreground text-background hover:bg-foreground/85 inline-flex shrink-0 items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors"
   >
     <Icon name="download" size="sm" />
-    PDF, 9 Seiten
+    PDF, 10 Seiten
   </a>
 </aside>
 
@@ -52,7 +52,7 @@ const href = '/downloads/musterbericht-software-check.pdf';
     document.addEventListener('click', (e) => {
       const link = e.target instanceof Element ? e.target.closest('[data-musterbericht]') : null;
       if (!link) return;
-      trackPlausible('Musterbericht Download', { ort: link.getAttribute('data-musterbericht') || 'unbekannt' });
+      trackPlausible('musterbericht_download', { ort: link.getAttribute('data-musterbericht') || 'unbekannt' });
     });
   }
 </script>
