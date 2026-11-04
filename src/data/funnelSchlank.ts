@@ -433,14 +433,10 @@ export const softwareCheck: SchlankTor = {
 };
 
 /**
- * Anzeigen-Landing /f/software-check/: wie softwareCheck, aber ohne Preis (Marten, 2026-11-04).
- * Wer aus einer Anzeige kommt, soll erst ins Gespräch, nicht an der Zahl hängen bleiben.
+ * Anzeigen-Landing /f/software-check/: wie softwareCheck, aber der Preis nicht in den Fakten oben
+ * (Marten, 2026-11-04). 2.400 € und die Nachprüfung für 600 € stehen nur in den Fragen und Antworten.
  */
 export const softwareCheckFunnel: SchlankTor = {
   ...softwareCheck,
   fakten: ['Bericht nach 4 bis 5 Werktagen', 'Nach OWASP ASVS und darüber hinaus', 'Für Kunden und Auditoren', 'Fester Preis, bevor wir anfangen'],
-  fragenUndAntworten: [
-    { q: 'Was kostet das?', a: 'Der Preis richtet sich nach dem Umfang. Im kostenlosen Erstgespräch erzählt ihr Marten, was gebaut ist, danach bekommt ihr einen Festpreis. Geprüft wird erst, wenn ihr zugesagt habt.' },
-    ...softwareCheck.fragenUndAntworten.filter((f) => !f.a.includes('€')),
-  ],
 };
