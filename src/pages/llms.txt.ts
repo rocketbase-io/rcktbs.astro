@@ -67,7 +67,7 @@ richtet sich der Preis nach dem Umfang des Codes.
 - [Einsatz und Abrechnung](${base}/einsatzplanung/): Plantafel mit Abwesenheiten, Ablauf je Auftrag, Einsatz je Vertrag, Leistungserfassung, Rechnung und Mahnwesen in einem System, statt Excel und Stundenzettel.
 - [Zahlen und Steuerung](${base}/zahlen/): Cockpit für Umsatz und Prognose, Auslastung bis zur Person, Deckungsbeitrag, auslaufende Verträge und Forderungen, live aus den vorhandenen Systemen.
 - [Standardsoftware ablösen](${base}/standardsoftware-abloesung/): Branchensoftware samt Excel drumherum Schritt für Schritt ablösen, im Parallelbetrieb und mit Übernahme der gesamten Datenhistorie (Beispiel: Vertec bei FKC Consulting).
-- [Software-Check](${base}/software-check/): Bestehende oder mit KI gebaute Software nach OWASP ASVS 5.0 prüfen, Architektur-Review und Fahrplan für den Cyber Resilience Act. Prüfbericht für Kunden und Auditoren. Kein Penetrationstest.
+- [Software-Check](${base}/software-check/): Bestehende oder mit KI gebaute Software nach OWASP ASVS und darüber hinaus prüfen, 2.400 € Festpreis je System, Architektur-Review und Fahrplan für den Cyber Resilience Act. Prüfbericht für Kunden und Auditoren. Kein Penetrationstest.
 
 ## Weitere Seiten
 
