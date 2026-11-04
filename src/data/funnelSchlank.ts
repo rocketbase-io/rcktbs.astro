@@ -357,15 +357,18 @@ export const eigeneSoftware: SchlankTor = {
 };
 
 // Die Antwort-Ids bleiben die aus quizEinordnung.json, dort stehen die Sätze je Kombination.
+// Preis seit 2026-11-04 genannt (Marten): 2.400 € Festpreis je System, Geschäftslogik an den wichtigsten
+// Abläufen. Ist es größer, gibt es nach dem Zeigen einen Preis für den Rest. Nachprüfung optional, 600 €.
+// Kein ASVS-Level und keine Abdeckung in Prozent: die Berichte folgen der Kapitelsystematik, ohne Level.
 export const softwareCheck: SchlankTor = {
   funnel: 'software-check',
   leadEvent: 'software_check_lead',
   einordnung: 'software-check',
   fuerWen: 'Für Betriebe, die Software selbst gebaut haben',
   headline: 'Mit KI gebaute Software prüfen lassen, bevor ein Kunde nachfragt',
-  lead: 'Erfahrene Entwickler schauen von außen drauf, gegen den Standard OWASP ASVS 5.0. Ihr bekommt einen Prüfbericht, den ihr Kunden und Auditoren zeigen könnt, und zu jedem Fund einen Vorschlag.',
-  leadMobil: 'Geprüft gegen OWASP ASVS 5.0. Ihr bekommt einen Bericht für Kunden und Auditoren.',
-  fakten: ['Bericht nach wenigen Tagen', 'Geprüft nach OWASP ASVS 5.0', 'Für Kunden und Auditoren', 'Eine Zahl, bevor wir anfangen'],
+  lead: 'Erfahrene Entwickler schauen von außen drauf, nach dem Standard OWASP ASVS und darüber hinaus: Geschäftslogik, Ausfälle, Betrieb. Ihr bekommt einen Prüfbericht, den ihr Kunden und Auditoren zeigen könnt, und zu jedem Befund einen Vorschlag.',
+  leadMobil: 'Geprüft nach OWASP ASVS und darüber hinaus. Ihr bekommt einen Bericht für Kunden und Auditoren.',
+  fakten: ['2.400 € Festpreis je System', 'Bericht nach 4 bis 5 Werktagen', 'Nach OWASP ASVS und darüber hinaus', 'Für Kunden und Auditoren'],
   logos: [
     { key: 'bonprix_logo', name: 'bonprix' },
     { key: 'statista-logo', name: 'Statista' },
@@ -376,7 +379,7 @@ export const softwareCheck: SchlankTor = {
     titel: 'Ein Prüfbericht von Leuten, die selbst Software bauen',
     text: 'Erfahrene Entwickler schauen von außen auf eure Software. Jeder Fund ist eingestuft und hat einen Vorschlag, mit dem eure KI direkt weiterarbeiten kann.',
     schritte: [
-      { titel: 'Prüfen', text: 'Automatisch und von Hand: Rechte, Anmeldung, Eingaben und Schlüssel.' },
+      { titel: 'Prüfen', text: 'Automatisch und von Hand: Rechte, Anmeldung, Geschäftslogik und was passiert, wenn etwas ausfällt.' },
       { titel: 'Aufschreiben', text: 'Ihr bekommt einen Bericht, den ihr Kunden und Auditoren zeigen könnt.' },
       { titel: 'Besprechen', text: 'Wir gehen ihn durch: Was ist kritisch, was kann warten?' },
     ],
@@ -389,20 +392,21 @@ export const softwareCheck: SchlankTor = {
     ['Ein Kunde fragt nach einem Nachweis', 'Ihr schickt den Prüfbericht'],
     ['Unklar, was zuerst zu tun ist', 'Ihr wisst, was kritisch ist und was warten kann'],
   ],
-  ablaufTitel: 'In wenigen Tagen habt ihr den Bericht',
+  ablaufTitel: 'In 4 bis 5 Werktagen habt ihr den Bericht',
   ablauf: [
-    { wann: 'Kostenlos', titel: 'Erstgespräch', text: 'Ihr zeigt uns grob euren Code. Wir legen fest, was geprüft wird, und ihr bekommt einen Preis je nach Umfang.' },
-    { wann: 'Tag 1 bis 4', titel: 'Prüfen', text: 'Erst automatisch, dann von Hand: Rechte, Anmeldung, Eingaben, Schlüssel.' },
-    { wann: '1,5 Stunden', titel: 'Bericht durchgehen', text: 'Was kritisch ist, was warten kann und was die Behebung kostet.' },
+    { wann: 'Kostenlos', titel: 'Erstgespräch', text: '30 Minuten: was gebaut ist und was ansteht. Passt es in einen Check, gilt der Festpreis.' },
+    { wann: 'Tag 1 bis 4', titel: 'Zeigen und prüfen', text: 'Euer Entwickler zeigt uns die Software. Dann lesen und messen wir: Rechte, Anmeldung, Geschäftslogik, Ausfälle.' },
+    { wann: '1,5 Stunden', titel: 'Bericht durchgehen', text: 'Was kritisch ist, was warten kann. Die wichtigsten Befunde führen wir live vor.' },
   ],
   fragenUndAntworten: [
-    { q: 'Was kostet das?', a: 'Der Preis richtet sich nach dem Umfang des Codes. Im kostenlosen Erstgespräch zeigt ihr ihn Marten grob, danach bekommt ihr einen Preis. Das Gespräch verpflichtet euch zu nichts, geprüft wird erst, wenn ihr zugesagt habt.' },
+    { q: 'Was kostet das?', a: '2.400 € netto, Festpreis für ein System. Darin: Sicherheit nach OWASP ASVS vollständig, die Geschäftslogik an den wichtigsten Abläufen, Bericht, Management-Summary und Abschlusstermin. Ist das System größer, sagen wir das nach dem Zeigen mit Preis für den Rest, und ihr entscheidet.' },
+    { q: 'Prüft ihr nach, ob alles behoben ist?', a: 'Auf Wunsch, innerhalb von sechs Wochen nach dem Bericht, für 600 €. Wir gehen die Befunde aus dem Bericht noch einmal durch, ihr bekommt je Befund behoben, teilweise oder offen.' },
     { q: 'Ist das ein Penetrationstest?', a: 'Nein. Wenn ihr einen braucht, sagen wir es und holen einen Partner dazu.' },
     { q: 'Bekommen wir ein Zertifikat?', a: 'Nein, das stellen Prüfstellen aus. Wir bereiten vor und begleiten.' },
     { q: 'Müssen wir danach alles neu bauen?', a: 'Selten. Der Bericht sagt je Fund, ob ihr ihn so lassen, umbauen oder neu machen solltet.' },
   ],
   schlussTitel: 'Erstgespräch vereinbaren',
-  schlussText: 'Ihr zeigt uns grob euren Code und wisst danach, welcher Check passt und was er kostet.',
+  schlussText: 'Erzählt uns, was gebaut ist und was ansteht. Danach wisst ihr, ob der Festpreis passt.',
   fragen: [
     {
       id: 'was',

@@ -4,11 +4,11 @@ import { softwareCheck } from '@/data/funnelSchlank';
 export const softwareCheckFaqs = [
   {
     q: 'Wie prüft ihr Software, die mit KI gebaut wurde?',
-    a: 'Erfahrene Entwickler prüfen den Code gegen OWASP ASVS 5.0. Jeder Bericht nennt den Standard und das geprüfte Level, jeder Fund bekommt eine Einstufung und einen Vorschlag, den eure KI umsetzen kann.',
+    a: 'Euer Entwickler zeigt uns die Software, dann lesen wir den Code und messen an einer lokalen Instanz. Geprüft wird nach den Kapiteln des OWASP ASVS, dazu Geschäftslogik, Ausfall angebundener Systeme und Betrieb. Jeder Befund bekommt eine Einstufung, eine Fundstelle und einen Vorschlag, den eure KI umsetzen kann.',
   },
   {
     q: 'Wie lange dauert ein Software-Check?',
-    a: 'Ab zwei Tagen, je nach Größe. Ein Architektur-Review ist nach wenigen Tagen fertig.',
+    a: '4 bis 5 Werktage vom Zeigen bis zum Abschlusstermin. Von euch braucht es etwa drei Stunden: das Zeigen und den Termin am Ende. Ein Architektur-Review ist nach wenigen Tagen fertig.',
   },
   {
     q: 'Betrifft uns der Cyber Resilience Act?',

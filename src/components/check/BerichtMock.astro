@@ -1,6 +1,7 @@
 ---
 /**
- * Der Prüfbericht als Motiv der Tür 5: Kopf mit Standard und Level, Ampel über die Kapitel,
+ * Der Prüfbericht als Motiv der Tür 5: Kopf mit Meilenstein und Zählung wie in den echten Berichten
+ * (kein ASVS-Level, keine Prozent), Ampel über die Prüffelder,
  * drei Befunde. Kein Nachbau eines echten Berichts, nur die Form, damit der Besucher sieht,
  * was er am Ende in der Hand hat. Zahlen sind erfunden und absichtlich unspektakulär.
  */
@@ -12,7 +13,7 @@ const kapitel = [
   { name: 'Eingaben & API', stand: 'ok' },
   { name: 'Konfiguration & Schlüssel', stand: 'offen' },
   { name: 'Abhängigkeiten', stand: 'teils' },
-  { name: 'Protokollierung', stand: 'teils' },
+  { name: 'Gleichzeitige Zugriffe', stand: 'teils' },
 ] as const;
 
 const befunde = [
@@ -27,7 +28,7 @@ const befunde = [
     <div>
       <p class="text-foreground-muted text-[0.65rem] font-semibold tracking-[0.2em] uppercase">Prüfbericht</p>
       <p class="font-display text-foreground mt-1 text-base font-bold tracking-tight">Kundenportal, Stand 14.11.2026</p>
-      <p class="text-foreground-secondary mt-0.5 text-xs">OWASP ASVS 5.0 · Level 2 · 71 % erfüllt</p>
+      <p class="text-foreground-secondary mt-0.5 text-xs">Vor dem Go-live · 2 kritisch · 5 hoch · 14 mittel</p>
     </div>
     <span class="border-brand-300/70 bg-brand-500/5 text-brand-600 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border">
       <Icon name="shield" size="sm" />
@@ -64,7 +65,7 @@ const befunde = [
   </div>
 
   <p class="border-border/70 text-foreground-muted mt-4 border-t pt-3 text-[0.7rem] leading-5">
-    Jeder Befund mit Einstufung, Fundstelle, Fix-Vorschlag und Aufwand. Anhang: Stückliste aller 1.240 Komponenten.
+    Jeder Befund mit Einstufung, Fundstelle und Vorschlag. Dazu Management-Summary und Papier zum Betrieb.
   </p>
 </div>
 

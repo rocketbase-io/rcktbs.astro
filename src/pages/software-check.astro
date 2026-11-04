@@ -13,10 +13,11 @@ import BerichtMock from '@/components/check/BerichtMock.astro';
 import FragenMosaik from '@/components/check/FragenMosaik.astro';
 import StackLeiste from '@/components/check/StackLeiste.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import MusterberichtDownload from '@/components/check/MusterberichtDownload.astro';
 import { softwareCheck } from '@/data/funnelSchlank';
 import { softwareCheckFaqs } from '@/components/check/faqs';
 
-const pakete = [
+const pakete: { titel: string; text: string; ergebnis: string[]; dauer: string; preis?: string; zusatz?: string }[] = [
   {
     titel: 'Architektur-Review',
     text: 'Für Gebautes und Geplantes. Ein erfahrener Entwickler sagt euch, was trägt und wo es später teuer wird.',
@@ -25,9 +26,11 @@ const pakete = [
   },
   {
     titel: 'Software-Check',
-    text: 'Vor dem Go-Live oder für Software, die läuft. Wir prüfen gegen OWASP ASVS 5.0.',
-    ergebnis: ['Prüfbericht mit Level und Abdeckung', 'Jeder Fund mit Einstufung und Vorschlag für eure KI', 'Stückliste aller Komponenten'],
-    dauer: 'Ab zwei Tagen, je nach Größe',
+    text: 'Vor dem Go-Live oder für Software, die läuft. Nach OWASP ASVS und darüber hinaus.',
+    ergebnis: ['Management-Summary und Bericht mit Fundstellen', 'Jeder Befund eingestuft, mit Vorschlag für eure KI', 'Die wichtigsten Befunde live vorgeführt'],
+    dauer: '4 bis 5 Werktage',
+    preis: '2.400 € netto, Festpreis je System',
+    zusatz: 'Nachprüfung innerhalb von 6 Wochen optional, 600 €',
   },
 ];
 const ausbau = [
@@ -40,7 +43,7 @@ const faqSchema = createFAQSchema(softwareCheckFaqs.map((f) => ({ question: f.q,
 const serviceSchema = createServiceSchema({
   name: 'Software-Check',
   description:
-    'Sicherheitsprüfung bestehender Software nach OWASP ASVS 5.0, Zweitmeinung zu Konzept und Architektur, Fahrplan für den Cyber Resilience Act. Mit Prüfbericht für Kunden und Auditoren.',
+    'Sicherheitsprüfung bestehender Software nach OWASP ASVS, Zweitmeinung zu Konzept und Architektur, Fahrplan für den Cyber Resilience Act. Mit Prüfbericht für Kunden und Auditoren.',
   url: new URL(Astro.url.pathname, Astro.site).toString(),
   serviceType: 'Sicherheitsprüfung und Architekturberatung für Individualsoftware',
   areaServed: 'DE',
@@ -49,7 +52,7 @@ const serviceSchema = createServiceSchema({
 
 <LandingLayout
   title="Software-Check: KI-Code prüfen lassen"
-  description="Erfahrene Entwickler prüfen eure Software gegen OWASP ASVS 5.0. Prüfbericht für Kunden und Auditoren, zu jedem Fund ein Vorschlag."
+  description="Erfahrene Entwickler prüfen eure Software nach OWASP ASVS und darüber hinaus. 2.400 € Festpreis je System, Prüfbericht für Kunden und Auditoren."
   lang="de"
   extraSchemas={[serviceSchema, faqSchema]}
 >
@@ -70,10 +73,13 @@ const serviceSchema = createServiceSchema({
             ))}
           </ul>
           <p class="text-foreground-muted mt-3 hidden text-sm lg:block">{p.dauer}</p>
+          {p.preis && <p class="font-display text-foreground mt-3 font-bold lg:mt-2">{p.preis}</p>}
+          {p.zusatz && <p class="text-foreground-muted mt-1 text-sm leading-6">{p.zusatz}</p>}
         </div>
       ))
     }
   </div>
+  <MusterberichtDownload ort="check" />
   <StackLeiste slot="mobil" kompakt />
   <div slot="vollbreit">
     <FragenMosaik />
@@ -96,7 +102,7 @@ const serviceSchema = createServiceSchema({
             Risikobewertung, die wir euch empfehlen, führen wir für unsere eigenen Produkte.
           </p>
           <p class="text-foreground font-semibold">
-            Jeder Bericht nennt den Standard und das geprüfte Level. Das kann ein Auditor nachlesen.
+            Jeder Bericht nennt den Standard und die Kapitel, nach denen geprüft wurde. Das kann ein Auditor nachlesen.
           </p>
           <div class="grid grid-cols-2 gap-4 pt-2">
             {
