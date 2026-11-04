@@ -358,7 +358,7 @@ export const eigeneSoftware: SchlankTor = {
 
 // Die Antwort-Ids bleiben die aus quizEinordnung.json, dort stehen die Sätze je Kombination.
 // Preis seit 2026-11-04 genannt (Marten): 2.400 € Festpreis je System, Geschäftslogik an den wichtigsten
-// Abläufen. Ist es größer, gibt es nach dem Zeigen einen Preis für den Rest. Nachprüfung optional, 600 €.
+// Abläufen. Ist es größer, gibt es nach dem Zeigen einen Preis für den Rest. Nachprüfung optional, 800 €, mit den Änderungen seit dem Bericht.
 // Kein ASVS-Level und keine Abdeckung in Prozent: die Berichte folgen der Kapitelsystematik, ohne Level.
 export const softwareCheck: SchlankTor = {
   funnel: 'software-check',
@@ -400,7 +400,7 @@ export const softwareCheck: SchlankTor = {
   ],
   fragenUndAntworten: [
     { q: 'Was kostet das?', a: '2.400 € netto, Festpreis für ein System. Darin: Sicherheit nach OWASP ASVS vollständig, die Geschäftslogik an den wichtigsten Abläufen, Bericht, Management-Summary und Abschlusstermin. Ist das System größer, sagen wir das nach dem Zeigen mit Preis für den Rest, und ihr entscheidet.' },
-    { q: 'Prüft ihr nach, ob alles behoben ist?', a: 'Auf Wunsch, innerhalb von sechs Wochen nach dem Bericht, für 600 €. Wir gehen die Befunde aus dem Bericht noch einmal durch, ihr bekommt je Befund behoben, teilweise oder offen.' },
+    { q: 'Prüft ihr nach, ob alles behoben ist?', a: 'Auf Wunsch, innerhalb von sechs Wochen nach dem Bericht, für 800 €. Wir gehen die Befunde noch einmal durch und schauen uns mit an, was ihr seitdem geändert habt. Ihr bekommt je Befund behoben, teilweise oder offen, und was uns an den Änderungen auffällt.' },
     { q: 'Ist das ein Penetrationstest?', a: 'Nein. Wenn ihr einen braucht, sagen wir es und holen einen Partner dazu.' },
     { q: 'Bekommen wir ein Zertifikat?', a: 'Nein, das stellen Prüfstellen aus. Wir bereiten vor und begleiten.' },
     { q: 'Müssen wir danach alles neu bauen?', a: 'Selten. Der Bericht sagt je Fund, ob ihr ihn so lassen, umbauen oder neu machen solltet.' },
@@ -434,7 +434,7 @@ export const softwareCheck: SchlankTor = {
 
 /**
  * Anzeigen-Landing /f/software-check/: wie softwareCheck, aber der Preis nicht in den Fakten oben
- * (Marten, 2026-11-04). 2.400 € und die Nachprüfung für 600 € stehen nur in den Fragen und Antworten.
+ * (Marten, 2026-11-04). 2.400 € und die Nachprüfung für 800 € stehen nur in den Fragen und Antworten.
  */
 export const softwareCheckFunnel: SchlankTor = {
   ...softwareCheck,
