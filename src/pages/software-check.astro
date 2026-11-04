@@ -13,6 +13,7 @@ import BerichtMock from '@/components/check/BerichtMock.astro';
 import FragenMosaik from '@/components/check/FragenMosaik.astro';
 import StackLeiste from '@/components/check/StackLeiste.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import MusterberichtDownload from '@/components/check/MusterberichtDownload.astro';
 import { softwareCheck } from '@/data/funnelSchlank';
 import { softwareCheckFaqs } from '@/components/check/faqs';
 
@@ -74,6 +75,7 @@ const serviceSchema = createServiceSchema({
       ))
     }
   </div>
+  <MusterberichtDownload ort="check" />
   <StackLeiste slot="mobil" kompakt />
   <div slot="vollbreit">
     <FragenMosaik />

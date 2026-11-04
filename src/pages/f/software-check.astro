@@ -11,6 +11,7 @@ import FunnelLayout from '@/layouts/FunnelLayout.astro';
 import SchlankPage from '@/components/funnel-schlank/SchlankPage.astro';
 import BerichtMock from '@/components/check/BerichtMock.astro';
 import StackLeiste from '@/components/check/StackLeiste.astro';
+import MusterberichtDownload from '@/components/check/MusterberichtDownload.astro';
 import { softwareCheck } from '@/data/funnelSchlank';
 ---
 
@@ -22,5 +23,6 @@ import { softwareCheck } from '@/data/funnelSchlank';
   <SchlankPage tor={softwareCheck}>
   <BerichtMock slot="hero" />
   <StackLeiste />
+  <MusterberichtDownload ort="funnel" />
 </SchlankPage>
 </FunnelLayout>

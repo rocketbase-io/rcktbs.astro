@@ -22,6 +22,7 @@ import AufEinenBlick from '@/components/blog/diagrams/AufEinenBlick.astro';
 import BerichtAufbau from '@/components/blog/diagrams/BerichtAufbau.astro';
 import OwaspKapitel from '@/components/blog/diagrams/OwaspKapitel.astro';
 import Figure from '@/components/blog/Figure.astro';
+import MusterberichtDownload from '@/components/check/MusterberichtDownload.astro';
 import berichtAuszug from './bericht-auszug.png';
 import berichtAuszugMobil from './bericht-auszug-mobil.png';
 import liveNachweise from './live-nachweise.png';
@@ -32,6 +33,8 @@ Im September hat mich Daniel Rübensam von Delta-Sport gebeten, zwei Systeme anz
 Vorweg: Das ist kein Text darüber, dass KI-gebaute Software schlecht ist. Das Gegenteil ist der Fall, und genau das ist der Punkt.
 
 <AufEinenBlick />
+
+**Was das für einen Inhaber heißt:** Die Software lief, sah gut aus und war ordentlich gebaut. Trotzdem hätten zwei Kunden dasselbe letzte Stück zugesagt bekommen können, Geld hätte doppelt das Haus verlassen können, und einen Ausfall hätte niemand bemerkt, bis ein Kunde anruft. Nichts davon findet ein Scanner. Der Rest des Beitrags erklärt, warum das so ist, und ist eher für die Technik im Haus geschrieben.
 
 ## Was ich vorgefunden habe
 
@@ -45,11 +48,11 @@ Auch die Grundlagen stimmten. Die Anmeldung war vollständig konfiguriert, jeder
 
 <FundeUebersicht />
 
-**Gleichzeitige Zugriffe.** Beide Anwendungen gehen davon aus, dass nie zwei Vorgänge zur selben Zeit dieselben Daten anfassen. Im Lager wurden zwei gleichzeitige Reservierungen auf das letzte Stück beide angenommen, und der nächtliche Abgleich hat die Spur beseitigt. Gemessen mit einem Integrationstest gegen eine echte Datenbank, nicht vermutet. In der Service-App betraf dasselbe Muster den Zahllauf, also die Stelle, an der Geld das Haus verlässt. Dabei kannte das Projekt das Gegenmittel und setzte es an anderen Stellen korrekt ein. Es fehlte nicht das Wissen, sondern der Blick darauf, wo es am meisten zählt.
+**Wenn zwei gleichzeitig zugreifen, stimmen Bestand und Zahlungen nicht mehr.** Beide Anwendungen gehen davon aus, dass nie zwei Vorgänge zur selben Zeit dieselben Daten anfassen. Im Lager wurden zwei gleichzeitige Reservierungen auf das letzte Stück beide angenommen, und der nächtliche Abgleich hat die Spur beseitigt. Gemessen mit einem Integrationstest gegen eine echte Datenbank, nicht vermutet. In der Service-App betraf dasselbe Muster den Zahllauf, also die Stelle, an der Geld das Haus verlässt. Dabei kannte das Projekt das Gegenmittel und setzte es an anderen Stellen korrekt ein. Es fehlte nicht das Wissen, sondern der Blick darauf, wo es am meisten zählt.
 
-**Die Produktionsumgebung.** Sie unterschied sich von der Entwicklungsumgebung in Größe und Ausfallsicherheit, aber in keinem Sicherheitsaspekt. Netzregeln und Dienstkonten mussten für den Betrieb noch enger gezogen werden, und die Laufzeitumgebung brauchte ein Update auf eine Version, die noch Sicherheitspatches bekommt. Beides ist inzwischen umgesetzt. So etwas meldet kein Werkzeug. Das sieht man nur, wenn man die Support-Zyklen im Kopf hat.
+**Die Produktion war eingestellt wie die Entwicklung.** Sie unterschied sich von der Entwicklungsumgebung in Größe und Ausfallsicherheit, aber in keinem Sicherheitsaspekt. Netzregeln und Dienstkonten mussten für den Betrieb noch enger gezogen werden, und die Laufzeitumgebung brauchte ein Update auf eine Version, die noch Sicherheitspatches bekommt. Beides ist inzwischen umgesetzt. So etwas meldet kein Werkzeug. Das sieht man nur, wenn man die Support-Zyklen im Kopf hat.
 
-**Die Erkennbarkeit von Störungen.** Es gab keine Alarmierung, und beide Zustandsmeldungen antworteten mit "ok", auch bei gestoppter Datenbank. Ausgerechnet diese Meldung war die erste Prüfung nach jeder Auslieferung. Im Betrieb heißt das: Ein Ausfall fällt erst auf, wenn jemand anruft.
+**Ein Ausfall wäre niemandem aufgefallen.** Es gab keine Alarmierung, und beide Zustandsmeldungen antworteten mit "ok", auch bei gestoppter Datenbank. Ausgerechnet diese Meldung war die erste Prüfung nach jeder Auslieferung. Im Betrieb heißt das: Ein Ausfall fällt erst auf, wenn jemand anruft.
 
 Dazu kam Kleineres, etwa eine Begrenzung der Anfragen, die installiert, aber noch nicht eingebunden war, oder Kommandozeilen-Werkzeuge, die nicht anzeigen, gegen welche Datenbank sie laufen. Mit dem Go-live ist die Produktion damit einen Kopierfehler entfernt.
 
@@ -65,8 +68,6 @@ Deshalb hatten auch die beiden früheren Durchsichten andere Schwerpunkte: Ein P
 
 **Ein paar Tage Lesen und Messen, ein Bericht, ein Termin.** Ich habe Quellcode und Infrastruktur beider Systeme zweimal gelesen, einmal mit der Projektdokumentation und einmal bewusst ohne. Für das Lagersystem lief eine lokale Instanz, an der sich Dinge messen ließen. Den Rahmen gab der OWASP Application Security Verification Standard vor, damit nachvollziehbar bleibt, was geprüft wurde und was nicht.
 
-<OwaspKapitel />
-
 Das Ergebnis war kein Pentest und kein Zertifikat, sondern ein Bericht: jeder Befund mit Fundstelle, Einstufung und einem Auftrag, den das Team direkt an Claude geben kann. Dazu eine Seite "Was ausdrücklich so bleiben darf". Das ist keine Höflichkeit, sondern Bestand, den ein Team verteidigen kann, wenn der nächste Berater alles neu bauen will.
 
 <Figure
@@ -79,6 +80,10 @@ Das Ergebnis war kein Pentest und kein Zertifikat, sondern ein Bericht: jeder Be
 
 <BerichtAufbau />
 
+Wie so ein Bericht im Ganzen aussieht, zeigt ein Muster mit einem ausgedachten Betrieb. Es ist nicht der Bericht an Delta-Sport, aber genauso aufgebaut.
+
+<MusterberichtDownload ort="blog" />
+
 Im Abschlusstermin von anderthalb Stunden habe ich die zwei wichtigsten Befunde live vorgeführt und die Fragen zum Bericht geklärt.
 
 <Figure
@@ -88,6 +93,10 @@ Im Abschlusstermin von anderthalb Stunden habe ich die zwei wichtigsten Befunde 
   caption="Die zwei Live-Nachweise aus dem Abschlusstermin. Beides lässt sich in Minuten vorführen, und beides findet kein Scanner."
   source="Abschlusstermin, Darstellung vereinfacht"
 />
+
+Für die Technik im Haus noch die Verteilung der Befunde nach den Kapiteln des Standards:
+
+<OwaspKapitel />
 
 ## Was mit dem Code nichts zu tun hatte
 
