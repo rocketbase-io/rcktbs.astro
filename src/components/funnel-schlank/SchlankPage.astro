@@ -321,7 +321,7 @@ const quizProps = {
   </div>
 </section>
 
-{blogTuer && <BlogQuerverweis tuer={blogTuer} />}
+{blogTuer && !mitQuiz && <BlogQuerverweis tuer={blogTuer} />}
 
 <section id="kontakt" class="scroll-mt-20 py-14 lg:py-32">
   <div class="container grid max-w-6xl items-start gap-8 lg:grid-cols-[1fr_0.9fr] lg:gap-14">
@@ -373,6 +373,9 @@ const quizProps = {
     }
   </div>
 </section>
+
+{/* Mit Quiz steht der Blog dahinter: davor lenkt er nur vom Eintragen ab. */}
+{blogTuer && mitQuiz && <BlogQuerverweis tuer={blogTuer} />}
 
 <style>
   .ablauf-sec {
