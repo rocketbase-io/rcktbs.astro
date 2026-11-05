@@ -7,7 +7,7 @@ import siteConfig from '@/config/site.config';
 export const GET: APIRoute = async () => {
   const svgPath = resolve(process.cwd(), 'src/assets/branding/logomark.svg');
   const svg = readFileSync(svgPath);
-  const background = siteConfig.branding.colors.themeColor;
+  const background = siteConfig.branding.colors.backgroundColor;
 
   const png = await sharp({
     create: {

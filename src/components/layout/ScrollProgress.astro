@@ -15,7 +15,8 @@
   aria-hidden="true"
 >
   <div
-    class="bg-brand-500 h-full w-0 origin-left transition-[width] duration-75 ease-out"
+    class="bg-brand-500 h-full w-full origin-left"
+    style="transform: scaleX(0)"
     data-scroll-progress-bar
   />
 </div>
@@ -40,12 +41,15 @@
       );
     };
 
+    // Reads first, then one compositor-only write: scaleX needs no layout,
+    // and nothing reads geometry after the write, so no forced reflow per frame.
+    // No CSS transition either: restarting one on every frame makes the bar lag
+    // behind the scroll position and jitter.
     const update = () => {
       const doc = document.documentElement;
       const scrollable = doc.scrollHeight - doc.clientHeight;
       const ratio = scrollable > 0 ? Math.min(Math.max(doc.scrollTop / scrollable, 0), 1) : 0;
-      bar.style.width = `${(ratio * 100).toFixed(2)}%`;
-      syncOffset();
+      bar.style.transform = `scaleX(${ratio.toFixed(4)})`;
       rafId = 0;
     };
 
@@ -54,9 +58,17 @@
       rafId = requestAnimationFrame(update);
     };
 
+    syncOffset();
     update();
     document.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
+    window.addEventListener(
+      'resize',
+      () => {
+        syncOffset();
+        onScroll();
+      },
+      { passive: true }
+    );
   }
 
   initScrollProgress();

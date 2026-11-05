@@ -19,7 +19,7 @@ export const GET: APIRoute = async ({ params }) => {
 
   const svgPath = resolve(process.cwd(), 'src/assets/branding/logomark.svg');
   const svg = readFileSync(svgPath);
-  const background = siteConfig.branding.colors.themeColor;
+  const background = siteConfig.branding.colors.backgroundColor;
   const inner = Math.round(size * 0.66);
 
   const png = await sharp({
