@@ -112,7 +112,13 @@ const quizProps = {
     <div class="lg:self-start">
       {
         istSeite ? (
-          <div class="mb-4">
+          <div class="mb-4 flex flex-wrap items-center gap-x-5 gap-y-3">
+            {mitQuiz && (
+              <Button size="lg" href="#quiz">
+                {tor.telefonat ? 'Kostenlosen Rückruf anfordern' : 'Kostenloses Erstgespräch anfragen'}
+                <Icon name="arrow-right" size="sm" />
+              </Button>
+            )}
             <Button variant="link" href="#beweis">
               So funktioniert es
               <Icon name="arrow-right" size="sm" />

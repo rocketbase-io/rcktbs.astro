@@ -22,7 +22,7 @@ import { contactLinks } from '@/data/rocketbase';
 
 interface Props {
   class?: string;
-  /** Im Funnel führt der Knopf zum Quiz statt zu cal.com. */
+  /** „funnel“: Der Knopf führt zum Quiz mit Rückruf statt zu cal.com. Auch auf /software-check/, das ein Quiz hat. */
   variant?: 'site' | 'funnel';
 }
 const { class: className, variant = 'site' } = Astro.props;
@@ -126,12 +126,12 @@ const bahnen: Frage[][] = [
 
   <div class="container max-w-6xl">
     <p data-reveal class="text-foreground-secondary mx-auto mt-10 max-w-2xl text-center text-[0.95rem] leading-7">
-      Wenn drei davon eure Fragen sind, lohnt sich das Erstgespräch. Wenn es alle sind, erst recht.
+      Wenn drei davon eure Fragen sind, lohnt sich {istFunnel ? 'ein kurzes Telefonat' : 'das Erstgespräch'}. Wenn es alle sind, erst recht.
     </p>
     <div data-reveal class="mt-6 flex flex-wrap items-center justify-center gap-3">
       <Button size="lg" href={istFunnel ? '#quiz' : contactLinks.cal} target={istFunnel ? undefined : '_blank'}>
-        Erstgespräch {istFunnel ? 'anfragen' : 'buchen'}
-        <Icon name={istFunnel ? 'arrow-up-right' : 'arrow-up-right'} size="sm" />
+        {istFunnel ? 'Kostenlosen Rückruf anfordern' : 'Erstgespräch buchen'}
+        <Icon name={istFunnel ? 'arrow-right' : 'arrow-up-right'} size="sm" />
       </Button>
       <Button variant="outline" size="lg" href="#pakete">
         Was wir prüfen
