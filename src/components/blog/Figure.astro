@@ -33,45 +33,61 @@ interface Props {
    * volle Fenstergröße öffnen.
    */
   zoom?: boolean;
+  /**
+   * Optionale Hochformat-Fassung für schmale Bildschirme. Breite Grafiken mit
+   * Text sind auf dem Handy sonst nicht lesbar. Unterhalb von `sm` wird dann
+   * dieses Bild gezeigt (und vergrößert), darüber `src`.
+   */
+  srcMobile?: ImageMetadata;
   /** Aufnahme-Anweisung, erscheint nur im Platzhalter (wenn kein src gesetzt ist). */
   todo?: string;
   /** Seitenverhältnis des Platzhalters. */
   ratio?: '16/9' | '4/3';
 }
 
-const { src, alt, caption, source, zoom = true, todo, ratio = '16/9' } = Astro.props;
+const { src, srcMobile, alt, caption, source, zoom = true, todo, ratio = '16/9' } = Astro.props;
+const varianten = src
+  ? srcMobile
+    ? [
+        { bild: srcMobile, klasse: 'sm:hidden', sizes: '100vw', zoom: false },
+        { bild: src, klasse: 'hidden sm:block', sizes: '44rem', zoom: true },
+      ]
+    : [{ bild: src, klasse: '', sizes: '(min-width: 768px) 44rem, 100vw', zoom: true }]
+  : [];
 const ratioClass = ratio === '4/3' ? 'aspect-[4/3]' : 'aspect-video';
 ---
 
 <figure class="not-prose my-10" data-reveal="fade-up">
   {
     src ? (
-      <div class="border-border bg-background-secondary group relative overflow-hidden rounded-2xl border shadow-[0_18px_45px_rgba(34,43,74,0.10)] dark:shadow-[0_18px_45px_rgba(0,0,0,0.45)]">
-        <Image
-          src={src}
-          alt={alt}
-          widths={[640, 960, 1456]}
-          sizes="(min-width: 768px) 44rem, 100vw"
-          loading="lazy"
-          decoding="async"
-          class="block h-auto w-full"
-        />
-        {zoom && (
-          <button
-            type="button"
-            class="absolute inset-0 flex cursor-zoom-in items-end justify-end p-3 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-500"
-            data-figure-zoom
-            data-figure-src={src.src}
-            data-figure-alt={alt}
-            aria-label={`Vergrößern: ${alt}`}
-          >
-            <span class="bg-background/85 text-foreground-secondary border-border pointer-events-none inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-semibold opacity-0 backdrop-blur transition-opacity group-hover:opacity-100 group-focus-within:opacity-100">
-              <Icon name="search" size="xs" />
-              Vergrößern
-            </span>
-          </button>
-        )}
-      </div>
+      varianten.map((v) => (
+        <div class:list={['border-border bg-background-secondary group relative overflow-hidden rounded-2xl border shadow-[0_18px_45px_rgba(34,43,74,0.10)] dark:shadow-[0_18px_45px_rgba(0,0,0,0.45)]', v.klasse]}>
+          <Image
+            src={v.bild}
+            alt={alt}
+            widths={[640, 960, 1456].filter((w) => w <= v.bild.width)}
+            sizes={v.sizes}
+            loading="lazy"
+            decoding="async"
+            class="block h-auto w-full"
+          />
+          {zoom && v.zoom && (
+            <button
+              type="button"
+              class="absolute inset-0 flex cursor-zoom-in items-end justify-end p-3 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-brand-500"
+              data-figure-zoom
+              data-figure-src={v.bild.src}
+              data-figure-alt={alt}
+              aria-label={`Vergrößern: ${alt}`}
+            >
+              <span class="bg-background/85 text-foreground-secondary border-border pointer-events-none inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-semibold opacity-0 backdrop-blur transition-opacity group-hover:opacity-100 group-focus-within:opacity-100">
+                <Icon name="search" size="xs" />
+                Vergrößern
+              </span>
+            </button>
+          )}
+        </div>
+      ))
     ) : (
       <div
         class={`border-border bg-background-secondary text-foreground-muted flex ${ratioClass} flex-col items-center justify-center gap-3 rounded-2xl border border-dashed p-8 text-center`}
