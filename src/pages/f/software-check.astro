@@ -12,6 +12,7 @@ import SchlankPage from '@/components/funnel-schlank/SchlankPage.astro';
 import BerichtMock from '@/components/check/BerichtMock.astro';
 import StackLeiste from '@/components/check/StackLeiste.astro';
 import MusterberichtDownload from '@/components/check/MusterberichtDownload.astro';
+import DeltaSportFall from '@/components/check/DeltaSportFall.astro';
 import { softwareCheckFunnel } from '@/data/funnelSchlank';
 ---
 
@@ -23,7 +24,8 @@ import { softwareCheckFunnel } from '@/data/funnelSchlank';
 >
   <SchlankPage tor={softwareCheckFunnel}>
   <BerichtMock slot="hero" />
-  <StackLeiste />
+  <DeltaSportFall slot="fall" />
   <MusterberichtDownload ort="funnel" />
+  <StackLeiste slot="nachBeweis" class="border-border border-t" />
 </SchlankPage>
 </FunnelLayout>

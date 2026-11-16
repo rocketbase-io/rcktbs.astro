@@ -25,6 +25,7 @@ interface FunnelQuizProps {
    * dasselbe, und genau das ist der Normalfall.
    */
   funnel?: string;
+  /** Leer: nur das Kontaktformular, ohne Fortschrittsbalken und Schrittzähler. */
   questions: FunnelQuizQuestion[];
   contact: { heading: string; text: string };
   success: { heading: string; text: string; calUrl?: string; calLabel?: string };
@@ -207,7 +208,9 @@ export function FunnelQuiz({
   useEffect(() => {
     if (erreichtRef.current.has(step)) return;
     erreichtRef.current.add(step);
-    if (step === 0) return; // Schritt 1 ist der Seitenaufruf, den zählt Plausible selbst
+    // Schritt 1 ist der Seitenaufruf, den zählt Plausible selbst. Ohne Fragen ist Schritt 1 schon
+    // das Formular: Die Insel lädt erst, wenn sie ins Bild kommt, also heißt das „Formular gesehen“.
+    if (step === 0 && !contactStep) return;
     melde(contactStep ? 'funnel_kontakt_erreicht' : 'funnel_schritt_erreicht', {
       step: step + 1,
       ...(currentQuestion ? { question: currentQuestion.id } : {}),
@@ -353,13 +356,15 @@ export function FunnelQuiz({
   return (
     <div ref={cardRef} className="scroll-mt-3 sm:scroll-mt-24">
       <div className="border-border bg-card overflow-hidden rounded-3xl border shadow-lg">
-        {/* Fortschritt */}
-        <div className="bg-background-secondary h-1.5 w-full">
-          <div
-            className="bg-brand-500 h-full transition-all duration-500 ease-out"
-            style={{ width: `${Math.max(progress, 4)}%` }}
-          />
-        </div>
+        {/* Fortschritt, nur mit Fragen */}
+        {questions.length > 0 && (
+          <div className="bg-background-secondary h-1.5 w-full">
+            <div
+              className="bg-brand-500 h-full transition-all duration-500 ease-out"
+              style={{ width: `${Math.max(progress, 4)}%` }}
+            />
+          </div>
+        )}
 
         <div className={compact ? 'p-5 sm:p-6' : 'p-5 sm:p-8'}>
           {submitted ? (
@@ -392,11 +397,13 @@ export function FunnelQuiz({
             </div>
           ) : contactStep ? (
             <div>
-              <StepHeader
-                step={step}
-                totalSteps={totalSteps}
-                onBack={() => goToStep(step - 1)}
-              />
+              {questions.length > 0 && (
+                <StepHeader
+                  step={step}
+                  totalSteps={totalSteps}
+                  onBack={() => goToStep(step - 1)}
+                />
+              )}
               {rechnung && (
                 <div className="bg-brand-500/5 mt-1 rounded-2xl px-4 py-3">
                   <p className="font-display text-foreground text-xl leading-6 font-bold tracking-tight">
@@ -427,7 +434,7 @@ export function FunnelQuiz({
                 </div>
               )}
               {kontaktPerson && (
-                <div className="mt-3 flex items-center gap-3">
+                <div className={cn('flex items-center gap-3', questions.length > 0 && 'mt-3')}>
                   <img
                     src={kontaktPerson.bild}
                     alt={kontaktPerson.name}

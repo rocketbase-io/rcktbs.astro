@@ -6,12 +6,16 @@
  *
  *   Hero     für wen, Versprechen, Erklärung, Bild (Slot `hero`), Knopf ab sm, vier Fakten
  *   Was      was es ist, drei Schritte, Bild (Standard-Slot)
+ *   Danach   optional ganze Abschnitte (Slot `nachBeweis`)
+ *   Fall     optional: Logos und ein ausgeführtes Beispiel darunter (Slot `fall`); die
+ *            Logoleiste unter dem Hero fällt dann weg
  *   Heute    vorher und nachher mit Bild (Slot `heute`, optional), dazu die Zahl
  *   Extras   nur ab lg: Slot `mehr` mit Überschrift, Slot `vollbreit` für ganze Abschnitte;
  *            unter lg stattdessen Slot `mobil`
  *   Ablauf   drei Schritte (#ablauf)
  *   Fragen   vier Antworten, eingeklappt: kosten kaum Platz, der Preis bleibt auffindbar
- *   Kontakt  Marten, Quiz (#kontakt, #quiz)
+ *   Kontakt  Marten, Quiz (#kontakt, #quiz). Ohne Fragen im Tor nur das Formular, links
+ *            daneben der Ablauf in Kurzform.
  *
  * Das Quiz steht bewusst nur am Ende: Kalte Besucher sollen erst verstehen, worum es geht.
  * Mobil gibt es im Hero keinen Knopf, damit Text und Bild den ersten Bildschirm haben: Die Leiste
@@ -54,9 +58,15 @@ interface Props {
 const { tor, modus = 'funnel', headline = tor.headline, faqs = tor.fragenUndAntworten, blogTuer, zitat, mehrTitel, vergleichKurz = false } = Astro.props;
 const istSeite = modus === 'seite';
 const mitQuiz = (Astro.props.kontakt ?? (istSeite ? 'termin' : 'quiz')) === 'quiz';
+/** Tor ohne Fragen (Software-Check): Das „Quiz“ ist nur das Formular. */
+const nurFormular = mitQuiz && tor.fragen.length === 0;
+// Schritt 1 groß, weil er alles ist, worauf man sich mit dem Formular einlässt. 2 und 3 klein:
+// Sie zeigen, dass es danach weitergehen kann, aber erst wenn ihr wollt.
+const [erster, ...danach] = tor.schlussSchritte ?? tor.ablauf;
 /** Rückruf statt Videotermin, wenn das Tor eine Dauer fürs Telefonat nennt (Software-Check: 15 Minuten). */
 const gespraech = tor.telefonat ? `${tor.telefonat} am Telefon, ohne Vorbereitung.` : '30 Minuten, online, ohne Vorbereitung.';
 const mitHeuteBild = Astro.slots.has('heute');
+const mitFall = Astro.slots.has('fall');
 
 const martenBild = await getImage({ src: founderPortrait, width: 112, format: 'webp' });
 const rolle = 'Softwarearchitekt, über 15 Jahre Erfahrung';
@@ -162,7 +172,8 @@ const quizProps = {
   </div>
 </section>
 
-<ClientLogoStrip heading="Aus Projekten mit" logos={tor.logos} variant="light" uniform class="py-8" />
+{/* Mit Fall (Slot `fall`) wandern die Logos nach unten zum Fall, sonst stehen sie hier. */}
+{!mitFall && <ClientLogoStrip heading="Aus Projekten mit" logos={tor.logos} variant="light" uniform class="py-8" />}
 
 <section id="beweis" class="scroll-mt-20 py-14 lg:py-32">
   <div class="container max-w-6xl">
@@ -188,7 +199,25 @@ const quizProps = {
   </div>
 </section>
 
-<section id="heute" class="scroll-mt-20 pb-14 lg:pb-32">
+{/* Slot `nachBeweis`: eigene, ganze Abschnitte direkt nach „Was es ist“ (Software-Check: Stack). */}
+<slot name="nachBeweis" />
+
+{/* Slot `fall`: „Aus Projekten mit“ samt einem ausgeführten Beispiel, direkt nach „Was es ist“.
+    Grauer Grund und das Beispiel als weiße Karte, damit es als eigener Abschnitt lesbar ist. */}
+{
+  mitFall && (
+    <section class="bg-background-secondary py-14 lg:py-24">
+      <div class="container max-w-6xl">
+        <ClientLogoStrip heading="Aus Projekten mit" logos={tor.logos} variant="light" uniform class="border-0 bg-transparent py-0 lg:py-0" />
+        <div class="border-border bg-background mt-10 rounded-3xl border p-6 sm:p-10 lg:mt-14">
+          <slot name="fall" />
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<section id="heute" class:list={['scroll-mt-20 pb-14 lg:pb-32', mitFall && 'pt-14 lg:pt-32']}>
   <div class="container max-w-6xl">
     <h2 class="font-display text-foreground text-2xl font-bold tracking-tight text-balance sm:text-4xl">
       {tor.vergleichTitel}
@@ -329,11 +358,50 @@ const quizProps = {
       <h2 class="font-display text-foreground text-3xl font-bold tracking-tight sm:text-4xl">
         {tor.schlussTitel}
       </h2>
-      <p class="text-foreground-secondary mt-4 text-base leading-7 sm:text-lg sm:leading-8">
-        {mitQuiz ? 'Ein paar kurze Fragen, dann ruft Marten euch werktags an.' : 'Bucht direkt einen Termin.'}{' '}
-        {tor.schlussText}
-      </p>
-      <div class:list={['border-border mt-6 items-center gap-4 border-t pt-6', istSeite ? 'flex' : 'hidden lg:flex']}>
+      {
+        nurFormular ? (
+            <>
+              {/* Zeitleiste mit gestrichelter Linie: Schritt 1 ist der Anruf, 2 und 3 kleiner und
+                  hinter „Wenn ihr den Check wollt“, weil sie erst nach Zusage kommen. */}
+              <div class="relative mt-6 sm:mt-8">
+                <span
+                  class="border-brand-500/30 absolute top-9 bottom-5 left-4 -translate-x-1/2 border-l-2 border-dashed"
+                  aria-hidden="true"
+                />
+                <div class="relative flex gap-4">
+                  <span class="bg-brand-500 ring-brand-500/15 font-display flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white ring-4">
+                    1
+                  </span>
+                  <div class="min-w-0">
+                    <p class="text-brand-600 dark:text-brand-300 text-xs leading-5 font-semibold tracking-[0.12em] uppercase">{erster.wann}</p>
+                    <p class="font-display text-foreground mt-0.5 text-xl leading-7 font-bold">{erster.titel}</p>
+                    <p class="text-foreground-secondary mt-1 text-[0.95rem] leading-6">{erster.text}</p>
+                  </div>
+                </div>
+                <p class="text-foreground-muted relative mt-6 pl-12 text-xs font-semibold tracking-[0.12em] uppercase">{tor.schlussText}</p>
+                <ol class="relative mt-3 grid gap-3">
+                  {danach.map((s, i) => (
+                    <li class="flex items-center gap-4">
+                      <span class="border-brand-500/30 bg-background text-brand-600 dark:text-brand-300 font-display flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 text-sm font-bold">
+                        {i + 2}
+                      </span>
+                      <p class="text-[0.95rem] leading-5">
+                        <span class="text-foreground block font-semibold text-balance">{s.titel}</span>
+                        <span class="text-foreground-muted text-sm">{s.wann} · {s.text}</span>
+                      </p>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+          </>
+        ) : (
+          <p class="text-foreground-secondary mt-4 text-base leading-7 sm:text-lg sm:leading-8">
+            {mitQuiz ? 'Ein paar kurze Fragen, dann ruft Marten euch werktags an.' : 'Bucht direkt einen Termin.'}{' '}
+            {tor.schlussText}
+          </p>
+        )
+      }
+      <div class:list={['border-border mt-6 items-center gap-4 border-t pt-6', nurFormular ? 'hidden' : istSeite ? 'flex' : 'hidden lg:flex']}>
         <Picture
           src={founderPortrait}
           alt="Marten Prieß"
