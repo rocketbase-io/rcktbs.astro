@@ -7,6 +7,8 @@ interface LogoItem {
   key: string;
   name: string;
   href?: string;
+  /** Fast quadratische Logos mit Unterzeile (Delta-Sport): mehr Höhe, sonst ist die Schrift unlesbar. */
+  hoch?: boolean;
 }
 
 interface Props {
@@ -70,7 +72,7 @@ const sectionBg = variant === 'light' ? 'bg-background' : 'bg-background-seconda
             sizes="(max-width: 640px) 120px, 180px"
             class={cn(
               'w-auto object-contain opacity-70 grayscale transition-all duration-200 hover:opacity-100 hover:grayscale-0',
-              uniform ? 'h-auto max-h-9 max-w-[8.5rem]' : 'h-8 sm:h-10',
+              uniform ? cn('h-auto max-w-[8.5rem]', logo.hoch ? 'max-h-14' : 'max-h-9') : logo.hoch ? 'h-12 sm:h-14' : 'h-8 sm:h-10',
             )}
             loading="lazy"
           />

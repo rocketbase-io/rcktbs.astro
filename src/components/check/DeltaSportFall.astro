@@ -1,0 +1,109 @@
+---
+/**
+ * Ein echter Check als Beleg: Delta-Sport, nacherzählt aus dem Blogbeitrag
+ * `software-check-ki-gebaute-systeme`. Steht auf der Anzeigen-Landing unter den Logos „Aus Projekten
+ * mit“ (SchlankPage, Slot `fall`, dort in einer weißen Karte) als das eine ausgeführte Beispiel.
+ *
+ * Der Funnel wirbt mit dem, was gefunden wurde: Die Befunde sind die Hauptsache, konkret und in
+ * einfachen Worten. Was gepasst hat, steht nur als kurze Zeile darunter. Bewusst ohne Link zum
+ * Beitrag, damit niemand den Funnel verlässt.
+ *
+ * Nur Aussagen, die so im Beitrag stehen. Das Zitat ist Martens eigener Satz aus dem Beitrag, von
+ * Delta-Sport (Daniel Rübensam) gibt es noch keins. Kommt eins, gehört es an diese Stelle.
+ * Der Zusammenhang „Live war noch nichts, Kundendaten gab es keine“ bleibt stehen: Ohne ihn klingt
+ * es, als hätte Delta-Sport ein kaputtes System betrieben. Der Werkzeug-Befund fehlt bewusst, im
+ * Beitrag ist er „Kleineres“.
+ */
+import { getImage } from 'astro:assets';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import logo from '@/assets/client-logos/delta-sport_logo.svg';
+import founderPortrait from '@/assets/rocketbase/founder-marten-priess.jpg';
+
+const marten = await getImage({ src: founderPortrait, width: 112, format: 'webp' });
+
+const befunde = [
+  {
+    icon: 'users',
+    bereich: 'Lager und Zahlungen',
+    titel: 'Das letzte Stück zweimal vergeben',
+    text: 'Zwei reservieren gleichzeitig das letzte Stück, beide bekommen eine Zusage. Derselbe Fehler steckte im Zahllauf, also da, wo Geld rausgeht. Im Test nachgewiesen.',
+  },
+  {
+    icon: 'eye-off',
+    bereich: 'Betrieb',
+    titel: 'Meldet „ok“, auch wenn nichts mehr geht',
+    text: 'Selbst bei gestoppter Datenbank meldete das System „alles in Ordnung“. Ein Ausfall wäre erst aufgefallen, wenn jemand anruft.',
+  },
+  {
+    icon: 'shield',
+    bereich: 'Live-Umgebung',
+    titel: 'Live-System nicht extra abgesichert',
+    text: 'Es war genauso eingestellt wie das Testsystem: Zugänge und Netzregeln zu weit gefasst, die Laufzeitumgebung bekam keine Sicherheitsupdates mehr. Inzwischen behoben.',
+  },
+] as const;
+
+const gut = ['Von außen kein Weg hinein', 'Anmeldung und Rechte sauber', 'Zugangsdaten nicht im Code', 'Gut dokumentiert'];
+---
+
+<div class="flex items-start justify-between gap-6">
+  <div class="min-w-0">
+    <p class="text-brand-600 dark:text-brand-300 text-xs font-semibold tracking-[0.14em] uppercase">Ein echter Check</p>
+    <h3 class="font-display text-foreground mt-2 text-xl font-bold tracking-tight text-balance sm:text-3xl">
+      Was wir bei Delta-Sport gefunden haben
+    </h3>
+    <p class="text-foreground-secondary mt-3 max-w-2xl text-base leading-7">
+      Ein Lagersystem und eine Service-App, mit KI gebaut, kurz vor dem Go-live. Live war noch nichts, Kundendaten gab es keine.
+      Gefunden haben wir trotzdem einige Dutzend Befunde, eine Handvoll davon kritisch, zum Beispiel:
+    </p>
+  </div>
+  <img src={logo.src} alt="Delta-Sport" width="72" height="60" class="hidden h-16 w-auto shrink-0 sm:block" loading="lazy" />
+</div>
+
+<ul class="mt-6 grid gap-3 sm:gap-4 lg:mt-8 lg:grid-cols-3">
+  {
+    befunde.map((b) => (
+      <li class="bg-brand-500/5 flex gap-4 rounded-2xl p-4 sm:p-6 lg:block">
+        <span class="bg-background hidden h-10 w-10 shrink-0 items-center justify-center rounded-xl text-[var(--color-error)] shadow-sm sm:flex">
+          <Icon name={b.icon} size="sm" />
+        </span>
+        <div class="min-w-0">
+          <p class="text-foreground-muted flex items-center gap-1.5 text-xs font-semibold tracking-[0.12em] uppercase lg:mt-4">
+            <Icon name={b.icon} size="sm" class="shrink-0 text-[var(--color-error)] sm:hidden" />
+            {b.bereich}
+          </p>
+          <p class="font-display text-foreground mt-1 font-bold text-balance sm:text-lg">{b.titel}</p>
+          <p class="text-foreground-secondary mt-1.5 text-[0.95rem] leading-6">{b.text}</p>
+        </div>
+      </li>
+    ))
+  }
+</ul>
+
+<div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+  <span class="text-foreground-muted">Was gepasst hat:</span>
+  {
+    gut.map((g) => (
+      <span class="text-foreground-secondary flex items-center gap-1.5">
+        <Icon name="check" size="sm" class="text-[var(--color-success)]" />
+        {g}
+      </span>
+    ))
+  }
+</div>
+
+<figure class="border-border mt-8 flex items-start gap-4 border-t pt-6 lg:mt-10 lg:pt-8">
+  <img
+    src={marten.src}
+    alt=""
+    width="56"
+    height="56"
+    class="h-12 w-12 shrink-0 rounded-full object-cover object-[center_22%] sm:h-14 sm:w-14"
+    loading="lazy"
+  />
+  <div class="min-w-0">
+    <blockquote class="font-display text-foreground text-lg leading-7 font-semibold text-balance sm:text-xl sm:leading-8">
+      „Der Code tat überall, was er sollte. Die Befunde lagen in Fragen, die niemand gestellt hat.“
+    </blockquote>
+    <figcaption class="text-foreground-muted mt-2 text-sm">Marten Prieß, hat den Check gemacht</figcaption>
+  </div>
+</figure>

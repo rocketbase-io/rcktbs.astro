@@ -27,7 +27,7 @@ export interface SchlankTor {
   leadMobil: string;
   /** Vier Fakten zu Zeit, Aufwand und Risiko. */
   fakten: string[];
-  logos: { key: string; name: string }[];
+  logos: { key: string; name: string; hoch?: boolean }[];
   wasEsIst: { titel: string; text: string; schritte: { titel: string; text: string }[] };
   beweis: { hinweis: string };
   /** Die Zahl, die den Schmerz zeigt. Fehlt, wenn es keine belegte gibt. */
@@ -41,6 +41,8 @@ export interface SchlankTor {
   fragenUndAntworten: { q: string; a: string }[];
   schlussTitel: string;
   schlussText: string;
+  /** Tore ohne Fragen: der Ablauf neben dem Formular, kürzer als `ablauf`. Fehlt er, steht dort `ablauf`. */
+  schlussSchritte?: Schritt[];
   fragen: FunnelQuizQuestion[];
 }
 
@@ -372,6 +374,7 @@ export const softwareCheck: SchlankTor = {
   leadMobil: 'Geprüft nach OWASP ASVS und darüber hinaus. Ihr bekommt einen Bericht für Kunden und Auditoren.',
   fakten: ['2.400 € Festpreis je System', 'Bericht nach 4 bis 5 Werktagen', 'Nach OWASP ASVS und darüber hinaus', 'Für Kunden und Auditoren'],
   logos: [
+    { key: 'delta-sport_logo', name: 'Delta-Sport', hoch: true },
     { key: 'bonprix_logo', name: 'bonprix' },
     { key: 'statista-logo', name: 'Statista' },
     { key: 'stage_logo', name: 'Stage Entertainment' },
@@ -397,7 +400,7 @@ export const softwareCheck: SchlankTor = {
   telefonat: '15 Minuten',
   ablaufTitel: 'In 4 bis 5 Werktagen habt ihr den Bericht',
   ablauf: [
-    { wann: 'Kostenlos, 15 Minuten', titel: 'Kurzes Telefonat', text: 'Was gebaut ist und was ansteht. Passt es in einen Check, machen wir den Termin zum Zeigen aus.' },
+    { wann: 'Kostenlos, 15 Minuten', titel: 'Marten ruft euch zurück', text: 'Ihr erzählt, was gebaut ist und was ansteht. Passt es in einen Check, machen wir den Termin zum Zeigen mit eurem Entwickler aus.' },
     { wann: 'Tag 1 bis 4', titel: 'Zeigen und prüfen', text: 'Euer Entwickler zeigt uns die Software. Dann lesen und messen wir: Rechte, Anmeldung, Geschäftslogik, Ausfälle.' },
     { wann: '1,5 Stunden', titel: 'Bericht durchgehen', text: 'Was kritisch ist, was warten kann. Die wichtigsten Befunde führen wir live vor.' },
   ],
@@ -408,31 +411,16 @@ export const softwareCheck: SchlankTor = {
     { q: 'Bekommen wir ein Zertifikat?', a: 'Nein, das stellen Prüfstellen aus. Wir bereiten vor und begleiten.' },
     { q: 'Müssen wir danach alles neu bauen?', a: 'Selten. Der Bericht sagt je Fund, ob ihr ihn so lassen, umbauen oder neu machen solltet.' },
   ],
-  schlussTitel: 'Kurz telefonieren',
-  schlussText: '15 Minuten: was gebaut ist und was ansteht. Passt es in einen Check, machen wir direkt den Termin zum Zeigen mit eurem Entwickler aus.',
-  fragen: [
-    {
-      id: 'was',
-      question: 'Worum geht es?',
-      options: [
-        { id: 'intern', label: 'Internes Tool, mit KI gebaut' },
-        { id: 'portal', label: 'App oder Portal für Kunden' },
-        { id: 'produkt', label: 'Software, die wir verkaufen' },
-        { id: 'konzept', label: 'Soll erst gebaut werden' },
-      ],
-    },
-    {
-      id: 'anlass',
-      question: 'Was ist der Anlass?',
-      options: [
-        { id: 'golive', label: 'Der Go-Live steht an' },
-        { id: 'kunde', label: 'Ein Kunde will einen Nachweis' },
-        { id: 'cra', label: 'Cyber Resilience Act' },
-        { id: 'bauch', label: 'Schlechtes Bauchgefühl' },
-      ],
-    },
-    groesse,
+  schlussTitel: 'Kurz telefonieren, unverbindlich',
+  schlussText: 'Wenn ihr den Check wollt',
+  schlussSchritte: [
+    { wann: 'Kostenlos, 15 Minuten', titel: 'Marten ruft euch zurück', text: 'Ihr erzählt, was gebaut ist und was ansteht. Ob danach ein Check folgt, entscheidet ihr.' },
+    { wann: 'Tag 1 bis 4', titel: 'Ihr zeigt uns eure Software', text: 'Danach suchen wir nach Fehlern, Sicherheitslücken und was sich verbessern lässt.' },
+    { wann: 'Tag 5', titel: 'Ihr bekommt den Prüfbericht', text: 'Wir erklären euch, was dringend ist und was warten kann.' },
   ],
+  // Kein Quiz: Art, Anlass und Größe klärt Marten im Telefonat ohnehin, die Fragen waren nur eine
+  // Hürde mehr vor dem Formular (2026-11-16).
+  fragen: [],
 };
 
 /**
