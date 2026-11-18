@@ -154,13 +154,6 @@
   to = "/arbeitsweise/"
   status = 301
 
-# Catch-all: unknown routes redirect to landing page
-[[redirects]]
-  from = "/*"
-  to = "/"
-  status = 301
-  force = false
-
 # Kurzadressen der Beispielangebote aus den Briefen (rcktbs-sales, offerletter): gedruckt wird
 # rocketbase.io/angebot/<slug>, /a/ und /Angebot/ führen für Vertipper ebenso hin. 302 statt 301,
 # damit das Ziel umziehen kann, ohne dass Browser die alte Weiterleitung behalten; die gedruckten
@@ -190,3 +183,11 @@
   from = "/a/*"
   to = "https://offer.rocketbase.io/:splat"
   status = 302
+
+# Muss die letzte Regel bleiben: Netlify nimmt die erste passende, alles darunter greift nie.
+# Catch-all: unknown routes redirect to landing page
+[[redirects]]
+  from = "/*"
+  to = "/"
+  status = 301
+  force = false
