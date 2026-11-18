@@ -160,3 +160,33 @@
   to = "/"
   status = 301
   force = false
+
+# Kurzadressen der Beispielangebote aus den Briefen (rcktbs-sales, offerletter): gedruckt wird
+# rocketbase.io/angebot/<slug>, /a/ und /Angebot/ führen für Vertipper ebenso hin. 302 statt 301,
+# damit das Ziel umziehen kann, ohne dass Browser die alte Weiterleitung behalten; die gedruckten
+# QR-Codes bleiben so gültig. www und http leitet Netlify vorher schon samt Pfad um.
+# Nicht /angebote/*: das ist eine eigene Seite.
+[[redirects]]
+  from = "/angebot"
+  to = "/angebote/"
+  status = 302
+
+[[redirects]]
+  from = "/angebot/"
+  to = "/angebote/"
+  status = 302
+
+[[redirects]]
+  from = "/angebot/*"
+  to = "https://offer.rocketbase.io/:splat"
+  status = 302
+
+[[redirects]]
+  from = "/Angebot/*"
+  to = "https://offer.rocketbase.io/:splat"
+  status = 302
+
+[[redirects]]
+  from = "/a/*"
+  to = "https://offer.rocketbase.io/:splat"
+  status = 302
