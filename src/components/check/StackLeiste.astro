@@ -53,8 +53,8 @@ const umfeld = [
   { ...logo('Electron', 'siElectron'), x: 34, y: 84 },
   { ...logo('Stripe', 'siStripe'), x: 72, y: 94 },
   { ...logo('Astro', 'siAstro'), x: 88, y: 12 },
-  { ...logo('Redis', 'siRedis'), x: 30, y: 44 },
-  { ...logo('Sentry', 'siSentry'), x: 70, y: 46 },
+  { ...logo('Redis', 'siRedis'), x: 26, y: 30 },
+  { ...logo('Sentry', 'siSentry'), x: 76, y: 62 },
 ];
 
 const eherNicht = ['Python (Django, FastAPI)', 'PHP (Laravel, WordPress)', '.NET', 'Ruby on Rails', 'Low-Code-Plattformen'];
@@ -63,17 +63,17 @@ const eherNicht = ['Python (Django, FastAPI)', 'PHP (Laravel, WordPress)', '.NET
 <section class:list={['stack-sec bg-background relative overflow-x-clip py-14 lg:py-20', className]}>
   <div class="relative z-10 container max-w-6xl">
     <header data-reveal class="mx-auto max-w-3xl text-center">
-      <p class="text-brand-600 dark:text-brand-300 font-mono text-xs font-semibold tracking-[0.2em] uppercase">Womit wir arbeiten</p>
-      <h2 class="font-display text-foreground mt-3 text-2xl font-bold tracking-tight sm:text-3xl">
+      <p class="text-brand-600 dark:text-brand-300 text-xs font-semibold tracking-[0.18em] uppercase">Womit wir arbeiten</p>
+      <h2 class="font-display text-foreground mt-3 text-2xl font-bold tracking-tight text-balance sm:text-4xl">
         Das, was KI-Werkzeuge meistens bauen.
       </h2>
       {
         kompakt ? (
-          <p class="text-foreground-secondary mt-3 text-[0.95rem] leading-7">
+          <p class="text-foreground-secondary mx-auto mt-3 max-w-2xl text-[0.95rem] leading-7">
             Genau das bauen und betreiben wir seit Jahren, auch ohne KI.
           </p>
         ) : (
-          <p class="text-foreground-secondary mt-4 text-[0.95rem] leading-7">
+          <p class="text-foreground-secondary mx-auto mt-4 max-w-2xl text-[0.95rem] leading-7">
             Ob mit Claude Code, Cursor, ChatGPT, Lovable, Bolt oder v0 gebaut: Herauskommt in der Regel
             TypeScript mit React oder Next.js, dazu Postgres oder Supabase. Genau das bauen und betreiben
             wir seit Jahren, auch ohne KI.

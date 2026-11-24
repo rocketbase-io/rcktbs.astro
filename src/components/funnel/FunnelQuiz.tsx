@@ -58,6 +58,11 @@ interface FunnelQuizProps {
   rechnung?: RechnungsStrecke;
   /** Wer zurückruft: Foto, Name und Erfahrung direkt über den Formularfeldern. */
   kontaktPerson?: { bild: string; name: string; rolle: string };
+  /**
+   * Telefon freiwillig, E-Mail Pflicht. Reihenfolge dann Name, E-Mail, Telefon, mobil untereinander.
+   * Software-Check, 2026-11-24: In Welle 3 sahen 35 das Formular, 4 fingen an, keiner kam an.
+   */
+  phoneOptional?: boolean;
 }
 
 interface QuizAnswer {
@@ -106,6 +111,7 @@ export function FunnelQuiz({
   einordnung: einordnungsStrecke,
   rechnung: rechnungsStrecke,
   kontaktPerson,
+  phoneOptional = false,
 }: FunnelQuizProps) {
   // Schritte: 0..questions.length-1 = Fragen, questions.length = Kontakt
   const [step, setStep] = useState(0);
@@ -115,6 +121,14 @@ export function FunnelQuiz({
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+  // Fehler je Pflichtfeld, sichtbar unter dem Feld. Die Prüfung bleibt die des Browsers (`required`,
+  // `type=email`), nur seine Sprechblase wird unterdrückt: Im Browser der Facebook- und Instagram-App
+  // ist sie kaum zu sehen, der Klick auf Absenden wirkte dort wie ohne Reaktion.
+  const [feldFehler, setFeldFehler] = useState<Record<string, string>>({});
+  // Bis React übernommen hat, bleibt der Absende-Knopf gesperrt: Ein Absenden davor lief als
+  // GET an die Seite selbst, der Lead ging verloren und Name, Telefon, E-Mail standen in der URL.
+  const [bereit, setBereit] = useState(false);
+  useEffect(() => setBereit(true), []);
   const startedRef = useRef(false);
   const utmRef = useRef<Record<string, string>>({});
   // Die `?r=`-Kennung aus Brief oder persoenlicher Mail. Einmal beim Mount gelesen und in
@@ -189,6 +203,8 @@ export function FunnelQuiz({
   function feldVerlassen(ev: FocusEvent<HTMLFormElement>) {
     const feld = ev.target as unknown as HTMLInputElement;
     if (!PFLICHTFELDER.has(feld.name)) return;
+    // Ein leer gelassenes freiwilliges Telefon ist kein Abbruch.
+    if (phoneOptional && feld.name === 'phone' && !feld.value.trim()) return;
     meldeFormular('formular_feld', {
       feld: feld.name,
       aktion: feld.value.trim() ? 'ausgefuellt' : 'leer_verlassen',
@@ -197,6 +213,32 @@ export function FunnelQuiz({
   function feldUngueltig(ev: FormEvent<HTMLFormElement>) {
     const feld = ev.target as unknown as HTMLInputElement;
     if (feld.name) meldeFormular('formular_ungueltig', { feld: feld.name });
+    // Nur die Anzeige ändert sich: Das Absenden bleibt blockiert, `handleSubmit` läuft weiter erst
+    // mit gültigen Feldern, und das Tracking oben ist dasselbe wie vorher.
+    ev.preventDefault();
+    if (!feld.name) return;
+    const erstes = Object.keys(feldFehlerRef.current).length === 0;
+    feldFehlerRef.current[feld.name] = fehlertextFuer(feld);
+    setFeldFehler({ ...feldFehlerRef.current });
+    if (erstes) {
+      feld.focus({ preventScroll: true });
+      feld.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+  // Sammelt die Fehler eines Absende-Versuchs: Der Browser feuert `invalid` je Feld nacheinander.
+  const feldFehlerRef = useRef<Record<string, string>>({});
+  function absendenVersucht() {
+    feldFehlerRef.current = {};
+    melde('formular_absenden_versucht');
+  }
+  // Sobald ein Feld gültig ist, verschwindet sein Fehler, nicht erst beim nächsten Absenden.
+  function feldGeaendert(ev: FormEvent<HTMLFormElement>) {
+    const feld = ev.target as unknown as HTMLInputElement;
+    if (!feld.name || !feldFehler[feld.name] || !feld.validity.valid) return;
+    const rest = { ...feldFehler };
+    delete rest[feld.name];
+    delete feldFehlerRef.current[feld.name];
+    setFeldFehler(rest);
   }
 
   // Erreichte Schritte als eigene Ereignisse: Plausible zeigt pro Ereignis
@@ -208,9 +250,23 @@ export function FunnelQuiz({
   useEffect(() => {
     if (erreichtRef.current.has(step)) return;
     erreichtRef.current.add(step);
-    // Schritt 1 ist der Seitenaufruf, den zählt Plausible selbst. Ohne Fragen ist Schritt 1 schon
-    // das Formular: Die Insel lädt erst, wenn sie ins Bild kommt, also heißt das „Formular gesehen“.
+    // Schritt 1 ist der Seitenaufruf, den zählt Plausible selbst.
     if (step === 0 && !contactStep) return;
+    // Ohne Fragen ist Schritt 1 schon das Formular. Die Insel hydriert mit `client:idle` beim
+    // Laden, nicht im Bild; ohne Beobachter hieß „Kontaktschritt erreicht“ also nur
+    // „Seite mit JavaScript geöffnet“ (Review 2026-11-24). Jetzt erst, wenn die Karte sichtbar ist.
+    if (questions.length === 0 && cardRef.current && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (eintraege) => {
+          if (!eintraege.some((e) => e.isIntersecting)) return;
+          io.disconnect();
+          melde('funnel_kontakt_erreicht', { step: 1 });
+        },
+        { threshold: 0.3 }
+      );
+      io.observe(cardRef.current);
+      return () => io.disconnect();
+    }
     melde(contactStep ? 'funnel_kontakt_erreicht' : 'funnel_schritt_erreicht', {
       step: step + 1,
       ...(currentQuestion ? { question: currentQuestion.id } : {}),
@@ -321,7 +377,16 @@ export function FunnelQuiz({
 
     try {
       const response = await fetch(endpoint, { method: 'POST', body: formData });
-      const data = await response.json();
+      // Läuft die Function in ihr Zeitlimit, kommt HTML statt JSON. Der Lead liegt dann oft
+      // schon im Blob; deshalb kein „prüft eure Verbindung“, sondern ein eigener Fehler mit Status.
+      const data = await response.json().catch(() => null);
+      if (!data) {
+        setFormError(
+          'Das hat gerade nicht geklappt. Bitte versucht es in einer Minute noch einmal oder schreibt an marten@rocketbase.io.'
+        );
+        melde('funnel_fehler', { art: String(response.status), feld: 'antwort' });
+        return;
+      }
 
       if (data.success) {
         setSubmitted(true);
@@ -337,14 +402,33 @@ export function FunnelQuiz({
         trackMetaLead(eventId);
         scrollToCard();
       } else {
-        const errors = data.errors
-          ? (Object.values(data.errors).flat().join(' ') as string)
-          : 'Etwas ist schiefgelaufen. Bitte versucht es erneut.';
-        setFormError(errors);
-        melde('funnel_fehler', { art: 'validierung' });
+        // Fehler zu einem Feld stehen unter dem Feld, der Rest über dem Knopf.
+        const errors = (data.errors ?? {}) as Record<string, string[] | string>;
+        const jeFeld: Record<string, string> = {};
+        const rest: string[] = [];
+        for (const [feld, meldung] of Object.entries(errors)) {
+          const text = ([] as string[]).concat(meldung).join(' ');
+          if (['name', 'phone', 'email'].includes(feld)) jeFeld[feld] = text;
+          else rest.push(text);
+        }
+        feldFehlerRef.current = jeFeld;
+        setFeldFehler(jeFeld);
+        const erstesFeld = Object.keys(jeFeld)[0];
+        if (erstesFeld) {
+          const el = form.elements.namedItem(erstesFeld) as HTMLInputElement | null;
+          el?.focus({ preventScroll: true });
+          el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        setFormError(
+          rest.length || !erstesFeld
+            ? rest.join(' ') || 'Etwas ist schiefgelaufen. Bitte versucht es erneut.'
+            : null
+        );
+        melde('funnel_fehler', { art: String(response.status), feld: Object.keys(errors).join(',') || 'keins' });
       }
     } catch {
       setFormError('Senden fehlgeschlagen. Bitte prüft eure Verbindung und versucht es erneut.');
+      form.querySelector('[role="alert"]')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       melde('funnel_fehler', { art: 'netz' });
     } finally {
       setSubmitting(false);
@@ -473,7 +557,9 @@ export function FunnelQuiz({
                 onFocus={() => meldeFormular('formular_angefangen')}
                 onBlur={feldVerlassen}
                 onInvalidCapture={feldUngueltig}
+                onInputCapture={feldGeaendert}
                 className={kontaktPerson ? 'mt-2 space-y-3' : compact ? 'mt-5 space-y-4' : 'mt-6 space-y-4'}
+                method="post"
                 noValidate={false}
               >
                 {compact ? (
@@ -485,13 +571,44 @@ export function FunnelQuiz({
                     */}
                     {/* Mit Kontaktperson auch mobil zu zweit: Name, Telefon und Knopf sollen auf
                         einen Bildschirm passen, sonst sieht man nur Rechnung und Foto. */}
+                    {phoneOptional ? (
+                      // Telefon freiwillig: E-Mail rückt vor, eine Spalte auf jeder Breite. Zu zweit
+                      // waren die Felder in der Karte schmal, und Fehlertexte brachen um.
+                      <div className="grid gap-y-3">
+                        <Input label="Name" name="name" type="text" size="lg" required minLength={2} autoComplete="name" error={feldFehler.name} />
+                        <Input
+                          label="E-Mail"
+                          name="email"
+                          type="email"
+                          size="lg"
+                          required
+                         
+                          autoComplete="email"
+                          inputMode="email"
+                          pattern={EMAIL_MUSTER}
+                          error={feldFehler.email}
+                        />
+                        <Input
+                          label="Telefon (optional)"
+                          name="phone"
+                          type="tel"
+                          size="lg"
+                          autoComplete="tel"
+                          inputMode="tel"
+                          minLength={5}
+                          maxLength={50}
+                          hint={phoneHint}
+                          error={feldFehler.phone}
+                        />
+                      </div>
+                    ) : (
                     <div
                       className={cn(
                         'grid gap-x-3 gap-y-2',
                         kontaktPerson ? 'grid-cols-2' : 'sm:grid-cols-2'
                       )}
                     >
-                      <Input label="Name" name="name" type="text" size="lg" required autoComplete="name" requiredMark={markRequired} />
+                      <Input label="Name" name="name" type="text" size="lg" required minLength={2} autoComplete="name" requiredMark={markRequired} error={feldFehler.name} />
                       <Input
                         label="Telefon"
                         name="phone"
@@ -500,7 +617,10 @@ export function FunnelQuiz({
                         required
                         autoComplete="tel"
                         inputMode="tel"
+                        minLength={5}
+                        maxLength={50}
                         requiredMark={markRequired}
+                        error={feldFehler.phone}
                       />
                       <Input
                         label="E-Mail"
@@ -512,22 +632,28 @@ export function FunnelQuiz({
                         className={kontaktPerson ? 'col-span-2' : 'sm:col-span-2'}
                         autoComplete="email"
                         inputMode="email"
+                        pattern={EMAIL_MUSTER}
+                        error={feldFehler.email}
                       />
                     </div>
-                    {(phoneHint || markRequired) && (
-                      <p className="text-foreground-muted text-xs leading-5">
+                    )}
+                    {/* Mit freiwilligem Telefon ist nur dieses Feld markiert („optional“), Sternchen
+                        und „* Pflichtfeld“ entfallen: beides zugleich war doppelt (2026-11-24). */}
+                    {!phoneOptional && (phoneHint || markRequired) && (
+                      <p className="text-foreground-muted text-[0.8125rem] leading-5">
                         {markRequired && (
                           <>
                             <span className="text-brand-500">*</span> Pflichtfeld.{' '}
                           </>
                         )}
-                        {phoneHint}
+                        {/* Bei freiwilligem Telefon steht der Hinweis am Feld selbst. */}
+                        {!phoneOptional && phoneHint}
                       </p>
                     )}
                   </>
                 ) : (
                   <>
-                    <Input label="Name" name="name" type="text" required autoComplete="name" size="lg" />
+                    <Input label="Name" name="name" type="text" required minLength={2} autoComplete="name" size="lg" error={feldFehler.name} />
                     <Input
                       label="Telefon"
                       name="phone"
@@ -535,10 +661,13 @@ export function FunnelQuiz({
                       required
                       autoComplete="tel"
                       inputMode="tel"
+                      minLength={5}
+                        maxLength={50}
                       size="lg"
                       hint={phoneHint}
+                      error={feldFehler.phone}
                     />
-                    <Input label="E-Mail" name="email" type="email" required autoComplete="email" inputMode="email" size="lg" />
+                    <Input label="E-Mail" name="email" type="email" required autoComplete="email" inputMode="email" pattern={EMAIL_MUSTER} size="lg" error={feldFehler.email} />
                   </>
                 )}
 
@@ -548,15 +677,15 @@ export function FunnelQuiz({
                 </div>
 
                 {formError && (
-                  <p className="text-destructive text-sm" role="alert">
+                  <p className="text-error text-sm" role="alert">
                     {formError}
                   </p>
                 )}
 
                 <button
                   type="submit"
-                  disabled={submitting}
-                  onClick={() => melde('formular_absenden_versucht')}
+                  disabled={submitting || !bereit}
+                  onClick={absendenVersucht}
                   className={cn(buttonVariants({ size: 'lg', fullWidth: true }))}
                 >
                   {submitting ? (
@@ -572,7 +701,7 @@ export function FunnelQuiz({
                   )}
                 </button>
 
-                <p className="text-foreground-muted flex items-start gap-2 text-xs leading-5">
+                <p className="text-foreground-muted flex items-start gap-2 text-[0.8125rem] leading-5">
                   <ShieldCheck className="text-brand-500 mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
                   <span>
                     Eure Daten nutzen wir ausschließlich zur Bearbeitung eurer Anfrage. Details in
@@ -719,6 +848,29 @@ function StepHeader({
       </span>
     </div>
   );
+}
+
+/**
+ * Dieselben Grenzen wie das Schema in `netlify/functions/funnel-lead.ts`: Was der Browser
+ * durchlässt, darf der Server nicht ablehnen. Name ab 2, Telefon ab 5 Zeichen (minLength an den
+ * Feldern), E-Mail mit Punkt in der Domain, sonst lehnt zod `.email()` sie ab. Das Muster läuft
+ * im Browser mit dem `v`-Flag, deshalb nur Zeichen, die dort in Klassen erlaubt sind.
+ */
+const EMAIL_MUSTER = '[^@\\s]*[^@\\s.]@[^@\\s]+\\.[A-Za-z]{2,}';
+
+/** Was unter einem ungültigen Pflichtfeld steht: sagt, was fehlt und wofür. */
+function fehlertextFuer(feld: HTMLInputElement): string {
+  const leer = feld.validity.valueMissing;
+  switch (feld.name) {
+    case 'name':
+      return leer ? 'Bitte euren Namen eintragen.' : 'Bitte mindestens 2 Zeichen.';
+    case 'phone':
+      return leer ? 'Bitte eure Nummer für den Rückruf.' : 'Bitte prüft die Nummer, mindestens 5 Zeichen.';
+    case 'email':
+      return leer ? 'Bitte eure E-Mail eintragen.' : 'Bitte prüft die E-Mail, etwa name@firma.de.';
+    default:
+      return 'Bitte ausfüllen.';
+  }
 }
 
 export default FunnelQuiz;

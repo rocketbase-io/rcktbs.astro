@@ -7,6 +7,9 @@
  * Plausible-Event „musterbericht_download“ mit der Eigenschaft `ort` (blog, check, …). Das Ziel
  * muss in Plausible einmal unter Goals angelegt werden, sonst taucht es nicht in der Auswertung auf.
  *
+ * Kein `download`-Attribut: Die Browser der Facebook- und Instagram-App ignorieren es, auf dem
+ * iPhone passierte dann nichts. Ein neuer Tab zeigt die PDF direkt, die Landing bleibt offen.
+ *
  * Der Bericht ist ein Muster mit fiktivem Betrieb und hat nichts mit einem Kundenbericht zu tun.
  */
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
@@ -14,9 +17,14 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 interface Props {
   /** Wo die Karte steht, landet als Event-Eigenschaft in Plausible. */
   ort: string;
+  /**
+   * Kurzfassung für Anzeigen-Landings: ein Satz statt neun Zeilen, Knopf umrandet statt schwarz,
+   * damit er nicht mit dem Haupt-Knopf „Gespräch anfragen“ konkurriert.
+   */
+  kurz?: boolean;
 }
 
-const { ort } = Astro.props;
+const { ort, kurz = false } = Astro.props;
 const href = '/downloads/musterbericht-software-check.pdf';
 ---
 
@@ -26,17 +34,30 @@ const href = '/downloads/musterbericht-software-check.pdf';
   </span>
   <div class="min-w-0 flex-1">
     <p class="font-display text-foreground font-bold">Musterbericht zum Software-Check</p>
-    <p class="text-foreground-secondary mt-1 text-sm leading-6">
-      So sieht aus, was ihr am Ende bekommt: Ablauf in wenigen Tagen, Management-Summary, die Prüffelder über OWASP hinaus und wie eingestuft wird,
-      Befunde mit Fundstelle und Empfehlung, Reihenfolge, Papier zum Betrieb und Fragen an eure Dienstleister. Betrieb
-      und Befunde sind ausgedacht, es ist kein Bericht eines Kunden.
+    {kurz ? (
+      <p class="text-foreground-secondary mt-1 max-w-2xl text-sm leading-6">
+        So sieht euer Bericht am Ende aus: Zusammenfassung für die Geschäftsführung, jeder Fund mit Fundstelle,
+        Einstufung und Empfehlung. Betrieb und Befunde sind ausgedacht.
+      </p>
+    ) : (
+    <p class="text-foreground-secondary mt-1 max-w-2xl text-sm leading-6">
+      So sieht aus, was ihr am Ende bekommt: Ablauf in wenigen Tagen, eine Zusammenfassung für die Geschäftsführung, was wir
+      prüfen und wie wir einstufen, Befunde mit Fundstelle und Empfehlung, die Reihenfolge, Hinweise für den laufenden Betrieb
+      und Fragen an eure Dienstleister. Betrieb und Befunde sind ausgedacht, es ist kein Bericht eines Kunden.
     </p>
+    )}
   </div>
   <a
     href={href}
-    download
+    target="_blank"
+    rel="noopener"
     data-musterbericht={ort}
-    class="bg-foreground text-background hover:bg-foreground/85 inline-flex shrink-0 items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors"
+    class:list={[
+      kurz
+        ? 'border-border-strong bg-background text-foreground hover:bg-background-secondary border'
+        : 'bg-foreground text-background hover:bg-foreground/85',
+      'inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-md px-4 py-3 text-sm font-semibold transition-colors',
+    ]}
   >
     <Icon name="download" size="sm" />
     PDF, 10 Seiten

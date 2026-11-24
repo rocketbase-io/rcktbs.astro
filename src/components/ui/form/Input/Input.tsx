@@ -25,7 +25,7 @@ export function Input({ ref, label, error, hint, leadingIcon, trailingIcon, size
 
   const inputStyles = cn(
     inputVariants({ size }),
-    error && 'border-destructive focus-visible:ring-destructive',
+    error && 'border-error focus-visible:ring-error',
     leadingIcon ? config.leadingPadding : config.baseLeftPadding,
     trailingIcon ? config.trailingPadding : config.baseRightPadding
   );
@@ -73,13 +73,19 @@ export function Input({ ref, label, error, hint, leadingIcon, trailingIcon, size
       </div>
 
       {error && (
-        <p id={`${inputId}-error`} className="text-sm text-destructive">
-          {error}
+        // Icon und hängender Einzug: Bricht der Text um, beginnt die zweite Zeile unter dem Text,
+        // nicht unter dem Icon. Etwas kleiner als das Label, damit der Fehler nicht lauter ist als das Feld.
+        <p id={`${inputId}-error`} role="alert" className="text-error flex items-start gap-1.5 text-[0.8125rem] leading-5">
+          <svg aria-hidden="true" viewBox="0 0 24 24" className="mt-0.5 h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v4M12 16h.01" />
+          </svg>
+          <span className="text-pretty">{error}</span>
         </p>
       )}
 
       {hint && !error && (
-        <p id={`${inputId}-hint`} className="text-sm text-muted-foreground">
+        <p id={`${inputId}-hint`} className="text-muted-foreground text-[0.8125rem] leading-5 text-pretty">
           {hint}
         </p>
       )}

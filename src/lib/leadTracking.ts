@@ -66,13 +66,14 @@ export function sammleAttribution(): Record<string, string> {
   const attribution: Record<string, string> = {};
   for (const key of [...UTM_KEYS, ...CLICK_ID_KEYS]) {
     const value = params.get(key);
-    if (value) attribution[key] = value;
+    // Gekürzt wie am Server (500 Zeichen), damit ein langer Wert nie den Lead kostet.
+    if (value) attribution[key] = value.slice(0, 500);
   }
 
   if (Object.keys(attribution).length > 0) {
     // Der Referrer gehört zum Einstieg und wird mitgesichert, nicht der einer
     // Folgeseite — sonst stünde dort die eigene Domain.
-    if (document.referrer) attribution.referrer = document.referrer;
+    if (document.referrer) attribution.referrer = document.referrer.slice(0, 500);
     try {
       if (!window.sessionStorage.getItem(ATTRIBUTION_KEY)) {
         window.sessionStorage.setItem(ATTRIBUTION_KEY, JSON.stringify(attribution));

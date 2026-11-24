@@ -373,6 +373,10 @@ const configJson = JSON.stringify(consentConfig);
             w.__consentState = { decided: true, categories: stored.categories };
             updateGCM(stored.categories);
             injectAnalyticsStrict(stored.categories);
+            // Wer früher zugestimmt hat, bekommt das Pixel sonst nie: Analytics.astro prüft den
+            // Zustand im <head>, bevor er hier wiederhergestellt ist, und hört danach nur auf das
+            // Ereignis. Das Laden ist dort gegen doppelte Aufrufe geschützt.
+            window.dispatchEvent(new CustomEvent('consent-updated', { detail: { categories: stored.categories } }));
           }
 
           const state = w.__consentState;

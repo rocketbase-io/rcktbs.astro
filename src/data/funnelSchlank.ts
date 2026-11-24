@@ -22,14 +22,67 @@ export interface SchlankTor {
   einordnung?: 'software-check';
   fuerWen: string;
   headline: string;
+  /**
+   * Optional: H1 und Lead je Anzeige, gewählt über `utm_content` (enthält den Code). Ein Inline-Skript
+   * direkt hinter dem Hero tauscht den Text vor dem ersten Bild, so steht der Hook der Anzeige im
+   * ersten Bildschirm (Message-Match). Ohne Treffer bleiben `headline` und `lead`.
+   */
+  varianten?: { utm: string; headline: string; lead: string; leadMobil: string }[];
+  /** Zeile neben Martens Foto im Hero, zwei Zeilen. Fehlt sie, steht dort, dass er anruft. */
+  martenZeile?: [string, string];
   lead: string;
   /** Mobil kürzer, damit das Bild in die erste Bildschirmhöhe rückt. */
   leadMobil: string;
   /** Vier Fakten zu Zeit, Aufwand und Risiko. */
   fakten: string[];
   logos: { key: string; name: string; hoch?: boolean }[];
-  wasEsIst: { titel: string; text: string; schritte: { titel: string; text: string }[] };
+  /** Logo-Key des Falls (Slot `fall`): der Fall trägt sein Logo selbst, die übrigen Logos stehen darunter als „Aus Erfahrungen mit weiteren Kunden“. */
+  fallLogo?: string;
+  /**
+   * `punkte`: im kompakten Layout (Tore mit `faktenKarten`) drei Zeilen mit Icon neben dem Bild statt
+   * der Schritt-Karten. `titel` mit `|` wie die H1: zweiter Teil in Markenblau.
+   */
+  wasEsIst: {
+    kicker?: string;
+    titel: string;
+    text: string;
+    schritte: { titel: string; text: string }[];
+    punkte?: { icon: string; titel: string; text: string }[];
+  };
   beweis: { hinweis: string };
+  /**
+   * Optional: die Sorgen der Anzeigen in deren Worten, direkt unter dem Hero. Jede Karte nennt die
+   * Sorge und was wir dazu prüfen, damit wer von einer Anzeige kommt, seine Angst sofort wiederfindet
+   * (Message-Match, Software-Check Welle 4, 2026-11-23). `werkzeuge` ist ein Satz darunter.
+   */
+  /** FAQ als eigene, grau hinterlegte Section mit Karten statt einer Liste direkt unter dem Vergleich. */
+  faqAbgesetzt?: boolean;
+  /** Telefon im Formular freiwillig, E-Mail Pflicht; Knöpfe sagen „Gespräch anfragen“ statt „Rückruf“. */
+  telefonFreiwillig?: boolean;
+  /** Abschnitt „Was sich nach dem Check ändert“ weglassen (kürzere Seite, Software-Check KI). */
+  ohneVergleich?: boolean;
+  /**
+   * Fakten im Hero als Kacheln mit Icon, kurzem Titel und Zusatz statt als Haken-Liste. Mit dieser
+   * Liste wird der Hero kompakter gesetzt: H1 kleiner, Knopf und Marten in einer Zeile, Kacheln
+   * als Leiste unter beiden Spalten (Software-Check KI, 2026-11-24).
+   */
+  faktenKarten?: { icon: string; titel: string; text: string }[];
+  probleme?: {
+    kicker?: string;
+    titel: string;
+    /** Zweiter Teil der Überschrift, farbig abgesetzt. */
+    akzent?: string;
+    /** `szene`: kleine Illustration oben in der Karte (ProblemSzene.astro). */
+    karten: { icon: string; sorge: string; text: string; pruefen: string; szene?: 'leck' | 'ausfall' | 'rechnung' }[];
+    /**
+     * Werkzeuge als Chips unter den Karten. `logo` ist der Exportname aus simple-icons (z. B.
+     * `siCursor`); sonst sucht die Seite `src/assets/check/werkzeuge/<name klein>.svg`, und erst ohne
+     * beides steht ein Monogramm. `weitere`: Chip am Ende, dass die Liste nicht abschließend ist.
+     */
+    werkzeuge?: { text: string; namen: string[]; logos?: Record<string, string>; weitere?: string };
+    /** Kleine Zeile unter den Karten: Die drei Sorgen sind Beispiele, geprüft wird mehr. */
+    mehr?: string;
+  };
   /** Die Zahl, die den Schmerz zeigt. Fehlt, wenn es keine belegte gibt. */
   schmerz?: { text: string; zahl: string; einheit: string };
   vergleichTitel: string;
@@ -429,5 +482,149 @@ export const softwareCheck: SchlankTor = {
  */
 export const softwareCheckFunnel: SchlankTor = {
   ...softwareCheck,
+  faqAbgesetzt: true,
+  martenZeile: ['Marten Prieß prüft eure Software selbst.', 'Softwarearchitekt, über 15 Jahre Erfahrung.'],
   fakten: ['Bericht nach 4 bis 5 Werktagen', 'Nach OWASP ASVS und darüber hinaus', 'Für Kunden und Auditoren', 'Fester Preis, bevor wir anfangen'],
+};
+
+/**
+ * Zweite Anzeigen-Landing /f/software-check-ki/ neben /f/software-check/. Dieselben Fakten, aber in
+ * den Worten der Anzeigen (Welle 4: „Eure Software, mit KI selbst gebaut“). Zielgruppe sind Betriebe
+ * ohne eigene Entwickler, deshalb keine Fachwörter. Jede Aussage einer Anzeige muss hier stehen:
+ * SC-KI (zweite Meinung, Backups, Passwörter), SC-VERANTWORTUNG (wer ist verantwortlich, Tool fällt
+ * aus, Daten weg, falsch gerechnet, Kundendaten offen), SC-INTERN (Datenleck, Löhne, Kalkulationen,
+ * Angebote, offen im Netz), SC-BETRIEB (ganze Firma hängt dran, Ausfall, Backups) und Marten als Prüfer. Eigenes `funnel`, damit Plausible und Meta die
+ * beiden Seiten trennen (2026-11-23).
+ */
+export const softwareCheckFunnelKi: SchlankTor = {
+  ...softwareCheck,
+  funnel: 'software-check-ki',
+  leadEvent: 'software_check_ki_lead',
+  faqAbgesetzt: true,
+  telefonFreiwillig: true,
+  fallLogo: 'delta-sport_logo',
+  ohneVergleich: true,
+  fuerWen: 'Software\u2011Check · Eure Software, mit KI selbst gebaut',
+  // `|` trennt die H1 in zwei Schläge, der zweite steht in Markenblau wie auf der Startseite.
+  headline: 'Mit KI selbst gebaut?|Holt euch eine zweite Meinung.',
+  lead: 'Eure KI sagt, alles ist sicher. Wir schauen für euch nach: wer an eure Daten kommt, ob die Backups laufen, wo die Passwörter liegen und was passiert, wenn etwas ausfällt.',
+  leadMobil: 'Eure KI sagt, alles ist sicher. Wir schauen für euch nach: wer an eure Daten kommt, ob die Backups laufen, wo die Passwörter liegen.',
+  // Die Werktage stehen in den Fakten direkt darunter, mobil deshalb nicht noch einmal im Lead.
+  // Reihenfolge zählt: Der Tausch nimmt den ersten Code, der in utm_content steckt, also steht
+  // SC-KI3 vor SC-KI (sonst trifft „SC-KI3-4“ zuerst auf „SC-KI“).
+  varianten: [
+    {
+      utm: 'SC-KI3',
+      headline: 'Die KI sagt „sicher“.|Wir prüfen, ob’s stimmt.',
+      lead: 'Geprüft hat die KI nicht: wer welche Daten sehen darf, ob die Backups wirklich laufen und wo die Passwörter liegen. Das prüfen wir für euch.',
+      leadMobil: 'Geprüft hat die KI nicht: wer welche Daten sehen darf, ob die Backups wirklich laufen, wo die Passwörter liegen. Das prüfen wir für euch.',
+    },
+    {
+      utm: 'SC-KI',
+      headline: 'Eure KI sagt „sicher“.|Holt euch eine zweite Meinung.',
+      lead: 'Marten Prieß schaut sich eure Software für euch genau an: wer welche Daten sieht, ob die Backups laufen, wo die Passwörter liegen und was passiert, wenn etwas ausfällt.',
+      leadMobil: 'Marten Prieß schaut sich eure Software für euch genau an: wer welche Daten sieht, ob die Backups laufen, wo die Passwörter liegen.',
+    },
+    {
+      utm: 'SC-VERANTWORTUNG',
+      headline: 'Geht was schief, wer ist verantwortlich?|Ihr. Nicht die KI.',
+      lead: 'Fällt das Tool aus, sind Daten weg oder rechnet es falsch, fragt euer Kunde euch. Wir prüfen eure Software für euch, bevor es so weit kommt.',
+      leadMobil: 'Fällt das Tool aus, sind Daten weg oder rechnet es falsch, fragt euer Kunde euch. Wir prüfen es für euch, bevor es so weit kommt.',
+    },
+    {
+      utm: 'SC-BETRIEB',
+      headline: 'Die ganze Firma hängt an eurem Tool.|Wir prüfen, ob es hält.',
+      lead: 'Montag früh antwortet das Tool nicht, und Büro, Vertrieb und Buchhaltung stehen. Wir prüfen für euch, was bei einem Ausfall passiert, ob die Backups laufen und ob es hält, wenn alle gleichzeitig arbeiten.',
+      leadMobil: 'Montag früh antwortet das Tool nicht: Büro, Vertrieb und Buchhaltung stehen. Wir prüfen für euch, was bei einem Ausfall passiert und ob die Backups laufen.',
+    },
+    {
+      utm: 'SC-INTERN',
+      headline: 'Löhne, Kalkulationen, Angebote:|offen im Netz?',
+      lead: 'Was euer Team eintippt, soll nur sehen, wer es sehen darf. Wir suchen das Datenleck in eurem KI-Tool für euch, auch von außen und ohne Passwort, bevor es Fremde oder Wettbewerber finden.',
+      leadMobil: 'Was euer Team eintippt, soll nur sehen, wer es sehen darf. Wir suchen das Datenleck in eurem KI-Tool, auch von außen, bevor es Fremde finden.',
+    },
+  ],
+  martenZeile: ['Marten Prieß prüft eure Software selbst.', 'Softwarearchitekt, über 15 Jahre Erfahrung.'],
+  fakten: ['Bericht nach 4 bis 5 Werktagen', 'Erstgespräch kostenlos, 15 Minuten', 'Auch ohne eigene Entwickler', 'Fester Preis, bevor wir anfangen'],
+  faktenKarten: [
+    { icon: 'clock', titel: '4 bis 5 Werktage', text: 'bis zum Prüfbericht' },
+    { icon: 'phone', titel: '15 Minuten', text: 'Erstgespräch, kostenlos' },
+    { icon: 'users', titel: 'Ohne Entwickler', text: 'ihr zeigt, wir prüfen' },
+    { icon: 'check-circle', titel: 'Festpreis', text: 'bevor wir anfangen' },
+  ],
+  probleme: {
+    kicker: 'Worum es geht',
+    titel: 'Mit KI selbst gebaut.',
+    akzent: 'Und jetzt arbeitet der ganze Betrieb damit.',
+    karten: [
+      {
+        icon: 'eye',
+        szene: 'leck',
+        sorge: 'Ein Datenleck merkt man nicht',
+        text: 'Löhne, Kalkulationen, Angebote, Kundendaten: Was drinsteht, soll nur sehen, wer es sehen darf. Ob es offen im Netz liegt, auch ohne Passwort lesbar, weiß oft keiner.',
+        pruefen: 'Anmeldung, Rechte und Zugänge, auch von außen. Wir suchen das Datenleck, bevor es andere finden.',
+      },
+      {
+        icon: 'zap',
+        szene: 'ausfall',
+        sorge: 'Tool fällt aus, Daten sind weg',
+        text: 'Arbeiten alle gleichzeitig damit oder fällt etwas aus, steht schnell der ganze Betrieb. Und sind Daten weg, hilft nur ein Backup, das auch funktioniert.',
+        pruefen: 'Abläufe, Ausfälle, Backups und ob jemand merkt, wenn etwas nicht geht.',
+      },
+      {
+        icon: 'shield',
+        szene: 'rechnung',
+        sorge: 'Geht was schief, haftet ihr.',
+        text: 'Nicht die KI. Rechnet das Tool falsch oder sind Kundendaten offen, fragt euer Kunde euch. Bei einem Datenleck drohen Bußgeld und Schadenersatz.',
+        pruefen: 'Ob das Tool richtig rechnet: Die wichtigsten Abläufe rechnen wir von Hand nach.',
+      },
+    ],
+    // Nur, was auch im Prüfbericht steht (BerichtMock, Musterbericht): Passwörter, Updates, Datenschutz.
+    mehr: 'Und vieles mehr: Passwörter im Code, veraltete Bausteine, fehlende Updates, Datenschutz. Wir gehen das ganze System durch, nicht nur diese drei Punkte.',
+    werkzeuge: {
+      text: 'Egal womit gebaut',
+      namen: ['ChatGPT', 'Claude Code', 'Cursor', 'Lovable', 'Bolt', 'v0'],
+      // simple-icons, wo vorhanden; ChatGPT, Lovable, Bolt als Datei in src/assets/check/werkzeuge/
+      // (OpenAI aus simple-icons 10.4, Lovable aus @lobehub/icons-static-svg, Bolt von bolt.new).
+      logos: { 'Claude Code': 'siClaude', Cursor: 'siCursor', v0: 'siV0' },
+      weitere: 'und weitere',
+    },
+  },
+  wasEsIst: {
+    ...softwareCheck.wasEsIst,
+    kicker: 'So prüfen wir',
+    titel: 'Eine zweite Meinung|von Leuten, die selbst Software bauen.',
+    text: 'Eure KI sagt, alles ist sicher. Geprüft hat sie es nicht. Marten nimmt sich eure Software vor und prüft sie für euch, von Hand und mit Werkzeugen.',
+    // Belegt im Musterbericht (Deckblatt: „nach der Systematik des OWASP ASVS, dazu Geschäftslogik,
+    // Ausfall von Gegenstellen, Auslieferung und Betrieb“; „0 Lücken von außen“) und im FAQ.
+    punkte: [
+      { icon: 'search', titel: 'Von innen und von außen', text: 'Wir lesen den Code und probieren aus, was ein Fremder ohne Passwort erreicht.' },
+      { icon: 'shield', titel: 'Nach anerkanntem Prüfkatalog', text: 'Nach der Systematik des OWASP ASVS, dazu Geschäftslogik, Ausfälle und Betrieb.' },
+      { icon: 'file-text', titel: 'Zu jedem Fund ein Vorschlag', text: 'Eingestuft nach Dringlichkeit, mit Fundstelle. Ihr oder eure KI könnt direkt weiterarbeiten.' },
+    ],
+    // Keine Schritte: Was geprüft wird, steht schon unter jeder Sorgen-Karte, der Ablauf neben dem
+    // Formular. Hier noch einmal drei Karten waren 900 px Wiederholung (Review 2026-11-24).
+    schritte: [],
+  },
+  vergleich: [
+    ['Die Software läuft, von außen hat sie keiner gesehen', 'Jemand mit Erfahrung hat sie geprüft'],
+    ['Ihr wisst nicht, ob ein Kunde die Daten eines anderen sieht', 'Anmeldung, Rechte und Zugänge sind geprüft'],
+    ['Ein Kunde fragt nach einem Nachweis', 'Ihr schickt den Prüfbericht'],
+    ['Unklar, was zuerst zu tun ist', 'Ihr wisst, was dringend ist und was warten kann'],
+  ],
+  schlussTitel: 'Fragt Marten, ob sich ein Check für euch lohnt',
+  schlussText: 'Ob danach ein Check folgt, entscheidet ihr',
+  fragenUndAntworten: [
+    { q: 'Was kostet das?', a: '2.400 € netto, Festpreis für ein System. Darin: die Prüfung auf Sicherheitslücken nach einem anerkannten Prüfkatalog (OWASP ASVS), die wichtigsten Abläufe, der Bericht mit einer Zusammenfassung für die Geschäftsführung und der Abschlusstermin. Ist das System größer, sagen wir das nach dem Zeigen mit Preis für den Rest, und ihr entscheidet.' },
+    { q: 'Prüft ihr nach, ob alles behoben ist?', a: 'Auf Wunsch, innerhalb von sechs Wochen nach dem Bericht, für 800 €. Wir gehen die Befunde noch einmal durch und schauen uns an, was ihr seitdem geändert habt. Ihr bekommt je Befund behoben, teilweise oder offen.' },
+    { q: 'Ist das ein Angriffstest (Penetrationstest)?', a: 'Nein. Bei einem Penetrationstest greifen Spezialisten euer System gezielt an. Wir lesen und prüfen die Software von innen und außen. Braucht ihr einen Angriffstest, sagen wir es und holen einen Partner dazu.' },
+    { q: 'Bekommen wir ein Zertifikat?', a: 'Nein, das stellen Prüfstellen aus. Ihr bekommt einen Bericht, den ihr Kunden zeigen könnt.' },
+    { q: 'Müssen wir danach alles neu bauen?', a: 'Selten. Der Bericht sagt je Fund, ob ihr ihn so lassen, umbauen oder neu machen solltet.' },
+    { q: 'Wir haben keinen eigenen Entwickler. Geht das trotzdem?', a: 'Ja, dafür ist der Check gedacht. Ihr zeigt uns die Software selbst oder wer sie gebaut hat. Danach prüfen wir sie für euch, und der Bericht erklärt jeden Fund so, dass ihr oder eure KI damit weiterarbeiten könnt.' },
+  ],
+  schlussSchritte: [
+    { wann: 'Kostenlos, 15 Minuten', titel: 'Marten meldet sich bei euch', text: 'Per Anruf oder per E-Mail mit Terminvorschlägen. Ihr erzählt, was gebaut ist und was ansteht.' },
+    { wann: 'Tag 1 bis 4', titel: 'Ihr zeigt uns eure Software', text: 'Ihr selbst oder wer sie gebaut hat. Danach prüfen wir sie für euch.' },
+    { wann: 'Tag 5', titel: 'Ihr bekommt den Prüfbericht', text: 'Wir erklären euch, was dringend ist und was warten kann.' },
+  ],
 };

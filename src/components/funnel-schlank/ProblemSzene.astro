@@ -1,0 +1,87 @@
+---
+/**
+ * Kleine Szene oben in einer Sorgen-Karte, in der Formensprache des Prüfberichts im Hero (graue
+ * Zeilen, Mono-Kopf, Ampelpunkte). Zeigt die Sorge als Zustand, den man in einer Sekunde liest.
+ * Reine Illustration mit erfundenen, absichtlich alltäglichen Werten, kein Befund eines Kunden.
+ * Einzige Tatsache darin: die 72 Stunden der DSGVO-Meldepflicht (Art. 33).
+ */
+interface Props {
+  art: 'leck' | 'ausfall' | 'rechnung';
+}
+const { art } = Astro.props;
+
+type Zeile = { name: string; wert: string; stand: 'ok' | 'teils' | 'offen' };
+const szenen: Record<Props['art'], { kopf: string; zeilen: Zeile[] }> = {
+  leck: {
+    kopf: 'Abruf ohne Anmeldung',
+    zeilen: [
+      { name: 'Löhne', wert: 'lesbar', stand: 'offen' },
+      { name: 'Kalkulationen', wert: 'lesbar', stand: 'offen' },
+      { name: 'Angebote', wert: 'gesperrt', stand: 'ok' },
+    ],
+  },
+  ausfall: {
+    kopf: 'Montag, 7:12 Uhr',
+    zeilen: [
+      { name: 'Euer Tool', wert: 'antwortet nicht', stand: 'offen' },
+      { name: 'Letztes Backup', wert: 'vor 23 Tagen', stand: 'teils' },
+      { name: 'Warnung an', wert: 'niemanden', stand: 'offen' },
+    ],
+  },
+  rechnung: {
+    kopf: 'Angebot 1042, nachgerechnet',
+    zeilen: [
+      { name: 'Summe laut Tool', wert: '12.400 €', stand: 'teils' },
+      { name: 'Von Hand', wert: '12.040 €', stand: 'ok' },
+      { name: 'Datenleck melden', wert: 'binnen 72 h', stand: 'offen' },
+    ],
+  },
+};
+const { kopf, zeilen } = szenen[art];
+---
+
+<div class="problem-szene bg-background-secondary rounded-2xl p-3.5" aria-hidden="true">
+  <p class="text-foreground-muted font-mono text-[0.625rem] font-semibold tracking-[0.18em] uppercase">{kopf}</p>
+  <ul class="mt-2 space-y-1">
+    {
+      zeilen.map((z) => (
+        <li class="bg-background flex items-center gap-2 rounded-lg px-2.5 py-1 text-xs">
+          <span class:list={['h-2 w-2 shrink-0 rounded-full', `ist-${z.stand}`]} />
+          <span class="text-foreground-secondary min-w-0 truncate">{z.name}</span>
+          <span class:list={['ml-auto shrink-0 font-mono text-[0.6875rem] font-semibold', `wert-${z.stand}`]}>{z.wert}</span>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style>
+  /* Dieselben Ampelfarben wie BerichtMock. */
+  .ist-ok {
+    background: oklch(68% 0.17 150);
+  }
+  .ist-teils {
+    background: oklch(80% 0.16 85);
+  }
+  .ist-offen {
+    background: oklch(62% 0.2 25);
+  }
+  .wert-ok {
+    color: oklch(48% 0.13 150);
+  }
+  .wert-teils {
+    color: oklch(52% 0.13 75);
+  }
+  .wert-offen {
+    color: oklch(50% 0.19 25);
+  }
+  :global(.dark) .wert-ok {
+    color: oklch(80% 0.12 150);
+  }
+  :global(.dark) .wert-teils {
+    color: oklch(85% 0.12 85);
+  }
+  :global(.dark) .wert-offen {
+    color: oklch(78% 0.14 25);
+  }
+</style>

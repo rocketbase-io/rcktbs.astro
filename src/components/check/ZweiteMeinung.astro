@@ -1,0 +1,139 @@
+---
+/**
+ * Das Bild der Anzeige SC-KI auf der Seite, als Gegenüberstellung: dieselbe Frage, links antwortet
+ * die KI mit vier grünen Haken, rechts steht, was Marten beim Prüfen findet. Der Unterschied ist das
+ * Argument, ohne Satz dazu (2026-11-24, ersetzt die Fassung mit Chat und einer Befund-Karte).
+ *
+ * Die Befunde sind dieselben wie in BerichtMock (B-003, B-007, B-012), also kein neuer Fall.
+ * Illustration, kein Bericht eines Kunden.
+ */
+import { Picture } from 'astro:assets';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import founderPortrait from '@/assets/rocketbase/founder-marten-priess.jpg';
+
+const zeilen = [
+  { feld: 'Anmeldung', stand: 'ok', befund: 'In Ordnung' },
+  { feld: 'Wer sieht was', stand: 'offen', befund: 'Kunden sehen fremde Projekte' },
+  { feld: 'Passwörter', stand: 'offen', befund: 'Steht offen im Code' },
+  { feld: 'Updates', stand: 'teils', befund: '14 Bausteine veraltet' },
+] as const;
+---
+
+<div class="zweite-meinung border-border bg-card relative mx-auto w-full max-w-md overflow-hidden rounded-[1.6rem] border shadow-[0_28px_60px_-20px_rgba(34,43,74,0.28)] lg:max-w-[30rem]">
+  {/* Die Frage, wie man sie seiner KI stellt. */}
+  <div class="border-border/70 border-b p-4 sm:p-5">
+    <p class="text-foreground-muted font-mono text-[0.625rem] font-semibold tracking-[0.18em] uppercase">Gleiche Frage</p>
+    <p class="bg-foreground text-background mt-2.5 inline-block rounded-2xl rounded-bl-md px-3.5 py-2 text-sm">Ist unser Kundenportal sicher?</p>
+  </div>
+
+  {/* Kopf der beiden Antworten. */}
+  <div class="grid grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] text-xs">
+    <div class="bg-background-secondary/70 flex items-center gap-2 px-4 py-3 sm:px-5">
+      <span class="bg-background text-foreground-muted flex h-7 w-7 shrink-0 items-center justify-center rounded-full">
+        <Icon name="zap" size="xs" />
+      </span>
+      <span class="text-foreground font-semibold">Eure KI</span>
+    </div>
+    <div class="flex items-center gap-2 px-4 py-3 sm:px-5">
+      <Picture
+        src={founderPortrait}
+        alt="Marten Prieß"
+        widths={[56, 112]}
+        sizes="1.75rem"
+        formats={['avif', 'webp']}
+        class="h-7 w-7 rounded-full object-cover object-[center_22%]"
+        pictureAttributes={{ class: 'shrink-0' }}
+        loading="lazy"
+      />
+      <span class="leading-4">
+        <span class="text-foreground block font-semibold">Zweite Meinung</span>
+        <span class="text-foreground-muted">Marten Prieß</span>
+      </span>
+    </div>
+  </div>
+
+  <ul>
+    {
+      zeilen.map((z, i) => (
+        <li class="border-border/70 grid grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] border-t text-xs" style={`--i: ${i}`}>
+          <div class="bg-background-secondary/70 flex items-center gap-2 px-4 py-2.5 sm:px-5">
+            <span class="ki-haken flex h-4 w-4 shrink-0 items-center justify-center rounded-full">
+              <Icon name="check" size="xs" />
+            </span>
+            <span class="text-foreground-secondary min-w-0 truncate">{z.feld}</span>
+          </div>
+          <div class="flex items-center gap-2 px-4 py-2.5 sm:px-5">
+            <span class:list={['h-2 w-2 shrink-0 rounded-full', `ist-${z.stand}`]} />
+            <span class:list={['min-w-0 leading-4 font-semibold', `wert-${z.stand}`]}>{z.befund}</span>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+
+  {/* Fazit je Spalte: das, was hängen bleibt. */}
+  <div class="border-border/70 grid grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] border-t">
+    <div class="bg-background-secondary/70 px-4 py-3.5 sm:px-5">
+      <p class="font-display text-foreground text-sm font-bold">„Alles sicher.“</p>
+    </div>
+    <div class="px-4 py-3.5 sm:px-5">
+      {/* In den Worten der Seite („dringend“), nicht als offen/teilweise. Das dritte heißt „bald angehen“,
+          nicht „kann warten“: das Update ist im Bericht „mittel“, kein Notfall, aber auch nicht egal. */}
+      <p class="font-display text-sm font-bold">
+        <span class="whitespace-nowrap text-[oklch(50%_0.19_25)]">2 dringend,</span> <span class="whitespace-nowrap text-[oklch(52%_0.13_75)]">1 bald angehen</span>
+      </p>
+      <p class="text-foreground-muted mt-0.5 text-[0.7rem] leading-4">Jeder Fund mit Fundstelle und Vorschlag</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ki-haken {
+    background: oklch(68% 0.17 150 / 0.16);
+    color: oklch(48% 0.13 150);
+  }
+  .ist-ok {
+    background: oklch(68% 0.17 150);
+  }
+  .ist-teils {
+    background: oklch(80% 0.16 85);
+  }
+  .ist-offen {
+    background: oklch(62% 0.2 25);
+  }
+  .wert-ok {
+    color: oklch(48% 0.13 150);
+  }
+  .wert-teils {
+    color: oklch(52% 0.13 75);
+  }
+  .wert-offen {
+    color: oklch(50% 0.19 25);
+  }
+  :global(.dark) .wert-ok,
+  :global(.dark) .ki-haken {
+    color: oklch(80% 0.12 150);
+  }
+  :global(.dark) .wert-teils {
+    color: oklch(85% 0.12 85);
+  }
+  :global(.dark) .wert-offen {
+    color: oklch(78% 0.14 25);
+  }
+  /* Martens Spalte läuft Zeile für Zeile ein, sobald die Szene an ist; die KI-Spalte steht sofort. */
+  :global(html.szenen-ready) :global([data-szene]:not([data-szene='an'])) .zweite-meinung li > div:last-child {
+    opacity: 0;
+    translate: 6px 0;
+  }
+  .zweite-meinung li > div:last-child {
+    transition:
+      opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      translate 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(200ms + var(--i, 0) * 180ms);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .zweite-meinung li > div:last-child {
+      transition: none;
+    }
+  }
+</style>
