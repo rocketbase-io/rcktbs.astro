@@ -540,8 +540,8 @@ export const softwareCheckFunnelKi: SchlankTor = {
     {
       utm: 'SC-INTERN',
       headline: 'Löhne, Kalkulationen, Angebote:|offen im Netz?',
-      lead: 'Was euer Team eintippt, soll nur sehen, wer es sehen darf. Wir suchen das Datenleck in eurem KI-Tool für euch, auch von außen und ohne Passwort, bevor es Fremde oder Wettbewerber finden.',
-      leadMobil: 'Was euer Team eintippt, soll nur sehen, wer es sehen darf. Wir suchen das Datenleck in eurem KI-Tool, auch von außen, bevor es Fremde finden.',
+      lead: 'Was euer Team eintippt, soll nur sehen, wer es sehen darf. Wir prüfen für euch, wer an eure Daten kommt, auch von außen und ohne Passwort, bevor es Fremde finden.',
+      leadMobil: 'Was euer Team eintippt, soll nur sehen, wer es sehen darf. Wir prüfen für euch, wer an eure Daten kommt, auch von außen.',
     },
   ],
   martenZeile: ['Marten Prieß prüft eure Software selbst.', 'Softwarearchitekt, über 15 Jahre Erfahrung.'],
@@ -620,11 +620,12 @@ export const softwareCheckFunnelKi: SchlankTor = {
     { q: 'Ist das ein Angriffstest (Penetrationstest)?', a: 'Nein. Bei einem Penetrationstest greifen Spezialisten euer System gezielt an. Wir lesen und prüfen die Software von innen und außen. Braucht ihr einen Angriffstest, sagen wir es und holen einen Partner dazu.' },
     { q: 'Bekommen wir ein Zertifikat?', a: 'Nein, das stellen Prüfstellen aus. Ihr bekommt einen Bericht, den ihr Kunden zeigen könnt.' },
     { q: 'Müssen wir danach alles neu bauen?', a: 'Selten. Der Bericht sagt je Fund, ob ihr ihn so lassen, umbauen oder neu machen solltet.' },
+    { q: 'Wer sieht unsere Daten und unseren Code?', a: 'Wie wir an die Software kommen und was vertraulich bleibt, vereinbaren wir im Erstgespräch mit euch, bevor wir anfangen.' },
     { q: 'Wir haben keinen eigenen Entwickler. Geht das trotzdem?', a: 'Ja, dafür ist der Check gedacht. Ihr zeigt uns die Software selbst oder wer sie gebaut hat. Danach prüfen wir sie für euch, und der Bericht erklärt jeden Fund so, dass ihr oder eure KI damit weiterarbeiten könnt.' },
   ],
   schlussSchritte: [
     { wann: 'Kostenlos, 15 Minuten', titel: 'Marten meldet sich bei euch', text: 'Per Anruf oder per E-Mail mit Terminvorschlägen. Ihr erzählt, was gebaut ist und was ansteht.' },
-    { wann: 'Tag 1 bis 4', titel: 'Ihr zeigt uns eure Software', text: 'Ihr selbst oder wer sie gebaut hat. Danach prüfen wir sie für euch.' },
+    { wann: 'Tag 1 bis 4', titel: 'Ihr zeigt uns eure Software', text: 'Ihr selbst oder wer sie gebaut hat, etwa 3 Stunden von euch. Danach prüfen wir sie für euch.' },
     { wann: 'Tag 5', titel: 'Ihr bekommt den Prüfbericht', text: 'Wir erklären euch, was dringend ist und was warten kann.' },
   ],
 };

@@ -37,7 +37,7 @@ const kapitel = einfach
 
 const befunde = einfach
   ? ([
-      { id: 'B-003', schwere: 'hoch', text: 'Ein Kunde kann die Projekte anderer Kunden öffnen.' },
+      { id: 'B-003', schwere: 'kritisch', text: 'Ein Kunde kann die Projekte anderer Kunden öffnen.' },
       { id: 'B-007', schwere: 'hoch', text: 'Das Passwort für den Mailversand steht offen im Code.' },
       { id: 'B-012', schwere: 'mittel', text: '14 Bausteine sind veraltet und haben bekannte Lücken.' },
     ] as const)
@@ -133,6 +133,10 @@ const standText = { ok: 'ok', teils: 'teils', offen: 'offen' } as const;
   .bericht-dot.ist-offen {
     background: oklch(62% 0.2 25);
   }
+  .schwere-kritisch {
+    color: oklch(98% 0.01 25);
+    background: oklch(52% 0.21 25);
+  }
   .schwere-hoch {
     color: oklch(45% 0.18 25);
     background: oklch(62% 0.2 25 / 0.14);
@@ -149,6 +153,9 @@ const standText = { ok: 'ok', teils: 'teils', offen: 'offen' } as const;
   }
   .zahl-mittel {
     color: oklch(62% 0.14 85);
+  }
+  .rand-kritisch {
+    border-left-color: oklch(52% 0.21 25);
   }
   .rand-hoch {
     border-left-color: oklch(62% 0.2 25);
