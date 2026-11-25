@@ -1,0 +1,32 @@
+---
+/**
+ * Zweite Anzeigen-Landing für den Software-Check, in den Worten der Welle-4-Anzeigen („Eure Software,
+ * mit KI selbst gebaut“): Sorgen-Abschnitt unter dem Hero, Bericht in einfacher Sprache. Ohne
+ * Technik-Leiste und Vergleich, Telefon freiwillig (2026-11-24, nach Welle 3 ohne Lead). Läuft zum Vergleich neben /f/software-check/, die unverändert bleibt.
+ * Daten in `softwareCheckFunnelKi` (funnelSchlank.ts).
+ *
+ * FunnelLayout: noindex, ohne Navigation, nicht in der Sitemap. Statische Datei, gewinnt gegen
+ * /f/[slug].astro; in funnels.ts darf es keinen Slug „software-check-ki“ geben.
+ */
+import FunnelLayout from '@/layouts/FunnelLayout.astro';
+import SchlankPage from '@/components/funnel-schlank/SchlankPage.astro';
+import BerichtMock from '@/components/check/BerichtMock.astro';
+import ZweiteMeinung from '@/components/check/ZweiteMeinung.astro';
+import MusterberichtBand from '@/components/check/MusterberichtBand.astro';
+import DeltaSportFall from '@/components/check/DeltaSportFall.astro';
+import { softwareCheckFunnelKi } from '@/data/funnelSchlank';
+---
+
+<FunnelLayout
+  title="Mit KI gebaut? Jetzt soll jemand draufschauen, der es auch selbst könnte."
+  description="Eure Software, mit KI selbst gebaut: Wir prüfen, ob Fremde an eure Daten kommen und ob sie hält. Mit Bericht, den ihr Kunden zeigen könnt, nach 4 bis 5 Werktagen."
+  headerCta
+  ctaLabel="Gespräch anfragen"
+>
+  <SchlankPage tor={softwareCheckFunnelKi}>
+  <BerichtMock slot="hero" sprache="einfach" />
+  <DeltaSportFall slot="fall" />
+  <ZweiteMeinung />
+  <MusterberichtBand slot="beweisUnten" ort="funnel" />
+</SchlankPage>
+</FunnelLayout>

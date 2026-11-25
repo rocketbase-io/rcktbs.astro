@@ -1,0 +1,108 @@
+---
+/**
+ * WischHinweis - Punkte plus „Wischen“ unter einem horizontalen Streifen (nur unter lg).
+ *
+ * Steht direkt hinter dem Element mit `data-wisch`; die Punkte folgen der Scrollposition, ein Klick
+ * springt zur Karte. Ohne Hinweis wischt mobil kaum jemand: die angeschnittene Karte allein reichte
+ * nicht (2026-11-24).
+ */
+interface Props {
+  anzahl: number;
+  class?: string;
+}
+const { anzahl, class: klasse } = Astro.props;
+---
+
+<div class:list={['wisch-hinweis flex items-center justify-between gap-4 lg:hidden', klasse]} data-wisch-hinweis>
+  <div class="flex items-center gap-1.5">
+    {
+      Array.from({ length: anzahl }, (_, i) => (
+        <button type="button" class="wisch-punkt" aria-label={`Karte ${i + 1} von ${anzahl}`} aria-current={i === 0 ? 'true' : undefined} data-i={i} />
+      ))
+    }
+  </div>
+  <span class="text-foreground-muted flex items-center gap-1 font-mono text-[0.65rem] font-semibold tracking-[0.18em] uppercase" aria-hidden="true">
+    Wischen
+    <svg viewBox="0 0 24 24" class="wisch-pfeil h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+  </span>
+</div>
+
+<style>
+  .wisch-punkt {
+    height: 0.375rem;
+    width: 0.375rem;
+    border-radius: 9999px;
+    background: var(--color-border, oklch(88% 0.01 260));
+    transition: width 0.25s ease, background-color 0.25s ease;
+  }
+  .wisch-punkt[aria-current='true'] {
+    width: 1.25rem;
+    background: var(--color-brand-500, oklch(58% 0.1 260));
+  }
+  .wisch-pfeil {
+    animation: wisch-stups 1.6s ease-in-out 3;
+  }
+  @keyframes wisch-stups {
+    0%,
+    60%,
+    100% {
+      transform: translateX(0);
+    }
+    30% {
+      transform: translateX(4px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .wisch-pfeil {
+      animation: none;
+    }
+  }
+</style>
+
+<style is:global>
+  @media (max-width: 1023.98px) {
+    [data-wisch] {
+      scrollbar-width: none;
+    }
+    [data-wisch]::-webkit-scrollbar {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  function verbinden() {
+    document.querySelectorAll<HTMLElement>('[data-wisch-hinweis]').forEach((hinweis) => {
+      if (hinweis.dataset.bereit) return;
+      hinweis.dataset.bereit = '1';
+      const streifen = hinweis.previousElementSibling as HTMLElement | null;
+      if (!streifen?.hasAttribute('data-wisch')) return;
+      const karten = Array.from(streifen.children) as HTMLElement[];
+      const punkte = Array.from(hinweis.querySelectorAll<HTMLButtonElement>('.wisch-punkt'));
+      const setzen = () => {
+        const links = streifen.getBoundingClientRect().left;
+        let aktiv = 0;
+        let best = Infinity;
+        karten.forEach((k, i) => {
+          const d = Math.abs(k.getBoundingClientRect().left - links - parseFloat(getComputedStyle(streifen).scrollPaddingLeft || '0'));
+          if (d < best) {
+            best = d;
+            aktiv = i;
+          }
+        });
+        // Ganz rechts angekommen: der letzte Punkt, auch wenn die letzte Karte nicht links anliegt.
+        if (streifen.scrollLeft + streifen.clientWidth >= streifen.scrollWidth - 4) aktiv = karten.length - 1;
+        punkte.forEach((p, i) => (i === aktiv ? p.setAttribute('aria-current', 'true') : p.removeAttribute('aria-current')));
+      };
+      streifen.addEventListener('scroll', () => requestAnimationFrame(setzen), { passive: true });
+      punkte.forEach((p, i) =>
+        p.addEventListener('click', () => {
+          const k = karten[i];
+          if (k) streifen.scrollTo({ left: k.offsetLeft - streifen.offsetLeft - parseFloat(getComputedStyle(streifen).scrollPaddingLeft || '0'), behavior: 'smooth' });
+        }),
+      );
+    });
+  }
+  verbinden();
+  document.addEventListener('astro:page-load', verbinden);
+</script>

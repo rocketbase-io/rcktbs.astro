@@ -19,7 +19,8 @@
  *
  * Das Quiz steht bewusst nur am Ende: Kalte Besucher sollen erst verstehen, worum es geht.
  * Mobil gibt es im Hero keinen Knopf, damit Text und Bild den ersten Bildschirm haben: Die Leiste
- * unten (FunnelLayout) fährt beim ersten Scrollen ein und führt zum Quiz.
+ * unten (FunnelLayout) fährt beim ersten Scrollen ein und führt zum Quiz. Ausnahme Software-Check
+ * (nur Formular): dort steht der Knopf auch mobil oben, das Bild rückt darunter (`ctaVorBild`).
  *
  * Die ausführlichen Seiten bleiben unter den Tür-Adressen, die alten Funnel-Komponenten
  * (`*-funnel/`, `CheckPage variant="funnel"`) sind nur nicht mehr eingebunden.
@@ -28,13 +29,21 @@ import Button from '@/components/ui/form/Button/Button.astro';
 import BlogQuerverweis from '@/components/blog/BlogQuerverweis.astro';
 import Blueprint from '@/components/hero-backgrounds/Blueprint.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import WischHinweis from '@/components/ui/WischHinweis.astro';
 import { ClientLogoStrip } from '@/components/ui/marketing/ClientLogoStrip';
 import FunnelQuiz from '@/components/funnel/FunnelQuiz';
 import { getImage, Picture } from 'astro:assets';
 import founderPortrait from '@/assets/rocketbase/founder-marten-priess.jpg';
 import '@/styles/szene.css';
 import { contactLinks } from '@/data/rocketbase';
+import ProblemSzene from './ProblemSzene.astro';
+import * as simpleIconsAll from 'simple-icons';
 import type { SchlankTor } from '@/data/funnelSchlank';
+const simpleIcons = simpleIconsAll as unknown as Record<string, { path: string; hex: string } | undefined>;
+// Werkzeug-Logos, die simple-icons nicht hat (Dateiname = Werkzeugname klein, ohne Leerzeichen).
+const werkzeugDateien = import.meta.glob<{ default: ImageMetadata }>('/src/assets/check/werkzeuge/*.svg', { eager: true });
+const werkzeugDatei = (name: string) =>
+  werkzeugDateien[`/src/assets/check/werkzeuge/${name.toLowerCase().replace(/\s+/g, '')}.svg`]?.default;
 
 interface Props {
   tor: SchlankTor;
@@ -56,6 +65,9 @@ interface Props {
   kontakt?: 'termin' | 'quiz';
 }
 const { tor, modus = 'funnel', headline = tor.headline, faqs = tor.fragenUndAntworten, blogTuer, zitat, mehrTitel, vergleichKurz = false } = Astro.props;
+const headlineTeile = headline.split('|');
+/** Kompakter Hero mit Fakten-Kacheln (nur Tore mit `faktenKarten`). */
+const kompakt = !!tor.faktenKarten?.length;
 const istSeite = modus === 'seite';
 const mitQuiz = (Astro.props.kontakt ?? (istSeite ? 'termin' : 'quiz')) === 'quiz';
 /** Tor ohne Fragen (Software-Check): Das „Quiz“ ist nur das Formular. */
@@ -66,30 +78,50 @@ const [erster, ...danach] = tor.schlussSchritte ?? tor.ablauf;
 /** Rückruf statt Videotermin, wenn das Tor eine Dauer fürs Telefonat nennt (Software-Check: 15 Minuten). */
 const gespraech = tor.telefonat ? `${tor.telefonat} am Telefon, ohne Vorbereitung.` : '30 Minuten, online, ohne Vorbereitung.';
 const mitHeuteBild = Astro.slots.has('heute');
+/** H1 und Lead je Anzeige (utm_content), nur auf Anzeigen-Landings. */
+const varianten = !istSeite && tor.varianten?.length ? tor.varianten : null;
+/**
+ * Software-Check (nur Formular): Knopf auch mobil im ersten Bildschirm und das Bild darunter. Ohne
+ * Knopf oben kam der Kontakt erst über die Leiste nach dem Scrollen (Welle 3: 0 Leads, 2026-11-23).
+ */
+const ctaVorBild = nurFormular && !istSeite;
 const mitFall = Astro.slots.has('fall');
 
 const martenBild = await getImage({ src: founderPortrait, width: 112, format: 'webp' });
 const rolle = 'Softwarearchitekt, über 15 Jahre Erfahrung';
 
+/** Telefon freiwillig (Software-Check KI): Marten ruft an oder schreibt, Texte ohne „Rückruf“. */
+const telFrei = !!tor.telefonFreiwillig;
+const heroCta = telFrei
+  ? 'Kostenloses Gespräch anfragen'
+  : tor.telefonat
+    ? 'Kostenlosen Rückruf anfordern'
+    : 'Kostenloses Erstgespräch anfragen';
+
 const quizProps = {
   kontaktPerson: { bild: martenBild.src, name: 'Marten Prieß', rolle },
+  phoneOptional: telFrei,
   funnel: tor.funnel,
   questions: tor.fragen,
   rechnung: tor.rechnung,
   einordnung: tor.einordnung,
   leadEvent: tor.leadEvent,
-  contact: { heading: 'Wohin darf Marten zurückrufen?', text: '' },
+  contact: { heading: telFrei ? 'Wie erreicht Marten euch?' : 'Wohin darf Marten zurückrufen?', text: '' },
   success: {
     heading: 'Danke, das ist angekommen.',
-    text: 'Marten ruft euch werktags an.',
+    text: telFrei
+      ? 'Marten meldet sich werktags: mit Nummer per Anruf, sonst per E-Mail mit Terminvorschlägen.'
+      : 'Marten ruft euch werktags an.',
   },
-  submitLabel: 'Rückruf anfordern',
-  phoneHint: `Rückruf werktags, ${tor.telefonat ?? '30 Minuten'}, kostenlos.`,
+  submitLabel: telFrei ? 'Gespräch anfragen' : 'Rückruf anfordern',
+  phoneHint: telFrei
+    ? 'Für den Rückruf. Ohne Nummer schreibt Marten euch eine E-Mail.'
+    : `Rückruf werktags, ${tor.telefonat ?? '30 Minuten'}, kostenlos. Erreicht Marten euch nicht, schreibt er euch.`,
   privacyUrl: '/datenschutz/',
 };
 ---
 
-<section class="relative overflow-x-clip">
+<section class:list={['schlank-hero relative overflow-x-clip', kompakt && 'ohne-deko']}>
   <Blueprint />
   <div
     class="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_60%_50%_at_30%_40%,var(--color-background)_0%,transparent_75%)] opacity-80"
@@ -99,33 +131,81 @@ const quizProps = {
   <!-- Sobald dieser Punkt aus dem Bild ist, fährt mobil die Leiste ein. -->
   <div class="absolute top-6 h-px w-px" data-leiste-start aria-hidden="true"></div>
   <div
-    class:list={[istSeite ? 'pt-24 sm:pt-28 lg:pt-24' : 'pt-6 sm:pt-12', 'relative z-10 mx-auto grid w-full max-w-7xl gap-x-14 gap-y-6 px-5 pb-10 sm:px-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:grid-rows-[auto_auto] lg:pb-16', !istSeite && 'lg:pt-16']}
+    class:list={[istSeite ? 'pt-24 sm:pt-28 lg:pt-24' : 'pt-6 sm:pt-12', 'container relative z-10 grid gap-y-6 pb-10 lg:pb-16',
+      kompakt
+        ? 'max-w-6xl gap-x-16 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:grid-rows-[auto_auto_auto]'
+        : 'gap-x-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:grid-rows-[auto_auto]',
+      !istSeite && 'lg:pt-16']}
   >
     <div class="lg:self-end">
-      <p class="text-brand-600 dark:text-brand-300 text-xs font-semibold tracking-[0.14em] uppercase">
-        {tor.fuerWen}
+      <p class="text-brand-600 dark:text-brand-300 text-xs font-semibold tracking-[0.16em] text-balance uppercase">
+        {/* Mobil nur der Teil nach „ · “: „Software‑Check · Eure Software, …“ brach sonst so um,
+            dass zweimal „Software“ untereinander stand. */}
+        {tor.fuerWen.includes(' · ') ? (
+          <>
+            <span class="max-sm:hidden">{tor.fuerWen.split(' · ')[0]} · </span>
+            {tor.fuerWen.split(' · ').slice(1).join(' · ')}
+          </>
+        ) : (
+          tor.fuerWen
+        )}
       </p>
       <h1
         lang="de"
-        class="font-display text-foreground mt-3 text-[2rem] leading-[1.1] font-bold tracking-tight text-balance sm:text-5xl sm:leading-[1.08] lg:text-[2.75rem] lg:leading-[1.12]"
+        class:list={[
+          'font-display text-foreground mt-3 text-[2rem] leading-[1.1] font-bold tracking-tight text-balance sm:text-[2.75rem] sm:leading-[1.08]',
+          kompakt ? 'lg:text-[3.25rem] lg:leading-[1.06]' : 'lg:text-[3.75rem] lg:leading-[1.05]',
+        ]}
+        data-hero-h1
       >
-        {headline}
+        {/* `|` trennt zwei Schläge, der zweite in Markenblau wie die H1 der Startseite. */}
+        {headlineTeile[0]}
+        {headlineTeile[1] && <span class="text-brand-500 block">{headlineTeile[1]}</span>}
       </h1>
-      <p class="text-foreground-secondary mt-3 text-base leading-7 sm:mt-5 sm:text-lg sm:leading-8">
-        <span class="sm:hidden">{tor.leadMobil}</span>
-        <span class="hidden sm:inline">{tor.lead}</span>
+      <p class:list={['text-foreground-secondary mt-3 text-base leading-7 sm:mt-5 sm:text-lg sm:leading-8', kompakt && 'max-w-xl']}>
+        <span class="sm:hidden" data-hero-lead-mobil>{tor.leadMobil}</span>
+        <span class="hidden sm:inline" data-hero-lead>{tor.lead}</span>
       </p>
+      {
+        varianten && (
+          <script is:inline define:vars={{ varianten }}>
+            // Hook der Anzeige in den ersten Bildschirm: utm_content enthält den Code des Creatives.
+            // Läuft synchron beim Parsen, also vor dem ersten Bild, kein Flackern.
+            const u = (new URLSearchParams(location.search).get('utm_content') || '').toUpperCase();
+            const v = u && varianten.find((x) => u.includes(x.utm));
+            if (v) {
+              const setze = (sel, text) => {
+                const el = document.querySelector(sel);
+                if (el) el.textContent = text;
+              };
+              const h1 = document.querySelector('[data-hero-h1]');
+              if (h1) {
+                const [a, b] = v.headline.split('|');
+                h1.textContent = a;
+                if (b) {
+                  const span = document.createElement('span');
+                  span.className = 'text-brand-500 block';
+                  span.textContent = b;
+                  h1.appendChild(span);
+                }
+              }
+              setze('[data-hero-lead]', v.lead);
+              setze('[data-hero-lead-mobil]', v.leadMobil);
+            }
+          </script>
+        )
+      }
     </div>
-    <div class="min-w-0 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center">
+    <div class:list={['min-w-0 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center', ctaVorBild && 'max-lg:order-last', kompakt && 'lg:pl-4']}>
       <slot name="hero" />
     </div>
-    <div class="lg:self-start">
+    <div class:list={['lg:self-start', kompakt && 'sm:flex sm:flex-wrap sm:items-center sm:gap-x-6 sm:gap-y-4']}>
       {
         istSeite ? (
           <div class="mb-4 flex flex-wrap items-center gap-x-5 gap-y-3">
             {mitQuiz && (
               <Button size="lg" href="#quiz">
-                {tor.telefonat ? 'Kostenlosen Rückruf anfordern' : 'Kostenloses Erstgespräch anfragen'}
+                {heroCta}
                 <Icon name="arrow-right" size="sm" />
               </Button>
             )}
@@ -135,9 +215,9 @@ const quizProps = {
             </Button>
           </div>
         ) : (
-          <div class="mb-4 hidden sm:block">
-            <Button size="lg" href="#quiz">
-              {tor.telefonat ? 'Kostenlosen Rückruf anfordern' : 'Kostenloses Erstgespräch anfragen'}
+          <div class:list={[kompakt ? 'mb-4 sm:mb-0' : 'mb-4', ctaVorBild ? 'block' : 'hidden sm:block']}>
+            <Button size="lg" href="#quiz" class={ctaVorBild ? 'max-sm:w-full' : undefined}>
+              {heroCta}
               <Icon name="arrow-right" size="sm" />
             </Button>
           </div>
@@ -150,18 +230,29 @@ const quizProps = {
           widths={[80, 160]}
           sizes="2.5rem"
           formats={['avif', 'webp']}
-          class="h-10 w-10 rounded-full object-cover object-[center_22%]"
+          class:list={['rounded-full object-cover object-[center_22%]', tor.martenZeile ? 'h-12 w-12' : 'h-10 w-10', kompakt && 'ring-background shadow-sm ring-2']}
           pictureAttributes={{ class: 'shrink-0' }}
           loading="eager"
         />
-        <p class="text-foreground-muted text-sm leading-5">
-          Marten Prieß ruft euch selbst an.<br />{gespraech}
-        </p>
+        {
+          tor.martenZeile ? (
+            <p class="text-foreground-muted text-sm leading-5">
+              <span class="text-foreground font-semibold">{tor.martenZeile[0]}</span>
+              <br />
+              {tor.martenZeile[1]}
+            </p>
+          ) : (
+            <p class="text-foreground-muted text-sm leading-5">
+              Marten Prieß ruft euch selbst an.<br />{gespraech}
+            </p>
+          )
+        }
       </div>
-      <ul class="mt-5 grid gap-x-5 gap-y-2 sm:grid-cols-2">
+      {/* Mobil 2×2 statt vier Zeilen: Sonst schob die Liste den Bericht aus dem ersten Bildschirm. */}
+      <ul class:list={['mt-5 grid grid-cols-2 gap-x-4 gap-y-2 sm:gap-x-5', kompakt && 'hidden']}>
         {
           tor.fakten.map((f) => (
-            <li class="text-foreground-secondary flex gap-2 text-sm leading-6">
+            <li class="text-foreground-secondary flex gap-1.5 text-[0.8125rem] leading-5 sm:gap-2 sm:text-sm sm:leading-6">
               <Icon name="check" size="sm" class="text-brand-500 mt-0.5 shrink-0" />
               {f}
             </li>
@@ -169,19 +260,172 @@ const quizProps = {
         }
       </ul>
     </div>
+    {
+      kompakt && (
+        /* Fakten als Leiste unter beiden Spalten: gibt dem Hero eine Grundlinie, statt dass vier
+           Haken-Zeilen unter dem Knopf auslaufen. Mobil 2×2 vor dem Bericht. */
+        <ul class="border-border bg-border grid grid-cols-2 gap-px overflow-hidden rounded-2xl border shadow-[0_12px_32px_-18px_rgba(34,43,74,0.25)] lg:col-span-2 lg:mt-4 lg:grid-cols-4">
+          {tor.faktenKarten!.map((f) => (
+            <li class="bg-background flex items-center gap-2.5 px-3 py-2.5 sm:gap-3 sm:px-5 sm:py-4">
+              <span class="bg-brand-500/10 text-brand-600 dark:text-brand-300 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg sm:h-9 sm:w-9 sm:rounded-xl">
+                <Icon name={f.icon} size="sm" />
+              </span>
+              <span class="min-w-0">
+                <span class="font-display text-foreground block text-[0.8125rem] leading-4 font-bold sm:text-base sm:leading-5">{f.titel}</span>
+                <span class="text-foreground-muted block text-[0.6875rem] leading-4 sm:text-[0.8125rem] sm:leading-5">{f.text}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      )
+    }
   </div>
 </section>
+
+{/* Sorgen der Anzeigen direkt unter dem Hero (nur Tore mit `probleme`): Wer von einer Anzeige kommt,
+    findet hier seine Angst in denselben Worten wieder, bevor die Seite erklärt, was wir tun. */}
+{
+  tor.probleme && (
+    <section class="problem-sec border-border relative overflow-hidden border-y py-12 lg:py-20">
+      <div class="container relative max-w-6xl">
+        <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+          <div>
+            {tor.probleme.kicker && (
+              <p class="text-brand-600 dark:text-brand-300 text-xs font-semibold tracking-[0.18em] uppercase">{tor.probleme.kicker}</p>
+            )}
+            <h2 class="font-display text-foreground mt-3 text-[1.75rem] leading-[1.12] font-bold tracking-tight text-balance sm:text-[2.5rem] lg:text-[2.75rem]">
+              {tor.probleme.titel}
+              {tor.probleme.akzent && <span class="text-brand-500 block">{tor.probleme.akzent}</span>}
+            </h2>
+          </div>
+        </div>
+        {/* Unter lg ein Wisch-Streifen: drei gestapelte Karten waren mobil fast drei Bildschirme hoch. */}
+        <ul class="wisch-streifen -mx-6 mt-8 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-6 px-6 pb-1 md:-mx-8 md:scroll-px-8 md:px-8 lg:mx-0 lg:mt-10 lg:grid lg:grid-cols-3 lg:grid-rows-[auto_auto_1fr_auto] lg:gap-x-5 lg:gap-y-0 lg:overflow-visible lg:px-0 lg:pb-0" data-wisch>
+          {
+            tor.probleme.karten.map((k, i) => (
+              <li class="problem-karte border-border bg-card flex w-[86%] shrink-0 snap-start flex-col rounded-[1.6rem] border p-5 sm:w-[60%] lg:shadow-[0_22px_50px_-28px_rgba(34,43,74,0.35)] md:w-[46%] lg:row-span-4 lg:grid lg:w-auto lg:grid-rows-subgrid">
+                {/* Kompakt (2026-11-24): keine eigene Icon-Zeile mehr, die Szene ist das Bild der Karte. */}
+                {k.szene ? <ProblemSzene art={k.szene} /> : <div />}
+                <p class="font-display text-foreground mt-4 text-lg leading-6 font-bold text-balance lg:text-base xl:text-lg">{k.sorge}</p>
+                <p class="text-foreground-secondary mt-1.5 mb-4 text-[0.9rem] leading-6">{k.text}</p>
+                <div class="bg-brand-500/[0.06] mt-auto rounded-xl px-4 py-2.5 lg:mt-0 lg:h-full">
+                  <p class="text-brand-600 dark:text-brand-300 font-mono text-[0.65rem] font-semibold tracking-[0.18em] uppercase">Wir prüfen</p>
+                  <p class="text-foreground mt-1 flex gap-2 text-[0.9rem] leading-6 font-semibold">
+                    <Icon name="check" size="sm" class="text-brand-500 mt-1 shrink-0" />
+                    {k.pruefen}
+                  </p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+        <WischHinweis anzahl={tor.probleme.karten.length} class="mt-3" />
+        {tor.probleme.mehr && (
+          <p class="text-foreground-secondary mt-5 flex items-start gap-2 text-sm leading-6 lg:mt-6 lg:justify-center lg:text-center">
+            <span class="bg-brand-500/10 text-brand-600 dark:text-brand-300 mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full">
+              <Icon name="plus" size="xs" />
+            </span>
+            <span class="text-balance">{tor.probleme.mehr}</span>
+          </p>
+        )}
+        {tor.probleme.werkzeuge && (
+          /* Werkzeuge als Leiste im Look der Fakten-Kacheln im Hero. Logos aus simple-icons, wo es
+             sie gibt, in Markenfarbe (schwarze Marken folgen der Textfarbe, sonst verschwinden sie
+             im Dark Mode). */
+          <div class="border-border bg-card mt-6 flex flex-col gap-4 rounded-2xl border px-5 py-4 sm:flex-row sm:items-center sm:gap-6 lg:mt-8">
+            <p class="text-foreground-muted shrink-0 font-mono text-[0.7rem] font-semibold tracking-[0.18em] uppercase">{tor.probleme.werkzeuge.text}</p>
+            <ul class="flex flex-wrap gap-2">
+              {tor.probleme.werkzeuge.namen.map((n) => {
+                const slug = tor.probleme?.werkzeuge?.logos?.[n];
+                const ic = slug ? simpleIcons[slug] : undefined;
+                const farbe = ic && ic.hex !== '000000' ? `#${ic.hex}` : 'currentColor';
+                return (
+                  <li class="border-border bg-background text-foreground flex h-9 items-center gap-2 rounded-full border px-3.5 text-sm font-semibold">
+                    {ic ? (
+                      <svg viewBox="0 0 24 24" class="h-4 w-4 shrink-0" fill={farbe} aria-hidden="true">
+                        <path d={ic.path} />
+                      </svg>
+                    ) : werkzeugDatei(n) ? (
+                      <img src={werkzeugDatei(n)!.src} alt="" width="16" height="16" class="h-4 w-4 shrink-0" loading="lazy" />
+                    ) : (
+                      /* Weder im Paket noch als Datei: neutrales Monogramm in derselben
+                         Größe, damit alle Chips gleich aufgebaut sind. Nachgezeichnete Marken nie. */
+                      <span class="bg-foreground/[0.07] text-foreground-secondary flex h-4 w-4 shrink-0 items-center justify-center rounded-[0.3rem] text-[0.6rem] leading-none font-bold" aria-hidden="true">
+                        {n.charAt(0)}
+                      </span>
+                    )}
+                    {n}
+                  </li>
+                );
+              })}
+              {tor.probleme.werkzeuge.weitere && (
+                <li class="border-border text-foreground-muted flex h-9 items-center rounded-full border border-dashed px-3.5 text-sm font-semibold">
+                  {tor.probleme.werkzeuge.weitere}
+                </li>
+              )}
+            </ul>
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
 
 {/* Mit Fall (Slot `fall`) wandern die Logos nach unten zum Fall, sonst stehen sie hier. */}
 {!mitFall && <ClientLogoStrip heading="Aus Projekten mit" logos={tor.logos} variant="light" uniform class="py-8" />}
 
+{
+  kompakt && tor.wasEsIst.punkte ? (
+    /* Kompakt: Text und drei Punkte links, das Bild der Anzeige (Slot) rechts, darunter der
+       Musterbericht als Band (Slot `beweisUnten`). Gleiche Breite und Formensprache wie Hero und
+       Sorgen-Abschnitt. */
+    <section id="beweis" class="scroll-mt-20 py-14 lg:py-28">
+      <div class="container max-w-6xl">
+        <div class="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-16">
+          <div>
+            {tor.wasEsIst.kicker && (
+              <p class="text-brand-600 dark:text-brand-300 text-xs font-semibold tracking-[0.18em] uppercase">{tor.wasEsIst.kicker}</p>
+            )}
+            <h2 class="font-display text-foreground mt-3 text-[1.75rem] leading-[1.12] font-bold tracking-tight text-balance sm:text-[2.5rem] lg:text-[2.75rem]">
+              {tor.wasEsIst.titel.split('|')[0]}
+              {tor.wasEsIst.titel.split('|')[1] && <span class="text-brand-500 block">{tor.wasEsIst.titel.split('|')[1]}</span>}
+            </h2>
+            <p class="text-foreground-secondary mt-4 max-w-xl text-base leading-7 sm:text-lg sm:leading-8">{tor.wasEsIst.text}</p>
+            <ul class="mt-7 grid gap-5">
+              {tor.wasEsIst.punkte.map((pkt) => (
+                <li class="flex gap-4">
+                  <span class="bg-brand-500/10 text-brand-600 dark:text-brand-300 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
+                    <Icon name={pkt.icon} size="sm" />
+                  </span>
+                  <span>
+                    <span class="font-display text-foreground block font-bold">{pkt.titel}</span>
+                    <span class="text-foreground-secondary block text-[0.95rem] leading-6">{pkt.text}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          {/* Mobil ausgeblendet: Text und drei Punkte tragen die Aussage, das Bild kostete einen Bildschirm. */}
+          <div class="szene-auf hidden min-w-0 md:block" data-szene><slot /></div>
+        </div>
+        {Astro.slots.has('beweisUnten') && (
+          <div class:list={[tor.fallLogo ? 'mt-8 lg:mt-10' : 'mt-10 lg:mt-12']}>
+            <slot name="beweisUnten" />
+          </div>
+        )}
+      </div>
+    </section>
+  ) : (
 <section id="beweis" class="scroll-mt-20 py-14 lg:py-32">
   <div class="container max-w-6xl">
+    {tor.wasEsIst.kicker && (
+      <p class="text-brand-600 dark:text-brand-300 mb-3 text-xs font-semibold tracking-[0.18em] uppercase">{tor.wasEsIst.kicker}</p>
+    )}
     <h2 class="font-display text-foreground text-2xl font-bold tracking-tight text-balance sm:text-4xl">
       {tor.wasEsIst.titel}
     </h2>
     <p class="text-foreground-secondary mt-3 max-w-2xl text-base leading-7">{tor.wasEsIst.text}</p>
-    <ol class="mt-7 grid gap-4 lg:mt-10 lg:grid-cols-3 lg:gap-6">
+    <ol class:list={['mt-7 grid gap-4 lg:mt-10 lg:grid-cols-3 lg:gap-6', tor.wasEsIst.schritte.length === 0 && 'hidden']}>
       {
         tor.wasEsIst.schritte.map((s, i) => (
           <li class="bg-brand-500/5 rounded-2xl p-5">
@@ -199,6 +443,9 @@ const quizProps = {
   </div>
 </section>
 
+  )
+}
+
 {/* Slot `nachBeweis`: eigene, ganze Abschnitte direkt nach „Was es ist“ (Software-Check: Stack). */}
 <slot name="nachBeweis" />
 
@@ -206,18 +453,29 @@ const quizProps = {
     Grauer Grund und das Beispiel als weiße Karte, damit es als eigener Abschnitt lesbar ist. */}
 {
   mitFall && (
-    <section class="bg-background-secondary py-14 lg:py-24">
-      <div class="container max-w-6xl">
-        <ClientLogoStrip heading="Aus Projekten mit" logos={tor.logos} variant="light" uniform class="border-0 bg-transparent py-0 lg:py-0" />
-        <div class="border-border bg-background mt-10 rounded-3xl border p-6 sm:p-10 lg:mt-14">
+    <section class="problem-sec border-border relative overflow-hidden border-y py-12 lg:py-16">
+      <div class="container relative max-w-6xl">
+        {!tor.fallLogo && (
+          <ClientLogoStrip heading="Aus Projekten mit" logos={tor.logos} variant="light" uniform class="border-0 bg-transparent py-0 lg:py-0" />
+        )}
+        <div class:list={[!tor.fallLogo && 'mt-10 lg:mt-12']}>
           <slot name="fall" />
         </div>
+        {tor.fallLogo && (
+          <ClientLogoStrip
+            heading="Aus Erfahrungen mit weiteren Kunden"
+            logos={tor.logos.filter((l) => l.key !== tor.fallLogo)}
+            variant="light"
+            uniform
+            class="mt-10 border-0 bg-transparent py-0 lg:mt-12 lg:py-0"
+          />
+        )}
       </div>
     </section>
   )
 }
 
-<section id="heute" class:list={['scroll-mt-20 pb-14 lg:pb-32', mitFall && 'pt-14 lg:pt-32']}>
+<section id="heute" class:list={['scroll-mt-20 pb-14 lg:pb-32', mitFall && 'pt-14 lg:pt-32', tor.ohneVergleich && 'hidden']}>
   <div class="container max-w-6xl">
     <h2 class="font-display text-foreground text-2xl font-bold tracking-tight text-balance sm:text-4xl">
       {tor.vergleichTitel}
@@ -289,7 +547,9 @@ const quizProps = {
   )
 }
 
-<section id="ablauf" class="ablauf-sec scroll-mt-20 py-14 lg:py-32">
+{/* Anzeigen-Landings ohne Quizfragen: Der Ablauf steht schon als Zeitleiste neben dem Formular,
+    ein zweites Mal hier wäre nur Länge und widersprach sich in den Angaben. */}
+<section id="ablauf" class:list={['ablauf-sec scroll-mt-20 py-14 lg:py-32', nurFormular && !istSeite && 'hidden']}>
   <div class="container max-w-6xl">
     <h2 class="font-display text-foreground text-2xl font-bold tracking-tight text-balance sm:text-4xl">
       {tor.ablaufTitel}
@@ -325,15 +585,35 @@ const quizProps = {
   )
 }
 
-<section class="pt-14 lg:pt-28">
-  <div class="container max-w-3xl">
-    <h2 class="font-display text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
-      Häufige Fragen
-    </h2>
-    <div class="divide-border mt-4 divide-y">
+<section
+  class:list={[
+    tor.faqAbgesetzt ? 'bg-background-secondary border-border border-y py-14 lg:py-24' : 'pt-14 lg:pt-28',
+  ]}
+>
+  {/* Abgesetzt: zweispaltig in derselben Breite wie die Abschnitte darüber (max-w-6xl), Überschrift
+      links und mitlaufend, Fragen rechts. Vorher stand die Liste schmal in `container` und begann
+      weiter links als alles andere. */}
+  <div class:list={['container', tor.faqAbgesetzt ? 'grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16' : '']}>
+    <div class:list={[tor.faqAbgesetzt ? 'lg:sticky lg:top-24 lg:self-start' : 'max-w-3xl']}>
+      {tor.faqAbgesetzt && (
+        <p class="text-brand-600 dark:text-brand-300 text-xs font-semibold tracking-[0.18em] uppercase">
+          Bevor ihr anfragt
+        </p>
+      )}
+      <h2 class:list={['font-display text-foreground text-2xl font-bold tracking-tight text-balance sm:text-4xl', tor.faqAbgesetzt && 'mt-3']}>
+        Häufige Fragen
+      </h2>
+      {tor.faqAbgesetzt && (
+        <p class="text-foreground-secondary mt-3 max-w-sm text-base leading-7">
+          Was nicht dabei ist, klärt ihr in einem unverbindlichen Gespräch mit Marten.{' '}
+          <a href="#quiz" class="text-brand-600 dark:text-brand-300 font-semibold whitespace-nowrap">Gespräch anfragen →</a>
+        </p>
+      )}
+    </div>
+    <div class:list={[tor.faqAbgesetzt ? 'space-y-3' : 'divide-border mt-4 max-w-3xl divide-y']}>
       {
         faqs.map((f) => (
-          <details class="group">
+          <details class:list={['group', tor.faqAbgesetzt && 'faq-karte bg-card border-border rounded-2xl border px-5']}>
             <summary class="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 py-2 [&::-webkit-details-marker]:hidden">
               <span class="text-foreground font-semibold">{f.q}</span>
               <Icon
@@ -355,7 +635,7 @@ const quizProps = {
 <section id="kontakt" class="scroll-mt-20 py-14 lg:py-32">
   <div class="container grid max-w-6xl items-start gap-8 lg:grid-cols-[1fr_0.9fr] lg:gap-14">
     <div>
-      <h2 class="font-display text-foreground text-3xl font-bold tracking-tight sm:text-4xl">
+      <h2 class="font-display text-foreground text-2xl font-bold tracking-tight text-balance sm:text-4xl">
         {tor.schlussTitel}
       </h2>
       {
@@ -435,7 +715,7 @@ const quizProps = {
         </div>
       ) : (
         <div id="quiz" class="scroll-mt-20" data-quiz>
-          <FunnelQuiz client:visible {...quizProps} compact markRequired />
+          <FunnelQuiz client:idle {...quizProps} compact markRequired />
         </div>
       )
     }
@@ -446,6 +726,29 @@ const quizProps = {
 {blogTuer && mitQuiz && <BlogQuerverweis tuer={blogTuer} />}
 
 <style>
+  .problem-karte {
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s;
+  }
+  @media (hover: hover) {
+    .problem-karte:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 40px -22px rgba(34, 43, 74, 0.35);
+    }
+  }
+  /* Mobil liefen Kreis und gestrichelte Linie des Blueprint quer durch Lead und Knopf. */
+  @media (max-width: 639px) {
+    .schlank-hero :global(.bp-deko) {
+      display: none;
+    }
+  }
+  .schlank-hero.ohne-deko :global(.bp-deko) {
+    display: none;
+  }
+  .problem-sec {
+    background:
+      radial-gradient(50% 60% at 85% 0%, color-mix(in srgb, var(--color-brand-400) 14%, transparent), transparent 70%),
+      var(--color-background-secondary);
+  }
   .ablauf-sec {
     background:
       radial-gradient(

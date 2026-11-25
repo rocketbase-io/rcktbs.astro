@@ -12,8 +12,9 @@ const answerSchema = z.object({
 });
 
 /**
- * Pflicht sind Name, Telefon und E-Mail, auf jeder Strecke gleich (Quiz, Brief-Kontakt): Marten
- * ruft zurück, und wen er nicht erreicht, dem schreibt er. Nach der Firma
+ * Pflicht sind Name und E-Mail. Das Telefon ist seit 2026-11-24 serverseitig freiwillig (eine
+ * angegebene Nummer braucht 5 Zeichen); welche Strecke es verlangt, entscheidet das Formular
+ * (`phoneOptional`). Marten ruft an, wo es eine Nummer gibt, sonst schreibt er. Nach der Firma
  * fragt das Formular seit 2026-10-29 nicht mehr (das Feld bleibt erlaubt, für offene alte Tabs).
  * Das Formular (`FunnelQuiz.tsx`, `PFLICHTFELDER`) prüft dasselbe; bis 2026-10-29 hing die
  * Regel an einer Liste von Strecken, und `/f/software-check/` fehlte darin, sodass Server
@@ -23,11 +24,20 @@ const leadSchema = z.object({
 	funnel: z.string().min(1).max(100),
 	company: z.string().max(200),
 	name: z.string().trim().min(2, 'Bitte mindestens 2 Zeichen eingeben.').max(100),
-	email: z.string().trim().email('Bitte eine gueltige E-Mail-Adresse eingeben.').max(200),
-	phone: z.string().trim().min(5, 'Bitte eine Telefonnummer angeben.').max(50),
+	email: z.string().trim().email('Bitte eine gültige E-Mail-Adresse eingeben.').max(200),
+	// Telefon ist optional (Software-Check, 2026-11-24: in Welle 3 brach die Pflichtnummer bei kalten
+	// Besuchern ab). Leer ist erlaubt, eine angegebene Nummer braucht mindestens 5 Zeichen. Welche
+	// Strecke die Nummer verlangt, entscheidet das Formular (`phoneOptional` in FunnelQuiz).
+	phone: z
+		.string()
+		.trim()
+		.max(50)
+		.refine((v) => v === '' || v.length >= 5, 'Bitte prüft die Telefonnummer.'),
 	answers: z.array(answerSchema).max(20),
-	utm: z.record(z.string(), z.string().max(500)).optional(),
-	page: z.string().max(2000).optional(),
+	// Attribution wird gekürzt, nie abgelehnt: Ein zu langer fbclid- oder Referrer-Wert hat sonst den
+	// ganzen Lead mit 400 verworfen, und die Person konnte nichts dagegen tun (2026-11-23).
+	utm: z.record(z.string(), z.string().transform((v) => v.slice(0, 500))).optional(),
+	page: z.string().transform((v) => v.slice(0, 2000)).optional(),
 	eventId: z.string().max(100).optional(),
 	/**
 	 * Kennung des versendeten Briefs (Brief-Kanal /b/). Kommt als `?r=` an der
@@ -39,7 +49,9 @@ const leadSchema = z.object({
 	 * schwer auffindbar.
 	 */
 	letterRef: z.string().max(50).optional(),
-	honeypot: z.string().max(0),
+	// Gefüllt heißt Bot; die Weiche unten meldet still Erfolg. Mit max(0) lehnte schon das Schema
+	// ab, und ein Mensch, dessen Autofill das Feld füllte, sah eine englische zod-Meldung.
+	honeypot: z.string().max(500),
 });
 
 const json = (body: unknown, status = 200) =>
@@ -268,9 +280,14 @@ export default async (request: Request, context: Context) => {
 		}
 
 		// Meta Conversions API - serverseitiges Lead-Event (best-effort).
-		// Nur senden, wenn Pixel-ID + Token konfiguriert sind. Die Attribution
-		// (_fbp/_fbc/fbclid) liefert das Frontend nur nach Marketing-Consent mit,
-		// sodass ohne Einwilligung keine Cookie-basierte Zuordnung stattfindet.
+		// Nur senden, wenn Pixel-ID + Token konfiguriert sind. Nur `_fbp`/`_fbc` hängen am
+		// Marketing-Consent; utm und fbclid sammelt das Frontend immer (`sammleAttribution`),
+		// also geht auch ohne Einwilligung ein Lead mit gehashten Kontaktdaten und einem aus
+		// fbclid rekonstruierten fbc raus. Das ist eine Entscheidung, keine Garantie dieses Codes.
+		//
+		// Läuft nach der Antwort (`waitUntil`): Abgewartet kostete Meta bis zu 8 s vor dem
+		// „Danke“, und lief die Function in ihr Zeitlimit, sah der Besucher einen Fehler und
+		// schickte ein zweites Mal ab, obwohl der Lead längst im Blob lag.
 		const metaPixelId = Netlify.env.get('META_PIXEL_ID');
 		const metaCapiToken = Netlify.env.get('META_CAPI_TOKEN');
 		if (metaPixelId && metaCapiToken) {
@@ -279,7 +296,7 @@ export default async (request: Request, context: Context) => {
 				request.headers.get('x-nf-client-connection-ip') ||
 				request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
 				undefined;
-			await sendMetaCapiLead({
+			const capi = sendMetaCapiLead({
 				pixelId: metaPixelId,
 				token: metaCapiToken,
 				eventId: lead.eventId,
@@ -294,7 +311,12 @@ export default async (request: Request, context: Context) => {
 				userAgent,
 				receivedAt,
 				testEventCode: Netlify.env.get('META_CAPI_TEST_EVENT_CODE'),
-			});
+			}).catch((capiError) => console.error('Meta CAPI error:', capiError));
+			// Netlify kennt `waitUntil` zur Laufzeit, die installierten Typen noch nicht; ohne die
+			// Methode wird wie vorher abgewartet.
+			const waitUntil = (context as Context & { waitUntil?: (p: Promise<unknown>) => void }).waitUntil;
+			if (typeof waitUntil === 'function') waitUntil.call(context, capi);
+			else await capi;
 		}
 
 		const plunkSecretKey = Netlify.env.get('PLUNK_SECRET_KEY');
@@ -345,6 +367,8 @@ export default async (request: Request, context: Context) => {
 				// Eigene Software (/f/eigene-software/, Tür 4). Bis 2026-10-18 lag die Seite unter
 				// /f/abloesung/; beide Schlüssel bleiben, damit alte Leads zuordenbar bleiben.
 				'f/eigene-software': 'Funnel · Eigene Software (/f/eigene-software/)',
+				'f/software-check': 'Funnel · Software-Check (/f/software-check/)',
+				'f/software-check-ki': 'Funnel · Software-Check KI (/f/software-check-ki/)',
 				'f/abloesung': 'Funnel · Eigene Software (früher /f/abloesung/)',
 				// Backup der alten Fassungen, falls Anzeigen noch darauf zeigen sollen.
 				'f/angebote-old': 'Funnel · Angebotsbaustein, alte Fassung (/f/angebote-old/)',

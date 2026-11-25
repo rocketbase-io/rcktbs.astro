@@ -1,0 +1,99 @@
+---
+/**
+ * Musterbericht als dunkles Band mit dem echten Deckblatt (aus der PDF gerendert,
+ * src/assets/check/musterbericht-deckblatt.png). Dunkel wie das Deckblatt selbst: die eine dunkle
+ * Fläche der Seite und die Brücke zu den dunklen Anzeigen (Design-Review 2026-11-24).
+ *
+ * Tracking wie MusterberichtDownload: Plausible „musterbericht_download“ mit `ort`, über
+ * `data-musterbericht`. Kein `download`-Attribut (In-App-Browser von Facebook/Instagram).
+ * Die Inhalte der Liste stehen so im Musterbericht.
+ */
+import { Picture } from 'astro:assets';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import deckblatt from '@/assets/check/musterbericht-deckblatt.png';
+
+interface Props {
+  ort: string;
+}
+const { ort } = Astro.props;
+const href = '/downloads/musterbericht-software-check.pdf';
+const punkte = [
+  'Zusammenfassung für die Geschäftsführung',
+  'Jeder Fund mit Einstufung, Fundstelle und Vorschlag',
+  'Die Reihenfolge: was dringend ist, was warten kann',
+  'Hinweise für den Betrieb und Fragen an eure Dienstleister',
+];
+---
+
+<div class="musterbericht-band relative overflow-hidden rounded-[1.75rem] text-white">
+  <div class="relative grid items-center gap-8 p-6 sm:p-9 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-16 lg:px-12 lg:py-10">
+    <div>
+      <p class="font-mono text-[0.7rem] font-semibold tracking-[0.2em] text-white/60 uppercase">Musterbericht · PDF, 10 Seiten</p>
+      <h3 class="font-display mt-3 text-2xl leading-tight font-bold tracking-tight text-balance sm:text-3xl">
+        So sieht euer Bericht am Ende aus.
+      </h3>
+      <ul class="mt-5 grid gap-2.5">
+        {
+          punkte.map((p, i) => (
+            // Mobil nur die ersten beiden: das Band war sonst fast zwei Bildschirme hoch.
+            <li class:list={['flex gap-3 text-[0.95rem] leading-6 text-white/85', i > 1 && 'max-sm:hidden']}>
+              <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/10">
+                <Icon name="check" size="xs" />
+              </span>
+              {p}
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mt-7 flex flex-col items-start gap-3">
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener"
+          data-musterbericht={ort}
+          class="inline-flex min-h-12 shrink-0 items-center max-sm:w-full justify-center gap-2 rounded-md bg-white px-5 py-3 whitespace-nowrap text-sm font-semibold text-[oklch(18%_0.03_265)] transition-colors hover:bg-white/90"
+        >
+          <Icon name="download" size="sm" />
+          Musterbericht ansehen
+        </a>
+        <p class="text-xs leading-5 text-white/55">Ohne Anmeldung. Betrieb und Befunde sind ausgedacht.</p>
+      </div>
+    </div>
+    {/* Deckblatt gerade, mit zwei Blättern dahinter wie die Prüfbericht-Karte im Hero. */}
+    <a href={href} target="_blank" rel="noopener" data-musterbericht={ort} class="group relative mx-auto block w-full max-w-[12rem] sm:max-w-[14rem] lg:mr-6" aria-label="Musterbericht als PDF öffnen">
+      <span class="absolute inset-x-5 -bottom-4 top-6 rounded-xl bg-white/10" aria-hidden="true"></span>
+      <span class="absolute inset-x-2.5 -bottom-2 top-3 rounded-xl bg-white/15" aria-hidden="true"></span>
+      <Picture
+        src={deckblatt}
+        alt="Deckblatt des Musterberichts: Auftragsportal Beispielbetrieb GmbH, 1 kritisch, 5 hoch, 12 mittel"
+        widths={[320, 640]}
+        sizes="(min-width: 640px) 14rem, 12rem"
+        formats={['avif', 'webp']}
+        class="relative w-full rounded-xl shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)] ring-1 ring-white/15 transition-transform duration-300 group-hover:-translate-y-1"
+        loading="lazy"
+      />
+    </a>
+  </div>
+</div>
+
+<style>
+  .musterbericht-band {
+    background:
+      radial-gradient(60% 80% at 85% 20%, color-mix(in srgb, var(--color-brand-400) 30%, transparent), transparent 70%),
+      oklch(18% 0.03 265);
+  }
+</style>
+
+<script>
+  import { trackPlausible } from '@/lib/leadTracking';
+
+  // Dieselbe Registrierung wie in MusterberichtDownload: einmal pro Seite.
+  if (!(window as unknown as { __musterbericht?: boolean }).__musterbericht) {
+    (window as unknown as { __musterbericht?: boolean }).__musterbericht = true;
+    document.addEventListener('click', (e) => {
+      const link = e.target instanceof Element ? e.target.closest('[data-musterbericht]') : null;
+      if (!link) return;
+      trackPlausible('musterbericht_download', { ort: link.getAttribute('data-musterbericht') || 'unbekannt' });
+    });
+  }
+</script>

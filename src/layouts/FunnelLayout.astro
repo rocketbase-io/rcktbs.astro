@@ -76,7 +76,7 @@ const year = new Date().getFullYear();
       class="container flex items-center justify-between gap-4 py-2.5 pb-[calc(0.625rem+env(safe-area-inset-bottom,0px))]"
     >
       <img src={rocketbaseLogo.src} alt="" class="h-5 w-auto dark:invert" width="72" height="20" loading="lazy" />
-      <Button size="md" href="#quiz" class="whitespace-nowrap">
+      <Button size="lg" href="#quiz" class="whitespace-nowrap">
         {ctaLabel}
         <Icon name="arrow-up-right" size="sm" />
       </Button>
@@ -93,7 +93,7 @@ const year = new Date().getFullYear();
       <p class="text-foreground-muted text-sm">
         © {year} {siteConfig.name}
       </p>
-      <nav class="flex items-center gap-6">
+      <nav class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 [&>*]:whitespace-nowrap">
         <!-- Einziger Weg zur Hauptseite: bewusst nur im Footer und in neuem Tab,
              damit der Funnel oben ablenkungsfrei bleibt und offen stehen bleibt. -->
         <a
@@ -128,6 +128,11 @@ const year = new Date().getFullYear();
   // ans Sales-Backend nur mit `?r=`-Kennung. Siehe src/lib/engagement.ts.
   import { meldeSeitenaufruf, streckeAusPfad } from '@/lib/funnelTracking';
   import { verfolgeEngagement } from '@/lib/engagement';
+  import { sammleAttribution } from '@/lib/leadTracking';
+
+  // Herkunft gleich beim Einstieg merken, nicht erst wenn das Formular lädt: Wer die Seite
+  // ohne Query neu öffnet, schickte sonst einen Lead ohne utm und fbclid.
+  sammleAttribution();
 
   // Der Name kommt aus dem Pfad, nicht aus der `funnel`-Prop: Sonst trägt jede Stelle
   // ihren eigenen, und Öffnung und Abgabe stehen im Board unter zwei Strecken.

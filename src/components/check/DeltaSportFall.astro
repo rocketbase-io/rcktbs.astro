@@ -16,8 +16,9 @@
  */
 import { getImage } from 'astro:assets';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
-import logo from '@/assets/client-logos/delta-sport_logo.svg';
 import founderPortrait from '@/assets/rocketbase/founder-marten-priess.jpg';
+import WischHinweis from '@/components/ui/WischHinweis.astro';
+import deltaLogo from '@/assets/client-logos/delta-sport_logo.svg';
 
 const marten = await getImage({ src: founderPortrait, width: 112, format: 'webp' });
 
@@ -45,65 +46,80 @@ const befunde = [
 const gut = ['Von außen kein Weg hinein', 'Anmeldung und Rechte sauber', 'Zugangsdaten nicht im Code', 'Gut dokumentiert'];
 ---
 
-<div class="flex items-start justify-between gap-6">
-  <div class="min-w-0">
-    <p class="text-brand-600 dark:text-brand-300 text-xs font-semibold tracking-[0.14em] uppercase">Ein echter Check</p>
-    <h3 class="font-display text-foreground mt-2 text-xl font-bold tracking-tight text-balance sm:text-3xl">
-      Was wir bei Delta-Sport gefunden haben
-    </h3>
-    <p class="text-foreground-secondary mt-3 max-w-2xl text-base leading-7">
-      Ein Lagersystem und eine Service-App, mit KI gebaut, kurz vor dem Go-live. Live war noch nichts, Kundendaten gab es keine.
-      Gefunden haben wir trotzdem einige Dutzend Befunde, eine Handvoll davon kritisch, zum Beispiel:
-    </p>
-  </div>
-  <img src={logo.src} alt="Delta-Sport" width="72" height="60" class="hidden h-16 w-auto shrink-0 sm:block" loading="lazy" />
-</div>
+{/* Eine Fallstudien-Karte: Logo, „Ein echter Check“, Überschrift, Befunde und Martens Satz gehören
+    zusammen in einen Block (Philipp, 2026-11-24). Kopfzeile wie der Kopf eines Berichts: Logo des
+    Kunden links, Art des Systems rechts. Kein schwebendes Logo darüber, keine Pille. */}
+<article class="border-border bg-card overflow-hidden rounded-[1.75rem] border shadow-[0_30px_70px_-34px_rgba(34,43,74,0.35)]">
+  <header class="border-border/70 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-b px-5 py-4 sm:px-10 sm:py-5">
+    <div class="flex items-center gap-4">
+      <img src={deltaLogo.src} alt="Delta-Sport" width="96" height="48" class="h-9 w-auto sm:h-12" loading="lazy" />
+      <span class="bg-border h-8 w-px" aria-hidden="true"></span>
+      <span class="text-brand-600 dark:text-brand-300 font-mono text-[0.7rem] font-semibold tracking-[0.18em] uppercase">Ein echter Check</span>
+    </div>
+    <p class="text-foreground-muted text-sm max-sm:hidden">Lagersystem und Service-App · mit KI gebaut · vor dem Go-live</p>
+  </header>
 
-<ul class="mt-6 grid gap-3 sm:gap-4 lg:mt-8 lg:grid-cols-3">
-  {
-    befunde.map((b) => (
-      <li class="bg-brand-500/5 flex gap-4 rounded-2xl p-4 sm:p-6 lg:block">
-        <span class="bg-background hidden h-10 w-10 shrink-0 items-center justify-center rounded-xl text-[var(--color-error)] shadow-sm sm:flex">
-          <Icon name={b.icon} size="sm" />
-        </span>
+  {/* Kompakt: oben Überschrift und Martens Satz nebeneinander, darunter die drei Befunde als
+      Spalten, ganz unten was gepasst hat als eine Zeile. */}
+  <div class="p-5 sm:px-10 sm:py-8">
+    <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:items-end lg:gap-14">
+      <div>
+        <h2 class="font-display text-foreground text-[1.5rem] leading-[1.12] font-bold tracking-tight text-balance sm:text-[2.5rem]">
+          Was wir bei Delta‑Sport
+          <span class="text-brand-500 block">gefunden haben.</span>
+        </h2>
+        <p class="text-foreground-secondary mt-3 text-[0.95rem] leading-6 sm:text-base sm:leading-7">
+          Live war noch nichts, Kundendaten gab es keine. Gefunden haben wir trotzdem einige Dutzend Befunde, eine Handvoll davon kritisch.
+        </p>
+      </div>
+      <figure class="bg-background-secondary flex items-start gap-3 rounded-2xl p-3.5 sm:gap-4 sm:p-5">
+        <img
+          src={marten.src}
+          alt=""
+          width="56"
+          height="56"
+          class="h-9 w-9 shrink-0 rounded-full object-cover object-[center_22%] sm:h-11 sm:w-11"
+          loading="lazy"
+        />
         <div class="min-w-0">
-          <p class="text-foreground-muted flex items-center gap-1.5 text-xs font-semibold tracking-[0.12em] uppercase lg:mt-4">
-            <Icon name={b.icon} size="sm" class="shrink-0 text-[var(--color-error)] sm:hidden" />
-            {b.bereich}
-          </p>
-          <p class="font-display text-foreground mt-1 font-bold text-balance sm:text-lg">{b.titel}</p>
-          <p class="text-foreground-secondary mt-1.5 text-[0.95rem] leading-6">{b.text}</p>
+          <blockquote class="font-display text-foreground text-[0.95rem] leading-6 font-semibold text-balance sm:text-[1.05rem] sm:leading-7">
+            „Der Code tat überall, was er sollte. Die Befunde lagen in Fragen, die niemand gestellt hat.“
+          </blockquote>
+          <figcaption class="text-foreground-muted mt-1 text-sm">Marten Prieß, hat den Check gemacht</figcaption>
         </div>
-      </li>
-    ))
-  }
-</ul>
+      </figure>
+    </div>
 
-<div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-  <span class="text-foreground-muted">Was gepasst hat:</span>
-  {
-    gut.map((g) => (
-      <span class="text-foreground-secondary flex items-center gap-1.5">
-        <Icon name="check" size="sm" class="text-[var(--color-success)]" />
-        {g}
-      </span>
-    ))
-  }
-</div>
+    {/* Unter lg ein Wisch-Streifen statt drei gestapelter Karten: die Befunde bleiben vollständig,
+        die Section wird aber nicht drei Bildschirme hoch. Die nächste Karte schaut rechts herein. */}
+    <ul class="-mx-5 mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-5 px-5 pb-1 sm:-mx-10 sm:scroll-px-10 sm:px-10 lg:mx-0 lg:mt-7 lg:grid lg:grid-cols-3 lg:gap-4 lg:overflow-visible lg:px-0 lg:pb-0" data-wisch>
+      {
+        befunde.map((b, i) => (
+          <li class="border-l-[oklch(62%_0.2_25)] bg-background-secondary w-[84%] shrink-0 snap-start rounded-2xl border-l-[3px] p-4 sm:w-[46%] sm:p-5 lg:w-auto">
+            <p class="text-foreground-muted flex items-center gap-2 font-mono text-[0.65rem] font-semibold tracking-[0.16em] uppercase">
+              <Icon name={b.icon} size="xs" class="shrink-0 text-[oklch(55%_0.2_25)]" />
+              0{i + 1} · {b.bereich}
+            </p>
+            <p class="font-display text-foreground mt-1.5 text-[1.05rem] font-bold text-balance">{b.titel}</p>
+            <p class="text-foreground-secondary mt-1 text-[0.9rem] leading-6">{b.text}</p>
+          </li>
+        ))
+      }
+    </ul>
+    <WischHinweis anzahl={befunde.length} class="mt-3" />
 
-<figure class="border-border mt-8 flex items-start gap-4 border-t pt-6 lg:mt-10 lg:pt-8">
-  <img
-    src={marten.src}
-    alt=""
-    width="56"
-    height="56"
-    class="h-12 w-12 shrink-0 rounded-full object-cover object-[center_22%] sm:h-14 sm:w-14"
-    loading="lazy"
-  />
-  <div class="min-w-0">
-    <blockquote class="font-display text-foreground text-lg leading-7 font-semibold text-balance sm:text-xl sm:leading-8">
-      „Der Code tat überall, was er sollte. Die Befunde lagen in Fragen, die niemand gestellt hat.“
-    </blockquote>
-    <figcaption class="text-foreground-muted mt-2 text-sm">Marten Prieß, hat den Check gemacht</figcaption>
+    <div class="border-border/70 mt-5 grid grid-cols-2 gap-x-3 gap-y-1.5 border-t pt-4 text-xs sm:mt-6 sm:flex sm:flex-wrap sm:items-center sm:gap-x-5 sm:gap-y-2 sm:pt-5 sm:text-sm">
+      <span class="text-foreground-muted col-span-2 font-mono text-[0.65rem] font-semibold tracking-[0.18em] uppercase">Was gepasst hat</span>
+      {
+        gut.map((g) => (
+          <span class="text-foreground-secondary flex items-center gap-1.5">
+            <span class="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[oklch(68%_0.17_150/0.16)] text-[oklch(48%_0.13_150)]">
+              <Icon name="check" size="xs" />
+            </span>
+            {g}
+          </span>
+        ))
+      }
+    </div>
   </div>
-</figure>
+</article>

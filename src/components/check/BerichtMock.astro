@@ -7,66 +7,120 @@
  */
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 
-const kapitel = [
-  { name: 'Anmeldung & Session', stand: 'ok' },
-  { name: 'Zugriffsrechte', stand: 'offen' },
-  { name: 'Eingaben & API', stand: 'ok' },
-  { name: 'Konfiguration & Schlüssel', stand: 'offen' },
-  { name: 'Abhängigkeiten', stand: 'teils' },
-  { name: 'Gleichzeitige Zugriffe', stand: 'teils' },
-] as const;
+interface Props {
+  /**
+   * „einfach“: Kapitel und Befunde ohne Fachwörter, für die Anzeigen-Landing (Betriebe ohne
+   * eigene Entwickler). Die Tür-Seite behält die Fassung, wie sie im Bericht stünde.
+   */
+  sprache?: 'fach' | 'einfach';
+}
+const { sprache = 'fach' } = Astro.props;
+const einfach = sprache === 'einfach';
 
-const befunde = [
-  { id: 'B-003', schwere: 'hoch', text: 'Nutzer sieht Projekte anderer Mandanten über geänderte ID in der URL.' },
-  { id: 'B-007', schwere: 'hoch', text: 'API-Schlüssel des Mailversands liegt im Repository.' },
-  { id: 'B-012', schwere: 'mittel', text: '14 Abhängigkeiten mit bekannten Schwachstellen, 2 davon erreichbar.' },
+const kapitel = einfach
+  ? ([
+      { name: 'Anmeldung', stand: 'ok' },
+      { name: 'Wer sieht was', stand: 'offen' },
+      { name: 'Eingaben', stand: 'ok' },
+      { name: 'Passwörter', stand: 'offen' },
+      { name: 'Updates', stand: 'teils' },
+      { name: 'Viele gleichzeitig', stand: 'teils' },
+    ] as const)
+  : ([
+      { name: 'Anmeldung & Session', stand: 'ok' },
+      { name: 'Zugriffsrechte', stand: 'offen' },
+      { name: 'Eingaben & API', stand: 'ok' },
+      { name: 'Konfiguration & Schlüssel', stand: 'offen' },
+      { name: 'Abhängigkeiten', stand: 'teils' },
+      { name: 'Gleichzeitige Zugriffe', stand: 'teils' },
+    ] as const);
+
+const befunde = einfach
+  ? ([
+      { id: 'B-003', schwere: 'kritisch', text: 'Ein Kunde kann die Projekte anderer Kunden öffnen.' },
+      { id: 'B-007', schwere: 'hoch', text: 'Das Passwort für den Mailversand steht offen im Code.' },
+      { id: 'B-012', schwere: 'mittel', text: '14 Bausteine sind veraltet und haben bekannte Lücken.' },
+    ] as const)
+  : ([
+      { id: 'B-003', schwere: 'hoch', text: 'Nutzer sieht Projekte anderer Mandanten über geänderte ID in der URL.' },
+      { id: 'B-007', schwere: 'hoch', text: 'API-Schlüssel des Mailversands liegt im Repository.' },
+      { id: 'B-012', schwere: 'mittel', text: '14 Abhängigkeiten mit bekannten Schwachstellen, 2 davon erreichbar.' },
+    ] as const);
+
+const zaehlung = [
+  { schwere: 'kritisch', anzahl: 2 },
+  { schwere: 'hoch', anzahl: 5 },
+  { schwere: 'mittel', anzahl: 14 },
 ] as const;
+const standText = { ok: 'ok', teils: 'teils', offen: 'offen' } as const;
 ---
 
-<div class="bericht border-border bg-card relative mx-auto max-w-md rounded-[1.6rem] border p-5 shadow-[0_22px_55px_rgba(34,43,74,0.12)] sm:p-6">
-  <div class="flex items-start justify-between gap-4">
-    <div>
-      <p class="text-foreground-muted text-[0.65rem] font-semibold tracking-[0.2em] uppercase">Prüfbericht</p>
-      <p class="font-display text-foreground mt-1 text-base font-bold tracking-tight">Kundenportal, Stand 14.11.2026</p>
-      <p class="text-foreground-secondary mt-0.5 text-xs">Vor dem Go-live · 2 kritisch · 5 hoch · 14 mittel</p>
+{/* Zwei Blätter dahinter, gerade und ohne Perspektive: liest sich als Dokument, nicht als App-Karte. */}
+<div class="bericht-stapel relative mx-auto w-full max-w-md lg:max-w-[30rem]">
+  <span class="border-border bg-card absolute inset-x-6 -bottom-3 top-6 rounded-[1.6rem] border opacity-60" aria-hidden="true"></span>
+  <span class="border-border bg-card absolute inset-x-3 -bottom-1.5 top-3 rounded-[1.6rem] border opacity-80" aria-hidden="true"></span>
+
+  <div class="bericht border-border bg-card relative rounded-[1.6rem] border p-4 shadow-[0_28px_60px_-20px_rgba(34,43,74,0.28)] sm:p-6">
+    <div class="flex items-start justify-between gap-4">
+      <div class="min-w-0">
+        <p class="text-brand-600 dark:text-brand-300 font-mono text-[0.65rem] font-semibold tracking-[0.2em] uppercase">Prüfbericht</p>
+        <p class="font-display text-foreground mt-1.5 text-lg leading-6 font-bold tracking-tight">Kundenportal</p>
+        <p class="text-foreground-muted mt-0.5 text-xs">Vor dem Go-live · Stand 14.11.2026</p>
+      </div>
+      <span class="bg-brand-500/10 text-brand-600 dark:text-brand-300 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
+        <Icon name="shield" size="sm" />
+      </span>
     </div>
-    <span class="border-brand-300/70 bg-brand-500/5 text-brand-600 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border">
-      <Icon name="shield" size="sm" />
-    </span>
-  </div>
 
-  <ul class="mt-5 grid grid-cols-2 gap-x-4 gap-y-2">
-    {
-      kapitel.map((k, i) => (
-        <li class="flex items-center gap-2 text-xs" style={`--i: ${i}`}>
-          <span class:list={['bericht-dot h-2 w-2 shrink-0 rounded-full', `ist-${k.stand}`]} />
-          <span class="text-foreground-secondary truncate">{k.name}</span>
-        </li>
-      ))
-    }
-  </ul>
-
-  <div class="border-border/70 mt-5 border-t pt-4">
-    <p class="text-foreground-muted text-[0.65rem] font-semibold tracking-[0.2em] uppercase">Befunde, zuerst</p>
-    <ul class="mt-2 space-y-2">
+    {/* Zählung als drei Kacheln: die Zahl ist das, was man in einer Sekunde erfasst. */}
+    <ul class="mt-3 grid grid-cols-3 gap-2 sm:mt-4">
       {
-        befunde.map((b, i) => (
-          <li class="bericht-befund flex gap-2.5 text-xs leading-5" style={`--i: ${i + 6}`}>
-            <span class:list={['mt-0.5 shrink-0 rounded px-1.5 py-px font-mono text-[0.6rem] font-bold uppercase', `schwere-${b.schwere}`]}>
-              {b.schwere}
-            </span>
-            <span class="text-foreground-secondary">
-              <span class="text-foreground font-semibold">{b.id}</span> {b.text}
-            </span>
+        zaehlung.map((z, i) => (
+          <li class="bg-background-secondary rounded-xl px-3 py-2 sm:py-2.5" style={`--i: ${i}`}>
+            <span class:list={['font-display block text-2xl leading-7 font-bold', `zahl-${z.schwere}`]}>{z.anzahl}</span>
+            <span class="text-foreground-muted text-[0.7rem] font-semibold tracking-[0.08em] uppercase">{z.schwere}</span>
           </li>
         ))
       }
     </ul>
-  </div>
 
-  <p class="border-border/70 text-foreground-muted mt-4 border-t pt-3 text-[0.7rem] leading-5">
-    Jeder Befund mit Einstufung, Fundstelle und Vorschlag. Dazu Management-Summary und Papier zum Betrieb.
-  </p>
+    {/* Mobil ohne Kapitel-Liste, dritten Befund und Fußnote: der Bericht soll im Hero eine Ahnung
+        geben, nicht einen Bildschirm füllen (2026-11-24). */}
+    <ul class="mt-4 hidden grid-cols-2 gap-x-4 gap-y-1.5 sm:grid">
+      {
+        kapitel.map((k, i) => (
+          <li class="flex items-center gap-2 text-xs" style={`--i: ${i + 3}`}>
+            <span class:list={['bericht-dot h-2 w-2 shrink-0 rounded-full', `ist-${k.stand}`]} />
+            <span class="text-foreground-secondary min-w-0 truncate">{k.name}</span>
+            <span class="text-foreground-muted ml-auto shrink-0 text-[0.65rem]">{standText[k.stand]}</span>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="border-border/70 mt-4 border-t pt-3 sm:pt-4">
+      <p class="text-foreground-muted font-mono text-[0.65rem] font-semibold tracking-[0.2em] uppercase">Befunde, zuerst</p>
+      <ul class="mt-2.5 space-y-2">
+        {
+          befunde.map((b, i) => (
+            <li class:list={[i > 1 && 'max-sm:hidden', 'bericht-befund bg-background-secondary flex gap-2.5 rounded-xl border-l-[3px] py-2 pr-3 pl-2.5 text-xs leading-5', `rand-${b.schwere}`]} style={`--i: ${i + 9}`}>
+              <span class:list={['mt-0.5 shrink-0 rounded px-1.5 py-px font-mono text-[0.625rem] font-bold uppercase', `schwere-${b.schwere}`]}>
+                {b.schwere}
+              </span>
+              <span class="text-foreground-secondary">
+                <span class="text-foreground font-mono font-semibold">{b.id}</span> {b.text}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <p class="text-foreground-muted mt-4 hidden gap-2 text-[0.7rem] leading-5 sm:flex">
+      <Icon name="file-text" size="xs" class="text-brand-500 mt-1 shrink-0" />
+      {einfach ? 'Jeder Befund mit Einstufung, Fundstelle und Vorschlag. Dazu eine Zusammenfassung für die Geschäftsführung.' : 'Jeder Befund mit Einstufung, Fundstelle und Vorschlag. Dazu Management-Summary und Papier zum Betrieb.'}
+    </p>
+  </div>
 </div>
 
 <style>
@@ -79,6 +133,10 @@ const befunde = [
   .bericht-dot.ist-offen {
     background: oklch(62% 0.2 25);
   }
+  .schwere-kritisch {
+    color: oklch(98% 0.01 25);
+    background: oklch(52% 0.21 25);
+  }
   .schwere-hoch {
     color: oklch(45% 0.18 25);
     background: oklch(62% 0.2 25 / 0.14);
@@ -86,6 +144,24 @@ const befunde = [
   .schwere-mittel {
     color: oklch(50% 0.14 85);
     background: oklch(80% 0.16 85 / 0.2);
+  }
+  .zahl-kritisch {
+    color: oklch(52% 0.21 25);
+  }
+  .zahl-hoch {
+    color: oklch(60% 0.17 45);
+  }
+  .zahl-mittel {
+    color: oklch(62% 0.14 85);
+  }
+  .rand-kritisch {
+    border-left-color: oklch(52% 0.21 25);
+  }
+  .rand-hoch {
+    border-left-color: oklch(62% 0.2 25);
+  }
+  .rand-mittel {
+    border-left-color: oklch(80% 0.16 85);
   }
   :global(.dark) .schwere-hoch {
     color: oklch(80% 0.14 25);
