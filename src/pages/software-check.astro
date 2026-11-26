@@ -15,6 +15,7 @@ import StackLeiste from '@/components/check/StackLeiste.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import MusterberichtDownload from '@/components/check/MusterberichtDownload.astro';
+import VslVideo from '@/components/check/VslVideo.astro';
 import { softwareCheck } from '@/data/funnelSchlank';
 import { softwareCheckFaqs } from '@/components/check/faqs';
 
@@ -59,6 +60,7 @@ const serviceSchema = createServiceSchema({
 >
   <SchlankPage tor={softwareCheck} modus="seite" kontakt="quiz" blogTuer="check" faqs={softwareCheckFaqs} vergleichKurz>
   <BerichtMock slot="hero" />
+  <VslVideo slot="video" />
   <div id="pakete" class="grid scroll-mt-24 gap-4 lg:grid-cols-2 lg:gap-6">
     {
       pakete.map((p) => (
