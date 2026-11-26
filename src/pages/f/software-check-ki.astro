@@ -14,6 +14,7 @@ import BerichtMock from '@/components/check/BerichtMock.astro';
 import ZweiteMeinung from '@/components/check/ZweiteMeinung.astro';
 import MusterberichtBand from '@/components/check/MusterberichtBand.astro';
 import DeltaSportFall from '@/components/check/DeltaSportFall.astro';
+import VslVideo from '@/components/check/VslVideo.astro';
 import { softwareCheckFunnelKi } from '@/data/funnelSchlank';
 ---
 
@@ -25,6 +26,7 @@ import { softwareCheckFunnelKi } from '@/data/funnelSchlank';
 >
   <SchlankPage tor={softwareCheckFunnelKi}>
   <BerichtMock slot="hero" sprache="einfach" />
+  <VslVideo slot="video" />
   <DeltaSportFall slot="fall" />
   <ZweiteMeinung />
   <MusterberichtBand slot="beweisUnten" ort="funnel" />
