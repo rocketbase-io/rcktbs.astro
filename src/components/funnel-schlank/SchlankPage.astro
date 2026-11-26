@@ -282,6 +282,10 @@ const quizProps = {
   </div>
 </section>
 
+{/* VSL direkt unter dem Hero (Slot `video`, z. B. check/VslVideo.astro): Wer aus einer Anzeige
+    kommt, sieht Marten zuerst, bevor die Seite ins Detail geht. */}
+<slot name="video" />
+
 {/* Sorgen der Anzeigen direkt unter dem Hero (nur Tore mit `probleme`): Wer von einer Anzeige kommt,
     findet hier seine Angst in denselben Worten wieder, bevor die Seite erklärt, was wir tun. */}
 {

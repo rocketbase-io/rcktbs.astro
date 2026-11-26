@@ -1,0 +1,177 @@
+---
+/**
+ * VSL zum Software-Check: Marten erklärt den Check in knapp zwei Minuten.
+ *
+ * Ein Video, zwei Fassungen: unter 768 px das Hochformat (9:16), sonst das Querformat (16:9).
+ * Wer aus einer Instagram- oder Facebook-Anzeige kommt, ist fast immer am Handy und erwartet
+ * Hochformat. Gewählt wird einmal beim Laden; ein einziges <video>, damit jedes Abspielen in
+ * der Funnel-Messung (engagement.ts) genau einmal zählt.
+ *
+ * Gestreamt wird über Bunny Stream (HLS, Library „rocketbase-website", Auslieferung nur aus
+ * der EU). Bis zum Klick auf Play geht keine Anfrage an Bunny: Das Vorschaubild liegt lokal
+ * unter public/screencasts/, der Stream wird erst beim Abspielen geladen. Safari spielt HLS
+ * selbst, alle anderen bekommen hls.js (nachgeladen beim Klick), ohne HLS die MP4-Fassung.
+ *
+ * Bunny liefert nur mit Referrer aus (Hotlink-Schutz); rocketbase.io sendet ihn über
+ * `Referrer-Policy: strict-origin-when-cross-origin` (netlify.toml).
+ */
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const BUNNY = 'https://vz-a3126b65-db7.b-cdn.net';
+const fassungen = {
+  quer: { id: 'f2fea076-e87c-4536-b9b6-2a1cbd662ca2', poster: '/screencasts/vsl-software-check-16x9.jpg' },
+  hoch: { id: '46a0926a-5474-43eb-ad0e-b6bc4e48f787', poster: '/screencasts/vsl-software-check-9x16.jpg' },
+};
+const daten = JSON.stringify({ bunny: BUNNY, ...fassungen });
+---
+
+<section id="video" class:list={['vsl-sec scroll-mt-20 py-10 lg:py-16', className]}>
+  <div class="container max-w-4xl">
+    <p class="text-brand-600 dark:text-brand-300 text-center font-mono text-xs font-semibold tracking-[0.2em] uppercase">
+      Der Software-Check in zwei Minuten
+    </p>
+    <div class="vsl-rahmen border-border mx-auto mt-5 overflow-hidden rounded-2xl border bg-black shadow-lg" data-vsl={daten}>
+      <video
+        class="block h-full w-full bg-black object-cover"
+        poster={fassungen.quer.poster}
+        preload="none"
+        playsinline
+        data-track="vsl-software-check"
+        aria-label="Video: Marten Prieß erklärt den Software-Check"
+      ></video>
+      <button type="button" class="vsl-play" aria-label="Video abspielen" data-track="vsl-play">
+        <span class="vsl-play-knopf" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="30" height="30"><path d="M8 5.5v13l10.5-6.5L8 5.5z" fill="currentColor"></path></svg>
+        </span>
+        <span class="vsl-dauer">1:54</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Querformat ab 768 px, darunter Hochformat, nie höher als der sichtbare Bildschirm. */
+  .vsl-rahmen {
+    position: relative;
+    aspect-ratio: 9 / 16;
+    width: min(100%, calc(82svh * 9 / 16));
+  }
+  @media (min-width: 768px) {
+    .vsl-rahmen {
+      aspect-ratio: 16 / 9;
+      width: 100%;
+    }
+  }
+  /* Nach dem Laden zählt die gewählte Fassung, nicht mehr die Fensterbreite: Wer das Tablet
+     dreht oder das Fenster verkleinert, behält einen Rahmen, der zum Video passt. */
+  .vsl-rahmen[data-format='quer'] {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+  }
+  .vsl-rahmen[data-format='hoch'] {
+    aspect-ratio: 9 / 16;
+    width: min(100%, calc(82svh * 9 / 16));
+  }
+  .vsl-play {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    background: linear-gradient(to top, rgb(0 0 0 / 0.25), transparent 40%);
+  }
+  .vsl-play-knopf {
+    display: grid;
+    place-items: center;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 999px;
+    color: #fff;
+    background: var(--color-brand-500);
+    box-shadow: 0 0 0 10px color-mix(in oklch, var(--color-brand-500) 28%, transparent), 0 12px 32px rgb(0 0 0 / 0.35);
+    transition: transform 0.2s;
+  }
+  .vsl-play-knopf svg {
+    margin-left: 4px;
+  }
+  .vsl-play:hover .vsl-play-knopf,
+  .vsl-play:focus-visible .vsl-play-knopf {
+    transform: scale(1.06);
+  }
+  .vsl-dauer {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.375rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+    background: rgb(0 0 0 / 0.6);
+  }
+  .vsl-rahmen.laeuft .vsl-play {
+    display: none;
+  }
+</style>
+
+<script>
+  type Fassung = { id: string; poster: string };
+  type Daten = { bunny: string; quer: Fassung; hoch: Fassung };
+
+  function einrichten() {
+    document.querySelectorAll<HTMLElement>('[data-vsl]').forEach((rahmen) => {
+      if (rahmen.dataset.bereit) return;
+      rahmen.dataset.bereit = '1';
+      const daten = JSON.parse(rahmen.dataset.vsl || '{}') as Daten;
+      const video = rahmen.querySelector('video')!;
+      const knopf = rahmen.querySelector<HTMLButtonElement>('.vsl-play')!;
+
+      // Fassung einmal beim Laden wählen; das Vorschaubild ist lokal, Bunny bleibt unberührt.
+      const hoch = window.matchMedia('(max-width: 767px)').matches;
+      const fassung = hoch ? daten.hoch : daten.quer;
+      rahmen.dataset.format = hoch ? 'hoch' : 'quer';
+      video.poster = fassung.poster;
+
+      let geladen = false;
+      async function starten() {
+        rahmen.classList.add('laeuft');
+        video.controls = true;
+        if (!geladen) {
+          geladen = true;
+          const hls = `${daten.bunny}/${fassung.id}/playlist.m3u8`;
+          const mp4 = `${daten.bunny}/${fassung.id}/play_720p.mp4`;
+          if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = hls;
+          } else {
+            try {
+              const { default: Hls } = await import('hls.js');
+              if (Hls.isSupported()) {
+                const h = new Hls({ capLevelToPlayerSize: true });
+                h.loadSource(hls);
+                h.attachMedia(video);
+              } else {
+                video.src = mp4;
+              }
+            } catch {
+              video.src = mp4;
+            }
+          }
+        }
+        video.play().catch(() => {
+          /* Autoplay-Sperre: Steuerung ist sichtbar, ein zweiter Klick startet. */
+        });
+      }
+
+      knopf.addEventListener('click', starten);
+    });
+  }
+
+  einrichten();
+  document.addEventListener('astro:page-load', einrichten);
+</script>

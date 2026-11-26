@@ -167,7 +167,9 @@ Logik in `src/lib/funnelTracking.ts` und `src/lib/engagement.ts`, eingehängt
 Die Seiten brauchen keine Tracking-Attribute: beobachtet werden alle `<video>`,
 alle `<section id>` und alle Klicks auf Buttons, Tabs, Links, Regler.
 `data-track="name"` an einem Element überschreibt den automatisch gebauten
-Namen.
+Namen. Bei Videos gilt das auch für den Namen in `video_*`; gestreamte
+Videos (HLS über Bunny, siehe `check/VslVideo.astro`) brauchen es, sonst heißen sie
+„blob…“ oder „playlist“.
 
 | Event | Wann | Payload |
 | --- | --- | --- |

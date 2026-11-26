@@ -228,8 +228,12 @@ export function verfolgeEngagement(funnel: string): void {
   }
 }
 
-/** Dateiname der Videoquelle ohne Endung, sonst Position auf der Seite. */
+/**
+ * `data-track` am Video, sonst Dateiname der Quelle ohne Endung, sonst Position auf der Seite.
+ * Gestreamte Videos (HLS) brauchen `data-track`: ihre Quelle heißt „blob:…" oder „playlist".
+ */
 function videoName(v: HTMLVideoElement): string {
+  if (v.dataset.track) return v.dataset.track;
   const src = v.currentSrc || v.querySelector('source')?.getAttribute('src') || '';
   const datei = src
     .split('/')
