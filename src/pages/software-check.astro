@@ -139,3 +139,13 @@ const serviceSchema = createServiceSchema({
     document.getElementById('pakete')?.scrollIntoView({ block: 'start' });
   }
 </script>
+
+<script>
+  // Nur das VSL messen (video_start bis video_ende), keine Abschnitte und Klicks: Die Seite ist
+  // keine Funnel-Seite. In Plausible steht sie unter funnel „software-check", die Anzeigen-
+  // Landing unter „f/software-check".
+  import { verfolgeVideos } from '@/lib/engagement';
+  import { streckeAusPfad } from '@/lib/funnelTracking';
+
+  verfolgeVideos(streckeAusPfad());
+</script>
