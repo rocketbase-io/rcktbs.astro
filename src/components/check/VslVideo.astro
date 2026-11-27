@@ -12,45 +12,153 @@
  * unter public/screencasts/, der Stream wird erst beim Abspielen geladen. Safari spielt HLS
  * selbst, alle anderen bekommen hls.js (nachgeladen beim Klick), ohne HLS die MP4-Fassung.
  *
+ * Mit `vorschau` (2026-11-27, nur /f/software-check-ki/): Cover mit freundlichem Standbild
+ * (1:45, etwas wärmer gezogen) und eine stumme Schleife der ersten 9,4 Sekunden (endet vor Martens Namenskarte ab 9,6 s), sobald der
+ * Rahmen zur Hälfte im Bild ist, wie bei hivegrid.de. Die Untertitel sind eingebrannt, der
+ * Einstieg ist also auch ohne Ton lesbar. Die Schleife liegt lokal (720p, je rund 2,4 MB, ohne Tonspur; 540p war auf Retina sichtbar weich),
+ * Bunny bleibt bis zum Klick unberührt. Sie trägt `data-vorschau` und wird von der Messung
+ * übersprungen: Nur der Klick auf „Mit Ton ansehen“ ist ein `video_start`. Ohne Schleife bei
+ * `prefers-reduced-motion` und Datensparmodus, dann bleibt das Cover stehen.
+ *
  * Bunny liefert nur mit Referrer aus (Hotlink-Schutz); rocketbase.io sendet ihn über
  * `Referrer-Policy: strict-origin-when-cross-origin` (netlify.toml).
  */
 
 interface Props {
   class?: string;
+  /** Freundliches Cover und stumme Vorschau-Schleife im Bild (siehe oben). */
+  vorschau?: boolean;
 }
 
-const { class: className } = Astro.props;
+const { class: className, vorschau = false } = Astro.props;
 
 const BUNNY = 'https://vz-a3126b65-db7.b-cdn.net';
-const fassungen = {
-  quer: { id: 'f2fea076-e87c-4536-b9b6-2a1cbd662ca2', poster: '/screencasts/vsl-software-check-16x9.jpg' },
-  hoch: { id: '46a0926a-5474-43eb-ad0e-b6bc4e48f787', poster: '/screencasts/vsl-software-check-9x16.jpg' },
-};
+const QUER = 'f2fea076-e87c-4536-b9b6-2a1cbd662ca2';
+const HOCH = '46a0926a-5474-43eb-ad0e-b6bc4e48f787';
+const fassungen = vorschau
+  ? {
+      quer: {
+        id: QUER,
+        poster: '/screencasts/vsl-software-check-cover-16x9.jpg',
+        vorschau: '/screencasts/vsl-software-check-vorschau-16x9.mp4',
+      },
+      hoch: {
+        id: HOCH,
+        poster: '/screencasts/vsl-software-check-cover-9x16.jpg',
+        vorschau: '/screencasts/vsl-software-check-vorschau-9x16.mp4',
+      },
+    }
+  : {
+      quer: { id: QUER, poster: '/screencasts/vsl-software-check-16x9.jpg' },
+      hoch: { id: HOCH, poster: '/screencasts/vsl-software-check-9x16.jpg' },
+    };
 const daten = JSON.stringify({ bunny: BUNNY, ...fassungen });
 ---
 
-<section id="video" class:list={['vsl-sec scroll-mt-20 py-10 lg:py-16', className]}>
+<section
+  id="video"
+  class:list={['vsl-sec scroll-mt-20 py-10 lg:py-16', vorschau && 'mit-vorschau', className]}
+>
   <div class="container max-w-4xl">
-    <p class="text-brand-600 dark:text-brand-300 text-center font-mono text-xs font-semibold tracking-[0.2em] uppercase">
-      Der Software-Check in zwei Minuten
-    </p>
-    <div class="vsl-rahmen border-border mx-auto mt-5 overflow-hidden rounded-2xl border bg-black shadow-lg" data-vsl={daten}>
-      <video
-        class="block h-full w-full bg-black object-cover"
-        poster={fassungen.quer.poster}
-        preload="none"
-        playsinline
-        data-track="vsl-software-check"
-        data-dauer="114"
-        aria-label="Video: Marten Prieß erklärt den Software-Check"
-      ></video>
-      <button type="button" class="vsl-play" aria-label="Video abspielen" data-track="vsl-play">
-        <span class="vsl-play-knopf" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="30" height="30"><path d="M8 5.5v13l10.5-6.5L8 5.5z" fill="currentColor"></path></svg>
-        </span>
-        <span class="vsl-dauer">1:54</span>
-      </button>
+    {vorschau ? (
+      <div class="mx-auto max-w-2xl text-center">
+        <p class="vsl-kicker text-brand-600 dark:text-brand-300 inline-flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.12em] whitespace-nowrap uppercase sm:tracking-[0.2em]">
+          <span class="vsl-live" aria-hidden="true" />
+          Der Software-Check in zwei Minuten
+        </p>
+        <h2 class="font-display text-foreground mt-3 text-[1.75rem] leading-[1.12] font-bold tracking-tight text-balance sm:text-[2.5rem]">
+          Worauf wir bei eurer Software schauen
+        </h2>
+        <p class="text-foreground-muted mx-auto mt-3 max-w-xl text-base text-pretty sm:text-lg">
+          Marten erklärt, wie der Check abläuft und was ihr am Ende in der Hand habt.
+        </p>
+      </div>
+    ) : (
+      <p class="text-brand-600 dark:text-brand-300 text-center font-mono text-xs font-semibold tracking-[0.2em] uppercase">
+        Der Software-Check in zwei Minuten
+      </p>
+    )}
+    <div class:list={['vsl-buehne relative isolate mx-auto', vorschau ? 'mt-8 lg:mt-10' : 'mt-5']}>
+      <div
+        class:list={[
+          'vsl-rahmen border-border relative mx-auto overflow-hidden border bg-black',
+          vorschau
+            ? 'rounded-[1.6rem] shadow-[0_28px_60px_-20px_rgba(34,43,74,0.38)]'
+            : 'rounded-2xl shadow-lg',
+        ]}
+        data-vsl={daten}
+      >
+        <video
+          class="block h-full w-full bg-black object-cover"
+          poster={fassungen.quer.poster}
+          preload="none"
+          playsinline
+          data-track="vsl-software-check"
+          data-dauer="114"
+          aria-label="Video: Marten Prieß erklärt den Software-Check"
+        ></video>
+        {vorschau && (
+          <video
+            class="vsl-vorschau absolute inset-0 h-full w-full object-cover"
+            muted
+            loop
+            playsinline
+            preload="none"
+            data-vorschau
+            aria-hidden="true"
+            tabindex="-1"
+          />
+        )}
+        {vorschau ? (
+          <button
+            type="button"
+            class="vsl-play vsl-cover"
+            aria-label="Video mit Ton abspielen, 1 Minute 54"
+            data-track="vsl-play"
+          >
+            <span class="vsl-stumm" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="14"
+                height="14"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M11 5 6 9H2v6h4l5 4V5z" />
+                <path d="m22 9-6 6M16 9l6 6" />
+              </svg>
+              Ohne Ton
+            </span>
+            <span class="vsl-unten">
+              <span class="vsl-person">
+                <span class="vsl-name">Marten Prieß</span>
+                <span class="vsl-rolle">Software-Architekt, erklärt den Check</span>
+              </span>
+              <span class="vsl-pille">
+                <span class="vsl-pille-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="16" height="16">
+                    <path d="M8 5.5v13l10.5-6.5L8 5.5z" fill="currentColor" />
+                  </svg>
+                </span>
+                <span class="vsl-pille-text">Mit Ton ansehen</span>
+                <span class="vsl-pille-dauer">1:54</span>
+              </span>
+            </span>
+          </button>
+        ) : (
+          <button type="button" class="vsl-play" aria-label="Video abspielen" data-track="vsl-play">
+            <span class="vsl-play-knopf" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="30" height="30">
+                <path d="M8 5.5v13l10.5-6.5L8 5.5z" fill="currentColor" />
+              </svg>
+            </span>
+            <span class="vsl-dauer">1:54</span>
+          </button>
+        )}
+      </div>
     </div>
   </div>
 </section>
@@ -94,7 +202,9 @@ const daten = JSON.stringify({ bunny: BUNNY, ...fassungen });
     border-radius: 999px;
     color: #fff;
     background: var(--color-brand-500);
-    box-shadow: 0 0 0 10px color-mix(in oklch, var(--color-brand-500) 28%, transparent), 0 12px 32px rgb(0 0 0 / 0.35);
+    box-shadow:
+      0 0 0 10px color-mix(in oklch, var(--color-brand-500) 28%, transparent),
+      0 12px 32px rgb(0 0 0 / 0.35);
     transition: transform 0.2s;
   }
   .vsl-play-knopf svg {
@@ -119,10 +229,194 @@ const daten = JSON.stringify({ bunny: BUNNY, ...fassungen });
   .vsl-rahmen.laeuft .vsl-play {
     display: none;
   }
+
+  /* ---------- Mit Vorschau ---------- */
+
+  /* Weicher Markenschein hinter dem Rahmen, wie bei den Karten der Seite. */
+  .mit-vorschau .vsl-buehne::before {
+    content: '';
+    position: absolute;
+    inset: 10% 6% -6%;
+    z-index: -1;
+    border-radius: 2rem;
+    background: radial-gradient(
+      60% 60% at 50% 50%,
+      color-mix(in oklab, var(--color-brand-400) 45%, transparent),
+      transparent 72%
+    );
+    filter: blur(40px);
+    pointer-events: none;
+  }
+
+  /* Die Schleife blendet über dem Cover ein, sobald sie wirklich läuft; vorher bleibt das Standbild. */
+  .vsl-vorschau {
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+    pointer-events: none;
+  }
+  .vsl-rahmen.vorschau-laeuft .vsl-vorschau {
+    opacity: 1;
+  }
+  /* Nach dem Klick bleibt die Schleife stehen, bis das echte Video spielt: kein schwarzes Loch. */
+  .vsl-rahmen.echt-laeuft .vsl-vorschau {
+    opacity: 0;
+    transition-duration: 0.25s;
+  }
+
+  .vsl-cover {
+    display: block;
+    text-align: left;
+    background: linear-gradient(
+      to top,
+      rgb(12 16 32 / 0.7) 0%,
+      rgb(12 16 32 / 0.22) 30%,
+      transparent 52%
+    );
+  }
+  .vsl-stumm {
+    position: absolute;
+    top: 0.9rem;
+    right: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.65rem 0.3rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+    background: rgb(12 16 32 / 0.45);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .vsl-rahmen.vorschau-laeuft .vsl-stumm {
+    opacity: 1;
+  }
+  .vsl-unten {
+    position: absolute;
+    inset: auto 0 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.9rem;
+    padding: 1.1rem;
+  }
+  @media (min-width: 768px) {
+    .vsl-unten {
+      padding: 1.5rem 1.75rem;
+    }
+  }
+  .vsl-person {
+    display: grid;
+    gap: 0.15rem;
+    color: #fff;
+    text-shadow: 0 1px 12px rgb(0 0 0 / 0.35);
+  }
+  .vsl-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .vsl-rolle {
+    font-size: 0.8rem;
+    opacity: 0.88;
+  }
+  .vsl-pille {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.4rem 0.5rem 0.4rem 0.4rem;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #14182b;
+    background: #fff;
+    box-shadow: 0 10px 30px -8px rgb(0 0 0 / 0.45);
+    transition:
+      transform 0.2s ease-out,
+      box-shadow 0.2s ease-out;
+  }
+  .vsl-pille-icon {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    color: #fff;
+    background: var(--color-brand-500);
+  }
+  .vsl-pille-icon svg {
+    margin-left: 2px;
+  }
+  .vsl-pille-dauer {
+    padding: 0.15rem 0.45rem;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: #4b5068;
+    background: color-mix(in oklab, var(--color-brand-500) 12%, #fff);
+  }
+  @media (hover: hover) {
+    .vsl-cover:hover .vsl-pille {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 14px 34px -8px rgb(0 0 0 / 0.5);
+    }
+  }
+  .vsl-cover:active .vsl-pille {
+    transform: scale(0.97);
+  }
+  .vsl-cover:focus-visible {
+    outline: 3px solid var(--color-brand-400);
+    outline-offset: -3px;
+    border-radius: inherit;
+  }
+  /* Hochformat: Name und Knopf untereinander, Knopf über die volle Breite. */
+  .vsl-rahmen[data-format='hoch'] .vsl-unten {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .vsl-rahmen[data-format='hoch'] .vsl-pille-text {
+    flex: 1;
+  }
+
+  /* Kleiner pulsierender Punkt vor dem Kicker: hier bewegt sich etwas. */
+  .vsl-live {
+    position: relative;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: var(--color-brand-500);
+  }
+  .vsl-live::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: inherit;
+    animation: vsl-puls 2s ease-out infinite;
+  }
+  @keyframes vsl-puls {
+    from {
+      transform: scale(1);
+      opacity: 0.6;
+    }
+    to {
+      transform: scale(2.6);
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vsl-live::after {
+      animation: none;
+    }
+  }
 </style>
 
 <script>
-  type Fassung = { id: string; poster: string };
+  type Fassung = { id: string; poster: string; vorschau?: string };
   type Daten = { bunny: string; quer: Fassung; hoch: Fassung };
 
   function einrichten() {
@@ -130,7 +424,8 @@ const daten = JSON.stringify({ bunny: BUNNY, ...fassungen });
       if (rahmen.dataset.bereit) return;
       rahmen.dataset.bereit = '1';
       const daten = JSON.parse(rahmen.dataset.vsl || '{}') as Daten;
-      const video = rahmen.querySelector('video')!;
+      const video = rahmen.querySelector<HTMLVideoElement>('video:not([data-vorschau])')!;
+      const vorschau = rahmen.querySelector<HTMLVideoElement>('video[data-vorschau]');
       const knopf = rahmen.querySelector<HTMLButtonElement>('.vsl-play')!;
 
       // Fassung einmal beim Laden wählen; das Vorschaubild ist lokal, Bunny bleibt unberührt.
@@ -139,10 +434,48 @@ const daten = JSON.stringify({ bunny: BUNNY, ...fassungen });
       rahmen.dataset.format = hoch ? 'hoch' : 'quer';
       video.poster = fassung.poster;
 
+      let gestartet = false;
+
+      // Stumme Schleife, solange der Rahmen zur Hälfte sichtbar ist. Nicht bei weniger Bewegung
+      // oder Datensparmodus: dann bleibt das Cover stehen.
+      const sparen =
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+        (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData ===
+          true;
+      const schleife = fassung.vorschau;
+      if (vorschau && schleife && !sparen && 'IntersectionObserver' in window) {
+        vorschau.poster = fassung.poster;
+        vorschau.addEventListener('playing', () => rahmen.classList.add('vorschau-laeuft'), {
+          once: true,
+        });
+        new IntersectionObserver(
+          ([eintrag]) => {
+            if (gestartet) return;
+            if (eintrag?.isIntersecting) {
+              if (!vorschau.getAttribute('src')) vorschau.src = schleife;
+              vorschau.play().catch(() => {
+                /* Autoplay gesperrt (etwa Stromsparmodus auf iOS): Cover bleibt stehen. */
+              });
+            } else {
+              vorschau.pause();
+            }
+          },
+          { threshold: 0.5 }
+        ).observe(rahmen);
+      }
+
+      function vorschauWeg() {
+        rahmen.classList.add('echt-laeuft');
+        vorschau?.pause();
+      }
+
       let geladen = false;
       async function starten() {
+        gestartet = true;
         rahmen.classList.add('laeuft');
         video.controls = true;
+        // Die Schleife bleibt stehen, bis das echte Video Bilder liefert.
+        if (vorschau) video.addEventListener('playing', vorschauWeg, { once: true });
         if (!geladen) {
           geladen = true;
           const hls = `${daten.bunny}/${fassung.id}/playlist.m3u8`;
@@ -153,7 +486,13 @@ const daten = JSON.stringify({ bunny: BUNNY, ...fassungen });
             try {
               const { default: Hls } = await import('hls.js');
               if (Hls.isSupported()) {
-                const h = new Hls({ capLevelToPlayerSize: true });
+                // hls.js schätzt die Bandbreite anfangs auf 0,5 Mbit/s und startet deshalb in
+                // 240p/360p: die ersten Sekunden wirkten unscharf. Mit 5 Mbit/s als erster
+                // Schätzung beginnt es gleich in der Stufe, die zur Rahmengröße passt.
+                const h = new Hls({
+                  capLevelToPlayerSize: true,
+                  abrEwmaDefaultEstimate: 5_000_000,
+                });
                 h.loadSource(hls);
                 h.attachMedia(video);
               } else {
@@ -166,6 +505,7 @@ const daten = JSON.stringify({ bunny: BUNNY, ...fassungen });
         }
         video.play().catch(() => {
           /* Autoplay-Sperre: Steuerung ist sichtbar, ein zweiter Klick startet. */
+          vorschauWeg();
         });
       }
 

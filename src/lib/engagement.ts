@@ -67,7 +67,7 @@ function melde(
 export function verfolgeVideos(funnel: string): void {
   if (typeof window === 'undefined') return;
   try {
-    document.querySelectorAll<HTMLVideoElement>('video').forEach((v) => {
+    document.querySelectorAll<HTMLVideoElement>('video:not([data-vorschau])').forEach((v) => {
       const name = videoName(v);
       const opt = { schluessel: name };
       const marken: Array<[number, 'video_25' | 'video_50' | 'video_75']> = [
@@ -82,7 +82,12 @@ export function verfolgeVideos(funnel: string): void {
           funnel,
           'video_start',
           // Bei Streams kennt der Browser die Länge beim Start oft noch nicht: dann `data-dauer`.
-          { video: name, dauer: Math.round((Number.isFinite(v.duration) && v.duration) || Number(v.dataset.dauer) || 0) },
+          {
+            video: name,
+            dauer: Math.round(
+              (Number.isFinite(v.duration) && v.duration) || Number(v.dataset.dauer) || 0
+            ),
+          },
           opt
         );
       });
@@ -92,12 +97,7 @@ export function verfolgeVideos(funnel: string): void {
         const anteil = v.currentTime / v.duration;
         for (const [grenze, ereignis] of marken) {
           if (anteil >= grenze) {
-            melde(
-              funnel,
-              ereignis,
-              { video: name, sekunden: Math.round(v.currentTime) },
-              opt
-            );
+            melde(funnel, ereignis, { video: name, sekunden: Math.round(v.currentTime) }, opt);
           }
         }
       });
@@ -251,7 +251,7 @@ function videoName(v: HTMLVideoElement): string {
     .pop()
     ?.replace(/\.[a-z0-9]+$/i, '');
   if (datei) return datei;
-  const alle = Array.from(document.querySelectorAll('video'));
+  const alle = Array.from(document.querySelectorAll('video:not([data-vorschau])'));
   return `video-${alle.indexOf(v) + 1}`;
 }
 
