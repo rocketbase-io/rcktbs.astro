@@ -55,15 +55,19 @@ function melde(
   trackPlausible(event, { funnel, ...props });
 }
 
-export function verfolgeEngagement(funnel: string): void {
+/**
+ * Nur die Videos einer Seite messen (video_start, video_25/50/75, video_ende), ohne Abschnitte
+ * und Klicks. Für indexierte Seiten wie /software-check/, die ein VSL zeigen, aber keine
+ * Funnel-Seite sind. Funnel-Seiten bekommen es über verfolgeEngagement() mit.
+ *
+ * Marken bei 25/50/75 % statt reiner Sekunden: Die Videos sind unterschiedlich lang,
+ * "zur Hälfte gesehen" bleibt vergleichbar. Mehrere Videos auf einer Seite werden über
+ * ihren Namen auseinandergehalten (videoName).
+ */
+export function verfolgeVideos(funnel: string): void {
   if (typeof window === 'undefined') return;
-
-  // --- Videos ------------------------------------------------------------
-  // Marken bei 25/50/75 % statt reiner Sekunden: Die Videos sind
-  // unterschiedlich lang, "zur Hälfte gesehen" bleibt vergleichbar. Mehrere
-  // Videos auf einer Seite werden über ihre Quelle auseinandergehalten.
   try {
-    document.querySelectorAll<HTMLVideoElement>('video').forEach((v) => {
+    document.querySelectorAll<HTMLVideoElement>('video:not([data-vorschau])').forEach((v) => {
       const name = videoName(v);
       const opt = { schluessel: name };
       const marken: Array<[number, 'video_25' | 'video_50' | 'video_75']> = [
@@ -77,7 +81,13 @@ export function verfolgeEngagement(funnel: string): void {
         melde(
           funnel,
           'video_start',
-          { video: name, dauer: Math.round(v.duration || 0) },
+          // Bei Streams kennt der Browser die Länge beim Start oft noch nicht: dann `data-dauer`.
+          {
+            video: name,
+            dauer: Math.round(
+              (Number.isFinite(v.duration) && v.duration) || Number(v.dataset.dauer) || 0
+            ),
+          },
           opt
         );
       });
@@ -87,12 +97,7 @@ export function verfolgeEngagement(funnel: string): void {
         const anteil = v.currentTime / v.duration;
         for (const [grenze, ereignis] of marken) {
           if (anteil >= grenze) {
-            melde(
-              funnel,
-              ereignis,
-              { video: name, sekunden: Math.round(v.currentTime) },
-              opt
-            );
+            melde(funnel, ereignis, { video: name, sekunden: Math.round(v.currentTime) }, opt);
           }
         }
       });
@@ -108,6 +113,12 @@ export function verfolgeEngagement(funnel: string): void {
   } catch {
     /* still */
   }
+}
+
+export function verfolgeEngagement(funnel: string): void {
+  if (typeof window === 'undefined') return;
+
+  verfolgeVideos(funnel);
 
   // --- Sichtbarkeit von Abschnitten -------------------------------------
   // Jede Sektion mit `id` zählt, sobald 40 % davon im Bild sind. "Termin-
@@ -228,15 +239,19 @@ export function verfolgeEngagement(funnel: string): void {
   }
 }
 
-/** Dateiname der Videoquelle ohne Endung, sonst Position auf der Seite. */
+/**
+ * `data-track` am Video, sonst Dateiname der Quelle ohne Endung, sonst Position auf der Seite.
+ * Gestreamte Videos (HLS) brauchen `data-track`: ihre Quelle heißt „blob:…" oder „playlist".
+ */
 function videoName(v: HTMLVideoElement): string {
+  if (v.dataset.track) return v.dataset.track;
   const src = v.currentSrc || v.querySelector('source')?.getAttribute('src') || '';
   const datei = src
     .split('/')
     .pop()
     ?.replace(/\.[a-z0-9]+$/i, '');
   if (datei) return datei;
-  const alle = Array.from(document.querySelectorAll('video'));
+  const alle = Array.from(document.querySelectorAll('video:not([data-vorschau])'));
   return `video-${alle.indexOf(v) + 1}`;
 }
 
